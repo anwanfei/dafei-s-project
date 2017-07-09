@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/titlebar" />
+
+    <View style="@style/login_register_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/et_register_sernum"
+            style="@style/useraccount_text_new"
+            android:layout_marginTop="30dp"
+            android:hint="输入11位手机号码"
+            android:lines="1"
+            android:maxLength="11"
+            android:phoneNumber="true" />
+
+        <View style="@style/login_register_line" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_register_msgcode"
+                style="@style/useraccount_text_new"
+                android:layout_weight="3.0"
+                android:hint="验证码"
+                android:lines="1"
+                android:maxLength="6" />
+
+            <TextView
+                android:id="@+id/tv_register_sendcode"
+                android:layout_width="90.0dip"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:onClick="click"
+                android:text="发送验证码"
+                android:textColor="@color/orange_main"
+                android:textSize="14.0sp" />
+        </LinearLayout>
+
+        <View style="@style/login_register_line" />
+
+        <EditText
+            android:id="@+id/et_register_pwd"
+            style="@style/useraccount_text_new"
+            android:hint="设置密码（6-16位）"
+            android:lines="1"
+            android:maxLength="16"
+            android:password="true" />
+
+        <View style="@style/login_register_line" />
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="fill_parent"
+            android:layout_height="40.0dip"
+            android:layout_marginTop="30.0dip"
+            android:background="@drawable/btn_login_register_enable"
+            android:onClick="click"
+            android:text="注册"
+            android:textColor="@color/white"
+            android:textSize="16.0sp" />
+    </LinearLayout>
+</LinearLayout>

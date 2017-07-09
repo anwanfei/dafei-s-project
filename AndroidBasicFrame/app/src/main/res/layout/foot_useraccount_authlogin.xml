@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="50.0dip"
+    android:layout_marginRight="50.0dip"
+    android:layout_marginTop="20.0dip"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0.0dip"
+            android:layout_height="1.0dip"
+            android:layout_weight="1.0"
+            android:background="@color/edit_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16.0dip"
+            android:text="或使用合作帐号登录"
+            android:textColor="@color/edit_text"
+            android:textSize="14.0sp" />
+
+        <View
+            android:layout_width="0.0dip"
+            android:layout_height="1.0dip"
+            android:layout_weight="1.0"
+            android:background="@color/edit_text" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16.0dip"
+        android:layout_marginTop="16.0dip">
+
+        <ImageView
+            android:id="@+id/iv_wx"
+            android:layout_width="50.0dip"
+            android:layout_height="50.0dip"
+            android:scaleType="fitCenter"
+            android:src="@drawable/umeng_socialize_wechat" />
+
+        <ImageView
+            android:id="@+id/iv_qq"
+            android:layout_width="50.0dip"
+            android:layout_height="50.0dip"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/umeng_socialize_qq_on" />
+
+        <ImageView
+            android:id="@+id/iv_wb"
+            android:layout_width="50.0dip"
+            android:layout_height="50.0dip"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/umeng_socialize_sina_on" />
+    </RelativeLayout>
+
+</LinearLayout>

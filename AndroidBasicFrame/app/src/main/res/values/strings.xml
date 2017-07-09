@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android</string>
+    <string name="foundation">基础</string>
+    <string name="my">我的</string>
+    <string name="frame">框架</string>
+    <string name="interview">面试</string>
+</resources>
