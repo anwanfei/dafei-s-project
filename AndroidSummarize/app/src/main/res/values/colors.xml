@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorbottom">#f2eeef</color>
+    <color name="colorRbTextColorPressed">#3097fd</color>
+    <color name="colorRbTextColor">#909ba3</color>
+    <color name="colorTitlebar">#3097fd</color>
+    <color name="lightgray">#D3D3D3</color><!--亮灰色 -->
+    <color name="textcolor">#000000</color><!--黑色 -->
+    <color name="white">#ffffff</color>
+    <color name="orange">#FFA500</color><!--橙色 -->
+    <color name="cornflowerblue">#6495ED</color><!--菊兰色 -->
+
+</resources>

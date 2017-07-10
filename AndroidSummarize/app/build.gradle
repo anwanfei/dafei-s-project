@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0"
+
+
+    defaultConfig {
+        applicationId "com.metashipanwf.androidsummarize"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 10
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':viewpagerindivcatorlibrary')
+    compile files('libs/eventbus-3.0.0.jar')
+    compile files('libs/badidu-loc-sdk_4.2.jar')
+
+    //Retrofit包
+    //Retrofit2所需要的包
+    //ConverterFactory的Gson依赖包
+    //ConverterFactory的String依赖包
+
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.android.support:design:25.1.1'
+    compile 'me.dm7.barcodescanner:zxing:1.8.4'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}

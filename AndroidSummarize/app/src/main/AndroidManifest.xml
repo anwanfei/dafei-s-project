@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.metashipanwf.androidsummarize">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    //震动权限
+    <uses-permission android:name="android.permission.VIBRATE" />
+    //摄像头权限
+    <uses-permission android:name="android.permission.CAMERA" />
+    //网络权限
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".guide.GuideActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.GuideActivity" />
+
+                <category android:name="com.zftlive.android.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.SplashActivity" />
+        <activity android:name=".activity.MobileSMSActivity" />
+        <activity
+            android:name=".DialogActivity.DialogActivity"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+        <activity android:name=".activity.DialogActivity" />
+        <activity android:name=".activity.CamareActivity" />
+        <activity android:name=".event.EventBusActivity" />
+        <activity android:name=".activity.UIActivity" />
+        <activity android:name=".event.EventBusSendActivity" />
+        <activity android:name=".activity.AndriodOfBaseActivity" />
+        <activity android:name=".feedback.FeedbackActivity" />
+        <activity android:name=".basetest.BasicTestActivity" />
+        <activity android:name=".slidemenu.DrawerLayoutActivity" />
+        <activity android:name=".AnimationInActivity.AnimationInActivity" />
+        <activity android:name=".AnimationInActivity.AnimationOutActivity" />
+        <activity android:name=".activity.VibratorActivity" />
+        <activity
+            android:name=".tablayout.TablayoutActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        //成功隐藏标题栏
+        <activity android:name=".my.LoginActivity" />
+        <activity android:name=".qrCode.ScannerActivity" />
+        <activity android:name=".qrCode.QRCodeActivity" />
+        <activity android:name=".retrofit.CallActivity" />
+        <activity android:name=".activity.ChangeFontActivity"></activity>
+    </application>
+
+</manifest>

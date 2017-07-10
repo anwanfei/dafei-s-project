@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="activity.MainActivity">
+
+    <!--标题栏-->
+    <!--<include layout="@layout/titlebar"/>-->
+
+    <!--FrameLayout-->
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <!--RadioGroup-->
+    <RadioGroup
+
+        android:id="@+id/rg_bottom_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="3dp">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/rb_common_frame_drawable_selector"
+            android:text="基础" />
+
+        <RadioButton
+            android:id="@+id/rb_psychology"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/rb_thirdparty_drawable_selector"
+            android:text="总结" />
+
+        <RadioButton
+            android:id="@+id/rb_music"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/rb_custom_drawable_selector"
+            android:text="新学习" />
+
+        <RadioButton
+            android:id="@+id/rb_my"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/rb_other_drawable_selector"
+            android:text="我的" />
+
+    </RadioGroup>
+</LinearLayout>

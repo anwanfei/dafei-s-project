@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/titlebar" />
+
+    <Button
+        android:id="@+id/btn_opengps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@color/orange"
+        android:text="@string/btn_opengps"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_called"
+        android:textColor="@color/white" />
+
+
+    <Button
+        android:id="@+id/btn_called"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_call"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_contact"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_setting"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_carema"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_carema"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btn_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/colorTitlebar"
+        android:text="@string/btn_photo"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>

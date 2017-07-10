@@ -1,0 +1,54 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="botttom_tag_style">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:drawablePadding">3dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/rb_style_textcolor_selector</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+    </style>
+    <style name="dialog">
+        <!-- Customize your theme here. -->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0dp</item>
+    </style>
+
+    <style name="button" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:layout_margin">12dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#50000000</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <!-- ActionBar自定义中间标题的样式 -->
+    <style name="ActionBarCenterTitle" parent="@android:style/TextAppearance.Holo.Large">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="group_photo">
+        <item name="android:layout_width">65dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:src">@drawable/profile_xiaomi_default</item>
+    </style>
+
+</resources>

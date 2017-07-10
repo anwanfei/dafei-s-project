@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">安卓飞</string>
+    <string name="titlebar">安卓飞</string>
+    <string name="about">详细做法</string>
+    <string name="hint_feedback">期待您的宝贵建议(1000字)</string>
+    <string name="btn_submit">提交</string>
+    <string name="feed_back_title">意见反馈</string>
+
+    <!-- 基本操作示例（开始） -->
+    <string name="btn_opengps">强制打开GPS</string>
+    <string name="btn_called">跳到拨打电话界面</string>
+    <string name="btn_call">直接拨打电话</string>
+    <string name="btn_photo">照片选择界面</string>
+    <string name="btn_carema">启动照相机</string>
+    <string name="btn_setting">到系统设置界面</string>
+    <string name="btn_contact">到联系人选择界面</string>
+    <!-- 基本操作示例（结束） -->
+
+
+    <string name="AnimationInActivity">Activity切换过场动画</string>
+    <string name="HVScorllListviewActivity">水平/垂直滚动+首行首列固定+翻页Listview</string>
+    <string name="HVScorll">横竖滚动</string>
+
+    <!-- 债券查询结果表头 -->
+    <string name="bound_search_result_head_zqmc">债券名称</string>
+    <string name="bound_search_result_head_zqjc">债券简称</string>
+    <string name="bound_search_result_head_zqdm">债券代码</string>
+    <string name="bound_search_result_head_fxjc">发行人简称</string>
+    <string name="bound_search_result_head_ksr">发行日期</string>
+    <string name="bound_search_result_head_fxjg">发行价格(元)</string>
+    <string name="bound_search_result_head_sjfxze">实际发行总额(亿元)</string>
+    <string name="bound_search_result_head_jxfs">计息方式</string>
+    <string name="bound_search_result_head_fxzq">付息周期/付息频率</string>
+    <string name="bound_search_result_head_pmll">票面利率(%)</string>
+    <string name="bound_search_result_head_lc">利差(%)</string>
+    <string name="bound_search_result_head_zjll">基准利率(%)</string>
+    <string name="bound_search_result_head_zqqx">证券期限</string>
+    <string name="bound_search_result_head_zqpj">信用评级一</string>
+    <string name="bound_search_result_head_ztpj">信用评级二</string>
+    <string name="bound_search_result_head_zqpjjg">评级机构一</string>
+    <string name="bound_search_result_head_ztpjjg">评级机构二</string>
+    <string name="bound_search_result_head_zqzwdjr">债券债务登记日</string>
+    <string name="bound_search_result_head_ltr">交易流通起始日</string>
+    <string name="bound_search_result_head_jzghr">交易流通终止日</string>
+    <string name="bound_search_result_head_qxr">起息日</string>
+    <string name="bound_search_result_head_dqr">兑付日</string>
+
+    <string name="long_ibrator">长震动启停</string>
+    <string name="short_ibrator">短震动启停</string>
+    <string name="rhythm_vibrator">节奏震动启停</string>
+
+
+    <!--我的-->
+    <string name="login">点击登录</string>
+    <string name="analyse">analyse</string>
+
+
+</resources>

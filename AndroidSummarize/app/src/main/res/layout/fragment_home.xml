@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/learn"
+    android:orientation="vertical">
+
+    <include layout="@layout/titlebar_immersive" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_base"
+            style="@style/button"
+            android:text="安卓基础" />
+
+        <Button
+            android:id="@+id/btn_assembly"
+            style="@style/button"
+            android:text="安卓组件" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_ui"
+            style="@style/button"
+            android:text="用户界面" />
+
+        <Button
+            android:id="@+id/btn_dao"
+            style="@style/button"
+            android:text="数据存储" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_net"
+            style="@style/button"
+            android:text="网络数据" />
+
+        <Button
+            android:id="@+id/btn_animation_bitmap"
+            style="@style/button"
+            android:text="图像动画" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_met"
+            style="@style/button"
+            android:text="消息事件任务" />
+
+        <Button
+            android:id="@+id/btn_new"
+            style="@style/button"
+            android:text="新特性" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_interview"
+            style="@style/button"
+            android:text="安卓面试" />
+    </LinearLayout>
+
+
+</LinearLayout>

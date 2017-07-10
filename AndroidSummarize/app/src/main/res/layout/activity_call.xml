@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_margin="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:text="请输入ID是:"
+        android:textColor="#000000"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/et_input"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/tv_1" />
+
+    <Button
+        android:id="@+id/bt_query_synchronous"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/tv_1"
+        android:text="同步查询" />
+
+    <Button
+        android:id="@+id/bt_query_asynchronous"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/tv_1"
+        android:layout_toRightOf="@id/bt_query_synchronous"
+        android:text="异步查询" />
+
+    <TextView
+        android:id="@+id/tv_show_retrfit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_1"
+        android:layout_below="@id/bt_query_synchronous"
+        android:layout_marginTop="20dp"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+</RelativeLayout>
