@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical"
+    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.CrewInfoInputActivity">
+
+    <include layout="@layout/titlebar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/name" />
+
+        <EditText
+            android:id="@+id/et_input_name"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_name" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/ID" />
+
+        <EditText
+            android:id="@+id/et_ID"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_ID" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/nationality" />
+
+        <TextView
+            android:id="@+id/et_nationality"
+            style="@style/edittext_no_arrow"
+            android:text="@string/nationality_china" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/job_num" />
+
+        <EditText
+            android:id="@+id/et_job_num"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_job_num" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/duty" />
+
+        <TextView
+            android:id="@+id/et_duty"
+            style="@style/account_setting_right_textview_with_arrow"
+            android:text="@string/choose_duty" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/phone" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_phone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/mail_box" />
+
+        <EditText
+            android:id="@+id/et_call_sign"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_mail_box" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_crew_info_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/tv_bg"
+        android:gravity="center"
+        android:text="@string/complete"
+        android:textColor="@color/white" />
+</LinearLayout>

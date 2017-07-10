@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.junhangxintong.chuangzhangtong">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".common.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity android:name=".common.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".mine.activity.PersonalInfoActivity" />
+        <activity android:name=".mine.activity.MyFleetActivity" />
+        <activity android:name=".mine.activity.CrewInfoInputActivity" />
+        <activity android:name=".mine.activity.AccoutSettingActivity" />
+        <activity android:name=".mine.activity.ModifyNameActivity" />
+        <activity android:name=".mine.activity.LoginRegisterActivity" />
+        <activity android:name=".mine.activity.MyFleetListActivity" />
+        <activity android:name=".mine.activity.AddShipActivity" />
+        <activity android:name=".mine.activity.CrewManagementActivity" />
+        <activity android:name=".mine.activity.ContactPhoneActivity" />
+        <activity android:name=".mine.activity.EmergencyContactorActivity" />
+        <activity android:name=".mine.activity.EmergencyContactorPhoneActivity" />
+        <activity android:name=".mine.activity.ChooseDutyActivity"></activity>
+    </application>
+
+</manifest>

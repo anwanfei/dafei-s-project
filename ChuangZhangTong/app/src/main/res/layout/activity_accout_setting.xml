@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.AccoutSettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/secret" />
+
+            <TextView
+                android:id="@+id/tv_setting_pwd"
+                style="@style/account_setting_right_textview_with_arrow"
+                android:text="@string/reset_pwd" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/phone_number" />
+
+            <TextView
+                android:id="@+id/tv_setting_phone"
+                style="@style/account_setting_right_textview_no_arrow"
+                android:text="@string/contact_phone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/mail_box" />
+
+            <TextView
+                android:id="@+id/tv_mail_box"
+                style="@style/account_setting_right_textview_no_arrow"
+                android:text="@string/mail_box_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/we_chat" />
+
+            <TextView
+                android:id="@+id/tv_we_chat"
+                style="@style/account_setting_right_textview_no_arrow"
+                android:text="@string/no_bind" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/QQ" />
+
+            <TextView
+                android:id="@+id/tv_QQ"
+                style="@style/account_setting_right_textview_no_arrow"
+                android:text="@string/no_bind" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/weibo" />
+
+            <TextView
+                android:id="@+id/tv_weibo"
+                style="@style/account_setting_right_textview_no_arrow"
+                android:text="@string/no_bind" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/clear_buffer" />
+
+            <TextView
+                android:id="@+id/tv_clear_buffer"
+                style="@style/account_setting_right_textview_with_arrow"
+                android:text="@string/clear_buffer_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/flag_mean" />
+
+            <TextView
+                android:id="@+id/tv_flag_mean"
+                style="@style/account_setting_right_textview_with_arrow" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/about" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                style="@style/account_setting_right_textview_with_arrow" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_login_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="15dp"
+                android:text="@string/login_out"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical"
+    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.AddShipActivity">
+
+    <include layout="@layout/titlebar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/MMIS_number" />
+
+        <EditText
+            android:id="@+id/et_MMIS_number"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/requred_input" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/call_sign" />
+
+        <EditText
+            android:id="@+id/et_call_sign"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/optional_input" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/AIS_ship_name" />
+
+        <EditText
+            android:id="@+id/et_AIS_ship_name"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/optional_input" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/chinese_ship_name" />
+
+        <EditText
+            android:id="@+id/et_chinese_ship_name"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/optional_input" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_group_fleet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/fleet_group" />
+
+        <TextView
+            android:id="@+id/tv_fleet_group"
+            style="@style/account_setting_right_textview_with_arrow"
+            android:hint="@string/choose_group" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/contact_mail_box" />
+
+
+        <EditText
+            android:id="@+id/et_contact_mail_box"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/requred_input" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_add_ship_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/tv_bg"
+        android:gravity="center"
+        android:text="@string/complete"
+        android:textColor="@color/white" />
+
+
+</LinearLayout>
