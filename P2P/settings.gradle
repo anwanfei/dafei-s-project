@@ -1,0 +1,3 @@
+include ':app', ':contexttest', ':MPChartLib', ':MPChartExample'
+include ':viewpageindicator'
+include ':alipay_demo'
