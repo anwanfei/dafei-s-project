@@ -1,5 +1,9 @@
 [
     {
+        "merged": "D:\\dafei-s-project\\AndroidSummarize\\viewpagerindivcatorlibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\vpi__tab_indicator.xml",
+        "source": "D:\\dafei-s-project\\AndroidSummarize\\viewpagerindivcatorlibrary\\build\\intermediates\\bundles\\debug\\res\\drawable\\vpi__tab_indicator.xml"
+    },
+    {
         "merged": "D:\\project\\AndroidSummarize\\viewpagerindivcatorlibrary\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\vpi__tab_indicator.xml",
         "source": "D:\\project\\AndroidSummarize\\viewpagerindivcatorlibrary\\build\\intermediates\\bundles\\debug\\res\\drawable\\vpi__tab_indicator.xml"
     }

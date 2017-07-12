@@ -24,15 +24,16 @@ import com.metashipanwf.androidsummarize.R;
 public class UIActivity extends Activity implements View.OnClickListener {
 
     private ListView listview;
-    private String[] data = {"Dialog（对话框）", "View（视图）", "Layout（布局）", "Popwindown", "Menu","TextView(文本视图)","Editext（编辑视图）","Button（按钮）"
-            ,"Listview（列表）","Notification（通知栏）","Imageview（图像视图）","GridView（格视图）","CheckBox（复选框）","scrollview（卷轴视图）","Gallery（长廊视图）",
-            "ActionBar（导航栏）","RatingBar（评分栏）","TabHost（切换卡）","SeekBar(拖动条)"
-            ,"Spinner（分级列表）","SlidingDrawer（抽屉）","SurfaceView","ViewFliper","、Splash","Toast","AlarmManager","webview","wiget","theme和style","多语言",
-            "界面特效","","","","","","","","","","","","","",""
-            ,"","","","","","","","","","","","",""
-            ,"","","","","","","","","","","","",""};
+    private String[] data = {"Dialog（对话框）", "CartView", "View（视图）", "Layout（布局）", "Popwindown", "Menu", "TextView(文本视图)", "Editext（编辑视图）", "Button（按钮）"
+            , "Listview（列表）", "Notification（通知栏）", "Imageview（图像视图）", "GridView（格视图）", "CheckBox（复选框）", "scrollview（卷轴视图）", "Gallery（长廊视图）",
+            "ActionBar（导航栏）", "RatingBar（评分栏）", "TabHost（切换卡）", "SeekBar(拖动条)"
+            , "Spinner（分级列表）", "SlidingDrawer（抽屉）", "SurfaceView", "ViewFliper", "Splash", "Toast", "AlarmManager", "webview", "wiget", "theme和style", "多语言",
+            "界面特效", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+            , "", "", "", "", "", "", "", "", "", "", "", "", ""
+            , "", "", "", "", "", "", "", "", "", "", "", "", ""};
     private TextView tv_title;
     private TextView tv_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +58,8 @@ public class UIActivity extends Activity implements View.OnClickListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.summarize_layout);
         listview = (ListView) findViewById(R.id.listview);
-        tv_title = (TextView)findViewById(R.id.tv_title);
-        tv_back = (TextView)findViewById(R.id.tv_back);
+        tv_title = (TextView) findViewById(R.id.tv_title);
+        tv_back = (TextView) findViewById(R.id.tv_back);
         tv_back.setVisibility(View.VISIBLE);
     }
 
@@ -83,6 +84,9 @@ public class UIActivity extends Activity implements View.OnClickListener {
                         break;
                     case "练习界面":
                         startActivity(new Intent(UIActivity.this, DialogActivity.class));
+                        break;
+                    case "CartView":
+                        startActivity(new Intent(UIActivity.this, CartViewActivity.class));
                         break;
                 }
             }

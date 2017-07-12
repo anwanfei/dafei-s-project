@@ -16,7 +16,7 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,12 +53,12 @@
         <activity
             android:name=".tablayout.TablayoutActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        //成功隐藏标题栏
         <activity android:name=".my.LoginActivity" />
         <activity android:name=".qrCode.ScannerActivity" />
         <activity android:name=".qrCode.QRCodeActivity" />
         <activity android:name=".retrofit.CallActivity" />
-        <activity android:name=".activity.ChangeFontActivity"></activity>
+        <activity android:name=".activity.ChangeFontActivity" />
+        <activity android:name=".activity.CartViewActivity"></activity>
     </application>
 
 </manifest>
