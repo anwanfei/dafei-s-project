@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.MyFleetListActivity">
+    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.MyFollowFleetActivity">
 
     <include layout="@layout/titlebar" />
 
     <LinearLayout
-        android:id="@+id/ll_no_fleet"
+        android:id="@+id/ll_no_crew"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -17,6 +17,5 @@
         <include layout="@layout/include_no_fleet_or_crew" />
 
     </LinearLayout>
-
 
 </LinearLayout>

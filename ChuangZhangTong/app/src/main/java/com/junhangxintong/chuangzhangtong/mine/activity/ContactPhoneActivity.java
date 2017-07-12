@@ -2,6 +2,7 @@ package com.junhangxintong.chuangzhangtong.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ public class ContactPhoneActivity extends BaseActivity {
     @Override
     protected void initData() {
         etInputName.setHint(getResources().getString(R.string.input_phone));
+        etInputName.setInputType(InputType.TYPE_CLASS_PHONE);
     }
 
     @Override

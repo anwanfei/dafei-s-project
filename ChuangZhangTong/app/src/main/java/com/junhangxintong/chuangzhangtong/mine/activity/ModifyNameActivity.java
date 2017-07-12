@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
@@ -36,7 +37,7 @@ public class ModifyNameActivity extends BaseActivity {
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.personal_info));
+        tvTitle.setText(getResources().getString(R.string.name));
     }
 
     @Override
@@ -56,10 +57,15 @@ public class ModifyNameActivity extends BaseActivity {
                 break;
             case R.id.tv_save:
                 String userName = etInputName.getText().toString();
-                Intent intent = getIntent();
-                intent.putExtra(Constants.USER_NAME, userName);
-                setResult(Constants.REQUEST_CODE0, intent);
-                finish();
+                if (userName.isEmpty()) {
+                    Toast.makeText(ModifyNameActivity.this, getResources().getString(R.string.no_empty), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = getIntent();
+                    intent.putExtra(Constants.USER_NAME, userName);
+                    setResult(Constants.REQUEST_CODE0, intent);
+                    finish();
+                }
+
                 break;
         }
     }

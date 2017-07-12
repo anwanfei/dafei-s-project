@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
 import com.junhangxintong.chuangzhangtong.news.adapter.NewsFragmentAdapter;
+import com.junhangxintong.chuangzhangtong.utils.BadgeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +54,11 @@ public class NewsFragment extends BaseFragment {
         tablayoutNews.getTabAt(0).setIcon(R.drawable.icon_chuanduiguanli);
         tablayoutNews.getTabAt(1).setIcon(R.drawable.icon_chuanyuanguanli);
         tablayoutNews.getTabAt(2).setIcon(R.drawable.icon_setting);
+
+        final BadgeView badgeView = new BadgeView(getActivity(), tablayoutNews);
+
+        badgeView.setText("9");
+        badgeView.show();
     }
 
     @Override

@@ -15,13 +15,15 @@
     <string name="emergency_contactor">紧急联络人</string>
     <string name="emergency_contactor_phone">紧急联络人电话</string>
     <string name="chuanguan">船管</string>
-    <string name="官员">船员</string>
+    <string name="chuanyuan">船员</string>
     <string name="other">其他</string>
     <string name="contact_phone">110</string>
     <string name="personal_info">个人信息</string>
     <string name="my_fleet">我的船队</string>
     <string name="follow_fleet">我关注的船列表</string>
     <string name="secret">*密码</string>
+    <string name="secret_no_star">密码</string>
+    <string name="conform_secret">确认密码</string>
     <string name="phone_number">*手机号</string>
     <string name="mail_box">邮箱</string>
     <string name="mail_box_demo">chuanguan@chuanzhangtong.com</string>
@@ -58,6 +60,7 @@
     <string name="AIS_ship_name">AIS船名</string>
     <string name="chinese_ship_name">中文船名</string>
     <string name="fleet_group">船队分组</string>
+    <string name="fleet_manage">船队管理</string>
     <string name="contact_mail_box">联系邮箱</string>
     <string name="requred_input">必填</string>
     <string name="optional_input">选填</string>
@@ -78,4 +81,27 @@
     <string name="nationality_china">中国</string>
     <string name="man">男</string>
     <string name="woman">女</string>
+    <string name="input_pwd_first">请输入密码</string>
+    <string name="input_pwd_agian">请再次输入密码</string>
+    <string name="about_version">船掌通 Version 1.0.0</string>
+    <string name="score">去评分</string>
+    <string name="version_info">版本信息</string>
+    <string name="check_updata">检查更新</string>
+    <string name="feed_back">意见反馈</string>
+    <string name="feed_back_hint">输入遇到的问题或者建议</string>
+    <string name="max_length_400">400</string>
+    <string name="phone_requested">手机（必填）：</string>
+    <string name="mail_box_requested">邮箱（必填）：</string>
+    <string name="mail_box_requested_hint">方便我们联系您</string>
+    <string name="no_empty">不能为空</string>
+    <string name="commit">提交</string>
+    <string name="ok">确定</string>
+    <string name="get_verify_code">获取验证码</string>
+    <string name="input_verify_code">输入验证码</string>
+    <string name="clear_buffer_title">确定要清除缓存</string>
+    <string name="clear_buffer_message">程序会定期清除过期的缓存，
+如果手动清除会造成不必要的流量</string>
+    <string name="pwd_login">密码登录</string>
+    <string name="registered">已有账号？去</string>
+    <string name="next">下一步</string>
 </resources>

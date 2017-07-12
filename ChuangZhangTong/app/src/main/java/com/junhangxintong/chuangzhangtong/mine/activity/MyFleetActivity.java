@@ -34,7 +34,7 @@ public class MyFleetActivity extends BaseActivity {
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.add_ship));
+        tvTitle.setText(getResources().getString(R.string.fleet_manage));
     }
 
     @Override
@@ -54,10 +54,10 @@ public class MyFleetActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_my_fleet:
-                Intent intent = new Intent(MyFleetActivity.this, MyFleetListActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(MyFleetActivity.this, MyFleetListActivity.class));
                 break;
             case R.id.ll_follow_fleet:
+                startActivity(new Intent(MyFleetActivity.this, MyFollowFleetActivity.class));
                 break;
         }
     }
