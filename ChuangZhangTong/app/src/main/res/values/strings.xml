@@ -104,4 +104,15 @@
     <string name="pwd_login">密码登录</string>
     <string name="registered">已有账号？去</string>
     <string name="next">下一步</string>
+    <string name="certificate_name">证书名称</string>
+    <string name="certificate_number">证书编号</string>
+    <string name="certificate_type">证书类型</string>
+    <string name="issuing_authority">签发机构</string>
+    <string name="end_date">到期日期</string>
+    <string name="permanent_effective">永久有效</string>
+    <string name="re_warning_days">提前预警天数</string>
+    <string name="is_common">是否常用</string>
+    <string name="commoned">常用</string>
+    <string name="no_commoned">不常用</string>
+    <string name="add_certificate_photo">添加照片</string>
 </resources>

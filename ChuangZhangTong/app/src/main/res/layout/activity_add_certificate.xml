@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray_bg"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.CrewInfoInputActivity">
+    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.AddCertificateActivity">
 
     <include layout="@layout/titlebar" />
 
@@ -18,12 +18,12 @@
 
         <TextView
             style="@style/account_setting_left_textview"
-            android:text="@string/name" />
+            android:text="@string/certificate_name" />
 
         <EditText
             android:id="@+id/et_input_name"
             style="@style/edittext_no_arrow"
-            android:hint="@string/input_name" />
+            android:hint="@string/certificate_name" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -128,14 +128,48 @@
             android:hint="@string/input_mail_box" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/mail_box" />
+
+        <EditText
+            android:id="@+id/et_call_sign"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_mail_box" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <TextView
+            style="@style/account_setting_left_textview"
+            android:text="@string/mail_box" />
+
+        <EditText
+            android:id="@+id/et_call_sign"
+            style="@style/edittext_no_arrow"
+            android:hint="@string/input_mail_box" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_crew_info_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/tv_bg"
         android:gravity="center"
         android:text="@string/complete"

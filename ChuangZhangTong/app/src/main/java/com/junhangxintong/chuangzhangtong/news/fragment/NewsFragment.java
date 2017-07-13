@@ -61,6 +61,7 @@ public class NewsFragment extends BaseFragment {
         badgeView.show();
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

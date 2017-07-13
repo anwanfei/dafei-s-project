@@ -39,7 +39,8 @@
         <activity android:name=".mine.activity.MessageVerifyLoginActivity" />
         <activity android:name=".mine.activity.RegisterActivity" />
         <activity android:name=".mine.activity.ForgetPwdActivity" />
-        <activity android:name=".mine.activity.InputPwdActivity"></activity>
+        <activity android:name=".mine.activity.InputPwdActivity" />
+        <activity android:name=".mine.activity.AddCertificateActivity"></activity>
     </application>
 
 </manifest>
