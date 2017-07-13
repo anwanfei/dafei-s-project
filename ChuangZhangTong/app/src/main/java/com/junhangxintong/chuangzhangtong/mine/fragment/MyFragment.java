@@ -92,7 +92,7 @@ public class MyFragment extends BaseFragment {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             ivPhoto.setImageBitmap(bitmap);
         }
-        if (userName != null) {
+        if (!userName.isEmpty()) {
             tvUserName.setText(userName);
         }
     }

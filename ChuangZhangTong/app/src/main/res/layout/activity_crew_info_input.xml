@@ -78,6 +78,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_choose_duty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"

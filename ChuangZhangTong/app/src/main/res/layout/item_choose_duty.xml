@@ -6,9 +6,9 @@
     <TextView
         android:id="@+id/tv_duty_name"
         android:layout_margin="25dp"
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:text="@string/duty"
         android:textColor="@color/black"
         android:textSize="16sp" />

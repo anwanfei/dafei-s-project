@@ -2,6 +2,8 @@ package com.junhangxintong.chuangzhangtong.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -42,6 +44,30 @@ public class LoginRegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initListener();
+    }
+
+    private void initListener() {
+        etInputPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tvLogin.setTextColor(getResources().getColor(R.color.white));
+                tvLogin.setBackgroundResource(R.drawable.tv_bg);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (etInputPhone.getText().toString().isEmpty()) {
+                    tvLogin.setTextColor(getResources().getColor(R.color.black));
+                    tvLogin.setBackgroundResource(R.drawable.identity_bg);
+                }
+            }
+        });
     }
 
     @Override

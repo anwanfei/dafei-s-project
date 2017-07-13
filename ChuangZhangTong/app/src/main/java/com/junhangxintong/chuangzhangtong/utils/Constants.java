@@ -20,4 +20,5 @@ public class Constants {
     public static final int REQUEST_CODE_ALBUM = 6;
     public static final String DATA = "data";
     public static final String PHONE_PATH = "/Android/data/com.junhangxintong.chuangzhangtong/files/icon.jpg";
+    public static final String DUTY_CREW_INFO = "duty_crew_info";
 }

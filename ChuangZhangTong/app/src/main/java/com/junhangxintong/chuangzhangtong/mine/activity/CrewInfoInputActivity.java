@@ -1,13 +1,16 @@
 package com.junhangxintong.chuangzhangtong.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
+import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,6 +38,8 @@ public class CrewInfoInputActivity extends BaseActivity {
     EditText etCallSign;
     @BindView(R.id.tv_crew_info_complete)
     TextView tvCrewInfoComplete;
+    @BindView(R.id.rl_choose_duty)
+    RelativeLayout rlChooseDuty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,6 @@ public class CrewInfoInputActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -57,7 +61,7 @@ public class CrewInfoInputActivity extends BaseActivity {
         return R.layout.activity_crew_info_input;
     }
 
-    @OnClick({R.id.iv_back, R.id.et_nationality, R.id.et_duty, R.id.tv_crew_info_complete})
+    @OnClick({R.id.iv_back, R.id.et_nationality, R.id.et_duty, R.id.tv_crew_info_complete, R.id.rl_choose_duty})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -65,10 +69,24 @@ public class CrewInfoInputActivity extends BaseActivity {
                 break;
             case R.id.et_nationality:
                 break;
-            case R.id.et_duty:
-                break;
             case R.id.tv_crew_info_complete:
                 break;
+            case R.id.rl_choose_duty:
+                startActivityForResult(new Intent(CrewInfoInputActivity.this, ChooseDutyActivity.class), Constants.REQUEST_CODE4);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case Constants.REQUEST_CODE4:
+                    String dutyName = data.getStringExtra(Constants.DUTY);
+                    etDuty.setText(dutyName);
+                    break;
+            }
         }
     }
 }

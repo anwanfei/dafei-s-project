@@ -100,22 +100,22 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             ivPhoto.setImageBitmap(bitmap);
         }
-        if (userName != null) {
+        if (!userName.isEmpty()) {
             tvUserName.setText(userName);
         }
-        if (gender != null) {
+        if (!gender.isEmpty()) {
             tvGender.setText(gender);
         }
-        if (contact_phone != null) {
+        if (!contact_phone.isEmpty()) {
             tvContactNumber.setText(contact_phone);
         }
-        if (emergency_contactor != null) {
+        if (!emergency_contactor.isEmpty()) {
             tvEmergencyContactor.setText(emergency_contactor);
         }
-        if (emergency_contactor_phone != null) {
+        if (!emergency_contactor_phone.isEmpty()) {
             tvEmergencyContactorPhone.setText(emergency_contactor_phone);
         }
-        if (duty != null) {
+        if (!duty.isEmpty()) {
             tvDuty.setText(duty);
         }
 
@@ -314,6 +314,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         TextView tv_camera = (TextView) contentView.findViewById(R.id.tv_camera);
         TextView tv_album = (TextView) contentView.findViewById(R.id.tv_album);
         TextView tv_cancel = (TextView) contentView.findViewById(R.id.tv_cancel);
+        tv_cancel.setTextColor(getResources().getColor(R.color.red));
         tv_camera.setOnClickListener(this);
         tv_album.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
