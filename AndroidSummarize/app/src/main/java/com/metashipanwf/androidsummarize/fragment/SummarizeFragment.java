@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.metashipanwf.androidsummarize.AnimationInActivity.AnimationInActivity;
 import com.metashipanwf.androidsummarize.R;
 import com.metashipanwf.androidsummarize.activity.VibratorActivity;
+import com.metashipanwf.androidsummarize.badge.BadgeViewActivity;
 import com.metashipanwf.androidsummarize.basetest.BasicTestActivity;
 import com.metashipanwf.androidsummarize.feedback.FeedbackActivity;
 import com.metashipanwf.androidsummarize.guide.GuideActivity;
@@ -28,8 +29,8 @@ public class SummarizeFragment extends BaseFragment {
 
     private ListView listview;
     private TextView tv_title;
-    private String[] data = {"引导界面", "意见反馈","常用基本操作","侧滑菜单","Activity切换过场动画","启用相机拍照并保存图片","震动测试",
-            "打包签名","代码混淆","反编译","渠道打包","二维码","机械学习","","","","","",""};
+    private String[] data = {"引导界面", "意见反馈", "tablayout显示消息提醒", "常用基本操作", "侧滑菜单", "Activity切换过场动画", "启用相机拍照并保存图片", "震动测试",
+            "打包签名", "代码混淆", "反编译", "渠道打包", "二维码", "机械学习", "", "", "", "", "", ""};
 
 
     @Override
@@ -85,14 +86,15 @@ public class SummarizeFragment extends BaseFragment {
                     case "机械学习":
                         startActivity(new Intent(getActivity(), QRCodeActivity.class));
                         break;
+                    case "tablayout显示消息提醒":
+                        startActivity(new Intent(getActivity(), BadgeViewActivity.class));
+                        break;
 
                 }
             }
         });
 
     }
-
-
 
 
 }

@@ -58,7 +58,8 @@
         <activity android:name=".qrCode.QRCodeActivity" />
         <activity android:name=".retrofit.CallActivity" />
         <activity android:name=".activity.ChangeFontActivity" />
-        <activity android:name=".activity.CartViewActivity"></activity>
+        <activity android:name=".activity.CartViewActivity" />
+        <activity android:name=".badge.BadgeViewActivity"></activity>
     </application>
 
 </manifest>

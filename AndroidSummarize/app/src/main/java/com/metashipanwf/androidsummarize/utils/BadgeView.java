@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -21,35 +22,28 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 /**
- * Created by edz on 2017/7/12.
+ * ClassName：BadgeView
+ * Author：Jeff Gilfelt
+ * Fuction：可对目标View指定多个方向设角标的自定义控件
+ * CreateDate：2015/7/31 10:44
+ * UpdateAuthor：
+ * UpdateDate：
  */
-
 public class BadgeView extends TextView {
-    /* 位于控件左上角 */
+
     public static final int POSITION_TOP_LEFT = 1;
-    /* 位于控件右上角 */
     public static final int POSITION_TOP_RIGHT = 2;
-    /* 位于控件右下角 */
     public static final int POSITION_BOTTOM_LEFT = 3;
-    /* 位于控件左下角 */
     public static final int POSITION_BOTTOM_RIGHT = 4;
-    /* 位于控件正中央 */
     public static final int POSITION_CENTER = 5;
 
-    /* 默认margin */
     private static final int DEFAULT_MARGIN_DIP = 5;
-    /* 默认左右padding */
     private static final int DEFAULT_LR_PADDING_DIP = 5;
-    /* 默认添加控件的圆角 */
     private static final int DEFAULT_CORNER_RADIUS_DIP = 8;
-    /* 默认位置:右上角 */
     private static final int DEFAULT_POSITION = POSITION_TOP_RIGHT;
-    /* 默认标签的背景色为红色 */
-    private static final int DEFAULT_BADGE_COLOR = Color.parseColor("#CCFF0000");
-    /* 默认标签颜色为白色 */
+    private static final int DEFAULT_BADGE_COLOR = Color.parseColor("#CCFF0000"); //Color.RED;
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
 
-    /* 动画 */
     private static Animation fadeIn;
     private static Animation fadeOut;
 
@@ -77,7 +71,7 @@ public class BadgeView extends TextView {
 
     /**
      * Constructor -
-     * <p>
+     * <p/>
      * create a new BadgeView instance attached to a target {@link View}.
      *
      * @param context context for this view.
@@ -89,7 +83,7 @@ public class BadgeView extends TextView {
 
     /**
      * Constructor -
-     * <p>
+     * <p/>
      * create a new BadgeView instance attached to a target {@link TabWidget}
      * tab at a given index.
      *
@@ -147,7 +141,7 @@ public class BadgeView extends TextView {
 
     private void applyTo(View target) {
 
-        ViewGroup.LayoutParams lp = target.getLayoutParams();
+        LayoutParams lp = target.getLayoutParams();
         ViewParent parent = target.getParent();
         FrameLayout container = new FrameLayout(context);
 
@@ -158,7 +152,7 @@ public class BadgeView extends TextView {
             this.target = target;
 
             ((ViewGroup) target).addView(container,
-                    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+                    new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
             this.setVisibility(View.GONE);
             container.addView(this);
@@ -339,7 +333,7 @@ public class BadgeView extends TextView {
 
     private void applyLayoutParams() {
 
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         switch (badgePosition) {
             case POSITION_TOP_LEFT:
@@ -387,7 +381,7 @@ public class BadgeView extends TextView {
 
     /**
      * Returns the positioning of this badge.
-     * <p>
+     * <p/>
      * one of POSITION_TOP_LEFT, POSITION_TOP_RIGHT, POSITION_BOTTOM_LEFT, POSITION_BOTTOM_RIGHT, POSTION_CENTER.
      */
     public int getBadgePosition() {
@@ -460,4 +454,5 @@ public class BadgeView extends TextView {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
         return (int) px;
     }
+
 }
