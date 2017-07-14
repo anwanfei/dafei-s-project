@@ -40,7 +40,10 @@
         <activity android:name=".mine.activity.RegisterActivity" />
         <activity android:name=".mine.activity.ForgetPwdActivity" />
         <activity android:name=".mine.activity.InputPwdActivity" />
-        <activity android:name=".mine.activity.AddCertificateActivity"></activity>
+        <activity android:name=".mine.activity.AddCertificateActivity" />
+        <activity android:name=".mine.activity.BindManageMailBoxActivity" />
+        <activity android:name=".mine.activity.BindBoxPwdActivity" />
+        <activity android:name=".mine.activity.BindMailServerActivity"></activity>
     </application>
 
 </manifest>

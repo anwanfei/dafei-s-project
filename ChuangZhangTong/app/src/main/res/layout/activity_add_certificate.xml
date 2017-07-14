@@ -1,166 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_bg"
-    android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.junhangxintong.chuangzhangtong.mine.activity.AddCertificateActivity">
 
-    <include layout="@layout/titlebar" />
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        android:orientation="vertical"
+        android:background="@color/gray_bg">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/certificate_name" />
 
-        <EditText
-            android:id="@+id/et_input_name"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/certificate_name" />
-    </RelativeLayout>
+        <include layout="@layout/titlebar" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/ID" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/certificate_name" />
 
-        <EditText
-            android:id="@+id/et_ID"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_ID" />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/et_input_certificate_name"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/certificate_name" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/nationality" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/certificate_number" />
 
-        <TextView
-            android:id="@+id/et_nationality"
-            style="@style/edittext_no_arrow"
-            android:text="@string/nationality_china" />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/et_certificate_number"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_certificate_number" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:id="@+id/rl_certificate_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/job_num" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/certificate_type" />
 
-        <EditText
-            android:id="@+id/et_job_num"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_job_num" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/et_certificate_type"
+                style="@style/account_setting_right_textview_with_arrow"
+                android:text="@string/type" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:id="@+id/rl_issuing_authority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/duty" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issuing_authority" />
 
-        <TextView
-            android:id="@+id/et_duty"
-            style="@style/account_setting_right_textview_with_arrow"
-            android:text="@string/choose_duty" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_issuing_authority"
+                style="@style/account_setting_right_textview_with_arrow" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/phone" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/end_date" />
 
-        <EditText
-            android:id="@+id/et_phone"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_phone" />
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/et_end_date"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/end_date_format" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/mail_box" />
+            <CheckBox
+                android:id="@+id/cb_permanet_effective"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:button="@null"
+                android:drawableLeft="@drawable/rb_choose_selector"
+                android:drawablePadding="6dp"
+                android:text="@string/permanent_effective" />
 
-        <EditText
-            android:id="@+id/et_call_sign"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_mail_box" />
-    </RelativeLayout>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/mail_box" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/re_warning_days" />
 
-        <EditText
-            android:id="@+id/et_call_sign"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_mail_box" />
-    </RelativeLayout>
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:padding="15dp">
+                <RadioButton
+                    android:id="@+id/rb_time_30_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_30_days" />
 
-        <TextView
-            style="@style/account_setting_left_textview"
-            android:text="@string/mail_box" />
+                <RadioButton
+                    android:id="@+id/rb_time_90_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_90_days" />
+            </RadioGroup>
+        </RelativeLayout>
 
-        <EditText
-            android:id="@+id/et_call_sign"
-            style="@style/edittext_no_arrow"
-            android:hint="@string/input_mail_box" />
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_common" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_commoned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/commoned" />
+
+                <RadioButton
+                    android:id="@+id/rb_no_commoned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/no_commoned" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_add_certificate_photo"
+                style="@style/account_setting_left_textview"
+                android:layout_width="match_parent"
+                android:drawableRight="@drawable/iv_add_certificate_photo"
+                android:gravity="center_vertical"
+                android:text="@string/add_certificate_photo" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_crew_info_complete"
@@ -169,9 +225,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/tv_bg"
         android:gravity="center"
         android:text="@string/complete"
         android:textColor="@color/white" />
-</LinearLayout>
+</RelativeLayout>

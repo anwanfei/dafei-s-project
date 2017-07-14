@@ -96,6 +96,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableLeft="@drawable/rb_choose_selector"
+                android:drawablePadding="6dp"
                 android:text="@string/chuanguan" />
 
             <RadioButton
@@ -104,6 +108,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/rb_choose_selector"
+                android:drawablePadding="6dp"
                 android:text="@string/chuanyuan" />
 
             <RadioButton
@@ -112,6 +119,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/rb_choose_selector"
+                android:drawablePadding="6dp"
                 android:text="@string/other" />
 
         </RadioGroup>
@@ -123,10 +133,10 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
-            android:background="@drawable/tv_bg"
+            android:background="@drawable/identity_bg"
             android:gravity="center"
             android:text="@string/register"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout

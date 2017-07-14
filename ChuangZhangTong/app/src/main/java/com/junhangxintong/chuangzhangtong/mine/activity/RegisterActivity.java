@@ -1,5 +1,6 @@
 package com.junhangxintong.chuangzhangtong.mine.activity;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
@@ -63,6 +64,7 @@ public class RegisterActivity extends BaseActivity {
             case R.id.tv_send_verify_code:
                 break;
             case R.id.tv_login:
+                startActivity(new Intent(RegisterActivity.this, BindManageMailBoxActivity.class));
                 break;
             case R.id.tv_pwd_login:
                 finish();
