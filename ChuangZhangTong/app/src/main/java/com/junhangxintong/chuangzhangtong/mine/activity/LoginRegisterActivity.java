@@ -64,7 +64,7 @@ public class LoginRegisterActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (etInputPhone.getText().toString().isEmpty()) {
                     tvLogin.setTextColor(getResources().getColor(R.color.black));
-                    tvLogin.setBackgroundResource(R.drawable.identity_bg);
+                    tvLogin.setBackgroundResource(R.drawable.bg_identity_gray);
                 }
             }
         });

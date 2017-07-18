@@ -43,7 +43,18 @@
         <activity android:name=".mine.activity.AddCertificateActivity" />
         <activity android:name=".mine.activity.BindManageMailBoxActivity" />
         <activity android:name=".mine.activity.BindBoxPwdActivity" />
-        <activity android:name=".mine.activity.BindMailServerActivity"></activity>
+        <activity android:name=".mine.activity.BindMailServerActivity" />
+        <activity android:name=".mine.activity.CertificateListsActivity"></activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.junhangxintong.chuangzhangtong.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>

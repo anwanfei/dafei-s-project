@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_user_name"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/identity_bg"
+                    android:background="@drawable/bg_identity_gray"
                     android:paddingBottom="3dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"

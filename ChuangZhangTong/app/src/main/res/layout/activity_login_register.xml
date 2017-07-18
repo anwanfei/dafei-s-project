@@ -80,7 +80,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/identity_bg"
+        android:background="@drawable/bg_identity_gray"
         android:gravity="center"
         android:padding="10dp"
         android:text="@string/login"

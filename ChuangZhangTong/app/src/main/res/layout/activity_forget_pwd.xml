@@ -67,7 +67,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/identity_bg"
+        android:background="@drawable/bg_identity_gray"
         android:gravity="center"
         android:text="@string/next"
         android:textColor="@color/black" />

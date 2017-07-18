@@ -88,6 +88,7 @@ public class AddCertificateActivity extends BaseActivity {
             case R.id.tv_add_certificate_photo:
                 break;
             case R.id.tv_crew_info_complete:
+                finish();
                 break;
         }
     }

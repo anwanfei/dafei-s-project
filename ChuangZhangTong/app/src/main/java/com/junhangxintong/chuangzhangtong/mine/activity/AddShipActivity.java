@@ -68,6 +68,7 @@ public class AddShipActivity extends BaseActivity {
             case R.id.rl_choose_group_fleet:
                 break;
             case R.id.tv_add_ship_complete:
+                finish();
                 break;
         }
     }

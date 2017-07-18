@@ -53,7 +53,7 @@ public class ForgetPwdActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (etInputPhone.getText().toString().isEmpty()) {
                     tvNext.setTextColor(getResources().getColor(R.color.black));
-                    tvNext.setBackgroundResource(R.drawable.identity_bg);
+                    tvNext.setBackgroundResource(R.drawable.bg_identity_gray);
                 }
             }
         });

@@ -61,7 +61,7 @@
         android:layout_height="44dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/identity_bg"
+        android:background="@drawable/bg_identity_gray"
         android:gravity="center"
         android:layout_marginTop="20dp"
         android:text="@string/no_bind_temp"

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
 import com.junhangxintong.chuangzhangtong.mine.activity.AccoutSettingActivity;
-import com.junhangxintong.chuangzhangtong.mine.activity.AddCertificateActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.MyFleetActivity;
@@ -102,7 +101,6 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
-                startActivity(new Intent(getActivity(), AddCertificateActivity.class));
                 break;
             case R.id.iv_photo:
                 startActivity(new Intent(getActivity(), PersonalInfoActivity.class));
