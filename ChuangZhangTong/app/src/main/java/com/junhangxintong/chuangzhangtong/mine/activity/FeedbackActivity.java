@@ -60,6 +60,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     private IHandlerCallBack iHandlerCallBack;
     private String TAG = "junhang";
 
+    //存储获得图片路径的集合
     private List<String> path = new ArrayList<>();
     private GalleryConfig gallrtyConfig;
     private PhotoAdapter photoAdapter;
