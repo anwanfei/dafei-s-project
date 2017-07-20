@@ -11,6 +11,7 @@
     <color name="textcolor">#000000</color><!--黑色 -->
     <color name="white">#ffffff</color>
     <color name="orange">#FFA500</color><!--橙色 -->
-    <color name="cornflowerblue">#6495ED</color><!--菊兰色 -->
+    <color name="cornflowerblue">#6495ED</color>
+    <color name="blue">#3282FA</color><!--菊兰色 -->
 
 </resources>

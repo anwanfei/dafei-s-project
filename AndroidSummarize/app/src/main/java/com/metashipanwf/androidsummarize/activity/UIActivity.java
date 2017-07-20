@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.metashipanwf.androidsummarize.DialogActivity.DialogActivity;
 import com.metashipanwf.androidsummarize.R;
+import com.metashipanwf.androidsummarize.countdown.CountDownTimerActivity;
+import com.metashipanwf.androidsummarize.viewpager.ViewPagerActivity;
 
 /**
  * author:AnWanfei
@@ -24,11 +26,11 @@ import com.metashipanwf.androidsummarize.R;
 public class UIActivity extends Activity implements View.OnClickListener {
 
     private ListView listview;
-    private String[] data = {"Dialog（对话框）", "CartView", "View（视图）", "Layout（布局）", "Popwindown", "Menu", "TextView(文本视图)", "Editext（编辑视图）", "Button（按钮）"
+    private String[] data = {"Dialog（对话框）", "CartView", "CountDownTimer","viewpager", "View（视图）", "Layout（布局）", "Popwindown", "Menu", "TextView(文本视图)", "Editext（编辑视图）", "Button（按钮）"
             , "Listview（列表）", "Notification（通知栏）", "Imageview（图像视图）", "GridView（格视图）", "CheckBox（复选框）", "scrollview（卷轴视图）", "Gallery（长廊视图）",
             "ActionBar（导航栏）", "RatingBar（评分栏）", "TabHost（切换卡）", "SeekBar(拖动条)"
             , "Spinner（分级列表）", "SlidingDrawer（抽屉）", "SurfaceView", "ViewFliper", "Splash", "Toast", "AlarmManager", "webview", "wiget", "theme和style", "多语言",
-            "界面特效", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+            "界面特效", "", "", "", "", "", "", "", "", "", "", "", "", ""
             , "", "", "", "", "", "", "", "", "", "", "", "", ""
             , "", "", "", "", "", "", "", "", "", "", "", "", ""};
     private TextView tv_title;
@@ -76,7 +78,7 @@ public class UIActivity extends Activity implements View.OnClickListener {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String string = data[i];
                 switch (string) {
-                    case "对话框":
+                    case "Dialog（对话框）":
                         startActivity(new Intent(UIActivity.this, com.metashipanwf.androidsummarize.activity.DialogActivity.class));
                         break;
                     case "发送手机验证码":
@@ -87,6 +89,12 @@ public class UIActivity extends Activity implements View.OnClickListener {
                         break;
                     case "CartView":
                         startActivity(new Intent(UIActivity.this, CartViewActivity.class));
+                        break;
+                    case "CountDownTimer":
+                        startActivity(new Intent(UIActivity.this, CountDownTimerActivity.class));
+                        break;
+                    case "viewpager":
+                        startActivity(new Intent(UIActivity.this, ViewPagerActivity.class));
                         break;
                 }
             }

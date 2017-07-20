@@ -59,7 +59,9 @@
         <activity android:name=".retrofit.CallActivity" />
         <activity android:name=".activity.ChangeFontActivity" />
         <activity android:name=".activity.CartViewActivity" />
-        <activity android:name=".badge.BadgeViewActivity"></activity>
+        <activity android:name=".badge.BadgeViewActivity" />
+        <activity android:name=".countdown.CountDownTimerActivity" />
+        <activity android:name=".viewpager.ViewPagerActivity"></activity>
     </application>
 
 </manifest>

@@ -8,23 +8,6 @@ package com.metashipanwf.androidsummarize.retrofit;
  */
 
 public class Bean {
-    /**
-     * count : 3282
-     * description : 尾鳍分叉颇深，下叶较长
-     * disease :
-     * fcount : 0
-     * food :
-     * id : 10
-     * img : /food/150804/285158e45d996bbd47046ee2af2c7370.jpg
-     * keywords : 青灰色 银白色 甲壳类 成鱼 菱形
-     * message : 鲳鱼属于鲈形目，鲳科。体短而高，极侧扁，略呈菱形。头较小，吻圆，口小，牙细。成鱼腹鳍消失。尾鳍分叉颇深，下叶较长。体银白色，上部微呈青灰色。以甲壳类等为食。
-     * name : 白鲳鱼
-     * rcount : 0
-     * status : true
-     * summary :
-     * symptom :
-     * url : http://www.tngou.net/food/show/10
-     */
 
     private int count;
     private String description;
