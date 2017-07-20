@@ -14,7 +14,7 @@ public class NationalityFragment extends BaseFragment {
     @Override
     protected View initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.fragment_message, null);
+        View view = inflater.inflate(R.layout.fragment_newest_news, null);
         return view;
     }
 }

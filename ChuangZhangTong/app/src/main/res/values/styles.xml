@@ -80,4 +80,11 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="MessageTabLayoutTextAppearanceInverse">
+        <item name="android:textSize">12sp</item>
+        <item name="android:ellipsize">none</item>
+        <item name="android:lines">2</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

@@ -54,6 +54,7 @@ public class NewsFragment extends BaseFragment {
         tablayoutNews.getTabAt(0).setIcon(R.drawable.icon_chuanduiguanli);
         tablayoutNews.getTabAt(1).setIcon(R.drawable.icon_chuanyuanguanli);
         tablayoutNews.getTabAt(2).setIcon(R.drawable.icon_setting);
+        tablayoutNews.getTabAt(3).setIcon(R.drawable.icon_setting);
 
         final BadgeView badgeView = new BadgeView(getActivity(), tablayoutNews);
 

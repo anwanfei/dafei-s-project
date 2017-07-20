@@ -1,18 +1,23 @@
-package com.junhangxintong.chuangzhangtong.message;
+package com.junhangxintong.chuangzhangtong.message.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
+import com.junhangxintong.chuangzhangtong.message.adapter.MessageFragmentAdapter;
 import com.junhangxintong.chuangzhangtong.mine.activity.LoginRegisterActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -20,15 +25,21 @@ import butterknife.Unbinder;
  */
 
 public class MessageFragment extends BaseFragment {
-    @BindView(R.id.imageview)
-    ImageView imageview;
     Unbinder unbinder;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tablayout_message)
+    TabLayout tablayoutMessage;
+    @BindView(R.id.viewpager_message)
+    ViewPager viewpagerMessage;
 
     @Override
     protected View initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.fragment_message, null);
-        if (true) {
+        if (false) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
             getActivity().finish();
         }
@@ -44,8 +55,24 @@ public class MessageFragment extends BaseFragment {
     }
 
     @Override
+    protected void initData() {
+        super.initData();
+        tvTitle.setText(getResources().getString(R.string.message));
+        viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager()));
+        tablayoutMessage.setupWithViewPager(viewpagerMessage);
+        tablayoutMessage.getTabAt(0).setIcon(R.drawable.icon_chuanduiguanli);
+        tablayoutMessage.getTabAt(1).setIcon(R.drawable.icon_chuanyuanguanli);
+        tablayoutMessage.getTabAt(2).setIcon(R.drawable.icon_setting);
+        tablayoutMessage.getTabAt(3).setIcon(R.drawable.icon_setting);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
     }
 }

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
 
 import com.junhangxintong.chuangzhangtong.R;
-import com.junhangxintong.chuangzhangtong.message.MessageFragment;
+import com.junhangxintong.chuangzhangtong.message.fragment.MessageFragment;
 import com.junhangxintong.chuangzhangtong.mine.fragment.MyFragment;
 import com.junhangxintong.chuangzhangtong.news.fragment.NewsFragment;
 import com.junhangxintong.chuangzhangtong.shipposition.fragment.ShipPositionFragment;

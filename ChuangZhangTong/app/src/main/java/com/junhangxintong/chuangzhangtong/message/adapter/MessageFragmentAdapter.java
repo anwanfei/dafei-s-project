@@ -1,23 +1,23 @@
-package com.junhangxintong.chuangzhangtong.news.adapter;
+package com.junhangxintong.chuangzhangtong.message.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.junhangxintong.chuangzhangtong.message.fragment.NewestMessageFragment;
 import com.junhangxintong.chuangzhangtong.news.fragment.InternalNewsFragment;
 import com.junhangxintong.chuangzhangtong.news.fragment.NationalityFragment;
 import com.junhangxintong.chuangzhangtong.news.fragment.NewestNewsFragment;
-import com.junhangxintong.chuangzhangtong.news.fragment.OilPriceFragment;
 
 /**
  * Created by edz on 2017/7/8.
  */
 
-public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
+public class MessageFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"最新消息", "油市快递", "国籍公约", "国内公约"};
+    private String[] mtitles = {"所有消息", "最新消息", "最新消息", "最新消息"};
 
-    public NewsFragmentAdapter(FragmentManager fm) {
+    public MessageFragmentAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -26,11 +26,11 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
         if (position == 1) {
             return new NewestNewsFragment();
         } else if (position == 2) {
-            return new OilPriceFragment();
+            return new InternalNewsFragment();
         } else if (position == 3) {
             return new NationalityFragment();
         }
-        return new InternalNewsFragment();
+        return new NewestMessageFragment();
     }
 
     @Override

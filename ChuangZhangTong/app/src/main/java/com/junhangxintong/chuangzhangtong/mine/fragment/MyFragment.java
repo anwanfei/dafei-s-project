@@ -101,6 +101,7 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
+                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
                 break;
             case R.id.iv_photo:
                 startActivity(new Intent(getActivity(), PersonalInfoActivity.class));

@@ -7,10 +7,10 @@ import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
 
 /**
- * Created by edz on 2017/7/8.
+ * Created by edz on 2017/7/20.
  */
 
-public class InternalNewsFragment extends BaseFragment {
+public class OilPriceFragment extends BaseFragment {
     @Override
     protected View initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
