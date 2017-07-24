@@ -117,6 +117,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.tv_save:
+                finish();
                 break;
             case R.id.iv_add_photo_feedback:
                 showChoosePhotesPop();

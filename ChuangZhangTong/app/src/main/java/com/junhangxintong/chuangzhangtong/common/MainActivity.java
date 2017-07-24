@@ -39,8 +39,8 @@ public class MainActivity extends BaseActivity {
     private void initListener() {
         rgBottomTag.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         //设置默认主页面
-//        rgBottomTag.check(R.id.rb_common_frame);
-        rgBottomTag.check(R.id.rb_other);
+        rgBottomTag.check(R.id.rb_common_frame);
+//        rgBottomTag.check(R.id.rb_other);
     }
 
 
@@ -117,5 +117,11 @@ public class MainActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        fragments.clear();
     }
 }

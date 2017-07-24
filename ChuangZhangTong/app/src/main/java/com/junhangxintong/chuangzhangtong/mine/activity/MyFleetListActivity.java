@@ -74,7 +74,7 @@ public class MyFleetListActivity extends BaseActivity {
     @Override
     protected void initData() {
         myFleetLists = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 25; i++) {
             MyFleetBean myFleetBean = new MyFleetBean();
             myFleetBean.setShipName("华海" + i + "号");
             myFleetLists.add(myFleetBean);

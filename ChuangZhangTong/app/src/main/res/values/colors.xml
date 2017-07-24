@@ -7,7 +7,11 @@
     <color name="gray_identity">#d7d8dc</color>
     <color name="black">#000000</color>
     <color name="blue">#3282FA</color>
+    <color name="light_blue_one">#2AC4FF</color>
+    <color name="light_blue_two">#4798FF</color>
     <color name="gray_bg">#F1F2F6</color>
     <color name="gray_F5">#F5F5F5</color>
     <color name="red">#f00</color>
+    <color name="light_gradient_one">#12A5C2</color>
+    <color name="light_gradient_two">#81EC9C</color>
 </resources>
