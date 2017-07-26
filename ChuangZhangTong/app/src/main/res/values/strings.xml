@@ -23,6 +23,7 @@
     <string name="personal_info">个人信息</string>
     <string name="my_fleet">我的船队</string>
     <string name="follow_fleet">我关注的船列表</string>
+    <string name="follow_fleets">关注的船</string>
     <string name="secret">*密码</string>
     <string name="secret_no_star">输入密码</string>
     <string name="conform_secret">确认密码</string>

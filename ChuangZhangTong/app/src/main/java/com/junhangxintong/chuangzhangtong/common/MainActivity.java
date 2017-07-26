@@ -90,9 +90,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private BaseFragment getFragment() {
-
-        BaseFragment fragment = fragments.get(position);
-        return fragment;
+        if (fragments.size() > 0) {
+            BaseFragment baseFragment = fragments.get(position);
+            return baseFragment;
+        }
+        return null;
     }
 
     public void switchFragment(Fragment from, Fragment to) {
@@ -102,18 +104,18 @@ public class MainActivity extends BaseActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (!to.isAdded()) {
                 // 先判断是否被add过
-                if(from != null){
+                if (from != null) {
                     transaction.hide(from);
                 }
-                if(to != null){
+                if (to != null) {
                     transaction.add(R.id.fl_content, to).commit();
                 }
 
             } else {
-                if(from != null){
+                if (from != null) {
                     transaction.hide(from);
                 }
-                if(to != null){
+                if (to != null) {
                     transaction.show(to).commit();
                 }
             }
@@ -123,6 +125,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        fragments.clear();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

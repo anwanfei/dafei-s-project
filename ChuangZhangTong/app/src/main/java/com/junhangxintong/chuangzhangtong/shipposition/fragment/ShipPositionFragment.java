@@ -103,6 +103,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
         return view;
     }
+
     // 设置个性化地图config文件路径
     private void setMapCustomFile(Context context, String PATH) {
         FileOutputStream out = null;
@@ -199,11 +200,11 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             mapviewShipPosition.onDestroy();
         }
 
-        if(mLocClient!=null) {
+        if (mLocClient != null) {
             // 退出时销毁定位
             mLocClient.stop();
         }
-        if(baiduMap!=null) {
+        if (baiduMap != null) {
             // 关闭定位图层
             baiduMap.setMyLocationEnabled(false);
         }

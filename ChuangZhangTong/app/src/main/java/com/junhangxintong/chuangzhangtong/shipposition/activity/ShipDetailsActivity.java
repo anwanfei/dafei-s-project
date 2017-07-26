@@ -1,11 +1,11 @@
 package com.junhangxintong.chuangzhangtong.shipposition.activity;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ShipDetailsActivity extends Activity {
-
 
     @SuppressWarnings("unused")
     private static final String LTAG = ShipDetailsActivity.class.getSimpleName();
@@ -65,7 +64,7 @@ public class ShipDetailsActivity extends Activity {
         layout = new FrameLayout(this);
         layout.addView(mMapView);
         RadioGroup group = new RadioGroup(context);
-        group.setBackgroundColor(Color.BLACK);
+        group.setBackgroundColor(Color.GRAY);
         final RadioButton openBtn = new RadioButton(context);
         openBtn.setText("开启个性化地图");
         openBtn.setId(OPEN_ID);
@@ -161,5 +160,4 @@ public class ShipDetailsActivity extends Activity {
         MapView.setMapCustomEnable(false);
         mMapView.onDestroy();
     }
-
 }

@@ -17,7 +17,8 @@ import com.junhangxintong.chuangzhangtong.common.BaseFragment;
 import com.junhangxintong.chuangzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.LoginRegisterActivity;
-import com.junhangxintong.chuangzhangtong.mine.activity.MyFleetActivity;
+import com.junhangxintong.chuangzhangtong.mine.activity.MyFleetListActivity;
+import com.junhangxintong.chuangzhangtong.mine.activity.MyFollowFleetActivity;
 import com.junhangxintong.chuangzhangtong.mine.activity.PersonalInfoActivity;
 import com.junhangxintong.chuangzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuangzhangtong.utils.CircleImageView;
@@ -54,6 +55,8 @@ public class MyFragment extends BaseFragment {
     Unbinder unbinder;
     @BindView(R.id.rl_chuanguan)
     RelativeLayout rlChuanguan;
+    @BindView(R.id.rl_follew_fleet)
+    RelativeLayout rlFollewFleet;
 
     @Override
     protected View initView() {
@@ -97,7 +100,7 @@ public class MyFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_chuanduiguanli, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan})
+    @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
@@ -113,7 +116,7 @@ public class MyFragment extends BaseFragment {
             case R.id.rl_user_info:
                 break;
             case R.id.rl_chuanduiguanli:
-                startActivity(new Intent(getActivity(), MyFleetActivity.class));
+                startActivity(new Intent(getActivity(), MyFleetListActivity.class));
                 break;
             case R.id.rl_chuanyuanguanli:
                 startActivity(new Intent(getActivity(), CrewManagementActivity.class));
@@ -122,6 +125,9 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), AccoutSettingActivity.class));
                 break;
             case R.id.rl_chuanguan:
+                break;
+            case R.id.rl_follew_fleet:
+                startActivity(new Intent(getActivity(), MyFollowFleetActivity.class));
                 break;
         }
     }
