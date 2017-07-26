@@ -156,4 +156,5 @@
     <string name="sea_map">海图</string>
     <string name="land_map">地图</string>
     <string name="satellite_map">卫星图</string>
+    <string name="search_hint">请输入船号/呼号/MMSI/IMO进行搜索</string>
 </resources>

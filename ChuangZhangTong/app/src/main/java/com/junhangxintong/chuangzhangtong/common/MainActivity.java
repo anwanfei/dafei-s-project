@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private BaseFragment getFragment() {
+
         BaseFragment fragment = fragments.get(position);
         return fragment;
     }
