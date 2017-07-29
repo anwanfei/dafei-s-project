@@ -1,19 +1,32 @@
 package com.junhangxintong.chuangzhangtong.mine.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
+import com.junhangxintong.chuangzhangtong.common.MainActivity;
+import com.junhangxintong.chuangzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.junhangxintong.chuangzhangtong.R.id.tv_cancel_choose_gender;
+import static com.junhangxintong.chuangzhangtong.R.id.tv_man;
+import static com.junhangxintong.chuangzhangtong.R.id.tv_woman;
+import static com.junhangxintong.chuangzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class AccoutSettingActivity extends BaseActivity implements View.OnClickListener {
 
@@ -62,6 +75,7 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     @BindView(R.id.rl_login_out)
     RelativeLayout rlLoginOut;
     private AlertDialog show_clear_buffer_dialog;
+    private PopupWindow loginOutPopWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +127,40 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                 startActivity(new Intent(AccoutSettingActivity.this, AboutActivity.class));
                 break;
             case R.id.rl_login_out:
+                showPupLoginOut();
                 break;
         }
+    }
+
+    private void showPupLoginOut() {
+        //设置contentView
+        View contentView = LayoutInflater.from(this).inflate(R.layout.choose_gender_picker_popupwindow_layut, null);
+        loginOutPopWindow = new PopupWindow(contentView,
+                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT, true);
+        loginOutPopWindow.setContentView(contentView);
+        loginOutPopWindow.setBackgroundDrawable(new BitmapDrawable());
+        loginOutPopWindow.setFocusable(true);
+        backgroundAlpha(0.5f);
+        TextView tv_is_login_out = (TextView) contentView.findViewById(tv_man);
+        TextView tv_login_out_ok = (TextView) contentView.findViewById(tv_woman);
+        TextView tv_login_out_cancel = (TextView) contentView.findViewById(tv_cancel_choose_gender);
+
+        tv_is_login_out.setText(getResources().getString(R.string.is_login_out));
+        tv_login_out_ok.setText(getResources().getString(R.string.ok));
+        tv_login_out_cancel.setText(getResources().getString(R.string.cancel));
+
+        tv_login_out_ok.setOnClickListener(this);
+        tv_login_out_cancel.setOnClickListener(this);
+
+        //显示PopupWindow
+        View rootview = LayoutInflater.from(this).inflate(R.layout.activity_accout_setting, null);
+        loginOutPopWindow.showAtLocation(rootview, Gravity.BOTTOM, 0, 0);
+        loginOutPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
     }
 
     private void showDialogClearBuffer() {
@@ -142,6 +188,28 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                 Toast.makeText(AccoutSettingActivity.this, "已清除", Toast.LENGTH_SHORT).show();
                 show_clear_buffer_dialog.dismiss();
                 break;
+            case R.id.tv_cancel_choose_gender:
+                loginOutPopWindow.dismiss();
+                break;
+            case R.id.tv_woman:
+                String userName = CacheUtils.getString(this, Constants.USER_NAME);
+                if (!userName.equals("")) {
+                    loginOutPopWindow.dismiss();
+                    loginOut();
+                    finish();
+                    startActivity(new Intent(AccoutSettingActivity.this, MainActivity.class));
+                } else {
+                    Toast.makeText(AccoutSettingActivity.this, getResources().getString(R.string.no_longin), Toast.LENGTH_SHORT).show();
+                }
+
+                break;
         }
+    }
+
+    private void loginOut() {
+        //清除了sp存储
+        this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+
+        Toast.makeText(AccoutSettingActivity.this, getResources().getString(R.string.login_out), Toast.LENGTH_SHORT).show();
     }
 }

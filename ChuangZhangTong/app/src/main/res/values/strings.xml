@@ -38,6 +38,7 @@
     <string name="clear_buffer_demo">0B</string>
     <string name="flag_mean">标记含义</string>
     <string name="about">关于船掌通</string>
+    <string name="is_login_out">确定要退出登录吗？</string>
     <string name="login_out">退出登录</string>
     <string name="reset_pwd">修改密码</string>
     <string name="no_bind">未绑定</string>
@@ -158,4 +159,5 @@
     <string name="land_map">地图</string>
     <string name="satellite_map">卫星图</string>
     <string name="search_hint">请输入船号/呼号/MMSI/IMO进行搜索</string>
+    <string name="no_longin">请先登录</string>
 </resources>
