@@ -21,4 +21,10 @@ public class Constants {
     public static final String DATA = "data";
     public static final String PHONE_PATH = "/Android/data/com.junhangxintong.chuangzhangtong/files/icon.jpg";
     public static final String DUTY_CREW_INFO = "duty_crew_info";
+    public static final String SHIP_NAME = "ship_name";
+    public static final String CERTIFICATE_NAME = "CERTIFICATE_NAME";
+    public static final String ISSUINGAUTHORY = "issuingAuthory";
+    public static final String CERTIFICATENUM = "certificateNum";
+    public static final String CERTIFICATETYPE = "certificateType";
+    public static final String CREW_BEAN = "crew_bean";
 }

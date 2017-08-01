@@ -128,6 +128,7 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_follew_fleet:
                 startActivity(new Intent(getActivity(), MyFollowFleetActivity.class));
+                getActivity().finish();
                 break;
         }
     }

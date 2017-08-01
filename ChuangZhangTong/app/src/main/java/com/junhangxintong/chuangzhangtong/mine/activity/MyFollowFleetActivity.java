@@ -1,5 +1,6 @@
 package com.junhangxintong.chuangzhangtong.mine.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
+import com.junhangxintong.chuangzhangtong.common.MainActivity;
 import com.junhangxintong.chuangzhangtong.mine.adapter.MyFollowFleetAdapter;
 import com.junhangxintong.chuangzhangtong.mine.bean.MyFollowFleetBean;
 
@@ -45,6 +47,10 @@ public class MyFollowFleetActivity extends BaseActivity {
     RelativeLayout rlChooseAllDelete;
     @BindView(R.id.iv_share)
     ImageView ivShare;
+    @BindView(R.id.iv_nothing)
+    ImageView ivNothing;
+    @BindView(R.id.tv_nothing)
+    TextView tvNothing;
 
     private List<MyFollowFleetBean> myFollowFleetLists;
     private MyFollowFleetAdapter myFollowFleetAdapter;
@@ -65,17 +71,23 @@ public class MyFollowFleetActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.follow_fleet));
         tvShare.setVisibility(View.VISIBLE);
         tvShare.setText(getResources().getString(R.string.edit));
+        tvNothing.setText(getResources().getString(R.string.follow_fisrt_ship));
+        tvAddShip.setText(getResources().getString(R.string.immediately_follow));
     }
 
     @Override
     protected void initData() {
         myFollowFleetLists = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 10; i++) {
             MyFollowFleetBean myFollowFleetBean = new MyFollowFleetBean();
             myFollowFleetBean.setShipName("华海" + i + "号");
             myFollowFleetLists.add(myFollowFleetBean);
         }
 
+        updaFollowFLeetList();
+    }
+
+    private void updaFollowFLeetList() {
         if (myFollowFleetLists.size() > 0) {
             lvMyFolllowFleet.setVisibility(View.VISIBLE);
             llNoFollowFleet.setVisibility(View.GONE);
@@ -84,6 +96,7 @@ public class MyFollowFleetActivity extends BaseActivity {
             lvMyFolllowFleet.setVisibility(View.GONE);
             llNoFollowFleet.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
+            rlChooseAllDelete.setVisibility(View.GONE);
         }
 
         myFollowFleetAdapter = new MyFollowFleetAdapter(this, myFollowFleetLists);
@@ -102,6 +115,8 @@ public class MyFollowFleetActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_add_ship:
+                startActivity(new Intent(MyFollowFleetActivity.this, MainActivity.class));
+                finish();
                 break;
             case R.id.tv_my_fleet_list_choose_all:
                 chooseAllOrNot();
@@ -154,6 +169,7 @@ public class MyFollowFleetActivity extends BaseActivity {
             }
         }
         myFollowFleetLists.removeAll(choosedLists);
+        updaFollowFLeetList();
         myFollowFleetAdapter.notifyDataSetChanged();
 
         //遍历map

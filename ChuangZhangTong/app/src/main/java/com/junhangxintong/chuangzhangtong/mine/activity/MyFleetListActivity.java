@@ -14,6 +14,7 @@ import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
 import com.junhangxintong.chuangzhangtong.mine.adapter.MyFleetAdapter;
 import com.junhangxintong.chuangzhangtong.mine.bean.MyFleetBean;
+import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,6 @@ public class MyFleetListActivity extends BaseActivity {
     private Map<String, Boolean> map = new HashMap<>();
     private List<MyFleetBean> choosedLists;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +74,16 @@ public class MyFleetListActivity extends BaseActivity {
     @Override
     protected void initData() {
         myFleetLists = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 5; i++) {
             MyFleetBean myFleetBean = new MyFleetBean();
             myFleetBean.setShipName("华海" + i + "号");
             myFleetLists.add(myFleetBean);
         }
 
+        updataListview();
+    }
+
+    private void updataListview() {
         if (myFleetLists.size() > 0) {
             lvMyFleet.setVisibility(View.VISIBLE);
             llNoFleet.setVisibility(View.GONE);
@@ -88,10 +92,17 @@ public class MyFleetListActivity extends BaseActivity {
             lvMyFleet.setVisibility(View.GONE);
             llNoFleet.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
+            rlChooseAllDelete.setVisibility(View.GONE);
         }
 
         myFleetAdapter = new MyFleetAdapter(this, myFleetLists);
         lvMyFleet.setAdapter(myFleetAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updataListview();
     }
 
     @Override
@@ -106,15 +117,15 @@ public class MyFleetListActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_add_ship:
-                startActivity(new Intent(MyFleetListActivity.this, AddShipActivity.class));
+                gotoAddShipActivity();
                 break;
             case R.id.ll_no_fleet:
                 break;
             case R.id.iv_share:
-                startActivity(new Intent(MyFleetListActivity.this, AddShipActivity.class));
+                gotoAddShipActivity();
                 break;
             case R.id.tv_setting:
-                startActivity(new Intent(MyFleetListActivity.this, AddShipActivity.class));
+                gotoAddShipActivity();
                 break;
             case R.id.tv_share:
                 editFleet();
@@ -126,6 +137,29 @@ public class MyFleetListActivity extends BaseActivity {
                 deleteChoosedItems();
                 break;
         }
+    }
+
+    private void gotoAddShipActivity() {
+        Intent intent = new Intent(MyFleetListActivity.this, AddShipActivity.class);
+
+        startActivityForResult(intent, Constants.REQUEST_CODE1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case Constants.REQUEST_CODE1:
+                    String shipName = data.getStringExtra(Constants.SHIP_NAME);
+                    MyFleetBean myFleetBean = new MyFleetBean();
+                    myFleetBean.setShipName(shipName);
+                    myFleetLists.add(myFleetBean);
+                    myFleetAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+
     }
 
     private void deleteChoosedItems() {
@@ -147,6 +181,7 @@ public class MyFleetListActivity extends BaseActivity {
             }
         }
         myFleetLists.removeAll(choosedLists);
+        updataListview();
         myFleetAdapter.notifyDataSetChanged();
 
         //遍历map

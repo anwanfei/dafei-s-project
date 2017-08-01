@@ -22,25 +22,25 @@
         <RadioButton
             android:id="@+id/rb_common_frame"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/rb_common_frame_drawable_selector"
+            android:drawableTop="@drawable/selector_rb_ship_positino"
             android:text="@string/ship_position" />
 
         <RadioButton
             android:id="@+id/rb_thirdparty"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/rb_common_frame_drawable_selector"
+            android:drawableTop="@drawable/selector_rb_dynamic"
             android:text="@string/message" />
 
         <RadioButton
             android:id="@+id/rb_custom"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/rb_common_frame_drawable_selector"
+            android:drawableTop="@drawable/selector_rb_news"
             android:text="@string/news" />
 
         <RadioButton
             android:id="@+id/rb_other"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/rb_common_frame_drawable_selector"
+            android:drawableTop="@drawable/selector_rb_my"
             android:text="@string/my" />
 
     </RadioGroup>

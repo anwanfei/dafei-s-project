@@ -13,6 +13,7 @@ import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
 import com.junhangxintong.chuangzhangtong.mine.adapter.MyCrewAdapter;
 import com.junhangxintong.chuangzhangtong.mine.bean.CrewBean;
+import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +45,14 @@ public class CrewManagementActivity extends BaseActivity {
     RelativeLayout rlChooseAllDelete;
 
     List<CrewBean> crews;
+    @BindView(R.id.iv_nothing)
+    ImageView ivNothing;
+    @BindView(R.id.tv_nothing)
+    TextView tvNothing;
+    @BindView(R.id.iv_share)
+    ImageView ivShare;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
     private MyCrewAdapter myFleetAdapter;
     private boolean isChoose = true;
     private boolean isChooseAll = true;
@@ -61,13 +70,17 @@ public class CrewManagementActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.chuanyuanguanli));
+        ivShare.setBackgroundResource(R.drawable.iv_add_fleet);
+        tvSetting.setText(getResources().getString(R.string.add_ships));
         tvShare.setText(getResources().getString(R.string.edit));
+        tvNothing.setText(getResources().getString(R.string.add_first_crew));
+        ivNothing.setImageResource(R.drawable.iv_no_crew);
     }
 
     @Override
     protected void initData() {
         crews = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 10; i++) {
             CrewBean crewBean = new CrewBean();
             crewBean.setCrewName("船员" + i + "号");
             crewBean.setDuty("大副" + i + "号");
@@ -76,6 +89,11 @@ public class CrewManagementActivity extends BaseActivity {
             crews.add(crewBean);
         }
 
+        updateCrewsList();
+
+    }
+
+    private void updateCrewsList() {
         if (crews.size() > 0) {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
@@ -84,11 +102,11 @@ public class CrewManagementActivity extends BaseActivity {
             lvMyCrew.setVisibility(View.GONE);
             llNoCrew.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
+            rlChooseAllDelete.setVisibility(View.GONE);
         }
 
         myFleetAdapter = new MyCrewAdapter(this, crews);
         lvMyCrew.setAdapter(myFleetAdapter);
-
     }
 
     @Override
@@ -96,14 +114,14 @@ public class CrewManagementActivity extends BaseActivity {
         return R.layout.activity_crew_management;
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_add_ship, R.id.ll_no_crew, R.id.tv_share, R.id.tv_my_crew_list_choose_all, R.id.tv_my_crew_list_delete})
+    @OnClick({R.id.iv_back, R.id.tv_add_ship, R.id.ll_no_crew, R.id.tv_share, R.id.tv_my_crew_list_choose_all, R.id.tv_my_crew_list_delete, R.id.iv_share, R.id.tv_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.tv_add_ship:
-                startActivity(new Intent(CrewManagementActivity.this, CrewInfoInputActivity.class));
+                gotoCrewInfoActivity();
                 break;
             case R.id.ll_no_crew:
                 break;
@@ -116,7 +134,17 @@ public class CrewManagementActivity extends BaseActivity {
             case R.id.tv_my_crew_list_delete:
                 deleteChoosedItems();
                 break;
+            case R.id.iv_share:
+                gotoCrewInfoActivity();
+                break;
+            case R.id.tv_setting:
+                gotoCrewInfoActivity();
+                break;
         }
+    }
+
+    private void gotoCrewInfoActivity() {
+        startActivityForResult(new Intent(CrewManagementActivity.this, CrewInfoInputActivity.class), Constants.REQUEST_CODE0);
     }
 
     private void deleteChoosedItems() {
@@ -138,6 +166,7 @@ public class CrewManagementActivity extends BaseActivity {
             }
         }
         crews.removeAll(choosedLists);
+        updateCrewsList();
         myFleetAdapter.notifyDataSetChanged();
 
         //遍历map
@@ -183,4 +212,22 @@ public class CrewManagementActivity extends BaseActivity {
             myFleetAdapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            switch (requestCode) {
+                case Constants.REQUEST_CODE0:
+                    CrewBean crewBean = (CrewBean) data.getSerializableExtra(Constants.CREW_BEAN);
+                    String crewName = crewBean.getCrewName();
+                    crews.add(crewBean);
+                    updateCrewsList();
+
+                    break;
+            }
+
+        }
+    }
+
 }

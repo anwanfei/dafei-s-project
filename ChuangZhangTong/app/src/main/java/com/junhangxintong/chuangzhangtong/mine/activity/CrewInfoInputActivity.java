@@ -7,9 +7,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseActivity;
+import com.junhangxintong.chuangzhangtong.mine.bean.CrewBean;
 import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import butterknife.BindView;
@@ -70,11 +72,64 @@ public class CrewInfoInputActivity extends BaseActivity {
             case R.id.et_nationality:
                 break;
             case R.id.tv_crew_info_complete:
+                addCrewComplete();
                 break;
             case R.id.rl_choose_duty:
                 startActivityForResult(new Intent(CrewInfoInputActivity.this, ChooseDutyActivity.class), Constants.REQUEST_CODE4);
                 break;
         }
+    }
+
+    private void addCrewComplete() {
+        CrewBean crewBean = new CrewBean();
+
+        String crewName = etInputName.getText().toString();
+        String ID = etID.getText().toString();
+        String jobNum = etJobNum.getText().toString();
+        String duty = etDuty.getText().toString();
+        String crewPhone = etPhone.getText().toString();
+        String callSign = etCallSign.getText().toString();
+
+        if (crewName.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_name_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ID.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_ID_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (jobNum.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_job_num_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (duty.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_duty_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (crewPhone.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_phone_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (callSign.equals("")) {
+            Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.crew_mail_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        crewBean.setCrewName(crewName);
+        crewBean.setID(ID);
+        crewBean.setJobNum(jobNum);
+        crewBean.setDuty(duty);
+        crewBean.setPhoneNum(crewPhone);
+        crewBean.setMailBox(callSign);
+
+        Intent intent = getIntent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.CREW_BEAN, crewBean);
+        intent.putExtras(bundle);
+
+        setResult(Constants.REQUEST_CODE0, intent);
+
+        finish();
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.junhangxintong.chuangzhangtong.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by edz on 2017/7/20.
  */
 
-public class CrewBean {
+public class CrewBean implements Serializable{
     private String crewName;
     private String ID;
     private String nationality;

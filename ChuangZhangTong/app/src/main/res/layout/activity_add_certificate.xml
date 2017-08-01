@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/gray_bg">
+        android:background="@color/gray_bg"
+        android:orientation="vertical">
 
 
         <include layout="@layout/titlebar" />
@@ -222,11 +222,11 @@
         android:id="@+id/tv_crew_info_complete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
         android:background="@drawable/tv_bg"
         android:gravity="center"
         android:text="@string/complete"

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.junhangxintong.chuangzhangtong.R;
@@ -16,11 +18,19 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
-import static com.junhangxintong.chuangzhangtong.R.id.rg_bottom_tag;
-
 public class MainActivity extends BaseActivity {
 
-    @BindView(rg_bottom_tag)
+    @BindView(R.id.fl_content)
+    FrameLayout flContent;
+    @BindView(R.id.rb_common_frame)
+    public RadioButton rbCommonFrame;
+    @BindView(R.id.rb_thirdparty)
+    RadioButton rbThirdparty;
+    @BindView(R.id.rb_custom)
+    RadioButton rbCustom;
+    @BindView(R.id.rb_other)
+    RadioButton rbOther;
+    @BindView(R.id.rg_bottom_tag)
     public RadioGroup rgBottomTag;
     private ArrayList<BaseFragment> fragments;
     private int position;
