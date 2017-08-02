@@ -78,11 +78,19 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     EditText etSearch;
     @BindView(R.id.iv_clear)
     ImageView ivClear;
+    @BindView(R.id.ll_search_no_result)
+    LinearLayout llSearchNoResult;
+    @BindView(R.id.lv_search_result)
+    ListView lvSearchResult;
+    @BindView(R.id.ll_search_result)
+    LinearLayout llSearchResult;
 
     private PopupWindow popupWindow;
     private BaiduMap baiduMap;
     private LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
+    String inputContent;
+
 
     private int mCurrentDirection = 0;
     private double mCurrentLat = 0.0;
@@ -154,12 +162,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         super.initData();
 
         //搜索界面
-        final String inputContent = etSearch.getText().toString();
-
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                showPopSearchResult();
+                llSearchResult.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -169,7 +175,12 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                inputContent = etSearch.getText().toString();
+                if (inputContent.isEmpty()) {
+                    llSearchResult.setVisibility(View.GONE);
+                } else {
+                    ivClear.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -177,17 +188,12 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 etSearch.setText("");
-                //隐藏搜索结果
-
             }
         });
     }
 
     private void showPopSearchResult() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_ship_position_search, null);
-
-
-
     }
 
     @Override

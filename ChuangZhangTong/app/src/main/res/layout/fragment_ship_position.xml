@@ -36,7 +36,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
             android:padding="10dp"
-            android:src="@drawable/clear" />
+            android:src="@drawable/clear"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
@@ -94,11 +95,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_search"
-        android:layout_margin="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/bg_ship_position_choose_map"
         android:clickable="true"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -115,7 +119,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="wrap_content"
