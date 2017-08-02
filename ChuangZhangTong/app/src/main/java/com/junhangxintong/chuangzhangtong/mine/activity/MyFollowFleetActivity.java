@@ -85,6 +85,9 @@ public class MyFollowFleetActivity extends BaseActivity {
         }
 
         updaFollowFLeetList();
+
+        myFollowFleetAdapter = new MyFollowFleetAdapter(this, myFollowFleetLists);
+        lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
     }
 
     private void updaFollowFLeetList() {
@@ -98,9 +101,6 @@ public class MyFollowFleetActivity extends BaseActivity {
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
         }
-
-        myFollowFleetAdapter = new MyFollowFleetAdapter(this, myFollowFleetLists);
-        lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
     }
 
     @Override

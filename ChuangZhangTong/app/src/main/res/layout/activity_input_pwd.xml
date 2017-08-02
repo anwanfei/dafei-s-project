@@ -21,7 +21,7 @@
             android:id="@+id/et_input_password"
             android:layout_width="match_parent"
             android:layout_height="46dp"
-            android:background="@drawable/tv_frame_bg"
+            android:background="@drawable/tv_frame_gray_bg"
             android:gravity="center"
             android:hint="请输入您的密码"
             android:inputType="textPassword"

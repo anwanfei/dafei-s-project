@@ -179,4 +179,8 @@
     <string name="crew_mail_cannot_empty">船员邮箱不能为空</string>
     <string name="follow_fisrt_ship">亲，请关注您的提一条船哦~</string>
     <string name="certificate_details">证书详情</string>
+    <string name="search_no_result">啊哦，没有您搜的船舶信息哦~</string>
+    <string name="ship_detils">船舶相详情</string>
+    <string name="follow">+ 关注</string>
+    <string name="followed">已关注</string>
 </resources>

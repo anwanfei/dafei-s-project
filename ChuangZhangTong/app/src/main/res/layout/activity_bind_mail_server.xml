@@ -196,7 +196,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@drawable/tv_frame_bg"
+        android:background="@drawable/tv_frame_gray_bg"
         android:gravity="center"
         android:text="@string/test_account_setting" />
 

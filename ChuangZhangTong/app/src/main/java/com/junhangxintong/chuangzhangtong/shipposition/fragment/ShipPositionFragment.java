@@ -8,12 +8,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -71,6 +74,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     TextView tvShipPositionCeju;
     @BindView(R.id.iv_ship_position_location)
     ImageView ivShipPositionLocation;
+    @BindView(R.id.et_search)
+    EditText etSearch;
+    @BindView(R.id.iv_clear)
+    ImageView ivClear;
 
     private PopupWindow popupWindow;
     private BaiduMap baiduMap;
@@ -142,6 +149,46 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+
+        //搜索界面
+        final String inputContent = etSearch.getText().toString();
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                showPopSearchResult();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        ivClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etSearch.setText("");
+                //隐藏搜索结果
+
+            }
+        });
+    }
+
+    private void showPopSearchResult() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_ship_position_search, null);
+
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

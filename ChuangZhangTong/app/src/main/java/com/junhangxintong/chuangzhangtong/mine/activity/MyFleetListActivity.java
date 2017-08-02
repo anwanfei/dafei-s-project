@@ -81,6 +81,9 @@ public class MyFleetListActivity extends BaseActivity {
         }
 
         updataListview();
+        myFleetAdapter = new MyFleetAdapter(this, myFleetLists);
+        lvMyFleet.setAdapter(myFleetAdapter);
+
     }
 
     private void updataListview() {
@@ -95,8 +98,6 @@ public class MyFleetListActivity extends BaseActivity {
             rlChooseAllDelete.setVisibility(View.GONE);
         }
 
-        myFleetAdapter = new MyFleetAdapter(this, myFleetLists);
-        lvMyFleet.setAdapter(myFleetAdapter);
     }
 
     @Override

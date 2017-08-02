@@ -90,7 +90,8 @@ public class CrewManagementActivity extends BaseActivity {
         }
 
         updateCrewsList();
-
+        myFleetAdapter = new MyCrewAdapter(this, crews);
+        lvMyCrew.setAdapter(myFleetAdapter);
     }
 
     private void updateCrewsList() {
@@ -104,9 +105,6 @@ public class CrewManagementActivity extends BaseActivity {
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
         }
-
-        myFleetAdapter = new MyCrewAdapter(this, crews);
-        lvMyCrew.setAdapter(myFleetAdapter);
     }
 
     @Override

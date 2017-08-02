@@ -10,24 +10,42 @@
         android:layout_height="match_parent"
         android:clickable="true" />
 
-    <EditText
-        android:id="@+id/et_search"
+    <RelativeLayout
+        android:id="@+id/ll_search"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/bg_search"
-        android:hint="@string/search_hint"
-        android:paddingLeft="15dp"
-        android:textSize="14dp" />
+        android:background="@drawable/bg_search">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:hint="@string/search_hint"
+            android:paddingLeft="15dp"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:padding="10dp"
+            android:src="@drawable/clear" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_ship_position_tu"
         android:layout_width="65dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/et_search"
+        android:layout_below="@id/ll_search"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/iv_ditu" />
@@ -40,7 +58,7 @@
         android:layout_below="@id/tv_ship_position_tu"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_green_gradient"
+        android:background="@drawable/bg_blue_gradient"
         android:drawableLeft="@drawable/iv_chuandui_tag"
         android:gravity="center"
         android:paddingLeft="5dp"
@@ -55,7 +73,7 @@
         android:layout_below="@id/tv_ship_position_my_chuandui"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/bg_blue_gradient"
+        android:background="@drawable/bg_green_gradient"
         android:drawableLeft="@drawable/iv_ceju_tag"
         android:gravity="center"
         android:paddingLeft="5dp"
@@ -70,5 +88,52 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:src="@drawable/iv_location" />
+
+    <LinearLayout
+        android:id="@+id/ll_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_search"
+        android:layout_margin="15dp"
+        android:background="@drawable/bg_ship_position_choose_map"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_blue_search_result_num"
+            android:padding="6dp"
+            android:text="搜索到0条结果"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_search_no_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/iv_no_fleet" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/search_no_result" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </RelativeLayout>
