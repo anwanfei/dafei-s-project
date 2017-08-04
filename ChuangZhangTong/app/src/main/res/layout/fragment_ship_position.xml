@@ -17,7 +17,8 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/bg_search">
+        android:background="@drawable/bg_search"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:id="@+id/et_search"
@@ -25,6 +26,7 @@
             android:layout_height="40dp"
             android:background="@null"
             android:hint="@string/search_hint"
+            android:imeOptions="actionSearch"
             android:paddingLeft="15dp"
             android:textSize="14dp" />
 
@@ -95,14 +97,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_search"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/bg_ship_position_choose_map"
         android:clickable="true"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/ll_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/lv_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_clear_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:text="@string/clear_history"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -111,7 +135,8 @@
             android:padding="6dp"
             android:text="搜索到0条结果"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_search_no_result"
@@ -119,7 +144,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -137,7 +162,8 @@
         <ListView
             android:id="@+id/lv_search_result"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

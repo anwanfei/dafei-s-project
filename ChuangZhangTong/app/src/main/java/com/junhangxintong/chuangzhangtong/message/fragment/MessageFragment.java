@@ -21,7 +21,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * Created by edz on 2017/7/5.
+ * Created by anwanfei on 2017/7/5.
  */
 
 public class MessageFragment extends BaseFragment {
@@ -60,10 +60,11 @@ public class MessageFragment extends BaseFragment {
         tvTitle.setText(getResources().getString(R.string.message));
         viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager()));
         tablayoutMessage.setupWithViewPager(viewpagerMessage);
-        tablayoutMessage.getTabAt(0).setIcon(R.drawable.icon_chuanduiguanli);
-        tablayoutMessage.getTabAt(1).setIcon(R.drawable.icon_chuanyuanguanli);
-        tablayoutMessage.getTabAt(2).setIcon(R.drawable.icon_setting);
-        tablayoutMessage.getTabAt(3).setIcon(R.drawable.icon_setting);
+
+        tablayoutMessage.getTabAt(0).setIcon(R.drawable.iv_all_messags);
+        tablayoutMessage.getTabAt(1).setIcon(R.drawable.iv_ship_dynamic);
+        tablayoutMessage.getTabAt(2).setIcon(R.drawable.iv_crew_certificate);
+        tablayoutMessage.getTabAt(3).setIcon(R.drawable.iv_ship_certificate);
     }
 
     @Override

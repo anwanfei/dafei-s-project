@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -184,13 +185,38 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             }
         });
 
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    // 此处为得到焦点时的处理内容
+                    llSearchResult.setVisibility(View.VISIBLE);
+                } else {
+                    // 此处为失去焦点时的处理内容
+//                    llSearchResult.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+        baiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
+            @Override
+            public void onTouch(MotionEvent motionEvent) {
+                llSearchResult.setVisibility(View.GONE);
+                etSearch.clearFocus();
+            }
+        });
+
         ivClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 etSearch.setText("");
+                ivClear.setVisibility(View.GONE);
+                etSearch.clearFocus();
             }
         });
     }
+
 
     private void showPopSearchResult() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_ship_position_search, null);
@@ -261,7 +287,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             // 关闭定位图层
             baiduMap.setMyLocationEnabled(false);
         }
-
     }
 
     @Override

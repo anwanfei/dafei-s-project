@@ -15,7 +15,7 @@ import com.junhangxintong.chuangzhangtong.news.fragment.NewestNewsFragment;
 
 public class MessageFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"所有消息", "最新消息", "最新消息", "最新消息"};
+    private String[] mtitles = {"所有消息", "船舶动态", "船员证书", "船舶证书"};
 
     public MessageFragmentAdapter(FragmentManager fm) {
         super(fm);

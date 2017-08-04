@@ -51,10 +51,10 @@ public class NewsFragment extends BaseFragment {
         tvTitle.setText(getResources().getString(R.string.news));
         viewpagerNews.setAdapter(new NewsFragmentAdapter(getFragmentManager()));
         tablayoutNews.setupWithViewPager(viewpagerNews);
-        tablayoutNews.getTabAt(0).setIcon(R.drawable.icon_chuanduiguanli);
-        tablayoutNews.getTabAt(1).setIcon(R.drawable.icon_chuanyuanguanli);
-        tablayoutNews.getTabAt(2).setIcon(R.drawable.icon_setting);
-        tablayoutNews.getTabAt(3).setIcon(R.drawable.icon_setting);
+        tablayoutNews.getTabAt(0).setIcon(R.drawable.iv_all_messags);
+        tablayoutNews.getTabAt(1).setIcon(R.drawable.iv_oil_price);
+        tablayoutNews.getTabAt(2).setIcon(R.drawable.iv_nationality_convention);
+        tablayoutNews.getTabAt(3).setIcon(R.drawable.iv_international_convention);
 
         final BadgeView badgeView = new BadgeView(getActivity(), tablayoutNews);
 
