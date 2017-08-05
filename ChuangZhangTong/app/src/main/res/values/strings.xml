@@ -64,7 +64,8 @@
     <string name="immediately_add">立即添加</string>
     <string name="immediately_follow">立即关注</string>
     <string name="complete">完成</string>
-    <string name="MMIS_number">MMIS编号</string>
+    <string name="MMIS_number">MMSI编号</string>
+    <string name="MMSI">MMSI</string>
     <string name="call_sign">呼号</string>
     <string name="AIS_ship_name">AIS船名</string>
     <string name="chinese_ship_name">中文船名</string>
@@ -164,7 +165,7 @@
     <string name="satellite_map">卫星图</string>
     <string name="search_hint">请输入船号/呼号/MMSI/IMO进行搜索</string>
     <string name="no_longin">请先登录</string>
-    <string name="MMIS_cannot_empty">MMIS编号不能为空</string>
+    <string name="MMIS_cannot_empty">MMSI编号不能为空</string>
     <string name="chinese_name_cannot_empty">中文船名不能为空</string>
     <string name="contact_mail_cannot_empty">联系邮箱不能为空</string>
     <string name="certificate_name_cannot_empty">证书名称不能为空</string>
@@ -180,7 +181,7 @@
     <string name="follow_fisrt_ship">亲，请关注您的提一条船哦~</string>
     <string name="certificate_details">证书详情</string>
     <string name="search_no_result">啊哦，没有您搜的船舶信息哦~</string>
-    <string name="ship_detils">船舶相详情</string>
+    <string name="ship_detils">船舶详情</string>
     <string name="follow">+ 关注</string>
     <string name="followed">已关注</string>
     <string name="clear_history">清除历史记录</string>

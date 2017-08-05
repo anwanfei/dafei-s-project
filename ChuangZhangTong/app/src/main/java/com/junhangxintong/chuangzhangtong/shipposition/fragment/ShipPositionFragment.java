@@ -44,13 +44,19 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
+import com.junhangxintong.chuangzhangtong.dbmanager.DaoManager;
+import com.junhangxintong.chuangzhangtong.dbmanager.ShipDetailsDaoUtil;
 import com.junhangxintong.chuangzhangtong.shipposition.activity.ShipDetailsActivity;
+import com.junhangxintong.chuangzhangtong.shipposition.adapter.SearchResultAdapter;
+import com.junhangxintong.chuangzhangtong.shipposition.bean.ShipDetailsBean;
 import com.junhangxintong.chuangzhangtong.utils.DensityUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,6 +91,16 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     ListView lvSearchResult;
     @BindView(R.id.ll_search_result)
     LinearLayout llSearchResult;
+    @BindView(R.id.lv_history)
+    ListView lvHistory;
+    @BindView(R.id.tv_clear_history)
+    TextView tvClearHistory;
+    @BindView(R.id.ll_history)
+    LinearLayout llHistory;
+    @BindView(R.id.ll_search)
+    LinearLayout llSearch;
+    @BindView(R.id.tv_result_size)
+    TextView tvResultSize;
 
     private PopupWindow popupWindow;
     private BaiduMap baiduMap;
@@ -106,6 +122,12 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     String[] arrMyfleet = {"HUAHAI1", "HUAHAI2"};
     private static String PATH = "custom_config_dark.txt";
+    private ShipDetailsDaoUtil shipDetailsDaoUtil;
+    private List<ShipDetailsBean> shipDetailsLists;
+
+    List<String> historyLists = new ArrayList<>();
+
+    private DaoManager mManager;
 
 
     @Override
@@ -162,11 +184,15 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     protected void initData() {
         super.initData();
 
+        //数据库初始化
+        shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
+        shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "huahaifei", "China", "6666", "渔船"));
+
         //搜索界面
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                llSearchResult.setVisibility(View.VISIBLE);
+                llSearch.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -178,9 +204,28 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             public void afterTextChanged(Editable editable) {
                 inputContent = etSearch.getText().toString();
                 if (inputContent.isEmpty()) {
+                    // 显示历史记录
+                    showHistoryLists();
                     llSearchResult.setVisibility(View.GONE);
+                    ivClear.setVisibility(View.GONE);
                 } else {
                     ivClear.setVisibility(View.VISIBLE);
+                    llHistory.setVisibility(View.GONE);
+                    llSearchResult.setVisibility(View.VISIBLE);
+                    historyLists.add(inputContent);
+
+                    shipDetailsLists = queryData(inputContent);
+                    if (shipDetailsLists.size() > 0) {
+                        llSearchNoResult.setVisibility(View.GONE);
+                        lvSearchResult.setVisibility(View.VISIBLE);
+                        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists);
+                        lvSearchResult.setAdapter(searchResultAdapter);
+                        tvResultSize.setText("搜索到" + shipDetailsLists.size() + "条结果");
+                    } else {
+                        llSearchNoResult.setVisibility(View.VISIBLE);
+                        lvSearchResult.setVisibility(View.GONE);
+                        tvResultSize.setText("搜索到0条结果");
+                    }
                 }
             }
         });
@@ -190,7 +235,8 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
-                    llSearchResult.setVisibility(View.VISIBLE);
+                    llSearch.setVisibility(View.VISIBLE);
+                    showHistoryLists();
                 } else {
                     // 此处为失去焦点时的处理内容
 //                    llSearchResult.setVisibility(View.GONE);
@@ -202,7 +248,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         baiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
             @Override
             public void onTouch(MotionEvent motionEvent) {
-                llSearchResult.setVisibility(View.GONE);
+                llSearch.setVisibility(View.GONE);
                 etSearch.clearFocus();
             }
         });
@@ -213,8 +259,30 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 etSearch.setText("");
                 ivClear.setVisibility(View.GONE);
                 etSearch.clearFocus();
+                llSearch.setVisibility(View.GONE);
+
             }
         });
+
+    }
+
+    private void showHistoryLists() {
+        llHistory.setVisibility(View.VISIBLE);
+        lvHistory.setAdapter(new ArrayAdapter(getActivity(), R.layout.item_search_history, R.id.tv_search_history_name, historyLists));
+        lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                etSearch.setText(historyLists.get(i));
+            }
+        });
+    }
+
+    private List<ShipDetailsBean> queryData(String shipName) {
+        String sql = "where shipName > ?";
+        String[] condition = new String[]{"h"};
+//        List<ShipDetailsBean> meiziList2 = shipDetailsDaoUtil.queryShipDetailsBeanByNativeSql(sql, condition);
+//        List<ShipDetailsBean> shipDetailsBeen = shipDetailsDaoUtil.queryShipDetailsBeanByQueryBuilder(shipName);
+        return shipDetailsDaoUtil.getShipsByLike(shipName);
     }
 
 
@@ -311,7 +379,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         mSensorManager.unregisterListener(this);
     }
 
-    @OnClick({R.id.tv_ship_position_tu, R.id.tv_ship_position_my_chuandui, R.id.tv_ship_position_ceju})
+    @OnClick({R.id.tv_ship_position_tu, R.id.tv_ship_position_my_chuandui, R.id.tv_ship_position_ceju, R.id.tv_clear_history})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_ship_position_tu:
@@ -321,6 +389,9 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 showPopMyFleet();
                 break;
             case R.id.tv_ship_position_ceju:
+                break;
+            case R.id.tv_clear_history:
+                historyLists.clear();
                 break;
         }
     }

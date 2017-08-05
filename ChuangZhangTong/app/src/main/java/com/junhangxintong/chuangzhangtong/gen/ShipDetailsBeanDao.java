@@ -25,7 +25,10 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
      */
     public static class Properties {
         public final static Property ShipId = new Property(0, Long.class, "shipId", true, "_id");
-        public final static Property ShipName = new Property(1, String.class, "ShipName", false, "SHIP_NAME");
+        public final static Property ShipName = new Property(1, String.class, "shipName", false, "SHIP_NAME");
+        public final static Property ShipNationality = new Property(2, String.class, "shipNationality", false, "SHIP_NATIONALITY");
+        public final static Property Mmsi = new Property(3, String.class, "mmsi", false, "MMSI");
+        public final static Property ShipType = new Property(4, String.class, "shipType", false, "SHIP_TYPE");
     }
 
 
@@ -42,7 +45,10 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SHIP_DETAILS_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: shipId
-                "\"SHIP_NAME\" TEXT);"); // 1: ShipName
+                "\"SHIP_NAME\" TEXT," + // 1: shipName
+                "\"SHIP_NATIONALITY\" TEXT," + // 2: shipNationality
+                "\"MMSI\" TEXT," + // 3: mmsi
+                "\"SHIP_TYPE\" TEXT);"); // 4: shipType
     }
 
     /** Drops the underlying database table. */
@@ -60,9 +66,24 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
             stmt.bindLong(1, shipId);
         }
  
-        String ShipName = entity.getShipName();
-        if (ShipName != null) {
-            stmt.bindString(2, ShipName);
+        String shipName = entity.getShipName();
+        if (shipName != null) {
+            stmt.bindString(2, shipName);
+        }
+ 
+        String shipNationality = entity.getShipNationality();
+        if (shipNationality != null) {
+            stmt.bindString(3, shipNationality);
+        }
+ 
+        String mmsi = entity.getMmsi();
+        if (mmsi != null) {
+            stmt.bindString(4, mmsi);
+        }
+ 
+        String shipType = entity.getShipType();
+        if (shipType != null) {
+            stmt.bindString(5, shipType);
         }
     }
 
@@ -75,9 +96,24 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
             stmt.bindLong(1, shipId);
         }
  
-        String ShipName = entity.getShipName();
-        if (ShipName != null) {
-            stmt.bindString(2, ShipName);
+        String shipName = entity.getShipName();
+        if (shipName != null) {
+            stmt.bindString(2, shipName);
+        }
+ 
+        String shipNationality = entity.getShipNationality();
+        if (shipNationality != null) {
+            stmt.bindString(3, shipNationality);
+        }
+ 
+        String mmsi = entity.getMmsi();
+        if (mmsi != null) {
+            stmt.bindString(4, mmsi);
+        }
+ 
+        String shipType = entity.getShipType();
+        if (shipType != null) {
+            stmt.bindString(5, shipType);
         }
     }
 
@@ -90,7 +126,10 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
     public ShipDetailsBean readEntity(Cursor cursor, int offset) {
         ShipDetailsBean entity = new ShipDetailsBean( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // shipId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // ShipName
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // shipName
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // shipNationality
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mmsi
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // shipType
         );
         return entity;
     }
@@ -99,6 +138,9 @@ public class ShipDetailsBeanDao extends AbstractDao<ShipDetailsBean, Long> {
     public void readEntity(Cursor cursor, ShipDetailsBean entity, int offset) {
         entity.setShipId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setShipName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setShipNationality(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setMmsi(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setShipType(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override
