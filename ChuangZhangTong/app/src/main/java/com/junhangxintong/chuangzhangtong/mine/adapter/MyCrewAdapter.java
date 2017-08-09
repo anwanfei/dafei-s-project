@@ -109,8 +109,7 @@ public class MyCrewAdapter extends BaseAdapter implements View.OnClickListener {
             holder.tvCertificate.setVisibility(View.GONE);
         } else {
             holder.cbShip.setVisibility(View.GONE);
-            holder.tvCertificate.setVisibility(View.VISIBLE
-            );
+            holder.tvCertificate.setVisibility(View.VISIBLE);
         }
 
         //返回view

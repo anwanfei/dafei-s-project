@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junhangxintong.chuangzhangtong.R;
-import com.junhangxintong.chuangzhangtong.shipposition.activity.ShipDetailsActivity;
+import com.junhangxintong.chuangzhangtong.shipposition.activity.OtherShipDetailsActivity;
 import com.junhangxintong.chuangzhangtong.shipposition.bean.ShipDetailsBean;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class SearchResultAdapter extends BaseAdapter {
         holder.tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, ShipDetailsActivity.class));
+                mContext.startActivity(new Intent(mContext, OtherShipDetailsActivity.class));
             }
         });
         final ViewHolder finalHolder = holder;

@@ -70,7 +70,7 @@ public class CrewManagementActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.chuanyuanguanli));
-        ivShare.setBackgroundResource(R.drawable.iv_add_fleet);
+        ivShare.setVisibility(View.GONE);
         tvSetting.setText(getResources().getString(R.string.add_ships));
         tvShare.setText(getResources().getString(R.string.edit));
         tvNothing.setText(getResources().getString(R.string.add_first_crew));

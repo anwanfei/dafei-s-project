@@ -78,7 +78,7 @@ public class MyFollowFleetActivity extends BaseActivity {
     @Override
     protected void initData() {
         myFollowFleetLists = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 30; i++) {
             MyFollowFleetBean myFollowFleetBean = new MyFollowFleetBean();
             myFollowFleetBean.setShipName("华海" + i + "号");
             myFollowFleetLists.add(myFollowFleetBean);

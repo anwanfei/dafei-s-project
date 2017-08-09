@@ -46,7 +46,7 @@ import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
 import com.junhangxintong.chuangzhangtong.dbmanager.DaoManager;
 import com.junhangxintong.chuangzhangtong.dbmanager.ShipDetailsDaoUtil;
-import com.junhangxintong.chuangzhangtong.shipposition.activity.ShipDetailsActivity;
+import com.junhangxintong.chuangzhangtong.shipposition.activity.MyShipDetailsActivity;
 import com.junhangxintong.chuangzhangtong.shipposition.adapter.SearchResultAdapter;
 import com.junhangxintong.chuangzhangtong.shipposition.bean.ShipDetailsBean;
 import com.junhangxintong.chuangzhangtong.utils.DensityUtil;
@@ -399,21 +399,19 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     private void showPopMyFleet() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_ship_position_my_fleet, null);
         ListView lv_my_fleet_ship_position = (ListView) view.findViewById(R.id.lv_my_fleet_ship_position);
-        popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow = new PopupWindow(view, DensityUtil.dp2px(getActivity(), 100), LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setContentView(view);
-
-        popupWindow.setWidth(DensityUtil.dp2px(getActivity(), 100));
 
         lv_my_fleet_ship_position.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_ship_position_my_fleet, R.id.tv_ship_position_fleet_name, arrMyfleet));
 
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.showAsDropDown(tvShipPositionMyChuandui);
+        popupWindow.showAsDropDown(tvShipPositionMyChuandui,0,0);
 
         lv_my_fleet_ship_position.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getActivity(), ShipDetailsActivity.class));
+                startActivity(new Intent(getActivity(), MyShipDetailsActivity.class));
                 popupWindow.dismiss();
             }
         });

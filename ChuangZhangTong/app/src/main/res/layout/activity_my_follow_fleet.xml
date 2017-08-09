@@ -36,9 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
             android:divider="@color/white"
-            android:dividerHeight="10dp"
             android:scrollbars="none" />
 
     </LinearLayout>
@@ -98,8 +96,6 @@
                     android:textColor="@color/red"
                     android:textSize="14dp" />
             </LinearLayout>
-
-
         </LinearLayout>
 
     </RelativeLayout>

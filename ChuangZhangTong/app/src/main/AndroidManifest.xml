@@ -94,7 +94,7 @@
 
         <activity android:name=".net.FoodMenuActivity" />
         <activity
-            android:name=".shipposition.activity.ShipDetailsActivity"
+            android:name=".shipposition.activity.OtherShipDetailsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
@@ -103,7 +103,10 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".mine.activity.CertificateIndetailsActivity"></activity>
+        <activity android:name=".mine.activity.CertificateIndetailsActivity" />
+        <activity android:name=".shipposition.activity.MyShipDetailsActivity" />
+        <activity android:name=".shipposition.activity.AllMessagesActivity" />
+        <activity android:name=".shipposition.activity.AddCrewActivity"></activity>
     </application>
 
 </manifest>

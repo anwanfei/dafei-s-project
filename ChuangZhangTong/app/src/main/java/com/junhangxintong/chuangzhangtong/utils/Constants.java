@@ -27,4 +27,5 @@ public class Constants {
     public static final String CERTIFICATENUM = "certificateNum";
     public static final String CERTIFICATETYPE = "certificateType";
     public static final String CREW_BEAN = "crew_bean";
+    public static final String ADD_CREW = "add_crew";
 }
