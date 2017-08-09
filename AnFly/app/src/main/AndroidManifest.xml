@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anwanfei.anfly">
 
+    <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 摄像头权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 网络权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/logo"
@@ -9,13 +16,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".foundation.activity.AndroidFoundationActivity" />
+        <activity android:name=".foundation.activity.AndroidComponentActivity" />
+        <activity android:name=".foundation.activity.AndroidUIActivity" />
+        <activity android:name=".foundation.activity.AndroidInternetActivity" />
+        <activity android:name=".foundation.activity.AndroidStorageActivity" />
+        <activity android:name=".foundation.activity.AndroidPhotoAnimationActivity" />
+        <activity android:name=".foundation.activity.AndroidEventActivity" />
+        <activity android:name=".foundation.activity.AndroidNewCharacteristicsActivity" />
+        <activity android:name=".foundation.activity.AndroidInterviewActivity" />
+        <activity android:name=".summary.activity.GuideActivity" />
+        <activity android:name=".summary.activity.TablayoutActivity" />
+        <activity android:name=".summary.activity.BasicTestActivity" />
+        <activity android:name=".summary.activity.VibratorActivity" />
+        <activity android:name=".foundation.activity.DialogActivity" />
+        <activity android:name=".foundation.activity.CartViewActivity" />
+        <activity android:name=".summary.activity.CountDownTimerActivity" />
+        <activity android:name=".foundation.activity.ShapActivity"></activity>
     </application>
 
 </manifest>

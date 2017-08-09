@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.anwanfei.anfly.foundation.activity.DialogActivity">
+
+    <include layout="@layout/titlebar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_ok_cancel"
+            style="@style/dialog"
+            android:text="确定取消对话框" />
+
+        <Button
+            android:id="@+id/btn_single_select"
+            style="@style/dialog"
+            android:text="单选对话框" />
+
+        <Button
+            android:id="@+id/btn_multi_select"
+            style="@style/dialog"
+            android:text="多选对话框" />
+
+        <Button
+            android:id="@+id/btn_three_select"
+            style="@style/dialog"
+            android:text="三选对话框" />
+
+        <Button
+            android:id="@+id/btn_list"
+            style="@style/dialog"
+            android:text="列表对话框" />
+
+        <Button
+            android:id="@+id/btn_bar_proggressbar"
+            style="@style/dialog"
+            android:text="条形进度对话框" />
+
+        <Button
+            android:id="@+id/btn_circular_progressbar"
+            style="@style/dialog"
+            android:text="圆形进度对话框" />
+
+        <Button
+            android:id="@+id/btn_input"
+            style="@style/dialog"
+            android:text="输入对话框" />
+
+        <Button
+            android:id="@+id/btn_time"
+            style="@style/dialog"
+            android:text="时间对话框" />
+
+        <Button
+            android:id="@+id/btn_date"
+            style="@style/dialog"
+            android:text="日期对话框" />
+
+        <Button
+            android:id="@+id/btn_custom"
+            style="@style/dialog"
+            android:text="自定义对话框" />
+    </LinearLayout>
+
+
+</LinearLayout>

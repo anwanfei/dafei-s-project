@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="20dp"
+    android:innerRadiusRatio="8"
+    android:shape="ring"
+    android:useLevel="false">
+
+    <!-- 设置渐变填充色 -->
+    <gradient
+        android:centerColor="#0f0"
+        android:endColor="#f00"
+        android:startColor="#00f" />
+    <size android:height="44dp" />
+</shape>
+

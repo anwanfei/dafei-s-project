@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/titlebar" />
+
+    <Button
+        android:id="@+id/btn_call"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_called" />
+
+
+    <Button
+        android:id="@+id/btn_called"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_call" />
+
+    <Button
+        android:id="@+id/btn_contact"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_contact" />
+
+    <Button
+        android:id="@+id/btn_setting"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_setting" />
+
+    <Button
+        android:id="@+id/btn_carema"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_carema" />
+
+    <Button
+        android:id="@+id/btn_photo"
+        style="@style/textview_style_basic_bg"
+        android:text="@string/btn_photo" />
+
+
+</LinearLayout>

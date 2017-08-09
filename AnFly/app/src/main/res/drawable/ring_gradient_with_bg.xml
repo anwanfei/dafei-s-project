@@ -1,0 +1,19 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="20dp"
+    android:shape="ring"
+    android:thickness="2dp"
+    android:useLevel="false">
+
+    <!-- 设置渐变填充色 -->
+    <gradient
+        android:centerColor="@color/rainbow_red"
+        android:endColor="@color/rainbow_yellow"
+        android:startColor="@color/colorPrimary" />
+
+    <stroke
+        android:width="2dp"
+        android:color="@color/rainbow_purple"
+        android:dashGap="5dp"
+        android:dashWidth="5dp" />
+</shape>
+

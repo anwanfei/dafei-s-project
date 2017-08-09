@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 设置渐变填充色 -->
+    <gradient
+        android:centerColor="@color/rainbow_red"
+        android:endColor="@color/rainbow_yellow"
+        android:gradientRadius="60"
+        android:startColor="@color/rainbow_green"
+        android:type="sweep" />
+</shape>
+
+

@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">AnFly</string>
+    <string name="foundation">基础</string>
+    <string name="summary">总结</string>
+    <string name="third_party">第三方</string>
+    <string name="my">我的</string>
+
+
+    <!-- 基本操作示例（开始） -->
+    <string name="btn_opengps">强制打开GPS</string>
+    <string name="btn_called">跳到拨打电话界面</string>
+    <string name="btn_call">直接拨打电话</string>
+    <string name="btn_photo">照片选择界面</string>
+    <string name="btn_carema">启动照相机</string>
+    <string name="btn_setting">到系统设置界面</string>
+    <string name="btn_contact">到联系人选择界面</string>
+    <string name="basic_operation">常用基本操作</string>
+    <!-- 基本操作示例（结束） -->
+
+    <string name="long_ibrator">长震动</string>
+    <string name="short_ibrator">短震动</string>
+    <string name="rhythm_vibrator">节奏震动</string>
+    <string name="test_vibrator">震動測試</string>
+
+    <string name="dialog_all">对话框大全</string>
+    <string name="AndroidUI">AndroidUI</string>
+    <string name="SHAP">SHAP</string>
+    <string name="photo_animation">图像动画</string>
 </resources>
