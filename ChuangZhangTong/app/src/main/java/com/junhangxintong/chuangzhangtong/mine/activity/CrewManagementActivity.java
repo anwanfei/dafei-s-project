@@ -177,7 +177,7 @@ public class CrewManagementActivity extends BaseActivity {
         }
     }
 
-    private void chooseAllOrNot() {
+    public void chooseAllOrNot() {
         if (isChooseAll) {
             isChooseAll = false;
             for (int i = 0; i < crews.size(); i++) {

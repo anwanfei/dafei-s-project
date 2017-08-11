@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.baidu.mapapi.map.MapView;
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
-import com.junhangxintong.chuangzhangtong.shipposition.activity.AllMessagesActivity;
 import com.junhangxintong.chuangzhangtong.shipposition.activity.ShipNoonMessageActivity;
 import com.junhangxintong.chuangzhangtong.shipposition.adapter.ShipMessagesAdapter;
 
@@ -22,43 +18,43 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * Created by anwanfei on 2017/8/8.
+ * Created by anwanfei on 2017/8/10.
  */
 
-public class ShipRecordMessageFragment extends BaseFragment {
-    @BindView(R.id.baidu_map)
-    MapView baiduMap;
-    @BindView(R.id.tv_show_all_mesages)
-    TextView tvShowAllMesages;
+public class NoonzMessageFragment extends BaseFragment {
     @BindView(R.id.lv_message)
     ListView lvMessage;
     Unbinder unbinder;
-
     List<String> messages = new ArrayList<>();
-    @BindView(R.id.iv_back)
-    ImageView ivBack;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    private ShipMessagesAdapter shipMessagesAdapter;
 
     @Override
     protected View initView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_ship_recored_message, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_noon_message, null);
         return view;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
     }
 
     @Override
     protected void initData() {
         super.initData();
-
         for (int i = 0; i < 5; i++) {
-            messages.add("华海一号正午报");
+            if (messages.size() < 5) {
+                messages.add("华海一号正午报");
+            }
         }
 
-        ShipMessagesAdapter shipMessagesAdapter = new ShipMessagesAdapter(getActivity(), messages);
+        shipMessagesAdapter = new ShipMessagesAdapter(getActivity(), messages);
         lvMessage.setAdapter(shipMessagesAdapter);
 
         lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,33 +70,10 @@ public class ShipRecordMessageFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-
-        ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.huahai_one));
-        return rootView;
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    @OnClick({R.id.iv_back, R.id.ll_show_all_messages})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                getActivity().finish();
-                break;
-            case R.id.ll_show_all_messages:
-                startActivity(new Intent(getActivity(), AllMessagesActivity.class));
-                break;
-        }
-    }
-
 }

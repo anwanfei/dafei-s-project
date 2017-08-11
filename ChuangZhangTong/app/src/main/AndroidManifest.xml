@@ -106,7 +106,11 @@
         <activity android:name=".mine.activity.CertificateIndetailsActivity" />
         <activity android:name=".shipposition.activity.MyShipDetailsActivity" />
         <activity android:name=".shipposition.activity.AllMessagesActivity" />
-        <activity android:name=".shipposition.activity.AddCrewActivity"></activity>
+        <activity android:name=".shipposition.activity.AddCrewActivity" />
+        <activity android:name=".shipposition.activity.ShipNoonMessageActivity" />
+        <activity android:name=".shipposition.activity.ShipArrivalMessageActivity" />
+        <activity android:name=".shipposition.activity.ShipLeavePortMessageActivity" />
+        <activity android:name=".shipposition.activity.ShipBerthingPortMessageActivity"></activity>
     </application>
 
 </manifest>

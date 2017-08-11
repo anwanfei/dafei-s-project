@@ -73,7 +73,7 @@ public class AddCrewActivity extends BaseActivity {
             crews.add(crewBean);
         }
 
-        additiveCrewAdapter = new AdditiveCrewAdapter(this, crews,tvChoosedCrewNum);
+        additiveCrewAdapter = new AdditiveCrewAdapter(this, crews, tvChoosedCrewNum);
         lvAdditiveCrew.setAdapter(additiveCrewAdapter);
 
         // TODO: 2017/8/9  搜索要添加的船员---数据库query
@@ -116,15 +116,12 @@ public class AddCrewActivity extends BaseActivity {
             boolean checkbox = crews.get(i).isCheckbox();
             if (checkbox) {
                 map.put(i + "", true);
+                crews.get(i).setCheckbox(false);
                 choosedLists.add(crews.get(i));
             } else {
                 map.put(i + "", false);
             }
         }
-
-//        crews.removeAll(choosedLists);
-//        updateCrewsList();
-//        myFleetAdapter.notifyDataSetChanged();
 
         //遍历map
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {

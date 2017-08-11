@@ -15,10 +15,7 @@
 
         <include layout="@layout/titlebar_my_fleet" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_identity" />
+        <include layout="@layout/layout_horizental_gray_line" />
 
         <LinearLayout
             android:id="@+id/ll_no_crew"

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuangzhangtong.R;
 import com.junhangxintong.chuangzhangtong.common.BaseFragment;
@@ -19,6 +20,9 @@ import com.junhangxintong.chuangzhangtong.shipposition.activity.AddCrewActivity;
 import com.junhangxintong.chuangzhangtong.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,8 +62,13 @@ public class ShipCrewInfoFragment extends BaseFragment {
     RelativeLayout rlChooseAllDelete;
     Unbinder unbinder;
     private ArrayList<CrewBean> crews;
-    private MyCrewAdapter myFleetAdapter;
+    private MyCrewAdapter myCrewAdapter;
     private ArrayList<CrewBean> choosedCrewsLists;
+    private boolean isChoose = true;
+    private boolean isChooseAll = true;
+    private List<String> savelist = new ArrayList();
+    private Map<String, Boolean> map = new HashMap<>();
+    private List<CrewBean> choosedLists;
 
     public ShipCrewInfoFragment(LinearLayout llTitlebar) {
         llTitlebar.setVisibility(View.GONE);
@@ -90,7 +99,7 @@ public class ShipCrewInfoFragment extends BaseFragment {
     protected void initData() {
         super.initData();
         crews = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 5; i++) {
             CrewBean crewBean = new CrewBean();
             crewBean.setCrewName("船员" + i + "号");
             crewBean.setDuty("大副" + i + "号");
@@ -100,8 +109,8 @@ public class ShipCrewInfoFragment extends BaseFragment {
         }
 
         updateCrewsList();
-        myFleetAdapter = new MyCrewAdapter(getActivity(), crews);
-        lvMyCrew.setAdapter(myFleetAdapter);
+        myCrewAdapter = new MyCrewAdapter(getActivity(), crews);
+        lvMyCrew.setAdapter(myCrewAdapter);
     }
 
     @Override
@@ -132,10 +141,14 @@ public class ShipCrewInfoFragment extends BaseFragment {
             case R.id.iv_share:
                 break;
             case R.id.tv_setting:
-                addCrew();
+                if (isChoose) {
+                    addCrew();
+                } else {
+                    Toast.makeText(getActivity(), getResources().getString(R.string.can_not_add_when_edit), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tv_share:
-
+                editCrews();
                 break;
             case R.id.tv_add_ship:
                 addCrew();
@@ -143,11 +156,64 @@ public class ShipCrewInfoFragment extends BaseFragment {
             case R.id.ll_no_crew:
                 break;
             case R.id.tv_my_crew_list_choose_all:
+                chooseAllOrNot();
                 break;
             case R.id.tv_my_crew_list_delete:
+                deleteChoosedItems();
                 break;
             case R.id.rl_choose_all_delete:
                 break;
+        }
+    }
+
+    private void deleteChoosedItems() {
+        //清除集合
+        savelist.clear();
+        map.clear();
+
+        //选中的船作为一个集合，集中处理
+        choosedLists = new ArrayList<>();
+
+        //找到选中的位置，并保存在map
+        for (int i = 0; i < crews.size(); i++) {
+            boolean checkbox = crews.get(i).isCheckbox();
+            if (checkbox) {
+                map.put(i + "", true);
+                choosedLists.add(crews.get(i));
+            } else {
+                map.put(i + "", false);
+            }
+        }
+        crews.removeAll(choosedLists);
+        updateCrewsList();
+        myCrewAdapter.notifyDataSetChanged();
+
+        //遍历map
+        for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Boolean value = entry.getValue();
+            if (value) {
+                savelist.add(key);
+            }
+        }
+    }
+
+
+    public void chooseAllOrNot() {
+        if (isChooseAll) {
+            isChooseAll = false;
+            for (int i = 0; i < crews.size(); i++) {
+                crews.get(i).setCheckbox(true);
+            }
+            tvMyCrewListChooseAll.setText(getResources().getString(R.string.cancel_choose_all));
+            myCrewAdapter.notifyDataSetChanged();
+        } else {
+            isChooseAll = true;
+            for (int i = 0; i < crews.size(); i++) {
+                crews.get(i).setCheckbox(false);
+            }
+            tvMyCrewListChooseAll.setText(getResources().getString(R.string.choose_all));
+            myCrewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -155,15 +221,34 @@ public class ShipCrewInfoFragment extends BaseFragment {
         startActivityForResult(new Intent(getActivity(), AddCrewActivity.class), Constants.REQUEST_CODE0);
     }
 
+    private void editCrews() {
+        if (isChoose) {
+            rlChooseAllDelete.setVisibility(View.VISIBLE);
+            tvShare.setText(getResources().getString(R.string.cancel));
+            myCrewAdapter.controlCheckboxShow(isChoose);
+            isChoose = false;
+            myCrewAdapter.notifyDataSetChanged();
+        } else {
+            rlChooseAllDelete.setVisibility(View.GONE);
+            tvShare.setText(getResources().getString(R.string.edit));
+            myCrewAdapter.controlCheckboxShow(isChoose);
+            isChoose = true;
+            myCrewAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-         switch (requestCode) {
-             case Constants.REQUEST_CODE0 :
-                 choosedCrewsLists = (ArrayList<CrewBean>)data.getSerializableExtra(Constants.ADD_CREW);
-                 break;
-         }
+            switch (requestCode) {
+                case Constants.REQUEST_CODE0:
+                    choosedCrewsLists = (ArrayList<CrewBean>) data.getSerializableExtra(Constants.ADD_CREW);
+                    crews.addAll(choosedCrewsLists);
+                    updateCrewsList();
+                    myCrewAdapter.notifyDataSetChanged();
+                    break;
+            }
         }
     }
 }

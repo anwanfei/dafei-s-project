@@ -83,6 +83,10 @@ public class ShipDetailsFragment extends BaseFragment {
     @BindView(R.id.ll_ship_details)
     RelativeLayout llShipDetails;
     Unbinder unbinder;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     private boolean isShowShipOthorDetails = true;
 
     @Override
@@ -96,6 +100,8 @@ public class ShipDetailsFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        ivBack.setVisibility(View.VISIBLE);
+        tvTitle.setText(getResources().getString(R.string.huahai_one));
         return rootView;
     }
 
@@ -123,5 +129,10 @@ public class ShipDetailsFragment extends BaseFragment {
                 Toast.makeText(getActivity(), "正在拼命开发中...", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        getActivity().finish();
     }
 }
