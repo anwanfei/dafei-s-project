@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_ship_details_bg"
-    tools:context="com.junhangxintong.chuangzhangtong.shipposition.activity.ShipLeavePortMessageActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipLeavePortMessageActivity">
 
     <LinearLayout
         android:id="@+id/ll_titlebar"

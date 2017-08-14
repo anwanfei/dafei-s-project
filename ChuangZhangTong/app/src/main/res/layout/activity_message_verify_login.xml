@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.MessageVerifyLoginActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.MessageVerifyLoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

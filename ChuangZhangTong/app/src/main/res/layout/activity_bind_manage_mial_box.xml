@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/gray_bg"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.BindManageMailBoxActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.BindManageMailBoxActivity">
 
     <include layout="@layout/titlebar" />
 

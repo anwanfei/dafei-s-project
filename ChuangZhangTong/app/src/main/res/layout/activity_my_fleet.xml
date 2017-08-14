@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.MyFleetActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.MyFleetActivity">
 
     <include layout="@layout/titlebar" />
 

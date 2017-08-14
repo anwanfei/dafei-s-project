@@ -247,9 +247,11 @@
     <string name="tug_use_num">拖轮使用数:</string>
     <string name="is_pilot">是否引航:</string>
     <string name="share_ship">分享该船</string>
+    <string name="warm_close">关闭提醒</string>
+    <string name="warm_open">打开提醒</string>
     <string name="share">分享</string>
     <string name="place_top">置顶</string>
-    <string name="sign_no_read">标位未读</string>
+    <string name="sign_no_read">标为未读</string>
     <string name="follow_ship">关注该船</string>
     <string name="noon_message">正午报告</string>
     <string name="record_message">报文记录</string>
@@ -264,4 +266,5 @@
     <string name="can_not_add_when_edit">编辑状态不能添加</string>
     <string name="ship_num">航次号</string>
     <string name="ship_num_demo">航次号：5200</string>
+    <string name="chuanzhang">船长</string>
 </resources>

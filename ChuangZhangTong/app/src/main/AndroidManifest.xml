@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.junhangxintong.chuangzhangtong">
+    package="com.junhangxintong.chuanzhangtong">
 
     <supports-screens
         android:anyDensity="true"
@@ -35,7 +35,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".common.MyApplication"
+        android:name="com.junhangxintong.chuanzhangtong.common.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -46,7 +46,7 @@
             android:value="YqxCO5SNcxnm3EGpqZA7uONX29A69svp" />
 
         <activity
-            android:name=".common.MainActivity"
+            android:name="com.junhangxintong.chuanzhangtong.common.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,37 +54,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mine.activity.PersonalInfoActivity" />
-        <activity android:name=".mine.activity.MyFleetActivity" />
-        <activity android:name=".mine.activity.CrewInfoInputActivity" />
-        <activity android:name=".mine.activity.AccoutSettingActivity" />
-        <activity android:name=".mine.activity.ModifyNameActivity" />
-        <activity android:name=".mine.activity.LoginRegisterActivity" />
-        <activity android:name=".mine.activity.MyFleetListActivity" />
-        <activity android:name=".mine.activity.AddShipActivity" />
-        <activity android:name=".mine.activity.CrewManagementActivity" />
-        <activity android:name=".mine.activity.ContactPhoneActivity" />
-        <activity android:name=".mine.activity.EmergencyContactorActivity" />
-        <activity android:name=".mine.activity.EmergencyContactorPhoneActivity" />
-        <activity android:name=".mine.activity.ChooseDutyActivity" />
-        <activity android:name=".mine.activity.MyFollowFleetActivity" />
-        <activity android:name=".mine.activity.ResetPwdActivity" />
-        <activity android:name=".mine.activity.AboutActivity" />
-        <activity android:name=".mine.activity.FeedbackActivity" />
-        <activity android:name=".mine.activity.FlagMeanActivity" />
-        <activity android:name=".mine.activity.MessageVerifyLoginActivity" />
-        <activity android:name=".mine.activity.RegisterActivity" />
-        <activity android:name=".mine.activity.ForgetPwdActivity" />
-        <activity android:name=".mine.activity.InputPwdActivity" />
-        <activity android:name=".mine.activity.AddCertificateActivity" />
-        <activity android:name=".mine.activity.BindManageMailBoxActivity" />
-        <activity android:name=".mine.activity.BindBoxPwdActivity" />
-        <activity android:name=".mine.activity.BindMailServerActivity" />
-        <activity android:name=".mine.activity.CertificateListsActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.PersonalInfoActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFleetActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ModifyNameActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFleetListActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AddShipActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ContactPhoneActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.EmergencyContactorActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.EmergencyContactorPhoneActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ChooseDutyActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFollowFleetActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ResetPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AboutActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.FlagMeanActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MessageVerifyLoginActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.RegisterActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ForgetPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.InputPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AddCertificateActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindManageMailBoxActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindBoxPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindMailServerActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CertificateListsActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.junhangxintong.chuangzhangtong.fileprovider"
+            android:authorities="com.junhangxintong.chuanzhangtong.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -92,9 +92,9 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <activity android:name=".net.FoodMenuActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.net.FoodMenuActivity" />
         <activity
-            android:name=".shipposition.activity.OtherShipDetailsActivity"
+            android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 
@@ -103,14 +103,14 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".mine.activity.CertificateIndetailsActivity" />
-        <activity android:name=".shipposition.activity.MyShipDetailsActivity" />
-        <activity android:name=".shipposition.activity.AllMessagesActivity" />
-        <activity android:name=".shipposition.activity.AddCrewActivity" />
-        <activity android:name=".shipposition.activity.ShipNoonMessageActivity" />
-        <activity android:name=".shipposition.activity.ShipArrivalMessageActivity" />
-        <activity android:name=".shipposition.activity.ShipLeavePortMessageActivity" />
-        <activity android:name=".shipposition.activity.ShipBerthingPortMessageActivity"></activity>
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CertificateIndetailsActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.AllMessagesActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipNoonMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipArrivalMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipLeavePortMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipBerthingPortMessageActivity"></activity>
     </application>
 
 </manifest>

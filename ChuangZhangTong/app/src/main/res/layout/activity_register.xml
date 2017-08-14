@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.RegisterActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,9 +85,10 @@
 
         <RadioGroup
             android:id="@+id/rg_identity"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
@@ -96,32 +97,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:button="@null"
+                android:button="@drawable/rb_choose_selector"
                 android:checked="true"
-                android:drawableLeft="@drawable/rb_choose_selector"
-                android:drawablePadding="6dp"
                 android:text="@string/chuanguan" />
+
+            <RadioButton
+                android:id="@+id/rb_chuanzhang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/rb_choose_selector"
+                android:text="@string/chuanzhang" />
 
             <RadioButton
                 android:id="@+id/rb_chuanyuan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
                 android:layout_weight="1"
-                android:button="@null"
-                android:drawableLeft="@drawable/rb_choose_selector"
-                android:drawablePadding="6dp"
+                android:button="@drawable/rb_choose_selector"
                 android:text="@string/chuanyuan" />
 
             <RadioButton
                 android:id="@+id/rb_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
                 android:layout_weight="1"
-                android:button="@null"
-                android:drawableLeft="@drawable/rb_choose_selector"
-                android:drawablePadding="6dp"
+                android:button="@drawable/rb_choose_selector"
                 android:text="@string/other" />
 
         </RadioGroup>

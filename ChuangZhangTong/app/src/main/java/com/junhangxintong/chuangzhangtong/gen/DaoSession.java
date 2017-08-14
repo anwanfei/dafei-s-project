@@ -8,7 +8,7 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.junhangxintong.chuangzhangtong.shipposition.bean.ShipDetailsBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.ShipDetailsBean;
 
 import com.junhangxintong.chuangzhangtong.gen.ShipDetailsBeanDao;
 

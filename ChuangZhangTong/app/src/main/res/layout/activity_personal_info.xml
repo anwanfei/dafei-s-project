@@ -6,7 +6,7 @@
     android:background="@color/gray_bg"
     android:orientation="vertical"
     android:scrollbars="none"
-    tools:context="com.junhangxintong.chuangzhangtong.mine.activity.PersonalInfoActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.PersonalInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
 
         <include layout="@layout/titlebar" />
 
-        <com.junhangxintong.chuangzhangtong.utils.CircleImageView
+        <com.junhangxintong.chuanzhangtong.utils.CircleImageView
             android:id="@+id/iv_photo"
             android:layout_width="80dp"
             android:layout_height="80dp"

@@ -29,7 +29,7 @@
                 android:orientation="vertical">
 
 
-                <com.junhangxintong.chuangzhangtong.utils.CircleImageView
+                <com.junhangxintong.chuanzhangtong.utils.CircleImageView
                     android:id="@+id/iv_photo"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

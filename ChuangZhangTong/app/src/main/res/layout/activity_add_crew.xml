@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.junhangxintong.chuangzhangtong.shipposition.activity.AddCrewActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity">
 
     <LinearLayout
         android:id="@+id/ll_titlebar"
