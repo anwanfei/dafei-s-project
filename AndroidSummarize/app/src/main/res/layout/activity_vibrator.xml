@@ -13,6 +13,8 @@
         android:id="@+id/btn_short"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:background="@drawable/profile_image_circle_bg"
         android:text="@string/short_ibrator" />
 
     <Button

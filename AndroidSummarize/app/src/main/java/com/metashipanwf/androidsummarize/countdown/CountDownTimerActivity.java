@@ -27,6 +27,8 @@ public class CountDownTimerActivity extends AppCompatActivity {
     public void onViewClicked() {
 
         /**
+         * 利用countdownTimer最简单的实现方式，还可以用handler发送消息的方式实现
+         *
          * 参数一：总共时间
          * 参数二：设置计时的速度
          *
