@@ -73,7 +73,7 @@ public class SearchResultAdapter extends BaseAdapter {
         String shipName = shipDetailsBean.getShipName();
 
         holder.tvSearchShipName.setText(shipName);
-        holder.tvSearchShipMmsi.setText(mContext.getResources().getString(R.string.MMSI) + mmsi);
+        holder.tvSearchShipMmsi.setText(mContext.getResources().getString(R.string.MMSI_withColon) + mmsi);
 
         holder.tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
             @Override

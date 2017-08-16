@@ -82,7 +82,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_ship_start"
-                            android:text="@string/time"
+                            android:text="@string/date_time"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/tv_ship_start"
-                            android:text="@string/time"
+                            android:text="@string/date_time"
                             android:textSize="12sp" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -422,7 +422,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/time"
+                                android:text="@string/date_time"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -564,7 +564,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:paddingRight="20dp"
-                        android:text="@string/time" />
+                        android:text="@string/date_time" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

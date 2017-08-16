@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:text="@string/date"
+                android:text="@string/date_demo"
                 android:textSize="12sp" />
 
             <View
@@ -215,7 +215,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time"
+                    android:text="@string/date_time"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -244,7 +244,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time"
+                    android:text="@string/date_time"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -272,7 +272,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time"
+                    android:text="@string/date_time"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -301,7 +301,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/time"
+                    android:text="@string/date_time"
                     android:textSize="14sp" />
 
             </RelativeLayout>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ship_name_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_ship_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/huahai_one"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/certificate_name_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_certificate_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="行驶证"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/certificate_num_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_certificate_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A001"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/issue_date_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_issue_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_demo"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_time_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_certificate_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_demo"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/issue_position_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_certificate_issue_postion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上海海事局"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <include layout="@layout/include_message_bottom" />
+    </LinearLayout>
+</RelativeLayout>

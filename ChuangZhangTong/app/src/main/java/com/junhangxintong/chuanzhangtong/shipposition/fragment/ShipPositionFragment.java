@@ -1,7 +1,9 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,6 +11,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -51,6 +56,8 @@ import com.junhangxintong.chuanzhangtong.dbmanager.ShipDetailsDaoUtil;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.adapter.SearchResultAdapter;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.ShipDetailsBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 
 import java.io.File;
@@ -58,6 +65,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -132,6 +140,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     List<String> historyLists = new ArrayList<>();
 
     private DaoManager mManager;
+    private ArrayAdapter historyListAdapter;
 
 
     @Override
@@ -190,7 +199,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
         //数据库初始化
         shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
-        shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "huahaifei", "China", "6666", "渔船"));
+        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 10) {
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "junhang", "hangkong", "7777", "渔船"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "huahaiyihao", "China", "6666", "货船"));
+        }
 
         //搜索界面
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -216,7 +228,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                     ivClear.setVisibility(View.VISIBLE);
                     llHistory.setVisibility(View.GONE);
                     llSearchResult.setVisibility(View.VISIBLE);
-                    historyLists.add(inputContent);
 
                     shipDetailsLists = queryData(inputContent);
                     if (shipDetailsLists.size() > 0) {
@@ -225,6 +236,11 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                         SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists);
                         lvSearchResult.setAdapter(searchResultAdapter);
                         tvResultSize.setText("搜索到" + shipDetailsLists.size() + "条结果");
+
+                        //历史记录添加并去重
+                        if (!historyLists.contains(inputContent)) {
+                            historyLists.add(inputContent);
+                        }
                     } else {
                         llSearchNoResult.setVisibility(View.VISIBLE);
                         lvSearchResult.setVisibility(View.GONE);
@@ -272,7 +288,9 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     private void showHistoryLists() {
         llHistory.setVisibility(View.VISIBLE);
-        lvHistory.setAdapter(new ArrayAdapter(getActivity(), R.layout.item_search_history, R.id.tv_search_history_name, historyLists));
+        Collections.reverse(historyLists);
+        historyListAdapter = new ArrayAdapter(getActivity(), R.layout.item_search_history, R.id.tv_search_history_name, historyLists);
+        lvHistory.setAdapter(historyListAdapter);
         lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -282,16 +300,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     }
 
     private List<ShipDetailsBean> queryData(String shipName) {
-        String sql = "where shipName > ?";
-        String[] condition = new String[]{"h"};
-//        List<ShipDetailsBean> meiziList2 = shipDetailsDaoUtil.queryShipDetailsBeanByNativeSql(sql, condition);
-//        List<ShipDetailsBean> shipDetailsBeen = shipDetailsDaoUtil.queryShipDetailsBeanByQueryBuilder(shipName);
         return shipDetailsDaoUtil.getShipsByLike(shipName);
-    }
-
-
-    private void showPopSearchResult() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_ship_position_search, null);
     }
 
     @Override
@@ -301,7 +310,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         unbinder = ButterKnife.bind(this, rootView);
 
         //不显示控制地图大小按钮
-//        mapviewShipPosition.showZoomControls(false);
+        //mapviewShipPosition.showZoomControls(false);
         //不显示比例尺
         mapviewShipPosition.showScaleControl(false);
 
@@ -368,6 +377,38 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         //为系统的方向传感器注册监听器
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_UI);
+
+        boolean isNeedCheck = CacheUtils.getBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, true);
+        if (isNeedCheck) {
+            getPermission();
+            CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
+        }
+
+    }
+
+    //获取权限的方法
+    private void getPermission() {
+        final String[] permissions = {
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION};
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    for (String per : permissions) {
+                        int isPermission = ContextCompat.checkSelfPermission(getActivity(), per);
+                        if (isPermission != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(getActivity(), permissions, Constants.REQUEST_CODE0);
+                            return;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -396,14 +437,15 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.tv_clear_history:
                 historyLists.clear();
+                historyListAdapter.notifyDataSetChanged();
                 break;
         }
     }
 
+
     private void showPopMyFleet() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_ship_position_my_fleet, null);
         ListView lv_my_fleet_ship_position = (ListView) view.findViewById(R.id.lv_my_fleet_ship_position);
-//        popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow = new PopupWindow(view, DensityUtil.dp2px(getActivity(), 140), LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setContentView(view);
 
@@ -412,7 +454,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        //pop4.4以上及以下适配
+        //popupwindown适配4.0以下的版本
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             popupWindow.showAsDropDown(tvShipPositionMyChuandui, DensityUtil.dp2px(getActivity(), 0), DensityUtil.dp2px(getActivity(), 10), Gravity.RIGHT);
         } else {

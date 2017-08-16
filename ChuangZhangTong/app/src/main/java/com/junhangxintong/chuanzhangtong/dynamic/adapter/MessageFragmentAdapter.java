@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.junhangxintong.chuanzhangtong.dynamic.fragment.AllMessageFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.fragment.CrewCertificateFragment;
+import com.junhangxintong.chuanzhangtong.dynamic.fragment.ShipCertificateFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.fragment.ShipDynamicFragment;
 
 /**
@@ -29,7 +30,7 @@ public class MessageFragmentAdapter extends FragmentStatePagerAdapter {
         } else if (position == 2) {
             return new CrewCertificateFragment();
         }
-        return new AllMessageFragment();
+        return new ShipCertificateFragment();
     }
 
     @Override

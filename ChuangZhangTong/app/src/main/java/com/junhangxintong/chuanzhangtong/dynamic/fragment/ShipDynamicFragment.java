@@ -1,13 +1,16 @@
 package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
@@ -49,6 +52,12 @@ public class ShipDynamicFragment extends BaseFragment {
 
         shipNewsSubFragmentAdapter = new ShipNewsSubFragmentAdapter(getActivity(), allMessages);
         lvDynamicShip.setAdapter(shipNewsSubFragmentAdapter);
+        lvDynamicShip.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
+            }
+        });
     }
 
     @Override

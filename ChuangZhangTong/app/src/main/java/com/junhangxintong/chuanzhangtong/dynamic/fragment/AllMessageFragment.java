@@ -1,13 +1,18 @@
 package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.dynamic.activity.CrewCertificateActivity;
+import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity;
+import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
@@ -26,6 +31,7 @@ public class AllMessageFragment extends BaseFragment {
     @BindView(R.id.lv_message)
     ListView lvMessage;
     Unbinder unbinder;
+    private int a = 0;
 
     List<String> allMessages = new ArrayList<>();
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
@@ -58,11 +64,25 @@ public class AllMessageFragment extends BaseFragment {
             if (allMessages.size() < Constants.TEST_DATA_NUM) {
                 allMessages.add("船舶动态通知：华海一号起航");
                 allMessages.add("水手小明海员证到期时间：2018-1-9");
+                allMessages.add("华海一号行驶证到期时间：2018-1-9");
             }
         }
 
         shipNewsSubFragmentAdapter = new ShipNewsSubFragmentAdapter(getActivity(), allMessages);
         lvMessage.setAdapter(shipNewsSubFragmentAdapter);
+
+        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0 || i % 3 == 0) {
+                    startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
+                } else if ((i + 2) % 3 == 0) {
+                    startActivity(new Intent(getActivity(), CrewCertificateActivity.class));
+                } else if ((i + 1) % 3 == 0) {
+                    startActivity(new Intent(getActivity(), ShipCertificateActivity.class));
+                }
+            }
+        });
     }
 
 }

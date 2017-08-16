@@ -149,12 +149,14 @@ public class ShipDetailsDaoUtil {
     }
 
     /**
-     * 模糊查询
+     * 多条件模糊查询
      *
      * @param value
      * @return
      */
     public List<ShipDetailsBean> getShipsByLike(String value) {
-        return mManager.getDaoSession().queryBuilder(ShipDetailsBean.class).where(ShipDetailsBeanDao.Properties.ShipName.like("%" + value + "%")).list();
+        return mManager.getDaoSession().queryBuilder(ShipDetailsBean.class)
+                .whereOr(ShipDetailsBeanDao.Properties.ShipName.like("%" + value + "%"), ShipDetailsBeanDao.Properties.Mmsi.like("%" + value + "%")).list();
     }
+
 }

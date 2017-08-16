@@ -38,6 +38,7 @@
     <string name="clear_buffer_demo">0B</string>
     <string name="flag_mean">标记含义</string>
     <string name="about">关于船掌通</string>
+    <string name="set_sail_remind">起航提醒</string>
     <string name="is_login_out">确定要退出登录吗？</string>
     <string name="login_out">退出登录</string>
     <string name="reset_pwd">修改密码</string>
@@ -194,8 +195,9 @@
     <string name="distance">30.2km</string>
     <string name="update_time">1天前更新</string>
     <string name="update_times">更新时间:</string>
-    <string name="time">08-20 20:00</string>
-    <string name="date">2017-08-30</string>
+    <string name="date_time">08-20 20:00</string>
+    <string name="time">20:00</string>
+    <string name="date_demo">2017-08-30</string>
     <string name="chuanji_with_colon">船籍:</string>
     <string name="IMO_with_colon">IMO:</string>
     <string name="ship_size">船长/宽:</string>
@@ -267,4 +269,41 @@
     <string name="ship_num">航次号</string>
     <string name="ship_num_demo">航次号：5200</string>
     <string name="chuanzhang">船长</string>
+
+    <!--dynamoic-->
+    <string name="remind">您好，您的船舶已起航！</string>
+    <string name="ship_name_colon">船舶名称：</string>
+    <string name="ship_state">船舶动态：</string>
+    <string name="ship_state_stop">停泊</string>
+    <string name="thank_for_use">感谢您的使用！</string>
+    <string name="remind_frendly">如果消息打扰到您，可点击【关闭提醒】</string>
+    <string name="time_colon">时间：</string>
+    <string name="name_colon">姓名：</string>
+    <string name="duty_colon">职务：</string>
+    <string name="certificate_name_colon">证书名称：</string>
+    <string name="certificate_num_colon">证件号码：</string>
+    <string name="issue_date_colon">签发日期：</string>
+    <string name="end_time_colon">期满日期：</string>
+    <string name="issue_position_colon">签发地点：</string>
+    <string name="ship_dynamic">船舶动态</string>
+    <string name="crew_certificate">船员证书</string>
+    <string name="ship_certificate">船舶证书</string>
+
+    <!--航运头条-->
+    <string name="convention_name">交通运输部海事局关于《特定航线江海通航船舶
+        法定检验暂行规则》的通知</string>
+
+    <string name="convention_wenhao">文号：</string>
+    <string name="Name">名称</string>
+    <string name="date">日期</string>
+    <string name="price">价格(美元/桶)</string>
+    <string name="up_down_quota">涨跌额</string>
+    <string name="up_down_range">涨跌幅</string>
+    <string name="ocean_convention">海洋公约</string>
+    <string name="convention_suoyinhao">索引号：</string>
+    <string name="oil_price">油市快递</string>
+    <string name="butelun">布特伦</string>
+    <string name="WTI">WTI</string>
+    <string name="convention_content">各省、自治区、直辖市地方海事局、船舶检验局，新疆生产建设兵团海事局，中国船级社，各直属海事局:\n经交通运输部批准，《特定航线江海通航船舶法定检验暂行规则》更名为《特定航线江海直达船舶法定检验暂行规则》。《特定航线江海直达船舶法定检验暂行规则》（2017年修改通报）按规定程序现予公布，自2017年8月1日起实施。</string>
+
 </resources>

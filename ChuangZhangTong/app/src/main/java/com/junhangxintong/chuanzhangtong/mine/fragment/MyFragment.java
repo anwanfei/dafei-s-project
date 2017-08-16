@@ -32,7 +32,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * Created by edz on 2017/7/5.
+ * Created by anwanfei on 2017/7/5.
  */
 
 public class MyFragment extends BaseFragment {
@@ -94,6 +94,8 @@ public class MyFragment extends BaseFragment {
         if (file.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             ivPhoto.setImageBitmap(bitmap);
+        } else {
+            ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
         }
         if (!userName.isEmpty()) {
             tvUserName.setText(userName);

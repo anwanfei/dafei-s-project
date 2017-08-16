@@ -1,13 +1,16 @@
 package com.junhangxintong.chuanzhangtong.news.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.news.activity.OilPriceActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
@@ -62,5 +65,12 @@ public class OilPriceFragment extends BaseFragment {
 
         shipNewsSubFragmentAdapter = new ShipNewsSubFragmentAdapter(getActivity(), oilMessages);
         lvMessage.setAdapter(shipNewsSubFragmentAdapter);
+
+        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startActivity(new Intent(getActivity(), OilPriceActivity.class));
+            }
+        });
     }
 }

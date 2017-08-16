@@ -240,7 +240,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     c.close();
                     //本地保存
                     saveImage(bm);
-                    //图片上传
+                    // TODO: 2017/8/15  图片上传
 //                    netSendPhoneToService();
                     break;
             }
