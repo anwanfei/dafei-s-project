@@ -26,7 +26,7 @@ public class TablayoutActivity extends BaseActivity {
     @BindView(R.id.viewpager_news)
     ViewPager viewpagerNews;
 
-    private String[] mtitles = {"少年头", "国际范", "走开吧"};
+    private String[] mtitles = {"少年头", "国际范", "皮皮虾"};
     List<Fragment> fragments;
 
     @Override
