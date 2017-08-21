@@ -1,13 +1,18 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -85,6 +90,7 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_share:
+                share();
                 break;
             case R.id.tv_sign_no_read:
                 break;
@@ -92,4 +98,38 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
                 break;
         }
     }
+
+    private void share() {
+        new ShareAction(this).withText("hello")
+                .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                .setCallback(umShareListener).open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.d("plat", "platform" + platform);
+
+            Toast.makeText(ShipLeavePortMessageActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(ShipLeavePortMessageActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(ShipLeavePortMessageActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

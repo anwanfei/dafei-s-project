@@ -16,6 +16,9 @@ import com.baidu.mapapi.map.MapView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -203,10 +206,44 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
 
                 //判断是否打开过pop
                 isShowPop = true;
-                Toast.makeText(getActivity(), "分享成功", Toast.LENGTH_SHORT).show();
                 // TODO: 2017/8/13
+                share();
 
                 break;
         }
     }
+
+    private void share() {
+        new ShareAction(getActivity()).withText("hello")
+                .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                .setCallback(umShareListener).open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.d("plat", "platform" + platform);
+
+            Toast.makeText(getActivity(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(getActivity(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(getActivity(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
