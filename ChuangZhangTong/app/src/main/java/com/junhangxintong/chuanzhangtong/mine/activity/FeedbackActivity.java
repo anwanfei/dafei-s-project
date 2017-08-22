@@ -78,7 +78,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         gallrtyConfig = new GalleryConfig.Builder()
                 .imageLoader(new GlideImageLoader())
                 .iHandlerCallBack(iHandlerCallBack)
-                .provider("com.junhangxintong.chuangzhangtong.fileprovider")
+                .provider("com.junhangxintong.chuanzhangtong.fileprovider")
                 .pathList(path)
                 .multiSelect(true)
                 .multiSelect(true, 3)

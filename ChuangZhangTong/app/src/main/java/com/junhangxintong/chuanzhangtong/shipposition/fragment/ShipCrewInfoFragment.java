@@ -70,8 +70,8 @@ public class ShipCrewInfoFragment extends BaseFragment {
     private Map<String, Boolean> map = new HashMap<>();
     private List<CrewBean> choosedLists;
 
-    public ShipCrewInfoFragment(LinearLayout llTitlebar) {
-        llTitlebar.setVisibility(View.GONE);
+
+    public ShipCrewInfoFragment() {
     }
 
     @Override

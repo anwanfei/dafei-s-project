@@ -1,7 +1,5 @@
 package com.junhangxintong.chuanzhangtong;
 
-//import com.umeng.socialize.media.WBShareCallBackActivity;
-
 import com.umeng.socialize.media.WBShareCallBackActivity;
 
 /**

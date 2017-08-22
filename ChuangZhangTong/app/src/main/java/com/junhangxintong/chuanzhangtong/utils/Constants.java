@@ -30,4 +30,5 @@ public class Constants {
     public static final String ADD_CREW = "add_crew";
     public static final int TEST_DATA_NUM = 10;
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
+    public static String SHARE_URL = "http://www.baidu.com";
 }

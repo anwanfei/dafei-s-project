@@ -19,6 +19,9 @@ import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MainActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -116,6 +119,14 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
             case R.id.rl_qq:
                 break;
             case R.id.rl_weibo:
+                UMImage image = new UMImage(this, R.drawable.wx108);//资源文件
+
+                UMWeb web = new UMWeb(Constants.SHARE_URL);
+                web.setTitle(getResources().getString(R.string.app_name));//标题
+                web.setThumb(image);  //缩略图
+                web.setDescription("船掌通是一款非常实用的移动工作助手应用，提供船位搜索、船队管理、推送行业内相关资讯、方便船岸沟通等功能，可提高船运的整体工作效率。");//描述
+
+                ShareUtils.share(this, web);
                 break;
             case R.id.rl_clear_buffer:
                 showDialogClearBuffer();

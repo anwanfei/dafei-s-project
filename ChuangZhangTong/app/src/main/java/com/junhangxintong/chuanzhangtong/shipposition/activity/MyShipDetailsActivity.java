@@ -65,6 +65,7 @@ public class MyShipDetailsActivity extends BaseActivity {
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
+
         tvTitle.setText(getResources().getString(R.string.huahai_one));
     }
 
@@ -74,7 +75,7 @@ public class MyShipDetailsActivity extends BaseActivity {
 
         fragments.add(new ShipDetailsFragment());
         fragments.add(new ShipRecordMessageFragment());
-        fragments.add(new ShipCrewInfoFragment(llTitlebar));
+        fragments.add(new ShipCrewInfoFragment());
         fragments.add(new ShipCommunicateFragment());
     }
 
