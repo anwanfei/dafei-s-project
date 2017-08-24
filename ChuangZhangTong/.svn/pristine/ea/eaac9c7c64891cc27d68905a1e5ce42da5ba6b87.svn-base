@@ -1,0 +1,132 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.shipposition.activity;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.DebouncingOnClickListener;
+import butterknife.internal.Utils;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ShipLeavePortMessageActivity_ViewBinding implements Unbinder {
+  private ShipLeavePortMessageActivity target;
+
+  private View view2131624473;
+
+  private View view2131624364;
+
+  private View view2131624365;
+
+  private View view2131624366;
+
+  @UiThread
+  public ShipLeavePortMessageActivity_ViewBinding(ShipLeavePortMessageActivity target) {
+    this(target, target.getWindow().getDecorView());
+  }
+
+  @UiThread
+  public ShipLeavePortMessageActivity_ViewBinding(final ShipLeavePortMessageActivity target,
+      View source) {
+    this.target = target;
+
+    View view;
+    view = Utils.findRequiredView(source, R.id.iv_back, "field 'ivBack' and method 'onViewClicked'");
+    target.ivBack = Utils.castView(view, R.id.iv_back, "field 'ivBack'", ImageView.class);
+    view2131624473 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.tvTitle = Utils.findRequiredViewAsType(source, R.id.tv_title, "field 'tvTitle'", TextView.class);
+    target.llTitlebar = Utils.findRequiredViewAsType(source, R.id.ll_titlebar, "field 'llTitlebar'", LinearLayout.class);
+    target.tvShipMessageName = Utils.findRequiredViewAsType(source, R.id.tv_ship_message_name, "field 'tvShipMessageName'", TextView.class);
+    target.tvShipTime = Utils.findRequiredViewAsType(source, R.id.tv_ship_time, "field 'tvShipTime'", TextView.class);
+    target.llShipNameTime = Utils.findRequiredViewAsType(source, R.id.ll_ship_name_time, "field 'llShipNameTime'", LinearLayout.class);
+    view = Utils.findRequiredView(source, R.id.tv_share, "field 'tvShare' and method 'onViewClicked'");
+    target.tvShare = Utils.castView(view, R.id.tv_share, "field 'tvShare'", TextView.class);
+    view2131624364 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    view = Utils.findRequiredView(source, R.id.tv_sign_no_read, "field 'tvSignNoRead' and method 'onViewClicked'");
+    target.tvSignNoRead = Utils.castView(view, R.id.tv_sign_no_read, "field 'tvSignNoRead'", TextView.class);
+    view2131624365 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    view = Utils.findRequiredView(source, R.id.tv_place_top, "field 'tvPlaceTop' and method 'onViewClicked'");
+    target.tvPlaceTop = Utils.castView(view, R.id.tv_place_top, "field 'tvPlaceTop'", TextView.class);
+    view2131624366 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.llZhengwuBottom = Utils.findRequiredViewAsType(source, R.id.ll_zhengwu_bottom, "field 'llZhengwuBottom'", LinearLayout.class);
+    target.llLayoutHorizentalGrayLine = Utils.findRequiredViewAsType(source, R.id.ll_layout_horizental_gray_line, "field 'llLayoutHorizentalGrayLine'", LinearLayout.class);
+    target.tvLoadingUnloadingCargoPort = Utils.findRequiredViewAsType(source, R.id.tv_loading_unloading_cargo_port, "field 'tvLoadingUnloadingCargoPort'", TextView.class);
+    target.tvCartgoType = Utils.findRequiredViewAsType(source, R.id.tv_cartgo_type, "field 'tvCartgoType'", TextView.class);
+    target.tvCartgoNum = Utils.findRequiredViewAsType(source, R.id.tv_cartgo_num, "field 'tvCartgoNum'", TextView.class);
+    target.tvLoadingUnloadingCargoStartTime = Utils.findRequiredViewAsType(source, R.id.tv_loading_unloading_cargo_start_time, "field 'tvLoadingUnloadingCargoStartTime'", TextView.class);
+    target.tvLoadingUnloadingCargoCompleteTime = Utils.findRequiredViewAsType(source, R.id.tv_loading_unloading_cargo_complete_time, "field 'tvLoadingUnloadingCargoCompleteTime'", TextView.class);
+    target.tvLeaveTime = Utils.findRequiredViewAsType(source, R.id.tv_leave_time, "field 'tvLeaveTime'", TextView.class);
+    target.tvReTimeArrivePort = Utils.findRequiredViewAsType(source, R.id.tv_re_time_arrive_port, "field 'tvReTimeArrivePort'", TextView.class);
+    target.tvTugUseNum = Utils.findRequiredViewAsType(source, R.id.tv_tug_use_num, "field 'tvTugUseNum'", TextView.class);
+    target.tvShipDraft = Utils.findRequiredViewAsType(source, R.id.tv_ship_draft, "field 'tvShipDraft'", TextView.class);
+    target.tvRemark = Utils.findRequiredViewAsType(source, R.id.tv_remark, "field 'tvRemark'", TextView.class);
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ShipLeavePortMessageActivity target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.ivBack = null;
+    target.tvTitle = null;
+    target.llTitlebar = null;
+    target.tvShipMessageName = null;
+    target.tvShipTime = null;
+    target.llShipNameTime = null;
+    target.tvShare = null;
+    target.tvSignNoRead = null;
+    target.tvPlaceTop = null;
+    target.llZhengwuBottom = null;
+    target.llLayoutHorizentalGrayLine = null;
+    target.tvLoadingUnloadingCargoPort = null;
+    target.tvCartgoType = null;
+    target.tvCartgoNum = null;
+    target.tvLoadingUnloadingCargoStartTime = null;
+    target.tvLoadingUnloadingCargoCompleteTime = null;
+    target.tvLeaveTime = null;
+    target.tvReTimeArrivePort = null;
+    target.tvTugUseNum = null;
+    target.tvShipDraft = null;
+    target.tvRemark = null;
+
+    view2131624473.setOnClickListener(null);
+    view2131624473 = null;
+    view2131624364.setOnClickListener(null);
+    view2131624364 = null;
+    view2131624365.setOnClickListener(null);
+    view2131624365 = null;
+    view2131624366.setOnClickListener(null);
+    view2131624366 = null;
+  }
+}

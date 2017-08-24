@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical"
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.AboutActivity">
+
+    <include layout="@layout/titlebar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/junhang_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/about_version"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_score"
+        style="@style/textview_style_about"
+        android:text="@string/score"/>
+
+    <TextView
+        android:id="@+id/tv_about_version"
+        style="@style/textview_style_about"
+        android:text="@string/version_info" />
+
+    <TextView
+        android:id="@+id/tv_check_updata"
+        style="@style/textview_style_about"
+        android:text="@string/check_updata" />
+
+    <TextView
+        android:id="@+id/tv_feed_back"
+        style="@style/textview_style_about"
+        android:text="@string/feed_back" />
+</LinearLayout>

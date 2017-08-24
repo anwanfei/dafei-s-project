@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_net.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="9a2fc3d30ce3cb03014a373b1d5c8b5795334271">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_social_net_e99146fde004631c703140b21630857cf9e39644.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_WeChat_Simplify.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="fedb13cbfab727c73c9b2d91f5f1b8ab9c91980f">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\SocialSDK_WeChat_Simplify_80042f78886356f8128159cad15d71a2fcb02676\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_tool.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="87ef211d4ef0c257c7d040fbaa411832330eb9aa">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_social_tool_ae8aac1caf6d3f8962ce670e12a57d82af0938ec\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_WeChat_Simplify.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="fedb13cbfab727c73c9b2d91f5f1b8ab9c91980f">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\SocialSDK_WeChat_Simplify_80042f78886356f8128159cad15d71a2fcb02676.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_QQ_Simplify.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="979e86baea93da217d1d6dd8649d04a11624c183">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\SocialSDK_QQ_Simplify_84c0ded1fe9440a4fee1df746d45c412b644a6bd\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_QQ_Simplify.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="979e86baea93da217d1d6dd8649d04a11624c183">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\SocialSDK_QQ_Simplify_84c0ded1fe9440a4fee1df746d45c412b644a6bd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_shareboard_widget.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4b1a59e4c996ee354c2db160f4b1ad3b0e94aab5">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_shareboard_widget_148f681a86b0390f2348eb697b0a10ef569d0428.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_tool.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="87ef211d4ef0c257c7d040fbaa411832330eb9aa">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_social_tool_ae8aac1caf6d3f8962ce670e12a57d82af0938ec.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_api.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b680704ac08a1203f713be45e7c95653bb7497fe">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_social_api_266c0708d433c2c553dcf2d13d73bfd6545790aa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_shareboard_widget.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4b1a59e4c996ee354c2db160f4b1ad3b0e94aab5">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_shareboard_widget_148f681a86b0390f2348eb697b0a10ef569d0428\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_shareview.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="fd6e56a1bbd965cee6fda6021ee764c81b4723b6">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_social_shareview_c89a04a9202860a1168a307c12a9f0ec0312dfa4\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_shareboard.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="61fdc2bd1237079ae596f6cc93b6a5807d23940e">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_social_shareboard_39c4e2f0e3444fa0cfa4cabb16ea37dd2bb5b9ec.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\BaiduLBS_Android.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4f8d081f0a79d5ed9e62aa37d47c676d5294e978">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\BaiduLBS_Android_1089030c4e735a064b8eb93f987b70c4bdfd271e\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_api.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="b680704ac08a1203f713be45e7c95653bb7497fe">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_social_api_266c0708d433c2c553dcf2d13d73bfd6545790aa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\BaiduLBS_Android.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4f8d081f0a79d5ed9e62aa37d47c676d5294e978">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\BaiduLBS_Android_1089030c4e735a064b8eb93f987b70c4bdfd271e.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_b2d88df161b786663876b5d8c1c505102a04011b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_Sina_Simplify.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="01e9d7608a5af0c13061b6d30579ef00986455cb">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\SocialSDK_Sina_Simplify_a8a435aa943e6e182c166990af7027654323e081\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="9a058fc4e5db8056b3c1a3a5c1c8899a19d048fb">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_23db7e96abfbd648447e0df201e0afa16e16d7f9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_net.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="9a2fc3d30ce3cb03014a373b1d5c8b5795334271">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_social_net_e99146fde004631c703140b21630857cf9e39644\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\SocialSDK_Sina_Simplify.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="01e9d7608a5af0c13061b6d30579ef00986455cb">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\SocialSDK_Sina_Simplify_a8a435aa943e6e182c166990af7027654323e081.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_shareboard.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="61fdc2bd1237079ae596f6cc93b6a5807d23940e">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\transforms\dex\debug\folders\1000\2\umeng_social_shareboard_39c4e2f0e3444fa0cfa4cabb16ea37dd2bb5b9ec\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\dafei-s-project\ChuangZhangTong\app\libs\umeng_social_shareview.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="fd6e56a1bbd965cee6fda6021ee764c81b4723b6">
+        <dex dex="D:\dafei-s-project\ChuangZhangTong\app\build\intermediates\pre-dexed\debug\umeng_social_shareview_c89a04a9202860a1168a307c12a9f0ec0312dfa4.jar" />
+    </item>
+
+</items>

@@ -1,0 +1,45 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.mine.activity;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.Utils;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ChooseCertificateTypeActivity_ViewBinding implements Unbinder {
+  private ChooseCertificateTypeActivity target;
+
+  @UiThread
+  public ChooseCertificateTypeActivity_ViewBinding(ChooseCertificateTypeActivity target) {
+    this(target, target.getWindow().getDecorView());
+  }
+
+  @UiThread
+  public ChooseCertificateTypeActivity_ViewBinding(ChooseCertificateTypeActivity target,
+      View source) {
+    this.target = target;
+
+    target.ivBack = Utils.findRequiredViewAsType(source, R.id.iv_back, "field 'ivBack'", ImageView.class);
+    target.tvTitle = Utils.findRequiredViewAsType(source, R.id.tv_title, "field 'tvTitle'", TextView.class);
+    target.listviewChooseCertificateType = Utils.findRequiredViewAsType(source, R.id.listview_choose_certificate_type, "field 'listviewChooseCertificateType'", ListView.class);
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ChooseCertificateTypeActivity target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.ivBack = null;
+    target.tvTitle = null;
+    target.listviewChooseCertificateType = null;
+  }
+}

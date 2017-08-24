@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <include layout="@layout/titlebar" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_identity" />
+    <!--FrameLayout-->
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_identity" />
+
+    <!--RadioGroup-->
+    <RadioGroup
+        android:id="@+id/rg_bottom_tag_ship_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <RadioButton
+            android:id="@+id/rb_ship_details"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_ship_details"
+            android:text="@string/ship_detils" />
+
+        <RadioButton
+            android:id="@+id/rb_message"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_ship_message"
+            android:text="@string/record_message" />
+
+        <RadioButton
+            android:id="@+id/rb_crew_info"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_crew_info"
+            android:text="@string/crew_info" />
+
+        <RadioButton
+            android:id="@+id/rb_communicate"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_communicate"
+            android:text="@string/communication" />
+
+    </RadioGroup>
+
+</LinearLayout>

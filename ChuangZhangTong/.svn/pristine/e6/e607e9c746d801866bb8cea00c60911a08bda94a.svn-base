@@ -1,0 +1,75 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.mine.activity;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.DebouncingOnClickListener;
+import butterknife.internal.Utils;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ResetPwdActivity_ViewBinding implements Unbinder {
+  private ResetPwdActivity target;
+
+  private View view2131624473;
+
+  private View view2131624168;
+
+  @UiThread
+  public ResetPwdActivity_ViewBinding(ResetPwdActivity target) {
+    this(target, target.getWindow().getDecorView());
+  }
+
+  @UiThread
+  public ResetPwdActivity_ViewBinding(final ResetPwdActivity target, View source) {
+    this.target = target;
+
+    View view;
+    view = Utils.findRequiredView(source, R.id.iv_back, "field 'ivBack' and method 'onViewClicked'");
+    target.ivBack = Utils.castView(view, R.id.iv_back, "field 'ivBack'", ImageView.class);
+    view2131624473 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.tvTitle = Utils.findRequiredViewAsType(source, R.id.tv_title, "field 'tvTitle'", TextView.class);
+    target.etInputPwdFirst = Utils.findRequiredViewAsType(source, R.id.et_input_pwd_first, "field 'etInputPwdFirst'", EditText.class);
+    target.etInputPwdAgain = Utils.findRequiredViewAsType(source, R.id.et_input_pwd_again, "field 'etInputPwdAgain'", EditText.class);
+    view = Utils.findRequiredView(source, R.id.tv_save, "field 'tvSave' and method 'onViewClicked'");
+    target.tvSave = Utils.castView(view, R.id.tv_save, "field 'tvSave'", TextView.class);
+    view2131624168 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ResetPwdActivity target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.ivBack = null;
+    target.tvTitle = null;
+    target.etInputPwdFirst = null;
+    target.etInputPwdAgain = null;
+    target.tvSave = null;
+
+    view2131624473.setOnClickListener(null);
+    view2131624473 = null;
+    view2131624168.setOnClickListener(null);
+    view2131624168 = null;
+  }
+}

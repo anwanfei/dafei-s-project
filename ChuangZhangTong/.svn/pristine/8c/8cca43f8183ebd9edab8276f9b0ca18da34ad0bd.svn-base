@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.junhangxintong.chuanzhangtong"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="false"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- 百度地图 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- 网络定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- GPS定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取运营商信息，用于支持提供运营商信息的相关接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 友盟 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+    <meta-data
+        android:name="android.support.VERSION"
+        android:value="25.3.1" />
+
+    <application
+        android:name="com.junhangxintong.chuanzhangtong.common.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" >
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="YqxCO5SNcxnm3EGpqZA7uONX29A69svp" />
+
+        <activity
+            android:name="com.junhangxintong.chuanzhangtong.common.MainActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.PersonalInfoActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFleetActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ModifyNameActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFleetListActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AddShipActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ContactPhoneActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.EmergencyContactorActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.EmergencyContactorPhoneActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ChooseDutyActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MyFollowFleetActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ResetPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AboutActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.FlagMeanActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.MessageVerifyLoginActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.RegisterActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ForgetPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.InputPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.AddCertificateActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindManageMailBoxActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindBoxPwdActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.BindMailServerActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CertificateListsActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.junhangxintong.chuanzhangtong.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity android:name="com.junhangxintong.chuanzhangtong.net.FoodMenuActivity" />
+        <activity
+            android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CertificateIndetailsActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.AllMessagesActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipNoonMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipArrivalMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipLeavePortMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.shipposition.activity.ShipBerthingPortMessageActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.dynamic.activity.CrewCertificateActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.news.activity.OilPriceActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.news.activity.NationalityConventionActivity" />
+
+        <!-- 友盟微博 -->
+        <activity
+            android:name="com.junhangxintong.chuanzhangtong.WBShareActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- 微信 -->
+        <activity
+            android:name="com.junhangxintong.chuanzhangtong.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- qq精简版 -->
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 分享编辑页(只有新浪微博精简版，豆瓣人人腾讯微博需要)： -->
+        <activity
+            android:name="com.umeng.socialize.editorpage.ShareActivity"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.UMDefault" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5993f8201c5dd07683000473" />
+
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ChooseCountryActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.ChooseCertificateTypeActivity" />
+        <activity android:name="com.junhangxintong.chuanzhangtong.mine.activity.CrewDetailsActivity" />
+        <!-- <provider -->
+        <!-- android:name="android.support.v4.content.FileProvider" -->
+        <!-- android:authorities="com.yancy.gallerypick.fileprovider" -->
+        <!-- android:exported="false" -->
+        <!-- android:grantUriPermissions="true"> -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.FILE_PROVIDER_PATHS" -->
+        <!-- android:resource="@xml/filepaths" /> -->
+        <!-- </provider> -->
+        <activity
+            android:name="com.yancy.gallerypick.activity.GalleryPickActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/GalleryTheme" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+    </application>
+
+</manifest>

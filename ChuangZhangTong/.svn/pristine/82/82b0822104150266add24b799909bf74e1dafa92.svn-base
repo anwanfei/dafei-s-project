@@ -1,0 +1,147 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.shipposition.activity;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.DebouncingOnClickListener;
+import butterknife.internal.Utils;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ShipNoonMessageActivity_ViewBinding implements Unbinder {
+  private ShipNoonMessageActivity target;
+
+  private View view2131624473;
+
+  private View view2131624364;
+
+  private View view2131624365;
+
+  private View view2131624366;
+
+  @UiThread
+  public ShipNoonMessageActivity_ViewBinding(ShipNoonMessageActivity target) {
+    this(target, target.getWindow().getDecorView());
+  }
+
+  @UiThread
+  public ShipNoonMessageActivity_ViewBinding(final ShipNoonMessageActivity target, View source) {
+    this.target = target;
+
+    View view;
+    view = Utils.findRequiredView(source, R.id.iv_back, "field 'ivBack' and method 'onViewClicked'");
+    target.ivBack = Utils.castView(view, R.id.iv_back, "field 'ivBack'", ImageView.class);
+    view2131624473 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.tvTitle = Utils.findRequiredViewAsType(source, R.id.tv_title, "field 'tvTitle'", TextView.class);
+    target.llTitlebar = Utils.findRequiredViewAsType(source, R.id.ll_titlebar, "field 'llTitlebar'", LinearLayout.class);
+    target.tvShipMessageName = Utils.findRequiredViewAsType(source, R.id.tv_ship_message_name, "field 'tvShipMessageName'", TextView.class);
+    target.tvShipTime = Utils.findRequiredViewAsType(source, R.id.tv_ship_time, "field 'tvShipTime'", TextView.class);
+    target.tvLatitude = Utils.findRequiredViewAsType(source, R.id.tv_latitude, "field 'tvLatitude'", TextView.class);
+    target.tvShipDirection = Utils.findRequiredViewAsType(source, R.id.tv_ship_direction, "field 'tvShipDirection'", TextView.class);
+    target.tvLongtitude = Utils.findRequiredViewAsType(source, R.id.tv_longtitude, "field 'tvLongtitude'", TextView.class);
+    target.tvShipSpeed = Utils.findRequiredViewAsType(source, R.id.tv_ship_speed, "field 'tvShipSpeed'", TextView.class);
+    target.tvTheShipHeavyOil = Utils.findRequiredViewAsType(source, R.id.tv_the_ship_heavy_oil, "field 'tvTheShipHeavyOil'", TextView.class);
+    target.tvShipDraft = Utils.findRequiredViewAsType(source, R.id.tv_ship_draft, "field 'tvShipDraft'", TextView.class);
+    target.tvTheShipLightOil = Utils.findRequiredViewAsType(source, R.id.tv_the_ship_light_oil, "field 'tvTheShipLightOil'", TextView.class);
+    target.tvTheShipFrashwater = Utils.findRequiredViewAsType(source, R.id.tv_the_ship_frashwater, "field 'tvTheShipFrashwater'", TextView.class);
+    target.tvLightOilConsume = Utils.findRequiredViewAsType(source, R.id.tv_light_oil_consume, "field 'tvLightOilConsume'", TextView.class);
+    target.tvFrashwaterConsume = Utils.findRequiredViewAsType(source, R.id.tv_frashwater_consume, "field 'tvFrashwaterConsume'", TextView.class);
+    target.tvAverageSpeedBetween24Hours = Utils.findRequiredViewAsType(source, R.id.tv_average_speed_between_24_hours, "field 'tvAverageSpeedBetween24Hours'", TextView.class);
+    target.tvReArrivalTime = Utils.findRequiredViewAsType(source, R.id.tv_re_arrival_time, "field 'tvReArrivalTime'", TextView.class);
+    target.tvPressure = Utils.findRequiredViewAsType(source, R.id.tv_pressure, "field 'tvPressure'", TextView.class);
+    target.tvPitch = Utils.findRequiredViewAsType(source, R.id.tv_pitch, "field 'tvPitch'", TextView.class);
+    target.tvTemperature = Utils.findRequiredViewAsType(source, R.id.tv_temperature, "field 'tvTemperature'", TextView.class);
+    target.tvWeather = Utils.findRequiredViewAsType(source, R.id.tv_weather, "field 'tvWeather'", TextView.class);
+    target.tvWaveLevel = Utils.findRequiredViewAsType(source, R.id.tv_wave_level, "field 'tvWaveLevel'", TextView.class);
+    target.tvWindDirection = Utils.findRequiredViewAsType(source, R.id.tv_wind_direction, "field 'tvWindDirection'", TextView.class);
+    target.tvConsume = Utils.findRequiredViewAsType(source, R.id.tv_consume, "field 'tvConsume'", TextView.class);
+    target.tvRemark = Utils.findRequiredViewAsType(source, R.id.tv_remark, "field 'tvRemark'", TextView.class);
+    view = Utils.findRequiredView(source, R.id.tv_share, "field 'tvShare' and method 'onViewClicked'");
+    target.tvShare = Utils.castView(view, R.id.tv_share, "field 'tvShare'", TextView.class);
+    view2131624364 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    view = Utils.findRequiredView(source, R.id.tv_sign_no_read, "field 'tvSignNoRead' and method 'onViewClicked'");
+    target.tvSignNoRead = Utils.castView(view, R.id.tv_sign_no_read, "field 'tvSignNoRead'", TextView.class);
+    view2131624365 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    view = Utils.findRequiredView(source, R.id.tv_place_top, "field 'tvPlaceTop' and method 'onViewClicked'");
+    target.tvPlaceTop = Utils.castView(view, R.id.tv_place_top, "field 'tvPlaceTop'", TextView.class);
+    view2131624366 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.llZhengwuBottom = Utils.findRequiredViewAsType(source, R.id.ll_zhengwu_bottom, "field 'llZhengwuBottom'", LinearLayout.class);
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ShipNoonMessageActivity target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.ivBack = null;
+    target.tvTitle = null;
+    target.llTitlebar = null;
+    target.tvShipMessageName = null;
+    target.tvShipTime = null;
+    target.tvLatitude = null;
+    target.tvShipDirection = null;
+    target.tvLongtitude = null;
+    target.tvShipSpeed = null;
+    target.tvTheShipHeavyOil = null;
+    target.tvShipDraft = null;
+    target.tvTheShipLightOil = null;
+    target.tvTheShipFrashwater = null;
+    target.tvLightOilConsume = null;
+    target.tvFrashwaterConsume = null;
+    target.tvAverageSpeedBetween24Hours = null;
+    target.tvReArrivalTime = null;
+    target.tvPressure = null;
+    target.tvPitch = null;
+    target.tvTemperature = null;
+    target.tvWeather = null;
+    target.tvWaveLevel = null;
+    target.tvWindDirection = null;
+    target.tvConsume = null;
+    target.tvRemark = null;
+    target.tvShare = null;
+    target.tvSignNoRead = null;
+    target.tvPlaceTop = null;
+    target.llZhengwuBottom = null;
+
+    view2131624473.setOnClickListener(null);
+    view2131624473 = null;
+    view2131624364.setOnClickListener(null);
+    view2131624364 = null;
+    view2131624365.setOnClickListener(null);
+    view2131624365 = null;
+    view2131624366.setOnClickListener(null);
+    view2131624366 = null;
+  }
+}

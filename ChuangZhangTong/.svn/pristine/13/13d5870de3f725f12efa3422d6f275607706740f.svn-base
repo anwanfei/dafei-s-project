@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\edz\\.android\\build-cache\\050d3824384a0b65b2398485e3b17e284897995d\\output\\res\\layout-v21\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\edz\\.android\\build-cache\\050d3824384a0b65b2398485e3b17e284897995d\\output\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\edz\\.android\\build-cache\\050d3824384a0b65b2398485e3b17e284897995d\\output\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\edz\\.android\\build-cache\\050d3824384a0b65b2398485e3b17e284897995d\\output\\res\\layout-v21\\notification_template_custom_big.xml"
+    }
+]

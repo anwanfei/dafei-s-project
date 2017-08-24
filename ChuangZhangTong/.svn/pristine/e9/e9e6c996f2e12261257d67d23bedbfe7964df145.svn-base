@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\logo.png",
+        "source": "D:\\dafei-s-project\\ChuangZhangTong\\app\\src\\main\\res\\mipmap-xxhdpi\\logo.png"
+    },
+    {
+        "merged": "D:\\dafei-s-project\\ChuangZhangTong\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
+        "source": "D:\\dafei-s-project\\ChuangZhangTong\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+    }
+]

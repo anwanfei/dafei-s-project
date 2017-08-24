@@ -1,0 +1,42 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.shipposition.adapter;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.Utils;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ShipMessagesAdapter$ViewHolder_ViewBinding implements Unbinder {
+  private ShipMessagesAdapter.ViewHolder target;
+
+  @UiThread
+  public ShipMessagesAdapter$ViewHolder_ViewBinding(ShipMessagesAdapter.ViewHolder target,
+      View source) {
+    this.target = target;
+
+    target.tvMessageTitle = Utils.findRequiredViewAsType(source, R.id.tv_message_title, "field 'tvMessageTitle'", TextView.class);
+    target.tvMessageTime = Utils.findRequiredViewAsType(source, R.id.tv_message_time, "field 'tvMessageTime'", TextView.class);
+    target.ivShowMessageNew = Utils.findRequiredViewAsType(source, R.id.iv_show_message_new, "field 'ivShowMessageNew'", ImageView.class);
+    target.llMessage = Utils.findRequiredViewAsType(source, R.id.ll_message, "field 'llMessage'", RelativeLayout.class);
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ShipMessagesAdapter.ViewHolder target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.tvMessageTitle = null;
+    target.tvMessageTime = null;
+    target.ivShowMessageNew = null;
+    target.llMessage = null;
+  }
+}

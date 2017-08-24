@@ -1,0 +1,72 @@
+// Generated code from Butter Knife. Do not modify!
+package com.junhangxintong.chuanzhangtong.shipposition.fragment;
+
+import android.support.annotation.CallSuper;
+import android.support.annotation.UiThread;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import butterknife.Unbinder;
+import butterknife.internal.DebouncingOnClickListener;
+import butterknife.internal.Utils;
+import com.baidu.mapapi.map.MapView;
+import com.junhangxintong.chuanzhangtong.R;
+import java.lang.IllegalStateException;
+import java.lang.Override;
+
+public class ShipRecordMessageFragment_ViewBinding implements Unbinder {
+  private ShipRecordMessageFragment target;
+
+  private View view2131624473;
+
+  private View view2131624303;
+
+  @UiThread
+  public ShipRecordMessageFragment_ViewBinding(final ShipRecordMessageFragment target,
+      View source) {
+    this.target = target;
+
+    View view;
+    target.baiduMap = Utils.findRequiredViewAsType(source, R.id.baidu_map, "field 'baiduMap'", MapView.class);
+    target.tvShowAllMesages = Utils.findRequiredViewAsType(source, R.id.tv_show_all_mesages, "field 'tvShowAllMesages'", TextView.class);
+    target.lvMessage = Utils.findRequiredViewAsType(source, R.id.lv_message, "field 'lvMessage'", ListView.class);
+    view = Utils.findRequiredView(source, R.id.iv_back, "field 'ivBack' and method 'onViewClicked'");
+    target.ivBack = Utils.castView(view, R.id.iv_back, "field 'ivBack'", ImageView.class);
+    view2131624473 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+    target.tvTitle = Utils.findRequiredViewAsType(source, R.id.tv_title, "field 'tvTitle'", TextView.class);
+    view = Utils.findRequiredView(source, R.id.ll_show_all_messages, "method 'onViewClicked'");
+    view2131624303 = view;
+    view.setOnClickListener(new DebouncingOnClickListener() {
+      @Override
+      public void doClick(View p0) {
+        target.onViewClicked(p0);
+      }
+    });
+  }
+
+  @Override
+  @CallSuper
+  public void unbind() {
+    ShipRecordMessageFragment target = this.target;
+    if (target == null) throw new IllegalStateException("Bindings already cleared.");
+    this.target = null;
+
+    target.baiduMap = null;
+    target.tvShowAllMesages = null;
+    target.lvMessage = null;
+    target.ivBack = null;
+    target.tvTitle = null;
+
+    view2131624473.setOnClickListener(null);
+    view2131624473 = null;
+    view2131624303.setOnClickListener(null);
+    view2131624303 = null;
+  }
+}

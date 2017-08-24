@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--FrameLayout-->
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_identity" />
+
+    <!--RadioGroup-->
+    <RadioGroup
+        android:id="@+id/rg_bottom_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <RadioButton
+            android:id="@+id/rb_common_frame"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_ship_positino"
+            android:text="@string/ship_position" />
+
+        <RadioButton
+            android:id="@+id/rb_thirdparty"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_dynamic"
+            android:text="@string/message" />
+
+        <RadioButton
+            android:id="@+id/rb_custom"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_news"
+            android:text="@string/news" />
+
+        <RadioButton
+            android:id="@+id/rb_other"
+            style="@style/botttom_tag_style"
+            android:drawableTop="@drawable/selector_rb_my"
+            android:text="@string/my" />
+
+    </RadioGroup>
+
+</LinearLayout>

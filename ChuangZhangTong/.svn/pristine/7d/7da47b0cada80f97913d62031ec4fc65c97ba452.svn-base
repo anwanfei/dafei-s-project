@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="com.junhangxintong.chuanzhangtong.news.activity.OilPriceActivity">
+
+    <!--  <TableLayout
+          android:id="@+id/table"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@color/gray_identity">
+
+          <TableRow
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:text="姓名" />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="学校" />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="专业" />
+          </TableRow>
+
+          <TableRow
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="1dp"
+              android:layout_marginLeft="1dp"
+              android:layout_marginRight="1dp"
+              android:layout_marginTop="1dp">
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:text="张飞" />
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="野鸡大学" />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="体育系" />
+          </TableRow>
+
+          <TableRow
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="1dp"
+              android:layout_marginLeft="1dp"
+              android:layout_marginRight="1dp">
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:text="刘备" />
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="皇家学院" />
+
+              <TextView
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="1dp"
+                  android:background="@color/white"
+                  android:text="经济" />
+          </TableRow>
+      </TableLayout>-->
+
+    <include layout="@layout/titlebar" />
+
+    <include layout="@layout/layout_horizental_gray_line" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_gray_identity_top_left_right_radius"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="@color/gray_F0" />
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/Name"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="@color/gray_F0" />
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/price"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="@color/gray_F0" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/up_down_quota"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="@color/gray_F0" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/up_down_range"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_oil_price"
+        android:layout_width="334dp"
+        android:layout_height="wrap_content"
+        android:divider="@color/gray_F0"
+        android:dividerHeight="1dp"
+        android:scrollbars="none" />
+
+    <ImageView
+        android:layout_width="334dp"
+        android:layout_height="8dp"
+        android:src="@drawable/bg_gray_identity_bottom_left_right_radius" />
+</LinearLayout>
