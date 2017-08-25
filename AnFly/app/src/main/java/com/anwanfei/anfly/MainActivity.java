@@ -15,9 +15,17 @@ import com.anwanfei.anfly.my.fragment.MyFragment;
 import com.anwanfei.anfly.summary.fragment.SummaryFragment;
 import com.anwanfei.anfly.third.fragment.ThirdFragment;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class MainActivity extends BaseActivity {
 
@@ -120,6 +128,66 @@ public class MainActivity extends BaseActivity {
 
         }
     }
+
+    public void test() {
+        Observer<String> observer = new Observer<String>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(String value) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
+        Subscriber<String> subscriber = new Subscriber<String>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+
+            }
+
+            @Override
+            public void onNext(String s) {
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        };
+        Observable observable = Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                e.onNext("Hello");
+                e.onNext("Hi");
+                e.onNext("Aloha");
+                e.onComplete();
+
+            }
+        });
+
+        observable.subscribe(observer);
+
+    }
+
 
     private BaseFragment getFragment() {
         if (fragments.size() > 0) {

@@ -32,7 +32,7 @@
         <activity android:name=".foundation.activity.AndroidStorageActivity" />
         <activity android:name=".foundation.activity.AndroidPhotoAnimationActivity" />
         <activity android:name=".foundation.activity.AndroidEventActivity" />
-        <activity android:name=".foundation.activity.AndroidNewCharacteristicsActivity" />
+        <activity android:name=".foundation.activity.AndroidAdvanceActivity" />
         <activity android:name=".foundation.activity.AndroidInterviewActivity" />
         <activity android:name=".summary.activity.GuideActivity" />
         <activity android:name=".summary.activity.TablayoutActivity" />

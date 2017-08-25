@@ -5,6 +5,19 @@
     <string name="third_party">第三方</string>
     <string name="my">我的</string>
 
+    <!--基础-->
+    <string name="android_introduction">安卓入门</string>
+    <string name="andriod_assembly">安卓组件</string>
+    <string name="andriod_ui">用户界面</string>
+    <string name="andriod_storage">数据存储</string>
+    <string name="andriod_photo_animation">图像动画</string>
+    <string name="andriod_internet">网络数据</string>
+    <string name="andriod_event">消息事件</string>
+    <string name="andriod_advance">安卓进阶</string>
+    <string name="andriod_interview">去面试</string>
+    <string name="data">数据</string>
+    <string name="advance">进阶</string>
+    <string name="interview">面试</string>
 
     <!-- 基本操作示例（开始） -->
     <string name="btn_opengps">强制打开GPS</string>

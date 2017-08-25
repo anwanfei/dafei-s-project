@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.anwanfei.anfly.R;
 import com.anwanfei.anfly.common.BaseActivity;
 
-public class AndroidNewCharacteristicsActivity extends BaseActivity {
+public class AndroidAdvanceActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

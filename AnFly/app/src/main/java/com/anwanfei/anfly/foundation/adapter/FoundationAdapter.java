@@ -17,7 +17,7 @@ import com.anwanfei.anfly.foundation.activity.AndroidEventActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidFoundationActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidInternetActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidInterviewActivity;
-import com.anwanfei.anfly.foundation.activity.AndroidNewCharacteristicsActivity;
+import com.anwanfei.anfly.foundation.activity.AndroidAdvanceActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidPhotoAnimationActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidStorageActivity;
 import com.anwanfei.anfly.foundation.activity.AndroidUIActivity;
@@ -41,7 +41,7 @@ public class FoundationAdapter extends RecyclerView.Adapter<FoundationAdapter.Vi
     private List<Integer> mHeights;
 
     Class[] arrClasses = {AndroidFoundationActivity.class, AndroidComponentActivity.class, AndroidUIActivity.class, AndroidStorageActivity.class, AndroidInternetActivity.class
-    , AndroidPhotoAnimationActivity.class, AndroidEventActivity.class, AndroidNewCharacteristicsActivity.class, AndroidInterviewActivity.class};
+    , AndroidPhotoAnimationActivity.class, AndroidEventActivity.class, AndroidAdvanceActivity.class, AndroidInterviewActivity.class};
 
 
     public FoundationAdapter(Context mContext, List<FoundationBean> mList) {
