@@ -3,6 +3,6 @@
     android:shape="line">
     <stroke
         android:width="2dp"
-        android:color="@color/gray_identity" />
+        android:color="@color/gray_ship_details_bg" />
 
 </shape>

@@ -74,6 +74,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static android.content.Context.SENSOR_SERVICE;
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/7/5.
@@ -204,7 +205,20 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "huahaiyihao", "China", "6666", "货船"));
         }
 
-        //搜索界面
+        // TODO: 2017/8/26 关注界面带搜索关键字跳转过来
+        boolean isFromFollow = CacheUtils.getBoolean(getActivity(), Constants.SEARCHSHIPNAME, false);
+        if (isFromFollow) {
+            //清除在关注界面的搜索记录
+            getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().remove(Constants.SEARCHSHIPNAME).commit();
+            Intent intent = getActivity().getIntent();
+            String searchShipNameFromFollowShip = intent.getStringExtra(Constants.SEARCHSHIPNAME);
+            etSearch.setText(searchShipNameFromFollowShip);
+            searchResultByInput(etSearch.getText().toString());
+            etSearch.requestFocus();
+            llSearch.setVisibility(View.VISIBLE);
+        }
+
+        //在shipPotionFragment界面搜索
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -225,27 +239,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                     llSearchResult.setVisibility(View.GONE);
                     ivClear.setVisibility(View.GONE);
                 } else {
-                    ivClear.setVisibility(View.VISIBLE);
-                    llHistory.setVisibility(View.GONE);
-                    llSearchResult.setVisibility(View.VISIBLE);
-
-                    shipDetailsLists = queryData(inputContent);
-                    if (shipDetailsLists.size() > 0) {
-                        llSearchNoResult.setVisibility(View.GONE);
-                        lvSearchResult.setVisibility(View.VISIBLE);
-                        SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists);
-                        lvSearchResult.setAdapter(searchResultAdapter);
-                        tvResultSize.setText("搜索到" + shipDetailsLists.size() + "条结果");
-
-                        //历史记录添加并去重
-                        if (!historyLists.contains(inputContent)) {
-                            historyLists.add(inputContent);
-                        }
-                    } else {
-                        llSearchNoResult.setVisibility(View.VISIBLE);
-                        lvSearchResult.setVisibility(View.GONE);
-                        tvResultSize.setText("搜索到0条结果");
-                    }
+                    searchResultByInput(inputContent);
                 }
             }
         });
@@ -261,7 +255,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                     // 此处为失去焦点时的处理内容
 //                    llSearchResult.setVisibility(View.GONE);
                 }
-
             }
         });
 
@@ -286,6 +279,31 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    //当输入内容不为空时，显示搜索结果
+    private void searchResultByInput(String inputContent) {
+        ivClear.setVisibility(View.VISIBLE);
+        llHistory.setVisibility(View.GONE);
+        llSearchResult.setVisibility(View.VISIBLE);
+
+        shipDetailsLists = queryData(inputContent);
+        if (shipDetailsLists.size() > 0) {
+            llSearchNoResult.setVisibility(View.GONE);
+            lvSearchResult.setVisibility(View.VISIBLE);
+            SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists);
+            lvSearchResult.setAdapter(searchResultAdapter);
+            tvResultSize.setText("搜索到" + shipDetailsLists.size() + "条结果");
+
+            //历史记录添加并去重
+            if (!historyLists.contains(inputContent)) {
+                historyLists.add(inputContent);
+            }
+        } else {
+            llSearchNoResult.setVisibility(View.VISIBLE);
+            lvSearchResult.setVisibility(View.GONE);
+            tvResultSize.setText("搜索到0条结果");
+        }
+    }
+
     private void showHistoryLists() {
         llHistory.setVisibility(View.VISIBLE);
         Collections.reverse(historyLists);
@@ -295,6 +313,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 etSearch.setText(historyLists.get(i));
+                etSearch.requestFocus();
             }
         });
     }

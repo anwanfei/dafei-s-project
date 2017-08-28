@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.InstranceDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/insurance_type" />
+
+            <TextView
+                android:id="@+id/tv_insurance_type"
+                style="@style/textview_style_certificate"
+                android:text="@string/ship_insturance" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/ship_name" />
+
+            <TextView
+                android:id="@+id/tv_ship_name"
+                style="@style/textview_style_certificate"
+                android:text="@string/huahai_one" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_bianhao" />
+
+            <TextView
+                android:id="@+id/tv_ship_bianhao"
+                style="@style/textview_style_certificate"
+                android:text="@string/job_num_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_certificate_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_imo" />
+
+            <TextView
+                android:id="@+id/tv_ship_imo"
+                style="@style/textview_style_certificate"
+                android:text="@string/job_num_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_nationality_harbor" />
+
+            <TextView
+                android:id="@+id/tv_ship_nationality_harbor"
+                style="@style/textview_style_certificate"
+                android:text="@string/ship_start" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/name_address_of_ship" />
+
+            <TextView
+                android:id="@+id/tv_name_address_of_ship"
+                style="@style/textview_style_certificate"
+                android:text="@string/junhang" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/gurantee_type" />
+
+            <TextView
+                android:id="@+id/tv_gurantee_type"
+                style="@style/textview_style_certificate"
+                android:text="@string/issuing_authority" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issue_date" />
+
+            <TextView
+                android:id="@+id/tv_issue_date"
+                style="@style/textview_style_certificate"
+                android:text="@string/date_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issuing_authority" />
+
+            <TextView
+                android:id="@+id/tv_issuing_authority"
+                style="@style/textview_style_certificate"
+                android:text="@string/junhang" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_issuing_authority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issue_address" />
+
+            <TextView
+                android:id="@+id/tv_issue_address"
+                style="@style/textview_style_certificate"
+                android:text="@string/shanghai" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_permanent_effective" />
+
+            <TextView
+                android:id="@+id/tv_is_permanent_effective"
+                style="@style/textview_style_certificate"
+                android:text="@string/yes" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_effective_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/effective_date" />
+
+            <TextView
+                android:id="@+id/tv_effective_date"
+                style="@style/textview_style_certificate"
+                android:text="@string/date_demo" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_re_warning_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/re_warning_days" />
+
+            <TextView
+                android:id="@+id/tv_warning_days"
+                style="@style/textview_style_certificate"
+                android:text="@string/re_warning_days" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_common" />
+
+            <TextView
+                android:id="@+id/tv_common"
+                style="@style/textview_style_certificate"
+                android:text="@string/is_common" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_add_certificate_photo"
+                style="@style/account_setting_left_textview"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/add_certificate_photo" />
+
+            <ImageView
+                android:id="@+id/iv_certificate_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/add_certificate" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

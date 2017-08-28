@@ -16,6 +16,7 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFleetListActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFollowFleetActivity;
@@ -102,7 +103,8 @@ public class MyFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan})
+    @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_feed_back,
+            R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
@@ -130,6 +132,9 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_follew_fleet:
                 startActivity(new Intent(getActivity(), MyFollowFleetActivity.class));
+                break;
+            case R.id.rl_feed_back:
+                startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
         }
     }

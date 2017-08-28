@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.activity.CertificateListsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateListsActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewDetailsActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
 
@@ -116,7 +116,7 @@ public class MyCrewAdapter extends BaseAdapter implements View.OnClickListener {
             case R.id.tv_item_ship_name:
                 break;
             case R.id.tv_certificate:
-                mContext.startActivity(new Intent(mContext, CertificateListsActivity.class));
+                mContext.startActivity(new Intent(mContext, CrewCertificateListsActivity.class));
                 break;
             case R.id.cb_ship:
                 break;
@@ -125,30 +125,6 @@ public class MyCrewAdapter extends BaseAdapter implements View.OnClickListener {
                 break;
         }
     }
-
-   /* static class ViewHolder {
-        @BindView(R.id.cb_ship)
-        CheckBox cbShip;
-        @BindView(R.id.tv_item_crew_duty)
-        TextView tvItemCrewDuty;
-        @BindView(R.id.tv_item_crew_name)
-        TextView tvItemCrewName;
-        @BindView(R.id.tv_item_crew_job_num)
-        TextView tvItemCrewJobNum;
-        @BindView(R.id.tv_item_crew_nationality)
-        TextView tvItemCrewNationality;
-        @BindView(R.id.tv_certificate)
-        TextView tvCertificate;
-        @BindView(R.id.ll_crew_details)
-        LinearLayout llCrewDetails;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-
-        ViewHolder() {
-        }
-    }*/
 
     public void controlCheckboxShow(boolean b) {
         isShowCheckBox = b;

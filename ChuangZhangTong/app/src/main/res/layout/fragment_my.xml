@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/iv_photo"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="10dp"
                     android:text="君航"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
@@ -66,11 +66,12 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_ship"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rl_user_info"
             android:layout_marginLeft="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -98,12 +99,18 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/gray_identity" />
+
             <RelativeLayout
                 android:id="@+id/rl_follew_fleet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="60dp"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -123,71 +130,121 @@
                     android:src="@drawable/arrow_right" />
 
             </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="24dp"
-                android:background="@color/gray_identity" />
-
-            <RelativeLayout
-                android:id="@+id/rl_chuanyuanguanli"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="24dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_chuanyuanguanli"
-                    android:drawablePadding="20dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/chuanyuanguanli"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/arrow_right" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="24dp"
-                android:background="@color/gray_identity" />
-
-            <RelativeLayout
-                android:id="@+id/rl_account_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="24dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_setting"
-                    android:drawablePadding="20dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/account_setting"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/arrow_right" />
-
-            </RelativeLayout>
-
         </LinearLayout>
+
+        <View
+            android:id="@+id/view_line1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/ll_ship"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_bg" />
+
+        <RelativeLayout
+            android:id="@+id/rl_chuanyuanguanli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_line1"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_chuanyuanguanli"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/chuanyuanguanli"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_line2"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/rl_chuanyuanguanli"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_bg" />
+
+        <RelativeLayout
+            android:id="@+id/rl_account_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_line2"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_setting"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/account_setting"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_line3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/rl_account_setting"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_bg" />
+
+        <RelativeLayout
+            android:id="@+id/rl_feed_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_line3"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_feedback"
+                android:drawablePadding="20dp"
+                android:gravity="center_vertical"
+                android:text="@string/feed_back"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/arrow_right" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/rl_feed_back"
+            android:layout_marginTop="10dp"
+            android:background="@color/gray_bg" />
     </RelativeLayout>
-</RelativeLayout>
+</ScrollView>

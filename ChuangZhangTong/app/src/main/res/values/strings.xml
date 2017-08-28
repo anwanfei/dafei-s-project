@@ -1,16 +1,18 @@
 <resources>
     <string name="app_name">船掌通</string>
+    <string name="junhang">君航</string>
     <string name="ship_position">船位</string>
     <string name="message">动态提醒</string>
     <string name="news">航运头条</string>
     <string name="my">我的</string>
-    <string name="chuanduigunali">船队管理</string>
+    <string name="chuanduigunali">我的船队</string>
     <string name="ceju">测距</string>
     <string name="chuandui">船队</string>
     <string name="chuanyuanguanli">船员管理</string>
-    <string name="account_setting">账号设置</string>
+    <string name="account_setting">设置</string>
     <string name="user_name">姓名</string>
     <string name="duty">职务</string>
+    <string name="role">角色</string>
     <string name="label">标签</string>
     <string name="gender">性别</string>
     <string name="contact_number">联系电话</string>
@@ -35,17 +37,18 @@
     <string name="weibo">微博</string>
     <string name="QQ">QQ</string>
     <string name="clear_buffer">清除缓冲</string>
-    <string name="clear_buffer_demo">0B</string>
+    <string name="clear_buffer_demo">3KB</string>
     <string name="flag_mean">标记含义</string>
     <string name="about">关于船掌通</string>
     <string name="set_sail_remind">起航提醒</string>
     <string name="is_login_out">确定要退出登录吗？</string>
     <string name="login_out">退出登录</string>
-    <string name="reset_pwd">修改密码</string>
+    <string name="reset_pwd">重置密码</string>
     <string name="no_bind">未绑定</string>
     <string name="no_setting">未设置</string>
     <string name="login_register">登录/注册</string>
     <string name="identity">身份</string>
+    <string name="shanghai">上海</string>
     <string name="input_phone">请输入手机号</string>
     <string name="input">请输入</string>
     <string name="input_pwd">请输入密码</string>
@@ -145,7 +148,7 @@
     <string name="add_certificate_photo">添加照片</string>
     <string name="time_30_days">30天</string>
     <string name="time_90_days">90天</string>
-    <string name="add_certificate">添加</string>
+    <string name="add">添加</string>
     <string name="bind_manage_mail">绑定管理邮箱</string>
     <string name="bind_manage_mail_warn">* 请输入您与船舶进行管理通讯的唯一指定邮箱\n提供邮箱服务器信息会将船舶报文集成进平台，对船舶的航行状态一目了然。</string>
     <string name="bind_box_server">绑定邮箱服务器</string>
@@ -177,6 +180,8 @@
     <string name="land_map">地图</string>
     <string name="satellite_map">卫星图</string>
     <string name="search_hint">请输入船号/呼号/MMSI/IMO进行搜索</string>
+    <string name="search_ship_name">搜索船名</string>
+    <string name="search">搜索</string>
     <string name="no_longin">请先登录</string>
     <string name="MMIS_cannot_empty">MMSI编号不能为空</string>
     <string name="chinese_name_cannot_empty">中文船名不能为空</string>
@@ -193,6 +198,8 @@
     <string name="crew_mail_cannot_empty">船员邮箱不能为空</string>
     <string name="follow_fisrt_ship">亲，请关注您的提一条船哦~</string>
     <string name="certificate_details">证书详情</string>
+    <string name="certificate">证书</string>
+    <string name="insurance">保险</string>
     <string name="search_no_result">啊哦，没有您搜的船舶信息哦~</string>
     <string name="ship_detils">船舶详情</string>
     <string name="follow">+ 关注</string>
@@ -277,6 +284,27 @@
     <string name="ship_num">航次号</string>
     <string name="ship_num_demo">航次号：5200</string>
     <string name="chuanzhang">船长</string>
+    <string name="competency_certificate">适任证书</string>
+    <string name="seanman_certificate">海员证</string>
+    <string name="healthy_certificate">健康证</string>
+    <string name="fire_control_ceritficate">高级消防培训合格证书</string>
+    <string name="crew_server_certificate">船员服务证</string>
+    <string name="insurance_type">保险类型</string>
+    <string name="ship_bianhao">船舶编号/呼号</string>
+    <string name="ship_imo">IMO识别号</string>
+    <string name="ship_nationality_harbor">船籍港</string>
+    <string name="name_address_of_ship">船舶所有人名称及地址</string>
+    <string name="ship_name">船舶名称</string>
+    <string name="gurantee_type">保证类别</string>
+    <string name="issue_date">签发日期</string>
+    <string name="issue_department">发证机关</string>
+    <string name="issue_address">签发地点</string>
+    <string name="is_permanent_effective">是否永久有效</string>
+    <string name="effective_date">有效日期</string>
+    <string name="id_often_use">是否常用</string>
+    <string name="photo">照片</string>
+    <string name="add_certificate">添加证件</string>
+    <string name="add_insurance">添加保险</string>
 
     <!--dynamoic-->
     <string name="remind">您好，您的船舶已起航！</string>
@@ -318,6 +346,10 @@
     <string name="send">发送</string>
     <string name="app_description">船掌通是一款非常实用的移动工作助手应用，提供船位搜索、船队管理、推送行业内相关资讯、方便船岸沟通等功能，可提高船运的整体工作效率。</string>
     <string name="choose_country">选择国家</string>
+    <string name="crew_details">船员详情</string>
+    <string name="ship_insturance">船舶保险</string>
+    <string name="yes">是</string>
+    <string name="input_message">填报</string>
 
     <!---->
 

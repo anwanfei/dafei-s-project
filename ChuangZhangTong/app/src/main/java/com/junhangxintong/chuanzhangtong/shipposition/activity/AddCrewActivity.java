@@ -77,7 +77,7 @@ public class AddCrewActivity extends BaseActivity {
         lvAdditiveCrew.setAdapter(additiveCrewAdapter);
 
         // TODO: 2017/8/9  搜索要添加的船员---数据库query
-
+        // TODO: 2017/8/26 有结果和没有结果
     }
 
     @Override

@@ -33,7 +33,7 @@
     <TextView
         android:id="@+id/tv_score"
         style="@style/textview_style_about"
-        android:text="@string/score"/>
+        android:text="@string/score" />
 
     <TextView
         android:id="@+id/tv_about_version"
@@ -48,5 +48,6 @@
     <TextView
         android:id="@+id/tv_feed_back"
         style="@style/textview_style_about"
-        android:text="@string/feed_back" />
+        android:text="@string/feed_back"
+        android:visibility="gone" />
 </LinearLayout>

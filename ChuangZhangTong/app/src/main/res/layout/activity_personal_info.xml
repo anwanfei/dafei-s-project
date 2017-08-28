@@ -26,8 +26,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <include layout="@layout/layout_horizental_gray_line" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -68,6 +76,43 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_contact_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="31dp"
+                android:layout_marginRight="31dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/phone"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_contact_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@drawable/arrow_right"
+                    android:gravity="center_vertical"
+                    android:text="@string/contact_phone" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/gray_F5"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:id="@+id/rl_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,7 +124,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label"
+                    android:text="@string/role"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -160,42 +205,6 @@
                     android:drawableRight="@drawable/arrow_right"
                     android:gravity="center_vertical"
                     android:text="男" />
-
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="31dp"
-                android:layout_marginRight="31dp"
-                android:layout_marginTop="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/contact_number"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/tv_contact_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="10dp"
-                    android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="@string/contact_phone" />
 
             </RelativeLayout>
         </LinearLayout>

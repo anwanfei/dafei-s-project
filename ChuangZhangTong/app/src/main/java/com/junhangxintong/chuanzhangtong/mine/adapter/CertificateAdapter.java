@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.activity.CertificateListsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateListsActivity;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class CertificateAdapter extends BaseAdapter implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        mContext.startActivity(new Intent(mContext, CertificateListsActivity.class));
+        mContext.startActivity(new Intent(mContext, CrewCertificateListsActivity.class));
     }
 
     static class ViewHolder {

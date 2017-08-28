@@ -16,23 +16,24 @@
         <RelativeLayout
             android:id="@+id/rl_setting_pwd"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:background="@color/white"
             android:padding="15dp">
 
             <TextView
                 style="@style/account_setting_left_textview"
-                android:text="@string/secret" />
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/reset_pwd" />
 
             <TextView
                 android:id="@+id/tv_setting_pwd"
-                style="@style/account_setting_right_textview_with_arrow"
-                android:text="@string/reset_pwd" />
+                style="@style/account_setting_right_textview_with_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_setting_phone"
+            android:id="@+id/rl_persional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
@@ -41,101 +42,129 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
-                android:text="@string/phone_number" />
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/personal_info" />
 
-            <TextView
-                android:id="@+id/tv_setting_phone"
-                style="@style/account_setting_right_textview_no_arrow"
-                android:text="@string/contact_phone" />
+            <TextView style="@style/account_setting_right_textview_with_arrow" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_mail_box"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/mail_box" />
+            <RelativeLayout
+                android:id="@+id/rl_setting_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/tv_mail_box"
-                style="@style/account_setting_right_textview_no_arrow"
-                android:text="@string/mail_box_demo" />
-        </RelativeLayout>
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/phone_number" />
 
-        <RelativeLayout
-            android:id="@+id/rl_wechat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
+                <TextView
+                    android:id="@+id/tv_setting_phone"
+                    style="@style/account_setting_right_textview_no_arrow"
+                    android:text="@string/contact_phone" />
+            </RelativeLayout>
 
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/we_chat" />
+            <RelativeLayout
+                android:id="@+id/rl_mail_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/tv_we_chat"
-                style="@style/account_setting_right_textview_no_arrow"
-                android:text="@string/no_bind" />
-        </RelativeLayout>
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/mail_box" />
 
-        <RelativeLayout
-            android:id="@+id/rl_qq"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
+                <TextView
+                    android:id="@+id/tv_mail_box"
+                    style="@style/account_setting_right_textview_no_arrow"
+                    android:text="@string/mail_box_demo" />
+            </RelativeLayout>
 
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/QQ" />
+            <RelativeLayout
+                android:id="@+id/rl_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/tv_QQ"
-                style="@style/account_setting_right_textview_no_arrow"
-                android:text="@string/no_bind" />
-        </RelativeLayout>
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/we_chat" />
 
-        <RelativeLayout
-            android:id="@+id/rl_weibo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
+                <TextView
+                    android:id="@+id/tv_we_chat"
+                    style="@style/account_setting_right_textview_no_arrow"
+                    android:text="@string/no_bind" />
+            </RelativeLayout>
 
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/weibo" />
+            <RelativeLayout
+                android:id="@+id/rl_qq"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-            <TextView
-                android:id="@+id/tv_weibo"
-                style="@style/account_setting_right_textview_no_arrow"
-                android:text="@string/no_bind" />
-        </RelativeLayout>
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/QQ" />
+
+                <TextView
+                    android:id="@+id/tv_QQ"
+                    style="@style/account_setting_right_textview_no_arrow"
+                    android:text="@string/no_bind" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_weibo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/weibo" />
+
+                <TextView
+                    android:id="@+id/tv_weibo"
+                    style="@style/account_setting_right_textview_no_arrow"
+                    android:text="@string/no_bind" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_clear_buffer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:padding="15dp">
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
                 android:text="@string/clear_buffer" />
 
             <TextView
                 android:id="@+id/tv_clear_buffer"
                 style="@style/account_setting_right_textview_with_arrow"
+                android:gravity="center_vertical"
                 android:text="@string/clear_buffer_demo" />
         </RelativeLayout>
 

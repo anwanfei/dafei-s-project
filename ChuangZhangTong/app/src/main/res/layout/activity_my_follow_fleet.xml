@@ -19,12 +19,14 @@
             android:layout_height="1dp"
             android:background="@color/gray_identity" />
 
+        <include layout="@layout/include_search_ship" />
+
         <LinearLayout
             android:id="@+id/ll_no_follow_fleet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <include layout="@layout/include_no_fleet_or_crew" />
 

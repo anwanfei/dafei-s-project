@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MainActivity;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFollowFleetAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.MyFollowFleetBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +55,10 @@ public class MyFollowFleetActivity extends BaseActivity {
     ImageView ivNothing;
     @BindView(R.id.tv_nothing)
     TextView tvNothing;
+    @BindView(R.id.et_search_ship_name)
+    EditText etSearchShipName;
+    @BindView(R.id.ll_search_ship_name)
+    LinearLayout llSearchShipName;
 
     private List<MyFollowFleetBean> myFollowFleetLists;
     private MyFollowFleetAdapter myFollowFleetAdapter;
@@ -68,11 +76,11 @@ public class MyFollowFleetActivity extends BaseActivity {
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.follow_fleet));
+        tvTitle.setText(getResources().getString(R.string.follow_fleets));
         tvShare.setVisibility(View.VISIBLE);
         tvShare.setText(getResources().getString(R.string.edit));
         tvNothing.setText(getResources().getString(R.string.follow_fisrt_ship));
-        tvAddShip.setText(getResources().getString(R.string.immediately_follow));
+        tvAddShip.setText(getResources().getString(R.string.search));
     }
 
     @Override
@@ -115,8 +123,7 @@ public class MyFollowFleetActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_add_ship:
-                startActivity(new Intent(MyFollowFleetActivity.this, MainActivity.class));
-                finish();
+                searchShipNameToMainActivity();
                 break;
             case R.id.tv_my_fleet_list_choose_all:
                 chooseAllOrNot();
@@ -131,6 +138,21 @@ public class MyFollowFleetActivity extends BaseActivity {
                 editFollowFleet();
                 break;
         }
+    }
+
+    private void searchShipNameToMainActivity() {
+        String searchShipName = etSearchShipName.getText().toString();
+        if (searchShipName.equals("")) {
+            Toast.makeText(MyFollowFleetActivity.this, getResources().getString(R.string.input_ship_name), Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(MyFollowFleetActivity.this, MainActivity.class);
+            intent.putExtra(Constants.SEARCHSHIPNAME, searchShipName);
+            startActivity(intent);
+            CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.SEARCHSHIPNAME, true);
+            finish();
+        }
+
+
     }
 
     private void editFollowFleet() {

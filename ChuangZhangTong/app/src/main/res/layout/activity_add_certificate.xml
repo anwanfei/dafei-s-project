@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/white"
+            android:focusableInTouchMode="true"
             android:padding="15dp">
 
             <TextView
@@ -52,36 +53,40 @@
         <RelativeLayout
             android:id="@+id/rl_certificate_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="1dp"
             android:background="@color/white"
             android:padding="15dp">
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
                 android:text="@string/certificate_type" />
 
             <TextView
                 android:id="@+id/et_certificate_type"
                 style="@style/account_setting_right_textview_with_arrow"
+                android:gravity="center_vertical"
                 android:text="@string/type" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_issuing_authority"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="1dp"
             android:background="@color/white"
             android:padding="15dp">
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
                 android:text="@string/issuing_authority" />
 
             <TextView
                 android:id="@+id/tv_issuing_authority"
-                style="@style/account_setting_right_textview_with_arrow" />
+                style="@style/account_setting_right_textview_with_arrow"
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -216,19 +221,20 @@
                 android:text="@string/add_certificate_photo" />
 
         </RelativeLayout>
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_crew_info_complete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/tv_bg"
-        android:gravity="center"
-        android:text="@string/complete"
-        android:textColor="@color/white" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_crew_info_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/tv_bg"
+            android:gravity="center"
+            android:text="@string/complete"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</ScrollView>

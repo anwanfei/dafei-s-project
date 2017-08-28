@@ -101,7 +101,8 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
         return R.layout.activity_accout_setting;
     }
 
-    @OnClick({R.id.iv_back, R.id.rl_setting_pwd, R.id.rl_setting_phone, R.id.rl_mail_box, R.id.rl_wechat, R.id.rl_qq, R.id.rl_weibo, R.id.rl_clear_buffer, R.id.rl_flag_mean, R.id.rl_about, R.id.rl_login_out})
+    @OnClick({R.id.iv_back, R.id.rl_setting_pwd, R.id.rl_setting_phone, R.id.rl_mail_box, R.id.rl_wechat, R.id.rl_qq, R.id.rl_weibo, R.id.rl_clear_buffer,
+            R.id.rl_flag_mean, R.id.rl_about, R.id.rl_login_out, R.id.rl_persional_info})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -139,6 +140,9 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.rl_login_out:
                 showPupLoginOut();
+                break;
+            case R.id.rl_persional_info:
+                startActivity(new Intent(AccoutSettingActivity.this, PersonalInfoActivity.class));
                 break;
         }
     }

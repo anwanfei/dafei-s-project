@@ -80,18 +80,20 @@
     <RelativeLayout
         android:id="@+id/rl_choose_group_fleet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="1dp"
         android:background="@color/white"
         android:padding="15dp">
 
         <TextView
             style="@style/account_setting_left_textview"
+            android:layout_centerVertical="true"
             android:text="@string/fleet_group" />
 
         <TextView
             android:id="@+id/tv_fleet_group"
             style="@style/account_setting_right_textview_with_arrow"
+            android:gravity="center_vertical"
             android:hint="@string/choose_group" />
     </RelativeLayout>
 

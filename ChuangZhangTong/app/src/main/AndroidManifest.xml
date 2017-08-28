@@ -91,7 +91,7 @@
         <activity android:name=".mine.activity.BindManageMailBoxActivity" />
         <activity android:name=".mine.activity.BindBoxPwdActivity" />
         <activity android:name=".mine.activity.BindMailServerActivity" />
-        <activity android:name=".mine.activity.CertificateListsActivity" />
+        <activity android:name=".mine.activity.CrewCertificateListsActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -180,7 +180,10 @@
 
         <activity android:name=".mine.activity.ChooseCountryActivity" />
         <activity android:name=".mine.activity.ChooseCertificateTypeActivity" />
-        <activity android:name=".mine.activity.CrewDetailsActivity"></activity>
+        <activity android:name=".mine.activity.CrewDetailsActivity" />
+        <activity android:name=".mine.activity.ShipCertificteListActivity" />
+        <activity android:name=".mine.activity.InstranceDetailsActivity" />
+        <activity android:name=".mine.activity.AddInsuranceActivity"></activity>
     </application>
 
 </manifest>

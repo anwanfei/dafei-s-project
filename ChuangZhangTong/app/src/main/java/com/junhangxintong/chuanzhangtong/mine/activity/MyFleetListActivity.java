@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +49,14 @@ public class MyFleetListActivity extends BaseActivity {
     TextView tvMyFleetListDelete;
     @BindView(R.id.rl_choose_all_delete)
     RelativeLayout rlChooseAllDelete;
+    @BindView(R.id.et_search_ship_name)
+    EditText etSearchShipName;
+    @BindView(R.id.ll_search_ship_name)
+    LinearLayout llSearchShipName;
+    @BindView(R.id.iv_nothing)
+    ImageView ivNothing;
+    @BindView(R.id.tv_nothing)
+    TextView tvNothing;
 
     private List<MyFleetBean> myFleetLists;
     private MyFleetAdapter myFleetAdapter;
@@ -66,9 +75,12 @@ public class MyFleetListActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.my_fleet));
-        ivShare.setBackgroundResource(R.drawable.iv_add_fleet);
-        tvSetting.setText(getResources().getString(R.string.add_ships));
-        tvShare.setText(getResources().getString(R.string.edit));
+//        tvSetting.setVisibility(View.GONE);
+//        tvShare.setVisibility(View.GONE);
+//        ivShare.setVisibility(View.GONE);
+//        ivShare.setBackgroundResource(R.drawable.iv_add_fleet);
+//        tvSetting.setText(getResources().getString(R.string.add_ships));
+//        tvShare.setText(getResources().getString(R.string.edit));
     }
 
     @Override
@@ -84,6 +96,8 @@ public class MyFleetListActivity extends BaseActivity {
         myFleetAdapter = new MyFleetAdapter(this, myFleetLists);
         lvMyFleet.setAdapter(myFleetAdapter);
 
+        // TODO: 2017/8/26 搜索船名
+
     }
 
     private void updataListview() {
@@ -91,11 +105,13 @@ public class MyFleetListActivity extends BaseActivity {
             lvMyFleet.setVisibility(View.VISIBLE);
             llNoFleet.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
+            llSearchShipName.setVisibility(View.VISIBLE);
         } else {
             lvMyFleet.setVisibility(View.GONE);
             llNoFleet.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
+            llSearchShipName.setVisibility(View.GONE);
         }
 
     }

@@ -9,8 +9,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.activity.CertificateListsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.ShipCertificteListActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.MyFleetBean;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
 
 import java.util.List;
 
@@ -113,9 +114,10 @@ public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_item_ship_name:
+                mContext.startActivity(new Intent(mContext, MyShipDetailsActivity.class));
                 break;
             case R.id.tv_certificate:
-                mContext.startActivity(new Intent(mContext, CertificateListsActivity.class));
+                mContext.startActivity(new Intent(mContext, ShipCertificteListActivity.class));
                 break;
             case R.id.cb_ship:
                 break;

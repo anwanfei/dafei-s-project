@@ -85,7 +85,6 @@ public class AdditiveCrewAdapter extends BaseAdapter {
             }
         });
 
-
         return view;
     }
 

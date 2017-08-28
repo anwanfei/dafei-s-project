@@ -114,6 +114,9 @@ public class CrewInfoInputActivity extends BaseActivity {
     }
 
     private void addCrewComplete() {
+
+        // TODO: 2017/8/24 判断是添加船员还是修改船员
+
         CrewBean crewBean = new CrewBean();
 
         String crewName = etInputName.getText().toString();

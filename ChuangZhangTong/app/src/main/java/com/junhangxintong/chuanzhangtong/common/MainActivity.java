@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity {
         fragments.add(new NewsFragment());
         fragments.add(new MyFragment());
 
-
     }
 
     @Override

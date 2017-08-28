@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_bg"
-    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.CrewDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,10 +25,10 @@
                 android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/name" />
 
-            <EditText
-                android:id="@+id/et_input_name"
+            <TextView
+                android:id="@+id/tv_crew_name"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_name" />
+                android:text="@string/app_name" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -43,11 +43,10 @@
                 android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/phone" />
 
-            <EditText
-                android:id="@+id/et_phone"
-                android:inputType="phone"
+            <TextView
+                android:id="@+id/tv_crew_phone"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_phone" />
+                android:text="110" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -64,8 +63,8 @@
                 android:text="@string/nationalities" />
 
             <TextView
-                android:id="@+id/et_nationality"
-                style="@style/account_setting_right_textview_with_arrow"
+                android:id="@+id/tv_crew_nationality"
+                style="@style/edittext_no_arrow"
                 android:gravity="center_vertical"
                 android:text="@string/nationality_china" />
         </RelativeLayout>
@@ -84,8 +83,8 @@
                 android:text="@string/certificates_type" />
 
             <TextView
-                android:id="@+id/tv_type"
-                style="@style/account_setting_right_textview_with_arrow"
+                android:id="@+id/tv_ceretificate_type"
+                style="@style/edittext_no_arrow"
                 android:gravity="center_vertical"
                 android:text="@string/ID" />
         </RelativeLayout>
@@ -101,11 +100,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/certificate_num" />
 
-            <EditText
-                android:id="@+id/et_certificate_number"
+            <TextView
+                android:id="@+id/tv_crwe_certificate_number"
                 style="@style/edittext_no_arrow"
-                android:inputType="number"
-                android:hint="@string/input_certificate_num" />
+                android:text="13077456446464546" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -119,10 +117,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/crew_belong_ship" />
 
-            <EditText
-                android:id="@+id/et_belong_ship"
+            <TextView
+                android:id="@+id/tv_belong_ship"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_ship_name" />
+                android:text="@string/huahai_one" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -139,10 +137,10 @@
                 android:text="@string/duty" />
 
             <TextView
-                android:id="@+id/et_duty"
-                style="@style/account_setting_right_textview_with_arrow"
+                android:id="@+id/tv_crew_duty"
+                style="@style/edittext_no_arrow"
                 android:gravity="center_vertical"
-                android:text="@string/choose_duty" />
+                android:text="船长" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -156,10 +154,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/job_num" />
 
-            <EditText
-                android:id="@+id/et_job_num"
+            <TextView
+                android:id="@+id/tv_crew_job_num"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_job_num" />
+                android:text="@string/job_num_demo" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -173,24 +171,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/mail_box" />
 
-            <EditText
-                android:id="@+id/et_call_sign"
+            <TextView
+                android:id="@+id/tv_crew_mail_box"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_mail_box" />
+                android:text="@string/mail_box_demo" />
         </RelativeLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_crew_info_complete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/tv_bg"
-        android:gravity="center"
-        android:text="@string/complete"
-        android:textColor="@color/white" />
 </RelativeLayout>

@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_identity_gray"
     android:orientation="vertical"
-    android:padding="12dp"
-    android:background="@drawable/bg_identity_gray">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/tv_certificate_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/certificate_name"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -23,15 +25,12 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/certificate_number_colon" />
-
-        <TextView
             android:id="@+id/tv_certificate_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/max_length_400" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="证书编号:100" />
     </LinearLayout>
 
     <LinearLayout
@@ -40,33 +39,28 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/certificate_type_colon" />
-
-        <TextView
-            android:id="@+id/tv_certificate_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/other" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/issuing_authority_colon" />
 
         <TextView
             android:id="@+id/tv_certificate_issuing_authority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name" />
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="签发机构：君航信通" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_certificate_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="有效时间：2020-08-20" />
     </LinearLayout>
 </LinearLayout>
