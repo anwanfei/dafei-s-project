@@ -103,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +144,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ship_direction"
+                        android:text="@string/ship_direction_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -156,6 +157,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
+
             <include layout="@layout/include_layout_message_common" />
 
             <RelativeLayout
@@ -175,7 +177,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/average_speed_between_24_hours"
+                        android:text="@string/average_speed_between_24_hours_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -207,7 +209,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/re_arrival_time"
+                        android:text="@string/re_arrival_time_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -239,7 +241,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/pressure"
+                        android:text="@string/pressure_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -260,7 +262,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/pitch"
+                        android:text="@string/pitch_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -291,7 +293,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/temperature"
+                        android:text="@string/temperature_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -313,7 +315,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/weather"
+                        android:text="@string/weather_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -344,7 +346,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/wave_level"
+                        android:text="@string/wave_level_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -365,7 +367,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/wind_direction"
+                        android:text="@string/wind_direction_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -396,7 +398,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/consume"
+                        android:text="@string/consume_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -428,7 +430,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/remark"
+                        android:text="@string/remark_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

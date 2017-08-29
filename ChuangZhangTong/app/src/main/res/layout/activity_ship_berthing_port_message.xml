@@ -118,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading_unloading_cargo_port"
+                    android:text="@string/loading_unloading_cargo_port_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -147,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/anchor_leave_time"
+                    android:text="@string/anchor_leave_time_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -175,7 +175,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/system_stop_time"
+                    android:text="@string/system_stop_time_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -204,7 +204,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_cabin_start_time"
+                    android:text="@string/test_cabin_start_time_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -232,7 +232,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_cabin_end_time"
+                    android:text="@string/test_cabin_end_time_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -261,7 +261,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/port_position"
+                    android:text="@string/port_position_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -289,7 +289,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tug_use_num"
+                    android:text="@string/tug_use_num_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -317,7 +317,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ship_draft"
+                    android:text="@string/ship_draft_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -346,7 +346,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/is_pilot"
+                    android:text="@string/is_pilot_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

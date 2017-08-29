@@ -30,7 +30,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/bg_search"
+            android:background="@drawable/bg_search_60"
             android:hint="@string/search_additive_crews"
             android:paddingLeft="15dp"
             android:textSize="14sp" />

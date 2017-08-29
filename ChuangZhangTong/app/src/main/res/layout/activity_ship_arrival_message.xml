@@ -118,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/arrival_port"
+                    android:text="@string/arrival_port_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -147,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/port_stop_position"
+                    android:text="@string/port_stop_position_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -176,7 +176,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/anchor_arrival_time"
+                    android:text="@string/anchor_arrival_time_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -204,7 +204,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/anchor_posotion"
+                    android:text="@string/anchor_posotion_with_colon"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -259,7 +259,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ship_direction"
+                        android:text="@string/ship_direction_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -292,7 +292,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/remark"
+                        android:text="@string/remark_with_colon"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

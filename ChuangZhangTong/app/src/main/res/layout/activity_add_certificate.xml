@@ -12,7 +12,6 @@
         android:background="@color/gray_bg"
         android:orientation="vertical">
 
-
         <include layout="@layout/titlebar" />
 
         <RelativeLayout

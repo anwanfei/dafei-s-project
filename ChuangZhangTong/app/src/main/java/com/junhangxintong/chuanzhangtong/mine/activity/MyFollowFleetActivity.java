@@ -78,7 +78,7 @@ public class MyFollowFleetActivity extends BaseActivity {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.follow_fleets));
         tvShare.setVisibility(View.VISIBLE);
-        tvShare.setText(getResources().getString(R.string.edit));
+        tvShare.setText(getResources().getString(R.string.delete));
         tvNothing.setText(getResources().getString(R.string.follow_fisrt_ship));
         tvAddShip.setText(getResources().getString(R.string.search));
     }

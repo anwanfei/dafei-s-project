@@ -1,6 +1,6 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -77,8 +77,9 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     RelativeLayout rlAbout;
     @BindView(R.id.rl_login_out)
     RelativeLayout rlLoginOut;
-    private AlertDialog show_clear_buffer_dialog;
+//    private AlertDialog show_clear_buffer_dialog;
     private PopupWindow loginOutPopWindow;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,29 +180,31 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void showDialogClearBuffer() {
-        View inflate = getLayoutInflater().inflate(R.layout.dialog_clear_butter, null);
+//        View inflate = getLayoutInflater().inflate(R.layout.dialog_clear_butter, null);
+        View inflate = View.inflate(this, R.layout.dialog_clear_butter, null);
         TextView tv_cancel_clear_buffer = (TextView) inflate.findViewById(R.id.tv_cancel_clear_buffer);
         TextView tv_ok_clear_butter = (TextView) inflate.findViewById(R.id.tv_ok_clear_butter);
 
         tv_cancel_clear_buffer.setOnClickListener(this);
         tv_ok_clear_butter.setOnClickListener(this);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.style_dialog);
+        dialog = new Dialog(this, R.style.style_dialog);
+        dialog.setContentView(inflate);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
 
-        dialog.setView(inflate);
-
-        show_clear_buffer_dialog = dialog.show();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel_clear_buffer:
-                show_clear_buffer_dialog.dismiss();
+                dialog.dismiss();
                 break;
             case R.id.tv_ok_clear_butter:
                 Toast.makeText(AccoutSettingActivity.this, "已清除", Toast.LENGTH_SHORT).show();
-                show_clear_buffer_dialog.dismiss();
+                dialog.dismiss();
                 break;
             case R.id.tv_cancel_choose_gender:
                 loginOutPopWindow.dismiss();

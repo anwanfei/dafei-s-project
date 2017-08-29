@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/latitude_with_colon"
+                android:text="@string/latitude_with_colon_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -42,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/current_ship_speed"
+                android:text="@string/current_ship_speed_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -73,7 +73,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/the_ship_heavy_oil"
+                android:text="@string/the_ship_heavy_oil_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ship_draft"
+                android:text="@string/ship_draft_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/the_ship_light_oil"
+                android:text="@string/the_ship_light_oil_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/the_ship_frashwater"
+                android:text="@string/the_ship_frashwater_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -178,7 +178,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/light_oil_consume"
+                android:text="@string/light_oil_consume_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -200,7 +200,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/frashwater_consume"
+                android:text="@string/frashwater_consume_with_colon"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.WriteNoonMessageActivity">
+
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_title"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/latitude" />
+
+                <EditText
+                    android:id="@+id/et_input_latitude_with_colon"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_latitude" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/longitude" />
+
+                <EditText
+                    android:id="@+id/et_input_longitude"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_longitude" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_direction" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_direction"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_direction" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/current_ship_speed" />
+
+                <EditText
+                    android:id="@+id/et_input_current_ship_speed"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_speed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_heavy_oil" />
+
+                <EditText
+                    android:id="@+id/et_input_the_ship_heavy_oil"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_heavy_oil" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_light_oil" />
+
+                <EditText
+                    android:id="@+id/et_input_the_ship_light_oil"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_light_oil" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_draft" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_draft"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_draft" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_frashwater" />
+
+                <EditText
+                    android:id="@+id/et_input_the_ship_frashwater"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_frashwater" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/light_oil_consume" />
+
+                <EditText
+                    android:id="@+id/et_input_light_oil_consume"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_light_oil_consume" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/frashwater_consume" />
+
+                <EditText
+                    android:id="@+id/frashwater_consume"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_frashwater_consume" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/average_speed_between_24_hours" />
+
+                <EditText
+                    android:id="@+id/et_input_average_speed_between_24_hours"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_average_speed_between_24_hours" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/re_arrival_time" />
+
+                <TextView
+                    android:id="@+id/tv_input_re_arrival_time"
+                    style="@style/edittext_no_arrow"
+                    android:text="@string/choose_time"
+                    android:textColor="@color/textcolor_gray80" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/pressure" />
+
+                <EditText
+                    android:id="@+id/et_input_pressure"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_pressure" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/temperature" />
+
+                <EditText
+                    android:id="@+id/et_input_temperature"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_temperature" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/wave_level" />
+
+                <EditText
+                    android:id="@+id/et_input_wave_level"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_wave_level" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/pitch" />
+
+                <EditText
+                    android:id="@+id/et_input_pitch"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_pitch" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/weather" />
+
+                <EditText
+                    android:id="@+id/et_input_weather"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_weather" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/wind_direction" />
+
+                <EditText
+                    android:id="@+id/et_input_wind_direction"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_wind_direction" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/consume" />
+
+                <EditText
+                    android:id="@+id/et_input_consume"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_consume" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/remark" />
+
+                <EditText
+                    android:id="@+id/et_input_remark"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_remark" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/tv_bg"
+                    android:gravity="center"
+                    android:text="@string/commit"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

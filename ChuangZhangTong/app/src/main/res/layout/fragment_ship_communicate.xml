@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_search"
+            android:background="@drawable/bg_search_60"
             android:hint="@string/input"
             android:paddingLeft="20dp"
             android:paddingRight="10dp"
@@ -40,7 +40,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/bg_search"
+            android:background="@drawable/bg_search_60"
             android:gravity="center"
             android:text="@string/send"
             android:textColor="@color/black" />

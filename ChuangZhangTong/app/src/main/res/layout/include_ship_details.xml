@@ -291,7 +291,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_size"
+                                android:text="@string/ship_size_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -356,7 +356,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_chishui"
+                                android:text="@string/ship_chishui_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -390,7 +390,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_destination"
+                                android:text="@string/ship_destination_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -413,7 +413,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_to_re_time"
+                                android:text="@string/ship_to_re_time_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -452,7 +452,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/latitude_with_colon"
+                                android:text="@string/latitude_with_colon_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 
@@ -474,7 +474,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_tracks_direction"
+                                android:text="@string/ship_tracks_direction_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
@@ -525,7 +525,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_ship_start"
-                                android:text="@string/ship_speed"
+                                android:text="@string/ship_speed_with_colon"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
 

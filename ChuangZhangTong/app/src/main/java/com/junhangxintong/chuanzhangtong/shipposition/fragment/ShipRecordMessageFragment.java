@@ -17,6 +17,10 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.AllMessagesActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.ShipNoonMessageActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.WriteArrivalMessageActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.WriteBerthingMessageActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.WriteLeaveMessageActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.WriteNoonMessageActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.adapter.ShipMessagesAdapter;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 
@@ -56,6 +60,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     View viewLine;
     private PopupWindow popupWindow;
     private boolean isShowPop;
+    Class[] arrClass = {WriteNoonMessageActivity.class, WriteArrivalMessageActivity.class, WriteBerthingMessageActivity.class, WriteLeaveMessageActivity.class};
 
     @Override
     protected View initView() {
@@ -165,13 +170,22 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_pop_noon_message:
+                gotoWriteMessageActivity(0);
                 break;
             case R.id.tv_pop_arrival_message:
+                gotoWriteMessageActivity(1);
                 break;
             case R.id.tv_pop_berthing:
+                gotoWriteMessageActivity(2);
                 break;
             case R.id.tv_ship_leave_message:
+                gotoWriteMessageActivity(3);
                 break;
         }
+    }
+
+    public void gotoWriteMessageActivity(int num) {
+        startActivity(new Intent(getActivity(), arrClass[num]));
+        getActivity().finish();
     }
 }

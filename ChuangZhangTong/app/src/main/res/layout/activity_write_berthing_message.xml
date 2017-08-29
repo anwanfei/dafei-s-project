@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.WriteBerthingMessageActivity">
+
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_title"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/loading_unloading_cargo_port" />
+
+                <EditText
+                    android:id="@+id/et_input_loading_unloading_cargo_port"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_loading_unloading_cargo_port" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/anchor_arrival_time" />
+
+                <TextView
+                    android:id="@+id/tv_input_anchor_arrival_time"
+                    style="@style/edittext_no_arrow"
+                    android:text="@string/choose_time" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/system_stop_time" />
+
+                <TextView
+                    android:id="@+id/tv_input_system_stop_time"
+                    style="@style/edittext_no_arrow"
+                    android:text="@string/choose_time" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/test_cabin_start_time" />
+
+                <TextView
+                    android:id="@+id/tv_input_test_cabin_start_time"
+                    style="@style/edittext_no_arrow"
+                    android:text="@string/choose_time" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/test_cabin_end_time" />
+
+                <TextView
+                    android:id="@+id/tv_input_test_cabin_end_time"
+                    style="@style/edittext_no_arrow"
+                    android:text="@string/choose_time" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/port_position" />
+
+                <EditText
+                    android:id="@+id/et_input_port_position"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_port_position" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/tug_use_num" />
+
+                <EditText
+                    android:id="@+id/et_input_tug_use_num"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_tug_use_num" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_draft" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_draft"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_draft" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/anchor_arrival_time" />
+
+                <RadioGroup
+                    android:id="@+id/rg_choose_is_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@null"
+                        android:checked="true"
+                        android:drawableLeft="@drawable/rb_choose_selector"
+                        android:drawablePadding="3dp"
+                        android:text="@string/yes" />
+
+                    <RadioButton
+                        android:id="@+id/rb_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:button="@null"
+                        android:drawableLeft="@drawable/rb_choose_selector"
+                        android:drawablePadding="3dp"
+                        android:text="@string/no" />
+                </RadioGroup>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_commit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/tv_bg"
+                    android:gravity="center"
+                    android:text="@string/commit"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -183,7 +183,11 @@
         <activity android:name=".mine.activity.CrewDetailsActivity" />
         <activity android:name=".mine.activity.ShipCertificteListActivity" />
         <activity android:name=".mine.activity.InstranceDetailsActivity" />
-        <activity android:name=".mine.activity.AddInsuranceActivity"></activity>
+        <activity android:name=".mine.activity.AddInsuranceActivity" />
+        <activity android:name=".shipposition.activity.WriteNoonMessageActivity" />
+        <activity android:name=".shipposition.activity.WriteArrivalMessageActivity" />
+        <activity android:name=".shipposition.activity.WriteBerthingMessageActivity" />
+        <activity android:name=".shipposition.activity.WriteLeaveMessageActivity"></activity>
     </application>
 
 </manifest>

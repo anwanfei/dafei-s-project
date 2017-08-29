@@ -29,6 +29,6 @@
         android:drawableLeft="@drawable/iv_share"
         android:drawablePadding="10dp"
         android:padding="10dp"
-        android:text="@string/share_ship"
+        android:text="@string/share_ship_with_colon"
         android:textColor="@color/black" />
 </LinearLayout>

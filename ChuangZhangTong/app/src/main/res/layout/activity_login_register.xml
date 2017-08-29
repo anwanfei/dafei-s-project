@@ -48,13 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="15dp">
+        android:layout_marginRight="30dp">
 
         <TextView
             android:id="@+id/tv_verify_mesage_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="15dp"
             android:drawableLeft="@drawable/iv_vertify_message"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
@@ -67,6 +67,7 @@
             android:layout_alignParentRight="true"
             android:drawableLeft="@drawable/iv_forget"
             android:drawablePadding="5dp"
+            android:padding="15dp"
             android:gravity="center_vertical"
             android:text="@string/forget_pwd" />
 
