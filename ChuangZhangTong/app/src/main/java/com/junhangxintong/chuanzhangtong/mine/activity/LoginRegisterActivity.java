@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.MainActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,7 +76,6 @@ public class LoginRegisterActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
     }
 
     @Override
@@ -89,8 +87,6 @@ public class LoginRegisterActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                Intent intent = new Intent(LoginRegisterActivity.this, MainActivity.class);
-                startActivity(intent);
                 finish();
                 break;
         }
@@ -102,6 +98,7 @@ public class LoginRegisterActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_verify_mesage_login:
                 startActivity(new Intent(LoginRegisterActivity.this, MessageVerifyLoginActivity.class));
+                finish();
                 break;
             case R.id.tv_forget_pwd:
                 startActivity(new Intent(LoginRegisterActivity.this, ForgetPwdActivity.class));

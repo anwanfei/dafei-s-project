@@ -65,6 +65,7 @@
     <string name="cancel">取消</string>
     <string name="input_name">请输入姓名</string>
     <string name="name">姓名</string>
+    <string name="insurance_demo">油污损害民事责任保险或其他财务保证证书</string>
     <string name="save">保存</string>
     <string name="immediately_add">立即添加</string>
     <string name="immediately_follow">立即关注</string>
@@ -389,12 +390,14 @@
     <string name="fire_control_ceritficate">高级消防培训合格证书</string>
     <string name="crew_server_certificate">船员服务证</string>
     <string name="insurance_type">保险类型</string>
+    <string name="insurance_name">保险名称</string>
     <string name="ship_bianhao">船舶编号/呼号</string>
     <string name="ship_imo">IMO识别号</string>
     <string name="ship_nationality_harbor">船籍港</string>
     <string name="name_address_of_ship">船舶所有人名称及地址</string>
     <string name="ship_name">船舶名称</string>
     <string name="gurantee_type">保证类别</string>
+    <string name="gurantee_type_demo">保证类别</string>
     <string name="issue_date">签发日期</string>
     <string name="issue_department">发证机关</string>
     <string name="issue_address">签发地点</string>
@@ -404,6 +407,24 @@
     <string name="photo">照片</string>
     <string name="add_certificate">添加证件</string>
     <string name="add_insurance">添加保险</string>
+
+    <string name="input_insurance_type">请输入保险类型</string>
+    <string name="input_insurance_name">请输入保险名称</string>
+    <string name="input_ship_bianhao">请输入船舶编号/呼号</string>
+    <string name="input_ship_imo">请输入IMO识别号</string>
+    <string name="input_ship_nationality_harbor">请输入船籍港</string>
+    <string name="input_name_address_of_ship">请输入船舶所有人名称及地址</string>
+    <string name="input_gurantee_type">请输入保证类别</string>
+    <string name="input_gurantee_type_demo">请输入保证类别</string>
+    <string name="input_issue_date">请输入签发日期</string>
+    <string name="input_issue_department">请输入签发机构</string>
+    <string name="input_issue_address">请输入签发地点</string>
+    <string name="input_is_permanent_effective">请输入是否永久有效</string>
+    <string name="input_effective_date">请输入有效日期</string>
+    <string name="input_id_often_use">请输入是否常用</string>
+    <string name="input_photo">请输入照片</string>
+    <string name="input_add_certificate">请输入添加证件</string>
+    <string name="input_add_insurance">请输入添加保险</string>
 
     <!--dynamoic-->
     <string name="remind">您好，您的船舶已起航！</string>
@@ -451,6 +472,7 @@
     <string name="no">否</string>
     <string name="input_message">填报</string>
     <string name="commit_message_success">报文提交成功</string>
+    <string name="add_success">添加成功</string>
 
     <!---->
 

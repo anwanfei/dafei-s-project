@@ -34,6 +34,17 @@ public class Constants {
     public static final String ADD_CREW = "add_crew";
     public static final int TEST_DATA_NUM = 5;
     public static final String SEARCHSHIPNAME = "searchshipname";
+    public static final String NO = "否";
+    public static final String YES = "是";
+    public static final String DAYS_30 = "30天";
+    public static final String PHONE_PATHS = "PHONE_PATHS";
+    public static final String POSITION = "POSITION";
+    public static final String PHONE = "phone";
+    public static final String GET_VERIFYCODE_AGAIN = "重新获取验证码";
+    public static final String HAS_SENDED = "已发送";
+    public static final long COUNTDOWN_TIME = 60000;
+    public static final long COUNTDOWN_TIME_SPEED = 1000;
+    public static final String TOKEN = "token";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "http://www.baidu.com";
 }

@@ -50,12 +50,83 @@ public class MessageVerifyLoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_send_verify_code:
+                netSendVerifyCode();
                 break;
             case R.id.tv_login:
+                netLoginByPhone();
                 break;
             case R.id.tv_pwd_login:
                 finish();
                 break;
         }
+    }
+
+    private void netLoginByPhone() {
+        String phone = etInputPhone.getText().toString();
+        String verifyCode = etInputVerifyCode.getText().toString();
+        /*OkHttpUtils
+                .post()
+                .url(ConstantsUrls.LOGIN_BY_PHNOE)
+                .addParams(Cons.PHONE, phone)
+                .addParams("vcode", verifyCode)
+                .addParams("source", "2")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(MessageVerifyLoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                        String message = loginResult.getMessage();
+                        Toast.makeText(MessageVerifyLoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        CacheUtils.putString(MessageVerifyLoginActivity.this, Cons.TOKEN, loginResult.getData().getToken());
+
+                        //登录成功回到首页
+                        startActivity(new Intent(MessageVerifyLoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+                });*/
+//        OkHttpUtils.post().addParams()
+    }
+
+    private void netSendVerifyCode() {
+
+        String phone = etInputPhone.getText().toString();
+       /* OkHttpUtils
+                .post()
+                .url(ConstantsUrls.SEND_VERIFICATION_CODE)
+                .addParams(Cons.PHONE, phone)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(MessageVerifyLoginActivity.this, "error", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                        String message = sendVerifyCode.getMessage();
+                        Toast.makeText(MessageVerifyLoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        new CountDownTimer(Cons.COUNTDOWN_TIME, 1000) {
+                            @Override
+                            public void onTick(long l) {
+                                tvSendVerifyCode.setEnabled(false);
+                                tvSendVerifyCode.setText(Cons.HAS_SENDED + "(" + l / Cons.COUNTDOWN_TIME_SPEED + ")");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                tvSendVerifyCode.setEnabled(true);
+                                tvSendVerifyCode.setText(Cons.GET_VERIFYCODE_AGAIN);
+                            }
+                        }.start();
+                    }
+                });*/
     }
 }

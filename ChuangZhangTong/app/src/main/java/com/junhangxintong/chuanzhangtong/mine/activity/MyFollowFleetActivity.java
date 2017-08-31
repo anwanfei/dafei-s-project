@@ -151,8 +151,6 @@ public class MyFollowFleetActivity extends BaseActivity {
             CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.SEARCHSHIPNAME, true);
             finish();
         }
-
-
     }
 
     private void editFollowFleet() {

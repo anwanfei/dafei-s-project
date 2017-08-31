@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:scrollbars="none"
     tools:context="com.junhangxintong.chuanzhangtong.mine.activity.AddInsuranceActivity">
 
     <LinearLayout
@@ -22,14 +23,18 @@
             android:padding="15dp">
 
             <TextView
+                android:id="@+id/tv_insurance_name"
                 style="@style/account_setting_left_textview"
                 android:drawableLeft="@drawable/ic_xingbiao"
-                android:text="@string/insurance_type" />
+                android:text="@string/insurance_name" />
 
-            <TextView
-                android:id="@+id/tv_insurance_type"
+            <EditText
+                android:id="@+id/et_insurance_name"
                 style="@style/textview_style_certificate"
-                android:text="@string/ship_insturance" />
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tv_insurance_name"
+                android:gravity="end"
+                android:hint="@string/input_insurance_name" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -44,10 +49,10 @@
                 android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/ship_name" />
 
-            <TextView
-                android:id="@+id/tv_ship_name"
-                style="@style/textview_style_certificate"
-                android:text="@string/huahai_one" />
+            <EditText
+                android:id="@+id/et_ship_name"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_name" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -58,13 +63,14 @@
             android:padding="15dp">
 
             <TextView
+                android:drawableLeft="@drawable/ic_xingbiao"
                 style="@style/account_setting_left_textview"
                 android:text="@string/ship_bianhao" />
 
-            <TextView
-                android:id="@+id/tv_ship_bianhao"
-                style="@style/textview_style_certificate"
-                android:text="@string/job_num_demo" />
+            <EditText
+                android:id="@+id/et_ship_bianhao"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_bianhao" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -79,10 +85,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/ship_imo" />
 
-            <TextView
-                android:id="@+id/tv_ship_imo"
-                style="@style/textview_style_certificate"
-                android:text="@string/job_num_demo" />
+            <EditText
+                android:id="@+id/et_ship_imo"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_IMO" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -96,10 +102,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/ship_nationality_harbor" />
 
-            <TextView
-                android:id="@+id/tv_ship_nationality_harbor"
-                style="@style/textview_style_certificate"
-                android:text="@string/ship_start" />
+            <EditText
+                android:id="@+id/et_ship_nationality_harbor"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_nationality_harbor" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -113,10 +119,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/name_address_of_ship" />
 
-            <TextView
+            <EditText
                 android:id="@+id/tv_name_address_of_ship"
-                style="@style/textview_style_certificate"
-                android:text="@string/junhang" />
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_name_address_of_ship" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -130,10 +136,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/gurantee_type" />
 
-            <TextView
-                android:id="@+id/tv_gurantee_type"
-                style="@style/textview_style_certificate"
-                android:text="@string/issuing_authority" />
+            <EditText
+                android:id="@+id/et_gurantee_type"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_insurance_type" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -150,7 +156,8 @@
             <TextView
                 android:id="@+id/tv_issue_date"
                 style="@style/textview_style_certificate"
-                android:text="@string/date_demo" />
+                android:text="@string/choose_time"
+                android:textColor="@color/textcolor_gray80" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -164,10 +171,11 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/issuing_authority" />
 
-            <TextView
-                android:id="@+id/tv_issuing_authority"
+            <EditText
+                android:id="@+id/et_issuing_authority"
                 style="@style/textview_style_certificate"
-                android:text="@string/junhang" />
+                android:hint="@string/input_issue_department"
+                android:textColor="@color/textcolor_gray80" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -182,10 +190,10 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/issue_address" />
 
-            <TextView
-                android:id="@+id/tv_issue_address"
+            <EditText
+                android:id="@+id/et_issue_address"
                 style="@style/textview_style_certificate"
-                android:text="@string/shanghai" />
+                android:hint="@string/input_issue_address" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -199,10 +207,34 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/is_permanent_effective" />
 
-            <TextView
-                android:id="@+id/tv_is_permanent_effective"
-                style="@style/textview_style_certificate"
-                android:text="@string/yes" />
+            <RadioGroup
+                android:id="@+id/rg_choose_is_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+            </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
@@ -220,7 +252,8 @@
             <TextView
                 android:id="@+id/tv_effective_date"
                 style="@style/textview_style_certificate"
-                android:text="@string/date_demo" />
+                android:text="@string/choose_time"
+                android:textColor="@color/textcolor_gray80" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -235,10 +268,34 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/re_warning_days" />
 
-            <TextView
-                android:id="@+id/tv_warning_days"
-                style="@style/textview_style_certificate"
-                android:text="@string/re_warning_days" />
+            <RadioGroup
+                android:id="@+id/rg_warn_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_time_30_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_30_days" />
+
+                <RadioButton
+                    android:id="@+id/rb_time_90_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_90_days" />
+            </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
@@ -252,10 +309,35 @@
                 style="@style/account_setting_left_textview"
                 android:text="@string/is_common" />
 
-            <TextView
-                android:id="@+id/tv_common"
-                style="@style/textview_style_certificate"
-                android:text="@string/is_common" />
+            <RadioGroup
+                android:id="@+id/rg_is_ofton_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/rb_is_ofton_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:id="@+id/rb_no_ofton_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+            </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
@@ -268,18 +350,41 @@
             <TextView
                 android:id="@+id/tv_add_certificate_photo"
                 style="@style/account_setting_left_textview"
-                android:layout_width="match_parent"
-                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
                 android:text="@string/add_certificate_photo" />
 
             <ImageView
-                android:id="@+id/iv_certificate_phone"
+                android:id="@+id/iv_add_images"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/add_certificate" />
+                android:src="@drawable/iv_add_certificate_photo" />
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/tv_add_insurance_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/tv_bg"
+                android:gravity="center"
+                android:text="@string/complete"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

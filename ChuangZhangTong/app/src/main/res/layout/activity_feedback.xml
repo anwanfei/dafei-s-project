@@ -67,10 +67,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/send_photo" />
             </LinearLayout>
-
         </LinearLayout>
-
-
     </LinearLayout>
 
     <LinearLayout

@@ -16,6 +16,7 @@ import com.baidu.mapapi.map.MapView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
 import com.umeng.socialize.media.UMImage;
@@ -129,6 +130,12 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
         popupWindow.setContentView(view);
 
         return rootView;
+    }
+
+    @Override
+    protected void initData() {
+        super.initData();
+        tvUpdateTime.setText(DateUtil.getCurrentTimeMDHM());
     }
 
     @Override

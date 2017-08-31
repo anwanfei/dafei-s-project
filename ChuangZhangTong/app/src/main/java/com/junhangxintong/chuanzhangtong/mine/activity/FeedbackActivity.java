@@ -23,11 +23,16 @@ import android.widget.Toast;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.Utils.EventBusMessage;
 import com.junhangxintong.chuanzhangtong.mine.adapter.PhotoAdapter;
 import com.junhangxintong.chuanzhangtong.utils.GlideImageLoader;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +66,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     private String TAG = "junhang";
 
     //存储获得图片路径的集合
-    private List<String> path = new ArrayList<>();
+    private ArrayList<String> path = new ArrayList<>();
     private GalleryConfig gallrtyConfig;
     private PhotoAdapter photoAdapter;
 
@@ -72,9 +77,33 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         initGallery();
 
         init();
+
+        EventBus.getDefault().register(this);
     }
 
     private void init() {
+        chooseAndShowPhotos();
+    }
+
+    @Override
+    protected void initView() {
+        ivBack.setVisibility(View.VISIBLE);
+        tvTitle.setText(getResources().getString(R.string.feed_back));
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getCallback(EventBusMessage eventBusMessage) {
+        path = eventBusMessage.getPhotos();
+
+        chooseAndShowPhotos();
+    }
+
+    private void chooseAndShowPhotos() {
         gallrtyConfig = new GalleryConfig.Builder()
                 .imageLoader(new GlideImageLoader())
                 .iHandlerCallBack(iHandlerCallBack)
@@ -82,7 +111,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 .pathList(path)
                 .multiSelect(true)
                 .multiSelect(true, 3)
-                .maxSize(3)
+                .maxSize(6)
                 .isShowCamera(true)
                 .filePath("/Gallery/Pictures")
                 .build();
@@ -96,13 +125,9 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void initView() {
-        ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.feed_back));
-    }
-
-    @Override
-    protected void initData() {
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
