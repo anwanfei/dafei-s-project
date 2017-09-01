@@ -14,6 +14,8 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.MessageFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +48,9 @@ public class DynamicRemindFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: 2017/8/23 根据是否登录判断是否要进入登录界面
-        if (false) {
+        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+
+        if (token.equals("")) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
             getActivity().finish();
         }

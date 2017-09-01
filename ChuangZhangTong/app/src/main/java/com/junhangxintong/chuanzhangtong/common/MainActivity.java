@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,6 +14,8 @@ import com.junhangxintong.chuanzhangtong.dynamic.fragment.DynamicRemindFragment;
 import com.junhangxintong.chuanzhangtong.mine.fragment.MyFragment;
 import com.junhangxintong.chuanzhangtong.news.fragment.NewsFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.ShipPositionFragment;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -64,6 +67,15 @@ public class MainActivity extends BaseActivity {
         fragments.add(new NewsFragment());
         fragments.add(new MyFragment());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String roleId = CacheUtils.getString(this, Constants.ROLEID);
+        if (roleId.equals("4")) {
+            rbThirdparty.setVisibility(View.GONE);
+        }
     }
 
     @Override

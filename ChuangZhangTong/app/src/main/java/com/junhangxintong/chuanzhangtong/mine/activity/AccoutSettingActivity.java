@@ -77,7 +77,7 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     RelativeLayout rlAbout;
     @BindView(R.id.rl_login_out)
     RelativeLayout rlLoginOut;
-//    private AlertDialog show_clear_buffer_dialog;
+    //    private AlertDialog show_clear_buffer_dialog;
     private PopupWindow loginOutPopWindow;
     private Dialog dialog;
 
@@ -210,8 +210,8 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                 loginOutPopWindow.dismiss();
                 break;
             case R.id.tv_woman:
-                String userName = CacheUtils.getString(this, Constants.USER_NAME);
-                if (!userName.equals("")) {
+                String token = CacheUtils.getString(this, Constants.TOKEN);
+                if (!token.equals("")) {
                     loginOutPopWindow.dismiss();
                     loginOut();
                     finish();
@@ -227,7 +227,6 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     private void loginOut() {
         //清除了sp存储
         this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-
         Toast.makeText(AccoutSettingActivity.this, getResources().getString(R.string.login_out), Toast.LENGTH_SHORT).show();
     }
 }

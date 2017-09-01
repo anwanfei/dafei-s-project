@@ -1,7 +1,7 @@
 package com.junhangxintong.chuanzhangtong.utils;
 
 /**
- * Created by edz on 2017/7/6.
+ * Created by anwanfei on 2017/7/6.
  */
 
 public class Constants {
@@ -40,11 +40,22 @@ public class Constants {
     public static final String PHONE_PATHS = "PHONE_PATHS";
     public static final String POSITION = "POSITION";
     public static final String PHONE = "phone";
+    public static final String VCODE = "vcode";
+    public static final String SOURCE = "source";
+    public static final String VCODE_TWO = "2";
     public static final String GET_VERIFYCODE_AGAIN = "重新获取验证码";
     public static final String HAS_SENDED = "已发送";
     public static final long COUNTDOWN_TIME = 60000;
     public static final long COUNTDOWN_TIME_SPEED = 1000;
+    public static final String NETWORK_REQUEST_ERROR = "网络请求异常！";
+    public static final String NETWORK_CONNECTION_ERROR = "网络连接异常，请检查网络!";
+    public static final String NETWORK_RETURN_EMPT = "网络返回数据为空";
     public static final String TOKEN = "token";
+    public static final String CONFIRM_PWD = "confirmPassword";
+    public static final String PASSWORD = "password";
+    public static final String ROLEID = "roleId";
+    public static final String CHUANGUAN = "船管";
+    public static final String ID = "id";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "http://www.baidu.com";
 }

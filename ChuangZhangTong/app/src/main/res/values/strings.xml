@@ -19,6 +19,7 @@
     <string name="emergency_contactor">紧急联络人</string>
     <string name="emergency_contactor_phone">紧急联络人电话</string>
     <string name="chuanguan">船管</string>
+    <string name="messager">管理员</string>
     <string name="chuanyuan">船员</string>
     <string name="other">其他</string>
     <string name="contact_phone">110</string>
@@ -195,6 +196,7 @@
     <string name="crew_job_num_cannot_empty">船员工号不能为空</string>
     <string name="crew_duty_cannot_empty">船员职务不能为空</string>
     <string name="crew_phone_cannot_empty">船员手机号不能为空</string>
+    <string name="phone_cannot_empty">请输入有效手机号</string>
     <string name="crew_mail_cannot_empty">船员邮箱不能为空</string>
     <string name="follow_fisrt_ship">亲，请关注您的提一条船哦~</string>
     <string name="certificate_details">证书详情</string>

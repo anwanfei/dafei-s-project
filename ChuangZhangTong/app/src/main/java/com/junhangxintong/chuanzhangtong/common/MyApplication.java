@@ -8,7 +8,6 @@ import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.common.QueuedWork;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +39,7 @@ public class MyApplication extends Application {
                 //其他配置
                 .build();
 
-        OkHttpUtils.initClient(okHttpClient);
+        com.zhy.http.okhttp.OkHttpUtils.initClient(okHttpClient);
     }
 
     {

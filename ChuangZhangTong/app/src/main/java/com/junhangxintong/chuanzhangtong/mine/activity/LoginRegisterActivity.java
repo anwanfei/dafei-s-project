@@ -10,12 +10,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.MainActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class LoginRegisterActivity extends BaseActivity {
 
@@ -87,6 +99,7 @@ public class LoginRegisterActivity extends BaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
+                startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));
                 finish();
                 break;
         }
@@ -104,6 +117,7 @@ public class LoginRegisterActivity extends BaseActivity {
                 startActivity(new Intent(LoginRegisterActivity.this, ForgetPwdActivity.class));
                 break;
             case R.id.tv_login:
+                netLoginByPwd();
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(LoginRegisterActivity.this, RegisterActivity.class));
@@ -116,6 +130,59 @@ public class LoginRegisterActivity extends BaseActivity {
                 break;
             case R.id.ll_login_regiter:
                 break;
+        }
+    }
+
+    private void netLoginByPwd() {
+        String phone = etInputPhone.getText().toString();
+        String pwd = etInputPwd.getText().toString();
+        boolean mobile = MultiVerify.isMobile(phone);
+        if (mobile) {
+            OkHttpUtils
+                    .post()
+                    .url(ConstantsUrls.LOGIN_BY_PHNOE)
+                    .addParams(Constants.PHONE, phone)
+                    .addParams(Constants.PASSWORD, pwd)
+                    .addParams(Constants.SOURCE, Constants.VCODE_TWO)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                if (!netServiceErrortBean.getCode().equals("200")) {
+                                    Toast.makeText(LoginRegisterActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                    String message = loginResult.getMessage();
+                                    Toast.makeText(LoginRegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                                    //保存token
+                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.TOKEN, loginResult.getData().getToken());
+
+                                    //保存id
+                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
+
+                                    //保存角色id
+                                    CacheUtils.putString(LoginRegisterActivity.this,Constants.ROLEID,loginResult.getData().getObject().getRoleId());
+
+                                    //登录成功回到首页
+                                    startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));
+                                    finish();
+                                }
+                            }
+
+                        }
+                    });
+        } else {
+            Toast.makeText(LoginRegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
         }
     }
 }
