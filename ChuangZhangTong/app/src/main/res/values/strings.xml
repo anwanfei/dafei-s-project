@@ -16,6 +16,7 @@
     <string name="label">标签</string>
     <string name="gender">性别</string>
     <string name="contact_number">联系电话</string>
+    <string name="change_phone_num">更换手机号</string>
     <string name="emergency_contactor">紧急联络人</string>
     <string name="emergency_contactor_phone">紧急联络人电话</string>
     <string name="chuanguan">船管</string>
@@ -60,6 +61,7 @@
     <string name="add_first_certificate">亲，请添加您的第一张证书哦~</string>
     <string name="add_first_crew">亲，请添加您的船员哦~</string>
     <string name="register">注册</string>
+    <string name="free_register">免费注册</string>
     <string name="login_other">其他登录方式</string>
     <string name="camera">拍照</string>
     <string name="album">相册</string>

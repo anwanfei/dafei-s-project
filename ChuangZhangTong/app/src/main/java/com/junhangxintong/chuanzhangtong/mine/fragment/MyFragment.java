@@ -67,6 +67,18 @@ public class MyFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+
+        if (token.equals("")) {
+            startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+            getActivity().finish();
+        }
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -89,6 +101,7 @@ public class MyFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         String userName = CacheUtils.getString(getActivity(), Constants.USER_NAME);
+        String roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
         //获取拍的照片
         String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
         File file = new File(path);
@@ -100,6 +113,23 @@ public class MyFragment extends BaseFragment {
         }
         if (!userName.isEmpty()) {
             tvUserName.setText(userName);
+        } else {
+            tvUserName.setText(getResources().getString(R.string.name));
+        }
+
+        switch (roleId) {
+            case "1":
+                tvIdentity.setText(Constants.ROLE_NAME[0]);
+                break;
+            case "2":
+                tvIdentity.setText(Constants.ROLE_NAME[1]);
+                break;
+            case "3":
+                tvIdentity.setText(Constants.ROLE_NAME[2]);
+                break;
+            case "4":
+                tvIdentity.setText(Constants.ROLE_NAME[3]);
+                break;
         }
     }
 

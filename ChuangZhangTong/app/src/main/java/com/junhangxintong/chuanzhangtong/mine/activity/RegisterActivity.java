@@ -168,14 +168,11 @@ public class RegisterActivity extends BaseActivity {
                                     finish();
                                 }
                             }
-
                         }
                     });
         } else {
             Toast.makeText(RegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void netSendVerifyCode() {

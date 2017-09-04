@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 
 public class CacheUtils {
     public static final String SHAREPRENFERENCE_NAME = "junhangxintong";
+    public static final String PERMISSION = "permission";
     private static SharedPreferences sp;
 
     //保存string

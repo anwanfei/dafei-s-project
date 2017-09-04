@@ -5,12 +5,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ResetPwdActivity extends BaseActivity {
 
@@ -53,8 +62,38 @@ public class ResetPwdActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
-                
+                netSetPwd();
                 break;
         }
+    }
+
+    private void netSetPwd() {
+        String pwd = etInputPwdFirst.getText().toString();
+        String confirmPwd = etInputPwdAgain.getText().toString();
+        String userId = CacheUtils.getString(this, Constants.ID);
+
+        NetUtils.postWithHeader(this, ConstantsUrls.RESET_PWD)
+                .addParams(Constants.USER_ID,userId)
+                .addParams(Constants.PASSWORD,pwd)
+                .addParams(Constants.CONFIRM_PWD,confirmPwd)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ResetPwdActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(ResetPwdActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            Toast.makeText(ResetPwdActivity.this, message, Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                });
     }
 }

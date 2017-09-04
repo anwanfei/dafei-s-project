@@ -38,4 +38,28 @@ public class ConstantsUrls {
     //提交新密码
     public static final String SUMBITNEWPASSWORD = WWW_TEST_BASE_URL + "/user/buiness/find/password/sumbitNewPassword.do";
 
+    /**
+     * 我的个人信息
+     */
+    //获取个人信息
+    public static final String GET_USER_INFO = WWW_TEST_BASE_URL + "/my/baseinfo/get/user/info.do";
+
+    //修改个人信息
+    public static final String MODIFY_USER_INFO = WWW_TEST_BASE_URL + "/my/baseinfo/modify/user/info.do";
+
+    //修改手机号发送验证码
+    public static final String MODIFY_PHONE_SENDSMS = WWW_TEST_BASE_URL + "/my/baseinfo/phone/sendSMS.do";
+
+    //提交修改手机号
+    public static final String COMMIT_MODIFY_PHONE = WWW_TEST_BASE_URL + "/my/baseinfo/phone/update.do";
+
+    /**
+     * 设置
+     */
+    //重置密码
+    public static final String RESET_PWD = WWW_TEST_BASE_URL + "/my/baseinfo/password/update.do";
+
+    //退出登录
+    public static final String LOGIN_OUT = WWW_TEST_BASE_URL + "/my/baseinfo/user/logout.do";
+
 }

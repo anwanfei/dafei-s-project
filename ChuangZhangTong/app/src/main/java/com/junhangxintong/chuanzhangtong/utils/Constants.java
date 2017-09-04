@@ -56,6 +56,10 @@ public class Constants {
     public static final String ROLEID = "roleId";
     public static final String CHUANGUAN = "船管";
     public static final String ID = "id";
+    public static final String USER_ID = "userId";
+    public static final String PERSON_NAME = "personName";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "http://www.baidu.com";
+    public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};
+
 }

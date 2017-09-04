@@ -74,7 +74,7 @@
         <activity android:name=".mine.activity.MyFleetListActivity" />
         <activity android:name=".mine.activity.AddShipActivity" />
         <activity android:name=".mine.activity.CrewManagementActivity" />
-        <activity android:name=".mine.activity.ContactPhoneActivity" />
+        <activity android:name=".mine.activity.ModifyPhoneActivity" />
         <activity android:name=".mine.activity.EmergencyContactorActivity" />
         <activity android:name=".mine.activity.EmergencyContactorPhoneActivity" />
         <activity android:name=".mine.activity.ChooseDutyActivity" />

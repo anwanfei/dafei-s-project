@@ -8,12 +8,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ModifyNameActivity extends BaseActivity {
 
@@ -60,6 +67,9 @@ public class ModifyNameActivity extends BaseActivity {
                 if (userName.isEmpty()) {
                     Toast.makeText(ModifyNameActivity.this, getResources().getString(R.string.no_empty), Toast.LENGTH_SHORT).show();
                 } else {
+
+                    netCommitUserName();
+
                     Intent intent = getIntent();
                     intent.putExtra(Constants.USER_NAME, userName);
                     setResult(Constants.REQUEST_CODE0, intent);
@@ -68,5 +78,32 @@ public class ModifyNameActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    private void netCommitUserName() {
+
+        String userId = CacheUtils.getString(this, Constants.ID);
+        String userName = etInputName.getText().toString();
+
+        NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
+                .addParams(Constants.USER_ID,userId)
+                .addParams(Constants.PERSON_NAME, userName)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ModifyNameActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(ModifyNameActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            Toast.makeText(ModifyNameActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

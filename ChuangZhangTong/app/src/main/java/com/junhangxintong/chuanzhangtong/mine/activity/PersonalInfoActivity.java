@@ -148,7 +148,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 showChooseGenderPopupWindow();
                 break;
             case R.id.rl_contact_number:
-                startActivityForResult(new Intent(PersonalInfoActivity.this, ContactPhoneActivity.class), Constants.REQUEST_CODE1);
+                startActivityForResult(new Intent(PersonalInfoActivity.this, ModifyPhoneActivity.class), Constants.REQUEST_CODE1);
                 break;
             case R.id.rl_emergency_contactor:
                 startActivityForResult(new Intent(PersonalInfoActivity.this, EmergencyContactorActivity.class), Constants.REQUEST_CODE2);
