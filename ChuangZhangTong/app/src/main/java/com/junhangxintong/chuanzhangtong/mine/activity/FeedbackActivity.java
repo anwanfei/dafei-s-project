@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -21,24 +22,35 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.mine.Utils.EventBusMessage;
 import com.junhangxintong.chuanzhangtong.mine.adapter.PhotoAdapter;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.GlideImageLoader;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class FeedbackActivity extends BaseActivity implements View.OnClickListener {
 
@@ -111,7 +123,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 .pathList(path)
                 .multiSelect(true)
                 .multiSelect(true, 3)
-                .maxSize(6)
+                .maxSize(3)
                 .isShowCamera(true)
                 .filePath("/Gallery/Pictures")
                 .build();
@@ -142,13 +154,63 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.tv_save:
-                finish();
+                netCommitFeedback();
                 break;
             case R.id.iv_add_photo_feedback:
                 showChoosePhotesPop();
                 break;
-            case R.id.ll_add_photo_feedback:
-                break;
+        }
+    }
+
+    private void netCommitFeedback() {
+        String content = etInputFeedback.getText().toString();
+        String phoneNum = etPhone.getText().toString();
+        String userId = CacheUtils.getString(this, Constants.ID);
+
+        String phonePath = path.get(0);
+        File file = new File(phonePath);
+
+        Map<String, File> stringFileHashMap = new HashMap<>();
+        for (int i = 0; i < path.size(); i++) {
+            String key = i + ".jpg";
+            stringFileHashMap.put(key, new File(path.get(i)));
+        }
+
+        if (content.equals("")) {
+            Toast.makeText(FeedbackActivity.this, getResources().getString(R.string.input_feedback), Toast.LENGTH_SHORT).show();
+        } else {
+            NetUtils.postWithHeader(this, ConstantsUrls.FEEDBACK)
+                    .addParams(Constants.USER_ID, userId)
+                    .addParams(Constants.FEEDBACK_CONTENT, content)
+                    .addParams(Constants.MOBILEPHONE, phoneNum)
+//                    .addFile(Constants.PICTRUE, "a.jpg", file)
+                    .files(Constants.PICTRUE, stringFileHashMap)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(FeedbackActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(FeedbackActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                                String message = sendVerifyCode.getMessage();
+                                String code = sendVerifyCode.getCode();
+                                Toast.makeText(FeedbackActivity.this, message, Toast.LENGTH_SHORT).show();
+                                if (code.equals("601")) {
+                                    startActivity(new Intent(FeedbackActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                }
+                                if (code.equals("200")) {
+                                    finish();
+                                }
+                            }
+                        }
+                    });
         }
     }
 

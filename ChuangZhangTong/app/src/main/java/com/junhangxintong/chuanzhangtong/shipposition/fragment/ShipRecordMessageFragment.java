@@ -188,4 +188,12 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         startActivity(new Intent(getActivity(), arrClass[num]));
         getActivity().finish();
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            popupWindow.dismiss();
+        }
+    }
 }

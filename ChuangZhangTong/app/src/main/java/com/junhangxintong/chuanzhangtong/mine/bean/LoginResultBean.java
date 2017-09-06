@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/8/31.
  */
 
-public class LoginResultBean {
+public class LoginResultBean implements Serializable{
 
     /**
      * message : 登录成功
@@ -50,7 +52,7 @@ public class LoginResultBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * token : 0E0AFF62-23AD-4480-B91F-A8BEB7895060
          * object : {"deptName":"","headImgUrl":"","sex":"0","superAdminUserId":"0","roleName":"其他","modifyDate":"","contactPersonPhone":"","cardType":"0","password":"c33367701511b4f6020ec61ded352059","nation":"","personName":"","registerIp":"0:0:0:0:0:0:0:1","cardNo":"","isDisabled":"0","id":"17","mobilePhone":"15810512120","postName":"","email":"","jobNo":"","contactPersonName":"","createDate":"2017-08-30 15:33:46","sourceRegister":"2","roleId":"4"}
@@ -75,7 +77,7 @@ public class LoginResultBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
+        public static class ObjectBean implements Serializable{
             /**
              * deptName :
              * headImgUrl :

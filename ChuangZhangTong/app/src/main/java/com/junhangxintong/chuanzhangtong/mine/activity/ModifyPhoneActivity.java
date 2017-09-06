@@ -1,10 +1,13 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +15,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
@@ -39,6 +43,7 @@ public class ModifyPhoneActivity extends BaseActivity {
     EditText etInputPwd;
     @BindView(R.id.tv_save)
     TextView tvSave;
+    private String oldPhoneNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,8 @@ public class ModifyPhoneActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        oldPhoneNum = intent.getStringExtra(Constants.PHONE);
     }
 
     @Override
@@ -70,18 +77,94 @@ public class ModifyPhoneActivity extends BaseActivity {
                 netSendVerifyCode();
                 break;
             case R.id.tv_save:
-
+                netConfirmChangePhone();
                 break;
         }
     }
 
+    private void netConfirmChangePhone() {
+        String newPhoneNum = etInputPhone.getText().toString();
+
+        if (newPhoneNum.equals("")) {
+            Toast.makeText(ModifyPhoneActivity.this, getResources().getString(R.string.input_phone), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (oldPhoneNum.equals("")) {
+            Toast.makeText(ModifyPhoneActivity.this, getResources().getString(R.string.no_get_cur_phone), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (newPhoneNum.equals(oldPhoneNum)) {
+            View view = LinearLayout.inflate(this, R.layout.dialog_hint, null);
+            TextView tv_ok = (TextView) view.findViewById(R.id.tv_ok);
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.style_dialog);
+            dialog.setView(view);
+            final AlertDialog show = dialog.show();
+
+            tv_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    show.dismiss();
+                }
+            });
+        } else {
+            netChangePhoneNum();
+        }
+    }
+
+    private void netChangePhoneNum() {
+        final String newPhone = etInputPhone.getText().toString();
+        String userId = CacheUtils.getString(this, Constants.ID);
+        String verifyCode = etInputVerifyCode.getText().toString();
+        if(verifyCode.equals("")){
+            Toast.makeText(ModifyPhoneActivity.this, getResources().getString(R.string.input_verify_code), Toast.LENGTH_SHORT).show();
+        } else {
+            NetUtils.postWithHeader(this, ConstantsUrls.COMMIT_MODIFY_PHONE)
+                    .addParams(Constants.PHONE, newPhone)
+                    .addParams(Constants.VCODE, verifyCode)
+                    .addParams(Constants.USER_ID, userId)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(ModifyPhoneActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(ModifyPhoneActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                                String message = sendVerifyCode.getMessage();
+                                String code = sendVerifyCode.getCode();
+                                Toast.makeText(ModifyPhoneActivity.this, message, Toast.LENGTH_SHORT).show();
+                                if (code.equals("601")) {
+                                    startActivity(new Intent(ModifyPhoneActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                }
+                                if(code.equals("200")) {
+                                    Intent intent = getIntent();
+                                    intent.putExtra(Constants.CONTACT_PHONE,newPhone );
+                                    setResult(Constants.REQUEST_CODE1, intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    });
+        }
+
+    }
+
+
     private void netSendVerifyCode() {
 
-        String phone = etInputPhone.getText().toString();
-        boolean mobile = MultiVerify.isMobile(phone);
+        String PhoneNum = etInputPhone.getText().toString();
+        boolean mobile = MultiVerify.isMobile(PhoneNum);
         if (mobile) {
             NetUtils.postWithNoHeader(this, ConstantsUrls.MODIFY_PHONE_SENDSMS)
-                    .addParams(Constants.PHONE, phone)
+                    .addParams(Constants.PHONE, PhoneNum)
                     .build()
                     .execute(new StringCallback() {
                         @Override

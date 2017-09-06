@@ -67,6 +67,9 @@ public class DynamicRemindFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
+
+
+
         tvTitle.setText(getResources().getString(R.string.message));
         viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager()));
         tablayoutMessage.setupWithViewPager(viewpagerMessage);

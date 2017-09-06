@@ -2,6 +2,7 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +25,7 @@ import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
-import com.zhy.http.okhttp.OkHttpUtils;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
@@ -51,6 +54,18 @@ public class LoginRegisterActivity extends BaseActivity {
     ImageView ivWeibo;
     @BindView(R.id.ll_login_regiter)
     LinearLayout llLoginRegiter;
+    @BindView(R.id.rb_test_url)
+    RadioButton rbTestUrl;
+    @BindView(R.id.rb_local_url)
+    RadioButton rbLocalUrl;
+    @BindView(R.id.rb_base_url)
+    RadioButton rbBaseUrl;
+    @BindView(R.id.rg_choose_url)
+    RadioGroup rgChooseUrl;
+
+    private String local_base_url = "http://192.168.0.101:8082";
+    private String www_test_base_url = "http://116.62.152.191:8082";
+    private String www_base_url = "http://192.168.0.101:8082";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +103,19 @@ public class LoginRegisterActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        //网络选择按钮开关
+        rgChooseUrl.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                if (i == rbTestUrl.getId()) {
+                    CacheUtils.putString(LoginRegisterActivity.this, Constants.BASE_URL, www_test_base_url);
+                } else if (i == rbBaseUrl.getId()) {
+                    CacheUtils.putString(LoginRegisterActivity.this, Constants.BASE_URL, www_base_url);
+                } else if (i == rbLocalUrl.getId()) {
+                    CacheUtils.putString(LoginRegisterActivity.this, Constants.BASE_URL, local_base_url);
+                }
+            }
+        });
     }
 
     @Override
@@ -138,9 +166,7 @@ public class LoginRegisterActivity extends BaseActivity {
         String pwd = etInputPwd.getText().toString();
         boolean mobile = MultiVerify.isMobile(phone);
         if (mobile) {
-            OkHttpUtils
-                    .post()
-                    .url(ConstantsUrls.LOGIN_BY_PHNOE)
+            NetUtils.postWithNoHeader(this, ConstantsUrls.LOGIN_BY_PHNOE)
                     .addParams(Constants.PHONE, phone)
                     .addParams(Constants.PASSWORD, pwd)
                     .addParams(Constants.SOURCE, Constants.VCODE_TWO)
@@ -171,7 +197,7 @@ public class LoginRegisterActivity extends BaseActivity {
                                     CacheUtils.putString(LoginRegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
 
                                     //保存角色id
-                                    CacheUtils.putString(LoginRegisterActivity.this,Constants.ROLEID,loginResult.getData().getObject().getRoleId());
+                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.ROLEID, loginResult.getData().getObject().getRoleId());
 
                                     //登录成功回到首页
                                     startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));

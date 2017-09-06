@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
@@ -21,9 +24,13 @@ import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFleetListActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFollowFleetActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.PersonalInfoActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.CircleImageView;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 
@@ -31,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 /**
  * Created by anwanfei on 2017/7/5.
@@ -58,6 +66,8 @@ public class MyFragment extends BaseFragment {
     RelativeLayout rlChuanguan;
     @BindView(R.id.rl_follew_fleet)
     RelativeLayout rlFollewFleet;
+    private LoginResultBean loginResult;
+    private String token;
 
     @Override
     protected View initView() {
@@ -69,7 +79,7 @@ public class MyFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+        token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
         if (token.equals("")) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
@@ -77,6 +87,52 @@ public class MyFragment extends BaseFragment {
         }
     }
 
+    @Override
+    protected void initData() {
+        super.initData();
+        if (!token.equals("")) {
+            getPersonalInfoFromNet();
+        }
+    }
+
+    private void getPersonalInfoFromNet() {
+        String userId = CacheUtils.getString(getActivity(), Constants.ID);
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.GET_USER_INFO)
+                .addParams(Constants.USER_ID, userId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String code = netServiceErrortBean.getCode();
+                            if (code.equals("200")) {
+                                loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                String personName = loginResult.getData().getObject().getPersonName();
+                                String roleName = loginResult.getData().getObject().getRoleName();
+                                if (personName.equals("")) {
+                                    tvUserName.setText(loginResult.getData().getObject().getMobilePhone());
+                                } else {
+                                    tvUserName.setText(personName);
+                                }
+                                tvIdentity.setText(roleName);
+                            } else if (code.equals("601")) {
+                                Toast.makeText(getActivity(), netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else {
+                                Toast.makeText(getActivity(), netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,7 +197,7 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
                 break;
             case R.id.iv_photo:
-                startActivity(new Intent(getActivity(), PersonalInfoActivity.class));
+                gotoPersonalInfoActivity();
                 break;
             case R.id.tv_user_name:
                 break;
@@ -167,5 +223,11 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));
                 break;
         }
+    }
+
+    private void gotoPersonalInfoActivity() {
+        Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
+        intent.putExtra(Constants.USER_INFO, loginResult);
+        startActivity(intent);
     }
 }

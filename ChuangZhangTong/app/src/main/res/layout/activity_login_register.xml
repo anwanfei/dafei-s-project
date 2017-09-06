@@ -159,4 +159,44 @@
             android:layout_marginLeft="40dp"
             android:src="@drawable/weibo" />
     </LinearLayout>
+
+
+    <RadioGroup
+        android:id="@+id/rg_choose_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_test_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:checked="true"
+            android:drawableLeft="@drawable/rb_choose_selector"
+            android:drawablePadding="3dp"
+            android:text="测试环境" />
+
+        <RadioButton
+            android:id="@+id/rb_local_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/rb_choose_selector"
+            android:drawablePadding="3dp"
+            android:text="本地环境" />
+
+        <RadioButton
+            android:id="@+id/rb_base_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/rb_choose_selector"
+            android:drawablePadding="3dp"
+            android:text="正式环境" />
+    </RadioGroup>
 </LinearLayout>

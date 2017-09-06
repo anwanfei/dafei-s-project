@@ -67,15 +67,8 @@ public class ModifyNameActivity extends BaseActivity {
                 if (userName.isEmpty()) {
                     Toast.makeText(ModifyNameActivity.this, getResources().getString(R.string.no_empty), Toast.LENGTH_SHORT).show();
                 } else {
-
                     netCommitUserName();
-
-                    Intent intent = getIntent();
-                    intent.putExtra(Constants.USER_NAME, userName);
-                    setResult(Constants.REQUEST_CODE0, intent);
-                    finish();
                 }
-
                 break;
         }
     }
@@ -83,10 +76,10 @@ public class ModifyNameActivity extends BaseActivity {
     private void netCommitUserName() {
 
         String userId = CacheUtils.getString(this, Constants.ID);
-        String userName = etInputName.getText().toString();
+        final String userName = etInputName.getText().toString();
 
         NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
-                .addParams(Constants.USER_ID,userId)
+                .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.PERSON_NAME, userName)
                 .build()
                 .execute(new StringCallback() {
@@ -101,7 +94,19 @@ public class ModifyNameActivity extends BaseActivity {
                             Toast.makeText(ModifyNameActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
                             NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String code = netServiceErrortBean.getCode();
                             Toast.makeText(ModifyNameActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                startActivity(new Intent(ModifyNameActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if(code.equals("200")) {
+                                Intent intent = getIntent();
+                                intent.putExtra(Constants.USER_NAME, userName);
+                                setResult(Constants.REQUEST_CODE0, intent);
+                                finish();
+                            }
+
                         }
                     }
                 });

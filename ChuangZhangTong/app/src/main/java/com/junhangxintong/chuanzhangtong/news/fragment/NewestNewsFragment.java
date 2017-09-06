@@ -7,20 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.activity.NationalityConventionActivity;
 import com.junhangxintong.chuanzhangtong.news.activity.OilPriceActivity;
-import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
+import com.junhangxintong.chuanzhangtong.news.adapter.NewsListsAdapter;
+import com.junhangxintong.chuanzhangtong.news.bean.NewsListBean;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 /**
  * Created by anwanfei on 2017/7/8.
@@ -30,8 +38,7 @@ public class NewestNewsFragment extends BaseFragment {
     @BindView(R.id.lv_message)
     ListView lvMessage;
     Unbinder unbinder;
-    List<String> newses = new ArrayList<>();
-    private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
+    private List<NewsListBean.DataBean.ArrayBean> newsLists;
 
     @Override
     protected View initView() {
@@ -58,26 +65,54 @@ public class NewestNewsFragment extends BaseFragment {
     protected void initData() {
         super.initData();
 
-        for (int i = 0; i < Constants.TEST_DATA_NUM; i++) {
-            if (newses.size() < Constants.TEST_DATA_NUM) {
-                newses.add("F国国内公约");
-                newses.add("当日原油指导价：布特伦：48.91");
-                newses.add("当日原油指导价：WTI：50.12");
-                newses.add("F国国际公约");
-                newses.add("F国国内公约");
-            }
-        }
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.QUERY_NEWS_LISTS)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "10")
+                .addParams(Constants.NEWS_TYPE, "")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
 
-        shipNewsSubFragmentAdapter = new ShipNewsSubFragmentAdapter(getActivity(), newses);
-        lvMessage.setAdapter(shipNewsSubFragmentAdapter);
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                NewsListBean newsListBean = new Gson().fromJson(response, NewsListBean.class);
+                                newsLists = newsListBean.getData().getArray();
+
+                                NewsListsAdapter newsListsAdapter = new NewsListsAdapter(getActivity(), newsLists);
+                                lvMessage.setAdapter(newsListsAdapter);
+
+                            } else if (code.equals("601")) {
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else {
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
         lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 1 || i == 2) {
-                    startActivity(new Intent(getActivity(), OilPriceActivity.class));
+                int newsType = newsLists.get(i).getNewsType();
+                int id = newsLists.get(i).getId();
+                if (newsType == 2) {
+                    Intent intent = new Intent(getActivity(), OilPriceActivity.class);
+                    intent.putExtra(Constants.ID, id);
+                    startActivity(intent);
                 } else {
-                    startActivity(new Intent(getActivity(), NationalityConventionActivity.class));
+                    Intent intent = new Intent(getActivity(), NationalityConventionActivity.class);
+                    intent.putExtra(Constants.ID, id);
+                    startActivity(intent);
                 }
             }
         });

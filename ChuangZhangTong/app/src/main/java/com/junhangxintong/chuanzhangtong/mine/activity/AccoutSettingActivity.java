@@ -87,6 +87,12 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     private PopupWindow loginOutPopWindow;
     private Dialog dialog;
 
+
+    private String local_base_url = "http://192.168.0.101:8082";
+    private String www_test_base_url = "http://116.62.152.191:8082";
+    private String www_base_url = "http://192.168.0.101:8082";
+    public static final String BASE_URL = "http://116.62.152.191:8082";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,7 +239,7 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     private void loginOut() {
         String userId = CacheUtils.getString(this, Constants.ID);
         NetUtils.postWithHeader(this, ConstantsUrls.LOGIN_OUT)
-                .addParams(Constants.USER_ID,userId)
+                .addParams(Constants.USER_ID, userId)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -249,11 +255,16 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                             SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
                             String message = sendVerifyCode.getMessage();
                             Toast.makeText(AccoutSettingActivity.this, message, Toast.LENGTH_SHORT).show();
-                             //清除了sp存储
+                            //清除了sp存储
                             getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                            //保存获取权限的sp
                             CacheUtils.putBoolean(AccoutSettingActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                         }
                     }
                 });
+
+        //清除了sp存储
+//        getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+//        CacheUtils.putBoolean(AccoutSettingActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
     }
 }

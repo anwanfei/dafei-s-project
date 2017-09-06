@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
+    android:background="@color/gray_bg"
     tools:context="com.junhangxintong.chuanzhangtong.mine.activity.ChooseDutyActivity">
 
-    <include layout="@layout/titlebar" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/titlebar" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/gray_bg" />
-
-    <ListView
-        android:id="@+id/listview_choose_duty"
+    <EditText
+        android:id="@+id/et_input_duty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/gray_bg"
-        android:dividerHeight="1dp"
-        android:scrollbars="none" />
-</LinearLayout>
+        android:layout_below="@id/include"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:hint="@string/input_duty"
+        android:padding="20dp" />
+
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/tv_bg"
+        android:gravity="center"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="16dp" />
+</RelativeLayout>

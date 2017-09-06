@@ -60,6 +60,7 @@ public class AllMessageFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
+
         for (int i = 0; i < Constants.TEST_DATA_NUM; i++) {
             if (allMessages.size() < Constants.TEST_DATA_NUM) {
                 allMessages.add("船舶动态通知：华海1号起航");

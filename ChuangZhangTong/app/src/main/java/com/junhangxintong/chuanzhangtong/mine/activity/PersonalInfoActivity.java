@@ -19,12 +19,20 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.CircleImageView;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +40,7 @@ import java.io.FileOutputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -71,6 +80,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
     TextView tvTitle;
     private PopupWindow genderPopWindow;
     private PopupWindow photoPopWindow;
+    private String mobilePhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +89,37 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initView() {
-
+        ivBack.setVisibility(View.VISIBLE);
+        tvTitle.setText(getResources().getString(R.string.personal_info));
     }
 
     @Override
     protected void initData() {
-        ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.personal_info));
+
+        Intent intent = getIntent();
+        LoginResultBean loginResult = (LoginResultBean) intent.getSerializableExtra(Constants.USER_INFO);
+        if (loginResult != null) {
+            String personName = loginResult.getData().getObject().getPersonName();
+            mobilePhone = loginResult.getData().getObject().getMobilePhone();
+            String postName = loginResult.getData().getObject().getPostName();
+            String sex = loginResult.getData().getObject().getSex();
+            String contactPersonName = loginResult.getData().getObject().getContactPersonName();
+            String roleName = loginResult.getData().getObject().getRoleName();
+            String contactPersonPhone = loginResult.getData().getObject().getContactPersonPhone();
+
+            tvUserName.setText(personName);
+            tvContactNumber.setText(mobilePhone);
+            tvLabel.setText(roleName);
+            tvDuty.setText(postName);
+            if (sex.equals("1")) {
+                tvGender.setText(getResources().getString(R.string.man));
+            } else if (sex.equals("2")) {
+                tvGender.setText(getResources().getString(R.string.woman));
+            }
+
+            tvEmergencyContactor.setText(contactPersonName);
+            tvEmergencyContactorPhone.setText(contactPersonPhone);
+        }
 
         String userName = CacheUtils.getString(this, Constants.USER_NAME);
         String gender = CacheUtils.getString(this, Constants.GENDER);
@@ -118,8 +152,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         if (!duty.isEmpty()) {
             tvDuty.setText(duty);
         }
-
-
     }
 
     @Override
@@ -148,7 +180,9 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 showChooseGenderPopupWindow();
                 break;
             case R.id.rl_contact_number:
-                startActivityForResult(new Intent(PersonalInfoActivity.this, ModifyPhoneActivity.class), Constants.REQUEST_CODE1);
+                Intent intent = new Intent(PersonalInfoActivity.this, ModifyPhoneActivity.class);
+                intent.putExtra(Constants.PHONE, mobilePhone);
+                startActivityForResult(intent, Constants.REQUEST_CODE1);
                 break;
             case R.id.rl_emergency_contactor:
                 startActivityForResult(new Intent(PersonalInfoActivity.this, EmergencyContactorActivity.class), Constants.REQUEST_CODE2);
@@ -241,9 +275,50 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     //本地保存
                     saveImage(bm);
                     // TODO: 2017/8/15  图片上传
-//                    netSendPhoneToService();
+                    netSendPhoneToService();
                     break;
             }
+        }
+    }
+
+    private void netSendPhoneToService() {
+        String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
+        File mFile = new File(path);
+        Log.e("TAG", "mFile============" + mFile);
+        if (mFile.exists() && mFile.length() > 0) {
+            String userId = CacheUtils.getString(this, Constants.ID);
+            NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
+                    .addParams(Constants.USER_ID, userId)
+                    .addFile(Constants.HEADPICTRUE, "icon.jpg", mFile)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                                String message = sendVerifyCode.getMessage();
+                                String code = sendVerifyCode.getCode();
+                                Toast.makeText(PersonalInfoActivity.this, message, Toast.LENGTH_SHORT).show();
+                                if (code.equals("601")) {
+                                    startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                }
+                                if (code.equals("200")) {
+                                    finish();
+                                }
+                            }
+                        }
+                    });
+
+        } else {
+            Toast.makeText(PersonalInfoActivity.this, getResources().getString(R.string.unexit_file), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -347,15 +422,53 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                 genderPopWindow.dismiss();
                 break;
             case R.id.tv_man:
-                tvGender.setText(getResources().getString(R.string.man));
-                CacheUtils.putString(this, Constants.GENDER, getResources().getString(R.string.man));
-                genderPopWindow.dismiss();
+                netModifyGender("1");
                 break;
             case R.id.tv_woman:
-                tvGender.setText(getResources().getString(R.string.woman));
-                CacheUtils.putString(this, Constants.GENDER, getResources().getString(R.string.woman));
-                genderPopWindow.dismiss();
+                netModifyGender("2");
                 break;
         }
+    }
+
+    private void netModifyGender(final String sex) {
+        String userId = CacheUtils.getString(this, Constants.ID);
+
+        NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SEX, sex)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String code = netServiceErrortBean.getCode();
+                            Toast.makeText(PersonalInfoActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                if (sex.equals("1")) {
+                                    tvGender.setText(getResources().getString(R.string.man));
+                                    CacheUtils.putString(PersonalInfoActivity.this, Constants.GENDER, getResources().getString(R.string.man));
+                                    genderPopWindow.dismiss();
+                                } else if (sex.equals("2")) {
+                                    tvGender.setText(getResources().getString(R.string.woman));
+                                    CacheUtils.putString(PersonalInfoActivity.this, Constants.GENDER, getResources().getString(R.string.woman));
+                                    genderPopWindow.dismiss();
+                                }
+
+                            }
+                        }
+                    }
+                });
     }
 }

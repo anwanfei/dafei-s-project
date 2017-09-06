@@ -7,13 +7,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class EmergencyContactorPhoneActivity extends BaseActivity {
 
@@ -55,12 +64,52 @@ public class EmergencyContactorPhoneActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
-                String contact_phone = etInputName.getText().toString();
-                Intent intent = getIntent();
-                intent.putExtra(Constants.EMERGENCY_CONTACTOR_PHONE, contact_phone);
-                setResult(Constants.REQUEST_CODE3, intent);
-                finish();
+                netCommitEmergencyContactPhone();
                 break;
         }
+    }
+
+    private void netCommitEmergencyContactPhone() {
+
+        String userId = CacheUtils.getString(this, Constants.ID);
+        final String emergencyPhone = etInputName.getText().toString();
+        boolean mobile = MultiVerify.isMobile(emergencyPhone);
+        if (mobile) {
+            NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
+                    .addParams(Constants.USER_ID, userId)
+                    .addParams(Constants.CONTACT_PERSON_PHONE, emergencyPhone)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(EmergencyContactorPhoneActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(EmergencyContactorPhoneActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String code = netServiceErrortBean.getCode();
+                                Toast.makeText(EmergencyContactorPhoneActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (code.equals("601")) {
+                                    startActivity(new Intent(EmergencyContactorPhoneActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                }
+                                if (code.equals("200")) {
+                                    Intent intent = getIntent();
+                                    intent.putExtra(Constants.EMERGENCY_CONTACTOR_PHONE, emergencyPhone);
+                                    setResult(Constants.REQUEST_CODE3, intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(EmergencyContactorPhoneActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 }
