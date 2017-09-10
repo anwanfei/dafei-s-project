@@ -45,9 +45,9 @@
 
             <EditText
                 android:id="@+id/et_phone"
-                android:inputType="phone"
                 style="@style/edittext_no_arrow"
-                android:hint="@string/input_phone" />
+                android:hint="@string/input_phone"
+                android:inputType="phone" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -104,25 +104,27 @@
             <EditText
                 android:id="@+id/et_certificate_number"
                 style="@style/edittext_no_arrow"
-                android:inputType="number"
-                android:hint="@string/input_certificate_num" />
+                android:hint="@string/input_certificate_num"
+                android:inputType="number" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="1dp"
             android:background="@color/white"
             android:padding="15dp">
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
                 android:text="@string/crew_belong_ship" />
 
-            <EditText
-                android:id="@+id/et_belong_ship"
-                style="@style/edittext_no_arrow"
-                android:hint="@string/input_ship_name" />
+            <TextView
+                android:id="@+id/tv_belong_ship"
+                style="@style/account_setting_right_textview_with_arrow"
+                android:gravity="center_vertical"
+                android:text="@string/choose_belong_ship" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -138,11 +140,11 @@
                 android:layout_centerVertical="true"
                 android:text="@string/duty" />
 
-            <TextView
+            <EditText
                 android:id="@+id/et_duty"
-                style="@style/account_setting_right_textview_with_arrow"
+                style="@style/edittext_no_arrow"
                 android:gravity="center_vertical"
-                android:text="@string/choose_duty" />
+                android:hint="@string/input_duty" />
         </RelativeLayout>
 
         <RelativeLayout

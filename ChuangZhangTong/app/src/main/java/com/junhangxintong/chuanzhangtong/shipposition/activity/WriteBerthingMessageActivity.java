@@ -1,7 +1,10 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -12,12 +15,24 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.AddBerthingReportBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class WriteBerthingMessageActivity extends BaseActivity implements View.OnClickListener {
 
@@ -50,10 +65,31 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
     @BindView(R.id.ll_commit)
     LinearLayout llCommit;
     private AlertDialog show;
+    private String userId;
+    private String id;
+    private String anchorArrivalTime = "";
+    private String systemStopTime = "";
+    private String testCabinStartTime = "";
+    private String testCabinEndTime = "";
+    private String isPilotage = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initListener();
+    }
+
+    private void initListener() {
+        rgChooseIsNo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                if (i == rbNo.getId()) {
+                    isPilotage = "2";
+                } else if (i == rbYes.getId()) {
+                    isPilotage = "1";
+                }
+            }
+        });
     }
 
     @Override
@@ -64,7 +100,9 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
 
     @Override
     protected void initData() {
-
+        Intent intent = getIntent();
+        id = intent.getStringExtra(Constants.ID);
+        userId = CacheUtils.getString(this, Constants.ID);
     }
 
     @Override
@@ -121,10 +159,74 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
                 show.dismiss();
                 break;
             case R.id.tv_ok_clear_butter:
-                Toast.makeText(WriteBerthingMessageActivity.this, getResources().getString(R.string.commit_message_success), Toast.LENGTH_SHORT).show();
-                show.dismiss();
-                finish();
+                netCommitReport();
                 break;
         }
+    }
+
+    private void netCommitReport() {
+
+        String loadingUnloadingCargoPort = etInputLoadingUnloadingCargoPort.getText().toString();
+        anchorArrivalTime = tvInputAnchorArrivalTime.getText().toString();
+        systemStopTime = tvInputSystemStopTime.getText().toString();
+        testCabinStartTime = tvInputTestCabinStartTime.getText().toString();
+        testCabinEndTime = tvInputTestCabinEndTime.getText().toString();
+        String portPosition = etInputPortPosition.getText().toString();
+        String tugUseNum = etInputTugUseNum.getText().toString();
+        String shipDraft = etInputShipDraft.getText().toString();
+
+        AddBerthingReportBean.ReportJsonDataBean reportJsonData = new AddBerthingReportBean.ReportJsonDataBean();
+        reportJsonData.setLoadPort(loadingUnloadingCargoPort);
+        reportJsonData.setAnchorAweighDate(anchorArrivalTime);
+        reportJsonData.setXtBerthDate(systemStopTime);
+        reportJsonData.setHoldInspectionBeginDate(testCabinStartTime);
+        reportJsonData.setHoldInspectionEndDate(testCabinEndTime);
+        reportJsonData.setPortBearth(portPosition);
+        reportJsonData.setTugUseNum(tugUseNum);
+        reportJsonData.setShipForwardDraft(shipDraft);
+        reportJsonData.setIsPilotage(isPilotage);
+
+        String json = new Gson().toJson(reportJsonData);
+
+        if(loadingUnloadingCargoPort.equals("")) {
+            Toast.makeText(WriteBerthingMessageActivity.this, getResources().getString(R.string.loadPort), Toast.LENGTH_SHORT).show();
+        }
+
+        NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_ID, id)
+                .addParams(Constants.TYPE, "2")
+                .addParams(Constants.REPORT_JSON, json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(WriteBerthingMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(WriteBerthingMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(WriteBerthingMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(WriteBerthingMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(WriteBerthingMessageActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                show.dismiss();
+                                finish();
+                            }
+                        }
+                    }
+                });
     }
 }

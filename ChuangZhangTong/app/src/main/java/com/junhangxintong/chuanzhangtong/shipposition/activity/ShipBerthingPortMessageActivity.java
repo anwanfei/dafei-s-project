@@ -1,16 +1,31 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.BerthingReportInfoBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ShipBerthingPortMessageActivity extends BaseActivity {
 
@@ -68,7 +83,65 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String shipId = intent.getStringExtra(Constants.SHIP_ID);
+        String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+        tvShipMessageName.setText(shipName);
 
+        NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
+                .addParams(Constants.ID, shipId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ShipBerthingPortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(ShipBerthingPortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                BerthingReportInfoBean berthingReportInfoBean = new Gson().fromJson(response, BerthingReportInfoBean.class);
+                                BerthingReportInfoBean.DataBean.ObjectBean berthingReportInfo = berthingReportInfoBean.getData().getObject();
+
+                                tvShipTime.setText(berthingReportInfo.getCreateDate());
+                                tvLoadingUnloadingCargoPort.setText(berthingReportInfo.getLoadPort());
+                                tvAnchorLeaveTime.setText(berthingReportInfo.getAnchorAweighDate());
+                                tvSystemStopTime.setText(berthingReportInfo.getXtBerthDate());
+                                tvTestCabinStartTime.setText(berthingReportInfo.getHoldInspectionBeginDate());
+                                tvTestCabinEndTime.setText(berthingReportInfo.getHoldInspectionEndDate());
+                                tvPortPosition.setText(berthingReportInfo.getPortBearth());
+                                tvTugUseNum.setText(berthingReportInfo.getTugUseNum());
+                                tvShipDraft.setText(berthingReportInfo.getShipForwardDraft());
+
+                                String isPilotage = berthingReportInfo.getIsPilotage();
+
+                                if (isPilotage != null) {
+                                    if (isPilotage.equals("1")) {
+                                        tvRemark.setText(getResources().getString(R.string.yes));
+                                    } else {
+                                        tvRemark.setText(getResources().getString(R.string.no));
+                                    }
+                                }
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(ShipBerthingPortMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(ShipBerthingPortMessageActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(ShipBerthingPortMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override

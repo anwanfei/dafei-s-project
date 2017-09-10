@@ -1,6 +1,8 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.AddArrivalReportBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class WriteArrivalMessageActivity extends BaseActivity implements View.OnClickListener {
 
@@ -56,6 +70,8 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
     @BindView(R.id.ll_commit)
     LinearLayout llCommit;
     private AlertDialog show;
+    private String id;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +86,9 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
 
     @Override
     protected void initData() {
-
+        Intent intent = getIntent();
+        id = intent.getStringExtra(Constants.ID);
+        userId = CacheUtils.getString(this, Constants.ID);
     }
 
     @Override
@@ -85,7 +103,7 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
                 finish();
                 break;
             case R.id.tv_choose_anchor_arrival_time:
-                DateUtil.showChooseTimeDialog(this,tvChooseAnchorArrivalTime);
+                DateUtil.showChooseTimeDialog(this, tvChooseAnchorArrivalTime);
                 break;
             case R.id.ll_commit:
                 showCommitDialog();
@@ -119,10 +137,87 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
                 show.dismiss();
                 break;
             case R.id.tv_ok_clear_butter:
-                Toast.makeText(WriteArrivalMessageActivity.this, getResources().getString(R.string.commit_message_success), Toast.LENGTH_SHORT).show();
-                show.dismiss();
-                finish();
+                netCommitReport();
                 break;
         }
+    }
+
+    private void netCommitReport() {
+        String arrivalPort = etInputArrivalPort.getText().toString();
+        String portStopPosition = etInputPortStopPosition.getText().toString();
+        String anchorArrivalTime = tvChooseAnchorArrivalTime.getText().toString();
+        String anchorPosotion = etInputAnchorPosotion.getText().toString();
+        String longitude = etInputLongitude.getText().toString();
+        String latitude = etInputLatitude.getText().toString();
+        String shipDirection = etInputShipDirection.getText().toString();
+        String shipSpeed = etInputShipSpeed.getText().toString();
+        String heavyOil = etInputTheShipHeavyOil.getText().toString();
+        String lightOil = etInputCertificateName.getText().toString();
+        String shipDraft = etInputShipDraft.getText().toString();
+        String freshWater = etInputTheShipFrashwater.getText().toString();
+        String lightOilConsume = etInputLightOilConsume.getText().toString();
+        String remark = etInputRemarkWithColonDetails.getText().toString();
+        String freshWaterConsume = etInputFrashwaterConsume.getText().toString();
+
+        AddArrivalReportBean.ReportJsonDataBean reportJsonData = new AddArrivalReportBean.ReportJsonDataBean();
+
+        reportJsonData.setArrivePort(arrivalPort);
+        reportJsonData.setPortRadsteadBerth(portStopPosition);
+        reportJsonData.setArriveAnchorDate(anchorArrivalTime);
+        reportJsonData.setAnchorPosition(anchorPosotion);
+        reportJsonData.setLongitude(longitude);
+        reportJsonData.setLatitude(latitude);
+        reportJsonData.setCourse(shipDirection);
+        reportJsonData.setCurrShipSpeed(shipSpeed);
+        reportJsonData.setShipHeavyOil(heavyOil);
+        reportJsonData.setShipLightOil(lightOil);
+        reportJsonData.setShipForwardDraft(shipDraft);
+        reportJsonData.setShipFreshwater(freshWater);
+        reportJsonData.setLightOilConsumption(lightOilConsume);
+        reportJsonData.setFreshwaterConsumption(freshWaterConsume);
+        reportJsonData.setRemark(remark);
+
+        String json = new Gson().toJson(reportJsonData);
+
+        if (arrivalPort.equals("")) {
+            Toast.makeText(WriteArrivalMessageActivity.this, getResources().getString(R.string.input_arrival_port), Toast.LENGTH_SHORT).show();
+        }
+
+        NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_ID, id)
+                .addParams(Constants.TYPE, "3")
+                .addParams(Constants.REPORT_JSON, json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(WriteArrivalMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(WriteArrivalMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(WriteArrivalMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(WriteArrivalMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(WriteArrivalMessageActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                show.dismiss();
+                                finish();
+                            }
+                        }
+                    }
+                });
     }
 }

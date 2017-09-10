@@ -104,6 +104,7 @@
     <string name="input_job_num">请输入工号</string>
     <string name="input_ship_name">请输入船名</string>
     <string name="choose_duty">请选择职务</string>
+    <string name="choose_belong_ship">请选择所在船舶</string>
     <string name="input_mail_box">请输入邮箱</string>
     <string name="input_emergency_contactor">请输入紧急联系人</string>
     <string name="input_emergency_contactor_phone">请输入紧急联系人电话</string>
@@ -222,7 +223,7 @@
     <string name="date_demo">2017-08-30</string>
     <string name="chuanji_with_colon">船籍:</string>
     <string name="IMO_with_colon">IMO:</string>
-    <string name="ship_size_with_colon">船长/宽:</string>
+    <string name="ship_size_with_colon">船长/宽(m):</string>
     <string name="ship_state_with_colon">状态:</string>
     <string name="ship_destination_with_colon">目的地:</string>
     <string name="ship_chishui_with_colon">吃水:</string>
@@ -483,6 +484,8 @@
     <string name="input_duty">请输入职务</string>
     <string name="input_feedback">请输入反馈意见</string>
     <string name="unexit_file">文件不存在</string>
+    <string name="modify_crew_info">修改船员信息</string>
+    <string name="loadPort">装货港/卸货港</string>
 
     <!---->
 

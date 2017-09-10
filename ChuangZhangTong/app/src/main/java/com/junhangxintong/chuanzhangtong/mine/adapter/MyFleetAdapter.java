@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.mine.activity.ShipCertificteListActivity;
-import com.junhangxintong.chuanzhangtong.mine.bean.MyFleetBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.List;
 
@@ -22,15 +23,15 @@ import butterknife.ButterKnife;
  * Created by anwanfei on 2017/7/14.
  */
 
-public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener {
+public class MyFleetAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<MyFleetBean> myFleetLists;
+    private List<ShipListBean.DataBean.ArrayBean> myFleetLists;
     private ViewHolder holder;
 
     private boolean isShowCheckBox;
 
-    public MyFleetAdapter(Context mContext, List<MyFleetBean> myFleetLists) {
+    public MyFleetAdapter(Context mContext, List<ShipListBean.DataBean.ArrayBean> myFleetLists) {
         this.mContext = mContext;
         this.myFleetLists = myFleetLists;
     }
@@ -56,15 +57,11 @@ public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener 
         //1、创建或获取viewHolder
         holder = null;
         if (convertView == null) {
-            //创建holder对象
-            holder = new ViewHolder();
             //加载条目布局
             convertView = View.inflate(mContext, R.layout.item_myfleet, null);
 
-            //找控件
-            holder.tvCertificate = (TextView) convertView.findViewById(R.id.tv_certificate);
-            holder.tvItemShipName = (TextView) convertView.findViewById(R.id.tv_item_ship_name);
-            holder.cbShip = (CheckBox) convertView.findViewById(R.id.cb_ship);
+            //创建holder对象
+            holder = new ViewHolder(convertView);
 
             //保存holder
             convertView.setTag(holder);
@@ -80,9 +77,6 @@ public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener 
         } else {
             holder.cbShip.setChecked(false);
         }
-
-        holder.tvCertificate.setOnClickListener(this);
-        holder.tvItemShipName.setOnClickListener(this);
 
         holder.cbShip.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,22 +100,29 @@ public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener 
             );
         }
 
+        holder.tvItemShipName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = myFleetLists.get(position).getId();
+                String shipName = myFleetLists.get(position).getShipName();
+                Intent intent = new Intent(mContext, MyShipDetailsActivity.class);
+                intent.putExtra(Constants.ID, String.valueOf(id));
+                intent.putExtra(Constants.SHIP_NAME, shipName);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.tvCertificate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = myFleetLists.get(position).getId();
+                Intent intent = new Intent(mContext, ShipCertificteListActivity.class);
+                intent.putExtra(Constants.ID, String.valueOf(id));
+                mContext.startActivity(intent);
+            }
+        });
         //返回view
         return convertView;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_item_ship_name:
-                mContext.startActivity(new Intent(mContext, MyShipDetailsActivity.class));
-                break;
-            case R.id.tv_certificate:
-                mContext.startActivity(new Intent(mContext, ShipCertificteListActivity.class));
-                break;
-            case R.id.cb_ship:
-                break;
-        }
     }
 
     static class ViewHolder {
@@ -136,8 +137,6 @@ public class MyFleetAdapter extends BaseAdapter implements View.OnClickListener 
             ButterKnife.bind(this, view);
         }
 
-        ViewHolder() {
-        }
     }
 
     public void controlCheckboxShow(boolean b) {

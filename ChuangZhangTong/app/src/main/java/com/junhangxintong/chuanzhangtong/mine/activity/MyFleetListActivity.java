@@ -1,7 +1,10 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -10,12 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFleetAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.MyFleetBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +35,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class MyFleetListActivity extends BaseActivity {
 
@@ -65,10 +79,33 @@ public class MyFleetListActivity extends BaseActivity {
     private List<String> savelist = new ArrayList();
     private Map<String, Boolean> map = new HashMap<>();
     private List<MyFleetBean> choosedLists;
+    private List<ShipListBean.DataBean.ArrayBean> shipLists;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initListener();
+    }
+
+    private void initListener() {
+        etSearchShipName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String shipName = etSearchShipName.getText().toString();
+                netGetShipLists(shipName);
+            }
+        });
     }
 
     @Override
@@ -85,6 +122,11 @@ public class MyFleetListActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
+        userId = CacheUtils.getString(this, Constants.ID);
+
+        netGetShipLists("");
+
         myFleetLists = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             MyFleetBean myFleetBean = new MyFleetBean();
@@ -92,16 +134,60 @@ public class MyFleetListActivity extends BaseActivity {
             myFleetLists.add(myFleetBean);
         }
 
-        updataListview();
-        myFleetAdapter = new MyFleetAdapter(this, myFleetLists);
-        lvMyFleet.setAdapter(myFleetAdapter);
-
         // TODO: 2017/8/26 搜索船名
 
     }
 
+    private void netGetShipLists(String shipName) {
+        NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_LISTS)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_NAME, shipName)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(MyFleetListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(MyFleetListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
+                                shipLists = shipListBean.getData().getArray();
+
+                                updataListview();
+                                myFleetAdapter = new MyFleetAdapter(MyFleetListActivity.this, shipLists);
+                                lvMyFleet.setAdapter(myFleetAdapter);
+                                myFleetAdapter.notifyDataSetChanged();
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(MyFleetListActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(MyFleetListActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            } else if (code.equals("404")) {
+                                shipLists = new ArrayList<ShipListBean.DataBean.ArrayBean>();
+                                updataListview();
+                            } else {
+                                Toast.makeText(MyFleetListActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
     private void updataListview() {
-        if (myFleetLists.size() > 0) {
+        if (shipLists.size() > 0) {
             lvMyFleet.setVisibility(View.VISIBLE);
             llNoFleet.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
@@ -119,7 +205,6 @@ public class MyFleetListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updataListview();
     }
 
     @Override

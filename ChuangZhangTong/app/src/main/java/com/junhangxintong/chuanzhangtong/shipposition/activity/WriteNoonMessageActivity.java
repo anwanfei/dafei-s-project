@@ -1,6 +1,8 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +12,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.AddNoonReportBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class WriteNoonMessageActivity extends BaseActivity implements View.OnClickListener {
 
@@ -67,6 +81,9 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
     @BindView(R.id.ll_commit)
     LinearLayout llCommit;
     private AlertDialog show;
+    private String id;
+    private String reArrivalTiem = "";
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +99,93 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        id = intent.getStringExtra(Constants.ID);
+        userId = CacheUtils.getString(this, Constants.ID);
+    }
 
+    private void netCommitReport() {
+        String longitude = etInputLongitude.getText().toString();
+        String latitude = etInputLatitudeWithColon.getText().toString();
+        String shipDirection = etInputShipDirection.getText().toString();
+        String curSpeed = etInputCurrentShipSpeed.getText().toString();
+        String heavyOil = etInputTheShipHeavyOil.getText().toString();
+        String lightOil = etInputTheShipLightOil.getText().toString();
+        String shipDraft = etInputShipDraft.getText().toString();
+        String freshWater = etInputTheShipFrashwater.getText().toString();
+        String lightOilConsume = etInputLightOilConsume.getText().toString();
+        String freshWaterConsume = frashwaterConsume.getText().toString();
+        String avgSpeed = etInputAverageSpeedBetween24Hours.getText().toString();
+        reArrivalTiem = tvInputReArrivalTime.getText().toString();
+        String pressure = etInputPressure.getText().toString();
+        String temprature = etInputTemperature.getText().toString();
+        String waveLevel = etInputWaveLevel.getText().toString();
+        String pitch = etInputPitch.getText().toString();
+        String weather = etInputWeather.getText().toString();
+        String windDirection = etInputWindDirection.getText().toString();
+        String consume = etInputConsume.getText().toString();
+        String remark = etInputRemark.getText().toString();
+
+        AddNoonReportBean.ReportJsonDataBean reportJsonData = new AddNoonReportBean.ReportJsonDataBean();
+        reportJsonData.setLatitude(latitude);
+        reportJsonData.setLongitude(longitude);
+        reportJsonData.setCourse(shipDirection);
+        reportJsonData.setCurrShipSpeed(curSpeed);
+        reportJsonData.setShipHeavyOil(heavyOil);
+        reportJsonData.setShipLightOil(lightOil);
+        reportJsonData.setShipForwardDraft(shipDraft);
+        reportJsonData.setShipFreshwater(freshWater);
+        reportJsonData.setLightOilConsumption(lightOilConsume);
+        reportJsonData.setFreshwaterConsumption(freshWaterConsume);
+        reportJsonData.setAvgSpeed(avgSpeed);
+        reportJsonData.setExpectArrivalDate(reArrivalTiem);
+        reportJsonData.setPressure(pressure);
+        reportJsonData.setTemperature(temprature);
+        reportJsonData.setWaveLevel(waveLevel);
+        reportJsonData.setSnailRange(pitch);
+        reportJsonData.setWeather(weather);
+        reportJsonData.setWindDirection(windDirection);
+        reportJsonData.setConsume(consume);
+        reportJsonData.setRemark(remark);
+
+        String json = new Gson().toJson(reportJsonData);
+
+        NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_ID, id)
+                .addParams(Constants.TYPE, "1")
+                .addParams(Constants.REPORT_JSON, json)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(WriteNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(WriteNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(WriteNoonMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(WriteNoonMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(WriteNoonMessageActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                show.dismiss();
+                                finish();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -130,9 +233,7 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
                 show.dismiss();
                 break;
             case R.id.tv_ok_clear_butter:
-                Toast.makeText(WriteNoonMessageActivity.this, getResources().getString(R.string.commit_message_success), Toast.LENGTH_SHORT).show();
-                show.dismiss();
-                finish();
+                netCommitReport();
                 break;
         }
     }

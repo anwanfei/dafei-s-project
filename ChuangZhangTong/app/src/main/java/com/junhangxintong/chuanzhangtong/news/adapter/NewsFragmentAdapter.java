@@ -15,7 +15,7 @@ import com.junhangxintong.chuanzhangtong.news.fragment.OilPriceFragment;
 
 public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"最新消息", "油市快递", "国籍公约", "国内公约"};
+    private String[] mtitles = {"最新消息", "油市快递", "国际公约", "国内公约"};
 
     public NewsFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -28,9 +28,9 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
         } else if (position == 1) {
             return new OilPriceFragment();
         } else if (position == 2) {
-            return new NationalityFragment();
+            return new InternalNewsFragment();
         }
-        return new InternalNewsFragment();
+        return new NationalityFragment();
     }
 
     @Override

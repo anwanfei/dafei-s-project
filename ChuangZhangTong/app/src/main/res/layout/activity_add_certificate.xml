@@ -82,10 +82,14 @@
                 android:layout_centerVertical="true"
                 android:text="@string/issuing_authority" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tv_issuing_authority"
                 style="@style/account_setting_right_textview_with_arrow"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical" />-->
+            <EditText
+                android:id="@+id/tv_issuing_authority"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_issue_department" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -97,34 +101,59 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
-                android:text="@string/end_date" />
+                android:text="@string/is_permanent_effective" />
 
-            <EditText
-                android:id="@+id/et_end_date"
-                style="@style/edittext_no_arrow"
-                android:hint="@string/end_date_format" />
+            <RadioGroup
+                android:id="@+id/rg_is_effective"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+            </RadioGroup>
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_effective_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
             android:padding="15dp">
 
-            <CheckBox
-                android:id="@+id/cb_permanet_effective"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:button="@null"
-                android:drawableLeft="@drawable/rb_choose_selector"
-                android:drawablePadding="6dp"
-                android:text="@string/permanent_effective" />
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/effective_date" />
 
+            <TextView
+                android:id="@+id/tv_effective_date"
+                style="@style/textview_style_certificate"
+                android:hint="@string/choose_time"
+                android:textColor="@color/textcolor_gray80" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_reWarning_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
@@ -136,6 +165,7 @@
                 android:text="@string/re_warning_days" />
 
             <RadioGroup
+                android:id="@+id/rg_warn_days"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -176,6 +206,7 @@
                 android:text="@string/is_common" />
 
             <RadioGroup
+                android:id="@+id/rg_is_ofton_use"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

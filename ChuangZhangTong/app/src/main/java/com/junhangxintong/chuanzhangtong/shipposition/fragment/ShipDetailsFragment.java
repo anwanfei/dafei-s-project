@@ -1,5 +1,7 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,19 +15,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.MapView;
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/8/8.
@@ -104,6 +117,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
     private TextView tv_warm_close;
     private boolean isOpenWarm = true;
     private TextView tv_share_ship;
+    private String id = "1";
 
     @Override
     protected View initView() {
@@ -136,6 +150,51 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
     protected void initData() {
         super.initData();
         tvUpdateTime.setText(DateUtil.getCurrentTimeMDHM());
+
+        Intent intent = getActivity().getIntent();
+        id = intent.getStringExtra(Constants.ID);
+
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.MY_SHIP_INFO)
+                .addParams(Constants.ID, id)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
+                                MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                                tvTitle.setText(shipInfo.getShipName());
+                                tvChuanji.setText(shipInfo.getNation());
+                                tvMmsi.setText(shipInfo.getMmsi());
+                                tvShipHuhao.setText(shipInfo.getCallSign());
+                                tvShipImo.setText(shipInfo.getImo());
+                                tvShipType.setText(shipInfo.getType());
+                                tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
+                                tvUpdateTime.setText(shipInfo.getModifyDate());
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else {
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -174,6 +233,11 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void showPop() {

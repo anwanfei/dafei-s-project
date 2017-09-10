@@ -1,9 +1,11 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,13 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MainActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFollowFleetAdapter;
-import com.junhangxintong.chuanzhangtong.mine.bean.MyFollowFleetBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +36,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class MyFollowFleetActivity extends BaseActivity {
 
@@ -60,13 +72,16 @@ public class MyFollowFleetActivity extends BaseActivity {
     @BindView(R.id.ll_search_ship_name)
     LinearLayout llSearchShipName;
 
-    private List<MyFollowFleetBean> myFollowFleetLists;
+    private List<FollowShipListBean.DataBean.ArrayBean> myFollowFleetLists;
     private MyFollowFleetAdapter myFollowFleetAdapter;
     private boolean isChoose = true;
     private List<String> savelist = new ArrayList();
     private Map<String, Boolean> map = new HashMap<>();
-    private List<MyFollowFleetBean> choosedLists;
+    private List<FollowShipListBean.DataBean.ArrayBean> choosedLists;
     private boolean isChooseAll = true;
+    private List<FollowShipListBean.DataBean.ArrayBean> followShipLists;
+    private ArrayList<String> choosedShipIdLists;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,21 +100,68 @@ public class MyFollowFleetActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        myFollowFleetLists = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            MyFollowFleetBean myFollowFleetBean = new MyFollowFleetBean();
-            myFollowFleetBean.setShipName("华海" + i + "号");
-            myFollowFleetLists.add(myFollowFleetBean);
-        }
 
-        updaFollowFLeetList();
+        userId = CacheUtils.getString(this, Constants.ID);
+        NetUtils.postWithHeader(this, ConstantsUrls.FOLLOW_SHIP_LIST)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .build()
+                .execute(new StringCallback() {
 
-        myFollowFleetAdapter = new MyFollowFleetAdapter(this, myFollowFleetLists);
-        lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                FollowShipListBean followShipListBean = new Gson().fromJson(response, FollowShipListBean.class);
+                                followShipLists = followShipListBean.getData().getArray();
+
+                                updaFollowFLeetList();
+
+                                myFollowFleetAdapter = new MyFollowFleetAdapter(MyFollowFleetActivity.this, followShipLists);
+                                lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
+                                myFollowFleetAdapter.notifyDataSetChanged();
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(MyFollowFleetActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            } else if (code.equals("404")) {
+                                followShipLists = new ArrayList<FollowShipListBean.DataBean.ArrayBean>();
+//                                updataListview();
+                            } else {
+                                Toast.makeText(MyFollowFleetActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+        lvMyFolllowFleet.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int id = followShipLists.get(i).getId();
+                Intent intent = new Intent(MyFollowFleetActivity.this, OtherShipDetailsActivity.class);
+                intent.putExtra(Constants.SHIP_ID, id);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updaFollowFLeetList() {
-        if (myFollowFleetLists.size() > 0) {
+        if (followShipLists.size() > 0) {
             lvMyFolllowFleet.setVisibility(View.VISIBLE);
             llNoFollowFleet.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
@@ -178,17 +240,22 @@ public class MyFollowFleetActivity extends BaseActivity {
         //选中的船作为一个集合，集中处理
         choosedLists = new ArrayList<>();
 
+        //选中的船的id作为一个集合，集中处理
+        choosedShipIdLists = new ArrayList<>();
+
         //找到选中的位置，并保存在map
-        for (int i = 0; i < myFollowFleetLists.size(); i++) {
-            boolean checkbox = myFollowFleetLists.get(i).isCheckbox();
+        for (int i = 0; i < followShipLists.size(); i++) {
+            boolean checkbox = followShipLists.get(i).isCheckbox();
             if (checkbox) {
                 map.put(i + "", true);
-                choosedLists.add(myFollowFleetLists.get(i));
+                choosedShipIdLists.add(String.valueOf(followShipLists.get(i).getId()));
+                choosedLists.add(followShipLists.get(i));
             } else {
                 map.put(i + "", false);
             }
         }
-        myFollowFleetLists.removeAll(choosedLists);
+        followShipLists.removeAll(choosedLists);
+        netDeleteChoosedCrews();
         updaFollowFLeetList();
         myFollowFleetAdapter.notifyDataSetChanged();
 
@@ -204,18 +271,58 @@ public class MyFollowFleetActivity extends BaseActivity {
         Log.e("asdasdas", "选择位置的 ：" + savelist.toString());
     }
 
+    private void netDeleteChoosedCrews() {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < choosedShipIdLists.size(); i++) {
+            sb.append(choosedShipIdLists.get(i) + ",");
+        }
+
+        String ids = sb.toString().substring(0, sb.length() - 1);
+        NetUtils.postWithHeader(MyFollowFleetActivity.this,ConstantsUrls.DELETE_FOLLOW_SHIP)
+                .addParams(Constants.IDS,ids)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(MyFollowFleetActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                MyFollowFleetActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                MyFollowFleetActivity.this.startActivity(new Intent(MyFollowFleetActivity.this, LoginRegisterActivity.class));
+                            }
+                            if (code.equals("200")) {
+                            }
+                        }
+                    }
+                });
+    }
+
     private void chooseAllOrNot() {
         if (isChooseAll) {
             isChooseAll = false;
-            for (int i = 0; i < myFollowFleetLists.size(); i++) {
-                myFollowFleetLists.get(i).setCheckbox(true);
+            for (int i = 0; i < followShipLists.size(); i++) {
+                followShipLists.get(i).setCheckbox(true);
             }
             tvMyFleetListChooseAll.setText(getResources().getString(R.string.cancel_choose_all));
             myFollowFleetAdapter.notifyDataSetChanged();
         } else {
             isChooseAll = true;
-            for (int i = 0; i < myFollowFleetLists.size(); i++) {
-                myFollowFleetLists.get(i).setCheckbox(false);
+            for (int i = 0; i < followShipLists.size(); i++) {
+                followShipLists.get(i).setCheckbox(false);
             }
             tvMyFleetListChooseAll.setText(getResources().getString(R.string.choose_all));
             myFollowFleetAdapter.notifyDataSetChanged();

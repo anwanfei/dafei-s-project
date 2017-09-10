@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -51,6 +52,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class FeedbackActivity extends BaseActivity implements View.OnClickListener {
 
@@ -167,9 +170,6 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
         String phoneNum = etPhone.getText().toString();
         String userId = CacheUtils.getString(this, Constants.ID);
 
-        String phonePath = path.get(0);
-        File file = new File(phonePath);
-
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
             String key = i + ".jpg";
@@ -202,6 +202,10 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                                 String code = sendVerifyCode.getCode();
                                 Toast.makeText(FeedbackActivity.this, message, Toast.LENGTH_SHORT).show();
                                 if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(FeedbackActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                     startActivity(new Intent(FeedbackActivity.this, LoginRegisterActivity.class));
                                     finish();
                                 }

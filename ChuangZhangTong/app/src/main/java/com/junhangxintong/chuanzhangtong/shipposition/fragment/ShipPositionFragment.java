@@ -200,9 +200,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
         //数据库初始化
         shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
-        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 10) {
-            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "junhang", "hangkong", "7777", "渔船"));
-            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean(null, "huahaiyihao", "China", "6666", "货船"));
+        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 3) {
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 1, "君航号", "中国", "mmsi001", "超大型货船"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 2, "中国号", "中国", "mmsi002", "大船"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 3, "辽宁好空欧冠母舰", "中国", "mmsi003", "航空母舰"));
         }
 
         // TODO: 2017/8/26 关注界面带搜索关键字跳转过来

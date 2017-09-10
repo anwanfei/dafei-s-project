@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.news.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.bean.NewsConventionDetailsBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
@@ -21,6 +23,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class NationalityConventionActivity extends BaseActivity {
 
@@ -81,6 +85,10 @@ public class NationalityConventionActivity extends BaseActivity {
                             if (!code.equals("200")) {
                                 Toast.makeText(NationalityConventionActivity.this, message, Toast.LENGTH_SHORT).show();
                             } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(NationalityConventionActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(NationalityConventionActivity.this, LoginRegisterActivity.class));
                                 finish();
                             } else {

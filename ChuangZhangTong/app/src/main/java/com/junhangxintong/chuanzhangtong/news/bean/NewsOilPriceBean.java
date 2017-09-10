@@ -4,7 +4,7 @@ package com.junhangxintong.chuanzhangtong.news.bean;
  * Created by anwanfei on 2017/8/22.
  */
 
-public class OilPriceBean {
+public class NewsOilPriceBean {
     private String date;
     private String bulunteDollar;
     private String WTIDollar;

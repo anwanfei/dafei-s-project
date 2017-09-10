@@ -23,7 +23,7 @@ public class ChooseCertificateTypeActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.listview_choose_certificate_type)
     ListView listviewChooseCertificateType;
-    String[] arrCertificates = {"身份证", "护照", "回乡证", "台胞证", "港澳通行证"};
+    public static String[] arrCertificates = {"身份证", "护照", "回乡证", "台胞证", "港澳通行证"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class ChooseCertificateTypeActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = getIntent();
                 intent.putExtra(Constants.CERTIFICATE_TYPE, arrCertificates[i]);
+                intent.putExtra(Constants.CERTIFICATE_TYPE_NUM, String.valueOf(i + 1));
                 setResult(Constants.REQUEST_CODE6, intent);
                 finish();
             }

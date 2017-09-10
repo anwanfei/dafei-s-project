@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ModifyNameActivity extends BaseActivity {
 
@@ -97,6 +100,10 @@ public class ModifyNameActivity extends BaseActivity {
                             String code = netServiceErrortBean.getCode();
                             Toast.makeText(ModifyNameActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                             if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(ModifyNameActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(ModifyNameActivity.this, LoginRegisterActivity.class));
                                 finish();
                             }

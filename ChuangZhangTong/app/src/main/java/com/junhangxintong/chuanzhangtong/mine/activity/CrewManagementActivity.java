@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,12 +9,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +33,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class CrewManagementActivity extends BaseActivity {
 
@@ -59,7 +73,11 @@ public class CrewManagementActivity extends BaseActivity {
 
     private List<String> savelist = new ArrayList();
     private Map<String, Boolean> map = new HashMap<>();
-    private List<CrewBean> choosedLists;
+    private List<CrewServeBean.DataBean.ArrayBean> choosedLists;
+    private List<CrewServeBean.DataBean.ArrayBean> crewLists;
+    private CrewListsAdapter crewListsAdapter;
+    private ArrayList<String> choosedCrewIdLists;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,23 +97,60 @@ public class CrewManagementActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        crews = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            CrewBean crewBean = new CrewBean();
-            crewBean.setCrewName("船员" + i + "号");
-            crewBean.setDuty("大副" + i + "号");
-            crewBean.setJobNum("00" + i + "号");
-            crewBean.setNationality("中国");
-            crews.add(crewBean);
-        }
 
-        updateCrewsList();
-        myFleetAdapter = new MyCrewAdapter(this, crews);
-        lvMyCrew.setAdapter(myFleetAdapter);
+        userId = CacheUtils.getString(this, Constants.ID);
+
+        netGetCrewsLists();
+    }
+
+    private void netGetCrewsLists() {
+        NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.PERSON_NAME, "")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
+                                crewLists = crewServerBean.getData().getArray();
+
+                                updateCrewsList();
+                                crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
+                                lvMyCrew.setAdapter(crewListsAdapter);
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(CrewManagementActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(CrewManagementActivity.this, LoginRegisterActivity.class));
+                            } else if (code.equals("404")) {
+                                crewLists = new ArrayList<CrewServeBean.DataBean.ArrayBean>();
+                                updateCrewsList();
+                            } else {
+                                Toast.makeText(CrewManagementActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     private void updateCrewsList() {
-        if (crews.size() > 0) {
+        if (crewLists.size() > 0) {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
@@ -142,30 +197,36 @@ public class CrewManagementActivity extends BaseActivity {
     }
 
     private void gotoCrewInfoActivity() {
-        startActivityForResult(new Intent(CrewManagementActivity.this, CrewInfoInputActivity.class), Constants.REQUEST_CODE0);
+//        startActivityForResult(new Intent(CrewManagementActivity.this, CrewInfoInputActivity.class), Constants.REQUEST_CODE0);
+        startActivity(new Intent(CrewManagementActivity.this, CrewInfoInputActivity.class));
     }
 
     private void deleteChoosedItems() {
+
         //清除集合
         savelist.clear();
         map.clear();
 
-        //选中的船作为一个集合，集中处理
+        //选中的船员作为一个集合，集中处理
         choosedLists = new ArrayList<>();
+        //选中的船员id作为一个集合，集中处理
+        choosedCrewIdLists = new ArrayList<>();
 
         //找到选中的位置，并保存在map
-        for (int i = 0; i < crews.size(); i++) {
-            boolean checkbox = crews.get(i).isCheckbox();
+        for (int i = 0; i < crewLists.size(); i++) {
+            boolean checkbox = crewLists.get(i).isCheckbox();
             if (checkbox) {
                 map.put(i + "", true);
-                choosedLists.add(crews.get(i));
+                choosedCrewIdLists.add(String.valueOf(crewLists.get(i).getId()));
+                choosedLists.add(crewLists.get(i));
             } else {
                 map.put(i + "", false);
             }
         }
-        crews.removeAll(choosedLists);
+        crewLists.removeAll(choosedLists);
+        netDeleteChoosedCrews();
         updateCrewsList();
-        myFleetAdapter.notifyDataSetChanged();
+        crewListsAdapter.notifyDataSetChanged();
 
         //遍历map
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {
@@ -177,21 +238,67 @@ public class CrewManagementActivity extends BaseActivity {
         }
     }
 
+    private void netDeleteChoosedCrews() {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < choosedCrewIdLists.size(); i++) {
+            sb.append(choosedCrewIdLists.get(i) + ",");
+        }
+
+        String ids = sb.toString().substring(0, sb.length() - 1);
+        NetUtils.postWithHeader(this, ConstantsUrls.DELETE_CREW)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.IDS, ids)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(CrewManagementActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(CrewManagementActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(CrewManagementActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetCrewsLists();
+    }
+
     public void chooseAllOrNot() {
         if (isChooseAll) {
             isChooseAll = false;
-            for (int i = 0; i < crews.size(); i++) {
-                crews.get(i).setCheckbox(true);
+            for (int i = 0; i < crewLists.size(); i++) {
+                crewLists.get(i).setCheckbox(true);
             }
             tvMyCrewListChooseAll.setText(getResources().getString(R.string.cancel_choose_all));
-            myFleetAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         } else {
             isChooseAll = true;
-            for (int i = 0; i < crews.size(); i++) {
-                crews.get(i).setCheckbox(false);
+            for (int i = 0; i < crewLists.size(); i++) {
+                crewLists.get(i).setCheckbox(false);
             }
             tvMyCrewListChooseAll.setText(getResources().getString(R.string.choose_all));
-            myFleetAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -199,19 +306,19 @@ public class CrewManagementActivity extends BaseActivity {
         if (isChoose) {
             rlChooseAllDelete.setVisibility(View.VISIBLE);
             tvShare.setText(getResources().getString(R.string.cancel));
-            myFleetAdapter.controlCheckboxShow(isChoose);
+            crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = false;
-            myFleetAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         } else {
             rlChooseAllDelete.setVisibility(View.GONE);
             tvShare.setText(getResources().getString(R.string.edit));
-            myFleetAdapter.controlCheckboxShow(isChoose);
+            crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = true;
-            myFleetAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         }
     }
 
-    @Override
+  /*  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
@@ -219,13 +326,13 @@ public class CrewManagementActivity extends BaseActivity {
                 case Constants.REQUEST_CODE0:
                     CrewBean crewBean = (CrewBean) data.getSerializableExtra(Constants.CREW_BEAN);
                     crews.add(crewBean);
-                    updateCrewsList();
-                    myFleetAdapter.notifyDataSetChanged();
+                    updatecrewListsList();
+                    crewListsAdapter.notifyDataSetChanged();
 
                     break;
             }
 
         }
-    }
+    }*/
 
 }

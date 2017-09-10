@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.mine.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/7/5.
@@ -118,12 +121,16 @@ public class MyFragment extends BaseFragment {
                                 String personName = loginResult.getData().getObject().getPersonName();
                                 String roleName = loginResult.getData().getObject().getRoleName();
                                 if (personName.equals("")) {
-                                    tvUserName.setText(loginResult.getData().getObject().getMobilePhone());
+                                    tvUserName.setText(getResources().getString(R.string.name));
                                 } else {
                                     tvUserName.setText(personName);
                                 }
                                 tvIdentity.setText(roleName);
                             } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
                                 Toast.makeText(getActivity(), netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
                             } else {

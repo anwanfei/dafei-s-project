@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -25,6 +26,8 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ModifyPhoneActivity extends BaseActivity {
 
@@ -141,6 +144,10 @@ public class ModifyPhoneActivity extends BaseActivity {
                                 String code = sendVerifyCode.getCode();
                                 Toast.makeText(ModifyPhoneActivity.this, message, Toast.LENGTH_SHORT).show();
                                 if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(ModifyPhoneActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                     startActivity(new Intent(ModifyPhoneActivity.this, LoginRegisterActivity.class));
                                     finish();
                                 }

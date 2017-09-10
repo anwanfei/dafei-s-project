@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.news.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.junhangxintong.chuanzhangtong.news.activity.NationalityConventionActi
 import com.junhangxintong.chuanzhangtong.news.activity.OilPriceActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.NewsListsAdapter;
 import com.junhangxintong.chuanzhangtong.news.bean.NewsListBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
@@ -29,6 +31,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/7/8.
@@ -67,7 +71,7 @@ public class NewestNewsFragment extends BaseFragment {
 
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.QUERY_NEWS_LISTS)
                 .addParams(Constants.PAGE, "1")
-                .addParams(Constants.PAGE_SIZE, "10")
+                .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.NEWS_TYPE, "")
                 .build()
                 .execute(new StringCallback() {
@@ -92,6 +96,10 @@ public class NewestNewsFragment extends BaseFragment {
                                 lvMessage.setAdapter(newsListsAdapter);
 
                             } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
                             } else {
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();

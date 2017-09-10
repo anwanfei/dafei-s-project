@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
+import com.zhy.http.okhttp.builder.PostStringBuilder;
+
+import okhttp3.MediaType;
 
 import static com.junhangxintong.chuanzhangtong.utils.Constants.TOKEN;
 
@@ -21,12 +24,12 @@ public class NetUtils {
      */
     //添加两个参数的post请求,带有token
     public static PostFormBuilder postWithHeader(Context context, String url) {
+        String token = CacheUtils.getString(context, TOKEN);
+        String userId = CacheUtils.getString(context, Constants.ID);
         String baseUrl = CacheUtils.getString(context, Constants.BASE_URL);
         if (baseUrl.equals("")) {
             baseUrl = ConstantsUrls.WWW_TEST_BASE_URL;
         }
-        String token = CacheUtils.getString(context, TOKEN);
-        String userId = CacheUtils.getString(context, Constants.ID);
         return OkHttpUtils
                 .post()
                 .addHeader(Constants.TOKEN, token)
@@ -41,5 +44,22 @@ public class NetUtils {
             baseUrl = ConstantsUrls.WWW_TEST_BASE_URL;
         }
         return OkHttpUtils.post().url(baseUrl + url);
+    }
+
+    //post方法，带header
+    public static PostStringBuilder postStringWithHeader(Context context, String url, String json) {
+        String token = CacheUtils.getString(context, TOKEN);
+        String userId = CacheUtils.getString(context, Constants.ID);
+        String baseUrl = CacheUtils.getString(context, Constants.BASE_URL);
+        if (baseUrl.equals("")) {
+            baseUrl = ConstantsUrls.WWW_TEST_BASE_URL;
+        }
+        return OkHttpUtils
+                .postString()
+                .addHeader(TOKEN, token)
+                .addHeader(Constants.USER_ID, userId)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .content(json)
+                .url(baseUrl + url);
     }
 }

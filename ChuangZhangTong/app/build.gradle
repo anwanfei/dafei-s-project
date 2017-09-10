@@ -58,6 +58,7 @@ dependencies {
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareview.jar')
+    //    compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.6.0'
@@ -69,9 +70,8 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile 'org.greenrobot:greendao:3.2.2'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.zhy:okhttputils:2.6.2'
-//    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }

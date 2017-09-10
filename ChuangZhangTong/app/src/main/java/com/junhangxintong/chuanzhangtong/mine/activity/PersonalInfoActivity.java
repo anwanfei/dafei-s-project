@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -41,6 +42,8 @@ import java.io.FileOutputStream;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class PersonalInfoActivity extends BaseActivity implements View.OnClickListener {
 
@@ -307,6 +310,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                                 String code = sendVerifyCode.getCode();
                                 Toast.makeText(PersonalInfoActivity.this, message, Toast.LENGTH_SHORT).show();
                                 if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(PersonalInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                     startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
                                     finish();
                                 }
@@ -452,6 +459,10 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                             String code = netServiceErrortBean.getCode();
                             Toast.makeText(PersonalInfoActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                             if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(PersonalInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
                                 finish();
                             }

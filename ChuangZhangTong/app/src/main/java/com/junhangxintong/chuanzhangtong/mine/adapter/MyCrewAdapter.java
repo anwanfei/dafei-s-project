@@ -116,7 +116,8 @@ public class MyCrewAdapter extends BaseAdapter implements View.OnClickListener {
             case R.id.tv_item_ship_name:
                 break;
             case R.id.tv_certificate:
-                mContext.startActivity(new Intent(mContext, CrewCertificateListsActivity.class));
+                Intent intent = new Intent(mContext, CrewCertificateListsActivity.class);
+                mContext.startActivity(intent);
                 break;
             case R.id.cb_ship:
                 break;

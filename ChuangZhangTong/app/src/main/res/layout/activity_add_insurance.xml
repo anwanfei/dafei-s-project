@@ -156,7 +156,7 @@
             <TextView
                 android:id="@+id/tv_issue_date"
                 style="@style/textview_style_certificate"
-                android:text="@string/choose_time"
+                android:hint="@string/choose_time"
                 android:textColor="@color/textcolor_gray80" />
         </RelativeLayout>
 
@@ -252,8 +252,11 @@
             <TextView
                 android:id="@+id/tv_effective_date"
                 style="@style/textview_style_certificate"
-                android:text="@string/choose_time"
-                android:textColor="@color/textcolor_gray80" />
+                android:hint="@string/choose_time"
+                android:textColor="@color/textcolor_gray80"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <RelativeLayout

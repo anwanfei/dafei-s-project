@@ -1,5 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.View;
@@ -11,13 +13,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class AddInsuranceActivity extends BaseActivity {
 
@@ -79,9 +90,10 @@ public class AddInsuranceActivity extends BaseActivity {
     ImageView ivAddImages;
     @BindView(R.id.tv_add_insurance_complete)
     TextView tvAddInsuranceComplete;
-    private String isEffectiveForever = Constants.NO;
-    private String isOftonUse = Constants.YES;
-    private String reWarningDays = Constants.DAYS_30;
+    private String isEffectiveForever = "2";
+    private String isOftonUse = "1";
+    private String reWarningDays = "30";
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +106,11 @@ public class AddInsuranceActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 if (i == rbNo.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbNo.getText().toString(), Toast.LENGTH_SHORT).show();
-                    isEffectiveForever = rbNo.getText().toString();
+                    isEffectiveForever = "2";
                     rlEffectiveDate.setVisibility(View.VISIBLE);
                     rlReWarningDays.setVisibility(View.VISIBLE);
                 } else if (i == rbYes.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbYes.getText().toString(), Toast.LENGTH_SHORT).show();
-                    isEffectiveForever = rbYes.getText().toString();
+                    isEffectiveForever = "1";
                     rlEffectiveDate.setVisibility(View.GONE);
                     rlReWarningDays.setVisibility(View.GONE);
                 }
@@ -111,11 +121,9 @@ public class AddInsuranceActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 if (i == rbIsOftonUse.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbIsOftonUse.getText().toString(), Toast.LENGTH_SHORT).show();
-                    isOftonUse = rbIsOftonUse.getText().toString();
+                    isOftonUse = "1";
                 } else if (i == rbNoOftonUse.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbNoOftonUse.getText().toString(), Toast.LENGTH_SHORT).show();
-                    isOftonUse = rbNoOftonUse.getText().toString();
+                    isOftonUse = "2";
                 }
             }
         });
@@ -124,11 +132,9 @@ public class AddInsuranceActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 if (i == rbTime30Days.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbTime30Days.getText().toString(), Toast.LENGTH_SHORT).show();
-                    reWarningDays = rbTime30Days.getText().toString();
+                    reWarningDays = "30";
                 } else if (i == rbTime90Days.getId()) {
-                    Toast.makeText(AddInsuranceActivity.this, rbTime90Days.getText().toString(), Toast.LENGTH_SHORT).show();
-                    reWarningDays = rbTime90Days.getText().toString();
+                    reWarningDays = "90";
                 }
             }
         });
@@ -142,7 +148,8 @@ public class AddInsuranceActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
+        Intent intent = getIntent();
+        id = intent.getStringExtra(Constants.ID);
     }
 
     @Override
@@ -171,10 +178,92 @@ public class AddInsuranceActivity extends BaseActivity {
             case R.id.iv_add_images:
                 break;
             case R.id.tv_add_insurance_complete:
-                // TODO: 2017/8/30 上传网络参数
-                Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.add_success), Toast.LENGTH_SHORT).show();
-                finish();
+                addInsuranceComplete();
                 break;
         }
+    }
+
+    private void addInsuranceComplete() {
+
+        String userId = CacheUtils.getString(this, Constants.ID);
+
+        String insuranceName = etInsuranceName.getText().toString();
+        String shipName = etShipName.getText().toString();
+        String shipHuhaoBianhao = etShipBianhao.getText().toString();
+        String shipImo = etShipImo.getText().toString();
+        String ShipNationalityHarbor = etShipNationalityHarbor.getText().toString();
+        String nameAddressOfShip = tvNameAddressOfShip.getText().toString();
+        String guranteeType = etGuranteeType.getText().toString();
+        String issureDate = tvIssueDate.getText().toString();
+        String issueAuthority = etIssuingAuthority.getText().toString();
+        String issueAddress = etIssueAddress.getText().toString();
+        String effectiveDate = tvEffectiveDate.getText().toString();
+
+
+        if (insuranceName.equals("")) {
+            Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_insurance_name), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (shipName.equals("")) {
+            Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_ship_name), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (shipHuhaoBianhao.equals("")) {
+            Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_ship_bianhao), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        NetUtils.postWithHeader(this, ConstantsUrls.ADD_SHIP_INSURANCE)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_ID, id)
+                .addParams(Constants.CERTIF_TYPE, "2")
+                .addParams(Constants.NAME, insuranceName)
+                .addParams(Constants.SHIP_NAME, shipName)
+                .addParams(Constants.SHIP_CALL, shipHuhaoBianhao)
+                .addParams(Constants.ASSURE_TYPE, guranteeType)
+                .addParams(Constants.IMO_NO, shipImo)
+                .addParams(Constants.SHIP_NATIONA_PORT, ShipNationalityHarbor)
+                .addParams(Constants.SHIP_NAME_ADDRESS, nameAddressOfShip)
+                .addParams(Constants.ISSUE_DATE, issureDate)
+                .addParams(Constants.ISSUE_ORGANIZATION, issueAuthority)
+                .addParams(Constants.ISSUE_ADDRESS, issueAddress)
+                .addParams(Constants.ADVANCE_WARN_DAYS, reWarningDays)
+                .addParams(Constants.IS_USE, isOftonUse)
+                .addParams(Constants.IS_VALID, isEffectiveForever)
+                .addParams(Constants.VALID_DATE, effectiveDate)
+                // TODO: 2017/9/8 picture是必填项 ，以后修改
+                .addParams(Constants.PICTRUE, "")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(AddInsuranceActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(AddInsuranceActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(AddInsuranceActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(AddInsuranceActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(AddInsuranceActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                finish();
+                            }
+                        }
+                    }
+                });
     }
 }

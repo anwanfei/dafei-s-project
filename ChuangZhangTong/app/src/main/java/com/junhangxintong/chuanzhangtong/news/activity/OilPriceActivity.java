@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.news.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +15,9 @@ import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.OilPriceAdapter;
-import com.junhangxintong.chuanzhangtong.news.bean.NewsListBean;
-import com.junhangxintong.chuanzhangtong.news.bean.OilPriceBean;
+import com.junhangxintong.chuanzhangtong.news.bean.NewsOilPriceBean;
+import com.junhangxintong.chuanzhangtong.news.bean.NewsOilPriceListBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
@@ -28,6 +30,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
+
 public class OilPriceActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
@@ -37,7 +41,7 @@ public class OilPriceActivity extends BaseActivity {
     @BindView(R.id.lv_oil_price)
     ListView lvOilPrice;
 
-    List<OilPriceBean> oilPriceLists = new ArrayList<>();
+    List<NewsOilPriceBean> oilPriceLists = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,36 +79,42 @@ public class OilPriceActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                NewsListBean newsListBean = new Gson().fromJson(response, NewsListBean.class);
-//                                newsLists = newsListBean.getData().getArray();
+                                NewsOilPriceListBean newsOilPriceListBean = new Gson().fromJson(response, NewsOilPriceListBean.class);
+                                List<NewsOilPriceListBean.DataBean.ArrayBean> newsOilPriceLists = newsOilPriceListBean.getData().getArray();
 
-//                                NewsListsAdapter newsListsAdapter = new NewsListsAdapter(OilPriceActivity.this, newsLists);
-//                                lvMessage.setAdapter(newsListsAdapter);
+                                for (int i = 0; i < newsOilPriceLists.size(); i += 2) {
+                                    NewsOilPriceBean oilPriceBean = new NewsOilPriceBean();
+
+                                    oilPriceBean.setDate(newsOilPriceLists.get(i).getCreateDate());
+
+                                    oilPriceBean.setBulunteDollar(newsOilPriceLists.get(i).getOilPrice() + "");
+                                    oilPriceBean.setBuluntepDownRange(newsOilPriceLists.get(i).getOilChg() + "");
+                                    oilPriceBean.setBulunteUpDownQuato(newsOilPriceLists.get(i).getOilFluctuation() + "");
+
+                                    oilPriceBean.setWTIDollar(newsOilPriceLists.get(i + 1).getOilPrice() + "");
+                                    oilPriceBean.setWTIUpDownRange(newsOilPriceLists.get(i + 1).getOilChg() + "");
+                                    oilPriceBean.setWTIUpDownQuato(newsOilPriceLists.get(i + 1).getOilFluctuation() + "");
+
+
+                                    oilPriceLists.add(oilPriceBean);
+                                }
+
+                                OilPriceAdapter oilPriceAdapter = new OilPriceAdapter(OilPriceActivity.this, oilPriceLists);
+                                lvOilPrice.setAdapter(oilPriceAdapter);
 
                             } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(OilPriceActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(OilPriceActivity.this, LoginRegisterActivity.class));
+                                finish();
                             } else {
                                 Toast.makeText(OilPriceActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 });
-
-
-        for (int i = 0; i < 5; i++) {
-            OilPriceBean oilPriceBean = new OilPriceBean();
-            oilPriceBean.setDate("9.1" + i);
-            oilPriceBean.setBulunteDollar("48.5" + i);
-            oilPriceBean.setWTIDollar("52.1" + i);
-            oilPriceBean.setBuluntepDownRange("1.0" + i + "%");
-            oilPriceBean.setWTIUpDownRange("2.0" + i + "%");
-            oilPriceBean.setBulunteUpDownQuato("0.4" + i);
-            oilPriceBean.setWTIUpDownQuato("0.5" + i);
-            oilPriceLists.add(oilPriceBean);
-        }
-
-        OilPriceAdapter oilPriceAdapter = new OilPriceAdapter(this, oilPriceLists);
-        lvOilPrice.setAdapter(oilPriceAdapter);
 
     }
 

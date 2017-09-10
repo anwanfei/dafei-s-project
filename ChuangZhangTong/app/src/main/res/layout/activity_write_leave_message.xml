@@ -91,7 +91,7 @@
                 <TextView
                     android:id="@+id/tv_input_loading_unloading_cargo_start_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -109,7 +109,7 @@
                 <TextView
                     android:id="@+id/tv_input_loading_unloading_cargo_complete_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -127,7 +127,7 @@
                 <TextView
                     android:id="@+id/tv_input_leave_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -145,7 +145,7 @@
                 <TextView
                     android:id="@+id/tv_input_re_time_arrive_port"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout

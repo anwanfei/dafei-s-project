@@ -101,6 +101,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_oil_price_of_butelun_up_down_quota"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
                 android:src="@drawable/iv_top_arrow" />
@@ -126,6 +127,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_oil_price_of_wti_up_down_quota"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
                 android:src="@drawable/iv_top_arrow" />
@@ -160,6 +162,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_oil_price_of_butelun_up_down_range"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
                 android:src="@drawable/iv_top_arrow" />
@@ -185,6 +188,7 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/iv_oil_price_of_wti_up_down_range"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
                 android:src="@drawable/iv_top_arrow" />

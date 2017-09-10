@@ -69,6 +69,88 @@ public class ConstantsUrls {
     public static final String FEEDBACK = "/my/suggest/add.do";
 
     /**
+     * 船员管理
+     */
+    //新增船员
+    public static final String ADD_CREW = "/my/ship/employeeManger/add.do";
+
+    //船员列表展示
+    public static final String CREW_LISTS = "/my/ship/employeeManger/query/list.do";
+
+    //查看船员详情信息
+    public static final String CREW_DETAILS = "/my/ship/employeeManger/query/info.do";
+
+    //删除船员
+    public static final String DELETE_CREW = "/my/ship/employeeManger/delete.do";
+
+    //修改船员信息
+    public static final String MODIFY_CRWE_INFO = "/my/ship/employeeManger/update.do";
+
+    /**
+     * 船员证书管理
+     */
+    //新增船员证书
+    public static final String ADD_CREW_CERTIFICATE = "/my/certificate/user/add.do";
+
+    //船员证书列表展示
+    public static final String CREW_CERTIFICATE_LISTS = "/my/certificate/user/query/list.do";
+
+    //查看船员证书详情信息
+    public static final String CREW_CERTIFICATE_DETAILS = "/my/certificate/user/query/info.do";
+
+    //删除船员证书
+    public static final String DELETE_CREW_CERTIFICATE = "/my/certificate/user/delete.do";
+
+
+    //我的船队
+    //我的船（船队列表）
+    public static final String MY_SHIP_LISTS = "/my/ship/team/query/list.do";
+
+    //查看船的详情
+    public static final String MY_SHIP_INFO = "/my/ship/team/query/info.do";
+
+    //报文记录列表
+    public static final String REPORT_LISTS = "/my/ship/report/query/list.do";
+
+    //查询报文详情
+    public static final String REPORT_INFO = "/my/ship/report/query/info.do";
+
+    //新增报文
+    public static final String ADD_REPORT = "/my/ship/report/add.do";
+
+
+    //船舶证书管理
+    //新增船舶证书
+    public static final String ADD_SHIP_CERTIFICATE = "/my/certificate/ship/add.do";
+
+    //新增船舶保险
+    public static final String ADD_SHIP_INSURANCE = "/my/certificate/ship/add.do";
+
+    //船舶证书列表
+    public static final String SHIP_CERTIFICATE_LIST = "/my/certificate/ship/query/list.do";
+
+    //查看船舶证书详情
+    public static final String SHIP_CERTIFICATE_INFO = "/my/certificate/ship/query/info.do";
+
+    //删除船舶证书
+    public static final String DELETE_SHIP_CERTIFICATE = "/my/certificate/ship/delete.do";
+
+
+    //我关注的船
+    //我关注的船列表
+    public static final String FOLLOW_SHIP_LIST = "/my/ship/attention/query/list.do";
+
+    //添加我关注的船
+    public static final String ADD_FOLLOW_SHIP = "/my/ship/attention/add.do";
+
+    //删除我关注的船
+    public static final String DELETE_FOLLOW_SHIP = "/my/ship/attention/delete.do";
+
+    //查看我关注的船的详情
+    public static final String FOLLOW_SHIP_INFO = "/my/ship/attention/query/info.do";
+
+
+    /**
      * 航运头条
      */
     //展示列表

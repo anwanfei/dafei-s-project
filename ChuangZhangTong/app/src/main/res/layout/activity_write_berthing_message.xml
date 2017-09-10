@@ -55,7 +55,7 @@
                 <TextView
                     android:id="@+id/tv_input_anchor_arrival_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -73,7 +73,7 @@
                 <TextView
                     android:id="@+id/tv_input_system_stop_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -91,7 +91,7 @@
                 <TextView
                     android:id="@+id/tv_input_test_cabin_start_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -109,7 +109,7 @@
                 <TextView
                     android:id="@+id/tv_input_test_cabin_end_time"
                     style="@style/edittext_no_arrow"
-                    android:text="@string/choose_time" />
+                    android:hint="@string/choose_time" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -177,7 +177,7 @@
 
                 <TextView
                     style="@style/account_setting_left_textview"
-                    android:text="@string/anchor_arrival_time" />
+                    android:text="@string/is_pilot" />
 
                 <RadioGroup
                     android:id="@+id/rg_choose_is_no"

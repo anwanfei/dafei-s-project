@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.bean.MyFollowFleetBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
 
 import java.util.List;
 
@@ -22,12 +22,12 @@ import butterknife.ButterKnife;
 public class MyFollowFleetAdapter extends BaseAdapter implements View.OnClickListener {
 
     private Context mContext;
-    private List<MyFollowFleetBean> myFleetLists;
+    private List<FollowShipListBean.DataBean.ArrayBean> myFleetLists;
     private ViewHolder holder;
 
     private boolean isShowCheckBox;
 
-    public MyFollowFleetAdapter(Context mContext, List<MyFollowFleetBean> myFleetLists) {
+    public MyFollowFleetAdapter(Context mContext, List<FollowShipListBean.DataBean.ArrayBean> myFleetLists) {
         this.mContext = mContext;
         this.myFleetLists = myFleetLists;
     }
