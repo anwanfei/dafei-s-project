@@ -343,28 +343,43 @@
             </RadioGroup>
         </RelativeLayout>
 
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
-            android:padding="15dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_add_certificate_photo"
-                style="@style/account_setting_left_textview"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:text="@string/add_certificate_photo" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvResultPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/iv_add_images"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/iv_add_certificate_photo" />
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_add_certificate_photo"
+                    style="@style/account_setting_left_textview"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_certificate_photo" />
+
+                <ImageView
+                    android:id="@+id/iv_add_images"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/iv_add_certificate_photo" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

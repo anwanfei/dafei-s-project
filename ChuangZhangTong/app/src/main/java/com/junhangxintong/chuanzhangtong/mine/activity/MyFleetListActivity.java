@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -112,6 +113,10 @@ public class MyFleetListActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.my_fleet));
+
+        tvSetting.setVisibility(View.GONE);
+        ivShare.setVisibility(View.GONE);
+        tvAddShip.setVisibility(View.GONE);
 //        tvSetting.setVisibility(View.GONE);
 //        tvShare.setVisibility(View.GONE);
 //        ivShare.setVisibility(View.GONE);
@@ -139,6 +144,7 @@ public class MyFleetListActivity extends BaseActivity {
     }
 
     private void netGetShipLists(String shipName) {
+        final ProgressDialog progressDialog = getProgressDialog();
         NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
@@ -149,6 +155,7 @@ public class MyFleetListActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(MyFleetListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -160,6 +167,7 @@ public class MyFleetListActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
+
                                 ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
                                 shipLists = shipListBean.getData().getArray();
 
@@ -167,6 +175,7 @@ public class MyFleetListActivity extends BaseActivity {
                                 myFleetAdapter = new MyFleetAdapter(MyFleetListActivity.this, shipLists);
                                 lvMyFleet.setAdapter(myFleetAdapter);
                                 myFleetAdapter.notifyDataSetChanged();
+                                progressDialog.dismiss();
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储

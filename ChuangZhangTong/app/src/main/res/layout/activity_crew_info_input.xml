@@ -109,6 +109,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_choose_duty"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="1dp"
@@ -128,7 +129,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_choose_duty"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="1dp"

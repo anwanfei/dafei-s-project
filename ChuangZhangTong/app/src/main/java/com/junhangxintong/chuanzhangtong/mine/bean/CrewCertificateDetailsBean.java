@@ -6,12 +6,6 @@ package com.junhangxintong.chuanzhangtong.mine.bean;
 
 public class CrewCertificateDetailsBean {
 
-    /**
-     * message : 查询成功
-     * status : success
-     * data : {"object":{"certifNo":"123","isUse":1,"advanceWarnDay":0,"modifyDate":"","isExpire":1,"id":1,"imgUrl":"","certifType":1,"userId":26,"name":"话","validDate":"","createDate":"2017-09-08 11:03:24","isValid":1,"createUserId":21,"issueOrganization":"好"}}
-     * code : 200
-     */
 
     private String message;
     private String status;
@@ -52,7 +46,7 @@ public class CrewCertificateDetailsBean {
 
     public static class DataBean {
         /**
-         * object : {"certifNo":"123","isUse":1,"advanceWarnDay":0,"modifyDate":"","isExpire":1,"id":1,"imgUrl":"","certifType":1,"userId":26,"name":"话","validDate":"","createDate":"2017-09-08 11:03:24","isValid":1,"createUserId":21,"issueOrganization":"好"}
+         * object : {"certifNo":"123456","isUse":1,"advanceWarnDay":20,"modifyDate":"","isExpire":1,"id":1,"imgUrl":"[{\"picUrl\":\"buiness/user/pic/suggest/17/1/20170912151039.jpg\",\"seq\":1},{\"picUrl\":\"buiness/user/pic/suggest/17/2/20170912151039.jpg\",\"seq\":2},{\"picUrl\":\"buiness/user/pic/suggest/17/3/20170912151040.jpg\",\"seq\":3}]","certifType":1,"userId":22,"name":"证书1","validDate":"","domain":"http://ow5f3r531.bkt.clouddn.com/","createDate":"2017-09-07 17:15:30","isValid":1,"createUserId":17,"issueOrganization":"中国船舶公司"}
          */
 
         private ObjectBean object;
@@ -66,23 +60,6 @@ public class CrewCertificateDetailsBean {
         }
 
         public static class ObjectBean {
-            /**
-             * certifNo : 123
-             * isUse : 1
-             * advanceWarnDay : 0
-             * modifyDate :
-             * isExpire : 1
-             * id : 1
-             * imgUrl :
-             * certifType : 1
-             * userId : 26
-             * name : 话
-             * validDate :
-             * createDate : 2017-09-08 11:03:24
-             * isValid : 1
-             * createUserId : 21
-             * issueOrganization : 好
-             */
 
             private String certifNo;
             private int isUse;
@@ -95,6 +72,7 @@ public class CrewCertificateDetailsBean {
             private int userId;
             private String name;
             private String validDate;
+            private String domain;
             private String createDate;
             private int isValid;
             private int createUserId;
@@ -186,6 +164,14 @@ public class CrewCertificateDetailsBean {
 
             public void setValidDate(String validDate) {
                 this.validDate = validDate;
+            }
+
+            public String getDomain() {
+                return domain;
+            }
+
+            public void setDomain(String domain) {
+                this.domain = domain;
             }
 
             public String getCreateDate() {

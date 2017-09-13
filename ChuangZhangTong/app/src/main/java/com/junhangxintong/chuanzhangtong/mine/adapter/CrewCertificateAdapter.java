@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateRemindBean;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ import butterknife.ButterKnife;
 public class CrewCertificateAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<CrewCeretificateBean.DataBean.ArrayBean> certificates;
+    private List<CrewCeretificateRemindBean.DataBean.ArrayBean> certificates;
 
-    public CrewCertificateAdapter(Context mContext, List<CrewCeretificateBean.DataBean.ArrayBean> myFleetLists) {
+    public CrewCertificateAdapter(Context mContext, List<CrewCeretificateRemindBean.DataBean.ArrayBean> myFleetLists) {
         this.mContext = mContext;
         this.certificates = myFleetLists;
     }

@@ -17,6 +17,8 @@ import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -50,7 +52,7 @@ public class DynamicRemindFragment extends BaseFragment {
         // TODO: 2017/8/23 根据是否登录判断是否要进入登录界面
         String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
-        if (token.equals("")) {
+        if (StringUtils.isEmpty(token)) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
             getActivity().finish();
         }

@@ -270,16 +270,31 @@
                 style="@style/account_setting_left_textview"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
-                android:text="@string/add_certificate_photo" />
+                android:text="@string/certificate_photo" />
 
             <ImageView
                 android:id="@+id/iv_certificate_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/add_certificate" />
+                android:src="@drawable/add_certificate"
+                android:visibility="gone" />
 
         </RelativeLayout>
+
+        <com.junhangxintong.chuanzhangtong.view.MyGridview
+            android:id="@+id/gv_certificate_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:horizontalSpacing="10dp"
+            android:numColumns="3"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:scrollbars="none"
+            android:verticalSpacing="10dp" />
     </LinearLayout>
 
 </ScrollView>

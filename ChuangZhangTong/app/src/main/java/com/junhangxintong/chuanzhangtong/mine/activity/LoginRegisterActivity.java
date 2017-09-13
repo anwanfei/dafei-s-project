@@ -63,9 +63,9 @@ public class LoginRegisterActivity extends BaseActivity {
     @BindView(R.id.rg_choose_url)
     RadioGroup rgChooseUrl;
 
-    private String local_base_url = "http://192.168.0.101:8082";
+    private String local_base_url = "http://192.168.0.102:8082";
     private String www_test_base_url = "http://116.62.152.191:8082";
-    private String www_base_url = "http://192.168.0.101:8082";
+    private String www_base_url = "http://192.168.0.102:8082";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

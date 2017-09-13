@@ -1,5 +1,7 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +13,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.MapView;
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.FollowShipDetailsBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 import static com.junhangxintong.chuanzhangtong.R.id.tv_follow_ship;
 import static com.junhangxintong.chuanzhangtong.R.id.tv_share_ship;
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class OtherShipDetailsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -103,7 +117,96 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String id = intent.getStringExtra(Constants.ID);
+        String shipInfoFromWhere = intent.getStringExtra(Constants.SHIP_INFO);
+        if (shipInfoFromWhere.equals(Constants.SHIP_POSITION)) {
+            NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_INFO)
+                    .addParams(Constants.ID, id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        }
 
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
+                                    MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                                    tvTitle.setText(shipInfo.getShipName());
+                                    tvShipName.setText(shipInfo.getShipName());
+                                    tvChuanji.setText(shipInfo.getNation());
+                                    tvMmsi.setText(shipInfo.getMmsi());
+                                    tvShipHuhao.setText(shipInfo.getCallSign());
+                                    tvShipImo.setText(shipInfo.getImo());
+                                    tvShipType.setText(shipInfo.getType());
+                                    tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
+                                    tvUpdateTime.setText(shipInfo.getModifyDate());
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+        } else if (shipInfoFromWhere.equals(Constants.FOLLOW_SHIP)) {
+            NetUtils.postWithHeader(this, ConstantsUrls.FOLLOW_SHIP_INFO)
+                    .addParams(Constants.ID, id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    FollowShipDetailsBean followShipDetailsBean = new Gson().fromJson(response, FollowShipDetailsBean.class);
+                                    FollowShipDetailsBean.DataBean.ObjectBean followShipDetails = followShipDetailsBean.getData().getObject();
+                                    tvShipName.setText(followShipDetails.getShipName());
+                                    tvShipImo.setText(followShipDetails.getImo());
+                                    tvShipZize.setText(followShipDetails.getShipSize() / 100 + "/" + followShipDetails.getShipWidth() / 100);
+                                    tvUpdateTime.setText(followShipDetails.getModifyDate());
+                                    tvMmsi.setText(followShipDetails.getMmsi());
+                                    tvShipType.setText(followShipDetails.getType());
+                                    tvChuanji.setText(followShipDetails.getNation());
+                                    tvShipHuhao.setText(followShipDetails.getCallSign());
+
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+        }
     }
 
     @Override

@@ -1,5 +1,0 @@
-<resources>
-    <string name="app_name">yzLib</string>
-    <string name="network_request_error">网络请求异常！</string>
-    <string name="network_connection_error">网络连接异常，请检查网络!</string>
-</resources>

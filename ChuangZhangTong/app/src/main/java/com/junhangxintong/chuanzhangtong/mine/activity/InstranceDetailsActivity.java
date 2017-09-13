@@ -4,21 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateOrInsuranceInfoBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -76,6 +85,8 @@ public class InstranceDetailsActivity extends BaseActivity {
     ImageView ivShare;
     @BindView(R.id.tv_setting)
     TextView tvSetting;
+    @BindView(R.id.gv_certificate_photo)
+    GridView gvCertificatePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +143,21 @@ public class InstranceDetailsActivity extends BaseActivity {
 
                                 tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
                                 tvWarningDays.setText(String.valueOf(shipCertificateOrInsuranceInfo.getAdvanceWarnDay()));
-                                if(shipCertificateOrInsuranceInfo.getIsUse()==1){
+                                if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {
                                     tvCommon.setText(getResources().getString(R.string.yes));
                                 } else {
                                     tvCommon.setText(getResources().getString(R.string.no));
                                 }
+                                
+                                String imgUrl = shipCertificateOrInsuranceInfo.getImgUrl();
+                                if (StringUtils.isNotBlank(imgUrl)) {
+                                    Type type = new TypeToken<ArrayList<UrlBean>>() {
+                                    }.getType();
+                                    ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
 
+                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(InstranceDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
+                                    gvCertificatePhoto.setAdapter(showPhotoAdapter);
+                                }
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();

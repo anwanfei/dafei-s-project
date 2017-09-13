@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.NoonReportInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -105,67 +106,94 @@ public class ShipNoonMessageActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String shipId = intent.getStringExtra(Constants.SHIP_ID);
-        final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
-        tvShipMessageName.setText(shipName);
 
-        NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
-                .addParams(Constants.ID, shipId)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ShipNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+        String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        if (fromDynamic != null) {
+            DynamicRemindNonnReportBean dynamicRemindNonnReportBean = (DynamicRemindNonnReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
+            DynamicRemindNonnReportBean.DataBean.ObjectBean noonReportInfo = dynamicRemindNonnReportBean.getData().getObject();
+            tvShipMessageName.setText(noonReportInfo.getShipName());
+            tvShipTime.setText(noonReportInfo.getCreateDate());
+            tvLatitude.setText(noonReportInfo.getLatitude());
+            tvLongtitude.setText(noonReportInfo.getLongitude());
+            tvShipDirection.setText(noonReportInfo.getCourse());
+            tvShipSpeed.setText(noonReportInfo.getCurrShipSpeed());
+            tvTheShipHeavyOil.setText(noonReportInfo.getShipHeavyOil());
+            tvShipDraft.setText(noonReportInfo.getShipForwardDraft());
+            tvTheShipLightOil.setText(noonReportInfo.getShipLightOil());
+            tvTheShipFrashwater.setText(noonReportInfo.getShipFreshwater());
+            tvLightOilConsume.setText(noonReportInfo.getLightOilConsumption());
+            tvFrashwaterConsume.setText(noonReportInfo.getFreshwaterConsumption());
+            tvShipSpeed.setText(noonReportInfo.getAvgSpeed());
+            tvReArrivalTime.setText(noonReportInfo.getExpectArrivalDate());
+            tvPressure.setText(noonReportInfo.getPressure());
+            tvPitch.setText(noonReportInfo.getSnailRange());
+            tvTemperature.setText(noonReportInfo.getTemperature());
+            tvWeather.setText(noonReportInfo.getWeather());
+            tvWaveLevel.setText(noonReportInfo.getWaveLevel());
+            tvWindDirection.setText(noonReportInfo.getWindDirection());
+            tvConsume.setText(noonReportInfo.getConsume());
+            tvRemark.setText(noonReportInfo.getRemark());
+        } else {
+            String id = intent.getStringExtra(Constants.ID);
+            final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+            tvShipMessageName.setText(shipName);
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
+            NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
+                    .addParams(Constants.ID, id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
                             Toast.makeText(ShipNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                NoonReportInfoBean noonReportInfoBean = new Gson().fromJson(response, NoonReportInfoBean.class);
-                                NoonReportInfoBean.DataBean.ObjectBean noonReportInfo = noonReportInfoBean.getData().getObject();
-                                tvShipTime.setText(noonReportInfo.getCreateDate());
-                                tvLatitude.setText(noonReportInfo.getLatitude());
-                                tvLongtitude.setText(noonReportInfo.getLongitude());
-                                tvShipDirection.setText(noonReportInfo.getCourse());
-                                tvShipSpeed.setText(noonReportInfo.getCurrShipSpeed());
-                                tvTheShipHeavyOil.setText(noonReportInfo.getShipHeavyOil());
-                                tvShipDraft.setText(noonReportInfo.getShipForwardDraft());
-                                tvTheShipLightOil.setText(noonReportInfo.getShipLightOil());
-                                tvTheShipFrashwater.setText(noonReportInfo.getShipFreshwater());
-                                tvLightOilConsume.setText(noonReportInfo.getLightOilConsumption());
-                                tvFrashwaterConsume.setText(noonReportInfo.getFreshwaterConsumption());
-                                tvShipSpeed.setText(noonReportInfo.getAvgSpeed());
-                                tvReArrivalTime.setText(noonReportInfo.getExpectArrivalDate());
-                                tvPressure.setText(noonReportInfo.getPressure());
-                                tvPitch.setText(noonReportInfo.getSnailRange());
-                                tvTemperature.setText(noonReportInfo.getTemperature());
-                                tvWeather.setText(noonReportInfo.getWeather());
-                                tvWaveLevel.setText(noonReportInfo.getWaveLevel());
-                                tvWindDirection.setText(noonReportInfo.getWindDirection());
-                                tvConsume.setText(noonReportInfo.getConsume());
-                                tvRemark.setText(noonReportInfo.getRemark());
+                        }
 
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ShipNoonMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ShipNoonMessageActivity.this, LoginRegisterActivity.class));
-                                finish();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(ShipNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ShipNoonMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    NoonReportInfoBean noonReportInfoBean = new Gson().fromJson(response, NoonReportInfoBean.class);
+                                    NoonReportInfoBean.DataBean.ObjectBean noonReportInfo = noonReportInfoBean.getData().getObject();
+                                    tvShipTime.setText(noonReportInfo.getCreateDate());
+                                    tvLatitude.setText(noonReportInfo.getLatitude());
+                                    tvLongtitude.setText(noonReportInfo.getLongitude());
+                                    tvShipDirection.setText(noonReportInfo.getCourse());
+                                    tvShipSpeed.setText(noonReportInfo.getCurrShipSpeed());
+                                    tvTheShipHeavyOil.setText(noonReportInfo.getShipHeavyOil());
+                                    tvShipDraft.setText(noonReportInfo.getShipForwardDraft());
+                                    tvTheShipLightOil.setText(noonReportInfo.getShipLightOil());
+                                    tvTheShipFrashwater.setText(noonReportInfo.getShipFreshwater());
+                                    tvLightOilConsume.setText(noonReportInfo.getLightOilConsumption());
+                                    tvFrashwaterConsume.setText(noonReportInfo.getFreshwaterConsumption());
+                                    tvShipSpeed.setText(noonReportInfo.getAvgSpeed());
+                                    tvReArrivalTime.setText(noonReportInfo.getExpectArrivalDate());
+                                    tvPressure.setText(noonReportInfo.getPressure());
+                                    tvPitch.setText(noonReportInfo.getSnailRange());
+                                    tvTemperature.setText(noonReportInfo.getTemperature());
+                                    tvWeather.setText(noonReportInfo.getWeather());
+                                    tvWaveLevel.setText(noonReportInfo.getWaveLevel());
+                                    tvWindDirection.setText(noonReportInfo.getWindDirection());
+                                    tvConsume.setText(noonReportInfo.getConsume());
+                                    tvRemark.setText(noonReportInfo.getRemark());
+
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(ShipNoonMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(ShipNoonMessageActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(ShipNoonMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                });
-
-
+                    });
+        }
     }
 
     @Override

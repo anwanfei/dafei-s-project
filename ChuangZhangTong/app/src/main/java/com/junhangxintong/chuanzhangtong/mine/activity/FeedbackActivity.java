@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,16 +35,19 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.GlideImageLoader;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.junhangxintong.chuanzhangtong.utils.PictureUtils;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,9 +81,10 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     @BindView(R.id.rvResultPhoto)
     RecyclerView rvResultPhoto;
     private PopupWindow popupWindow;
+
+
     private IHandlerCallBack iHandlerCallBack;
     private String TAG = "junhang";
-
     //存储获得图片路径的集合
     private ArrayList<String> path = new ArrayList<>();
     private GalleryConfig gallrtyConfig;
@@ -166,56 +171,75 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void netCommitFeedback() {
+
         String content = etInputFeedback.getText().toString();
         String phoneNum = etPhone.getText().toString();
         String userId = CacheUtils.getString(this, Constants.ID);
 
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
-            String key = i + ".jpg";
-            stringFileHashMap.put(key, new File(path.get(i)));
+            try {
+                String bitmapToPath = PictureUtils.bitmapToPath(path.get(i));
+                String key = i + ".jpg";
+                stringFileHashMap.put(key, new File(bitmapToPath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (content.equals("")) {
+        if (StringUtils.isEmpty(content)) {
             Toast.makeText(FeedbackActivity.this, getResources().getString(R.string.input_feedback), Toast.LENGTH_SHORT).show();
-        } else {
-            NetUtils.postWithHeader(this, ConstantsUrls.FEEDBACK)
-                    .addParams(Constants.USER_ID, userId)
-                    .addParams(Constants.FEEDBACK_CONTENT, content)
-                    .addParams(Constants.MOBILEPHONE, phoneNum)
-//                    .addFile(Constants.PICTRUE, "a.jpg", file)
-                    .files(Constants.PICTRUE, stringFileHashMap)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(FeedbackActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        }
+            return;
+        }
+        final ProgressDialog progressDialog = getProgressDialog();
+        NetUtils.postWithHeader(this, ConstantsUrls.FEEDBACK)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.FEEDBACK_CONTENT, content)
+                .addParams(Constants.MOBILEPHONE, phoneNum)
+                .files(Constants.PICTRUE, stringFileHashMap)
+                .build()
+                .writeTimeOut(3000)
+                .connTimeOut(3000)
+                .readTimeOut(3000)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(FeedbackActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(FeedbackActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                                String message = sendVerifyCode.getMessage();
-                                String code = sendVerifyCode.getCode();
-                                Toast.makeText(FeedbackActivity.this, message, Toast.LENGTH_SHORT).show();
-                                if (code.equals("601")) {
-                                    //清除了sp存储
-                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(FeedbackActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(FeedbackActivity.this, LoginRegisterActivity.class));
-                                    finish();
-                                }
-                                if (code.equals("200")) {
-                                    finish();
-                                }
+                    @Override
+                    public void inProgress(float progress, long total, int id) {
+                        super.inProgress(progress, total, id);
+
+                        progressDialog.setProgress((int) progress);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(FeedbackActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(FeedbackActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(FeedbackActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(FeedbackActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            }
+                            if (code.equals("200")) {
+                                progressDialog.dismiss();
+                                finish();
                             }
                         }
-                    });
-        }
+                    }
+                });
+
     }
 
     private void showChoosePhotesPop() {

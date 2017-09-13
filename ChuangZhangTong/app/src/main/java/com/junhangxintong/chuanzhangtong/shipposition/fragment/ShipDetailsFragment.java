@@ -174,6 +174,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                             if (code.equals("200")) {
                                 MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
                                 MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                                tvShipName.setText(shipInfo.getShipName());
                                 tvTitle.setText(shipInfo.getShipName());
                                 tvChuanji.setText(shipInfo.getNation());
                                 tvMmsi.setText(shipInfo.getMmsi());

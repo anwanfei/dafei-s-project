@@ -26,8 +26,6 @@ import butterknife.ButterKnife;
 
 public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    String[] arrShipCertificates = {"船籍港证书", "船级证书", "载重线证书", "干舷证书", "保险单", "无疫证书", "检疫证书", "除鼠证书"};
-    String[] arrShipInsuranceCertificates = {"全损险", "一切险"};
 
     private List<CustomCertificateBean> shipCertificates;
     private List<CustomCertificateBean> shipInsurances;
@@ -94,6 +92,12 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
             if (position > 0 && position <= Math.ceil(shipCertificates.size() / 2)) {
                 ((ContentViewHolder) holder).tvCertificateName1.setText(shipCertificates.get(2 * (position - 1)).getName());
                 ((ContentViewHolder) holder).tvCertificateName2.setText(shipCertificates.get(2 * position - 1).getName());
+                ((ContentViewHolder) holder).tvCertificateNumber1.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipCertificates.get(2 * (position - 1)).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipCertificates.get(2 * position - 1).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority1.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipCertificates.get(2 * (position - 1)).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipCertificates.get(2 * position - 1).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateType1.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipCertificates.get(2 * (position - 1)).getValidDate());
+                ((ContentViewHolder) holder).tvCertificateName2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipCertificates.get(2 * position - 1).getName());
 
                 //点击详情跳转
                 ((ContentViewHolder) holder).llItemLeft.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +115,12 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
             } else {
                 ((ContentViewHolder) holder).tvCertificateName1.setText(shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getName());
                 ((ContentViewHolder) holder).tvCertificateName2.setText(shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getName());
+                ((ContentViewHolder) holder).tvCertificateNumber1.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority1.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateType1.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getValidDate());
+                ((ContentViewHolder) holder).tvCertificateType2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getValidDate());
 
                 ((ContentViewHolder) holder).llItemLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -131,7 +141,7 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
 
     private void gotoShipInsuranceDetailsActivity(int position) {
         Intent intent = new Intent(mContext, InstranceDetailsActivity.class);
-        intent.putExtra(Constants.ID, shipCertificates.get(position).getId());
+        intent.putExtra(Constants.ID, shipInsurances.get(position).getId());
         mContext.startActivity(intent);
     }
 

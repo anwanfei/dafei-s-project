@@ -185,7 +185,6 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.TYPE, "3")
                 .addParams(Constants.REPORT_JSON, json)
                 .build()

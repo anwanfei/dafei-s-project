@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.common;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
         //默认情况下显示“首页”数据
         initData();
-
     }
 
     protected abstract void initView();
@@ -40,18 +39,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int getLayoutId();
 
     //启动一个新的activity
-    public void goToActivity(Class activity,Bundle bundle){
-        Intent intent = new Intent(this,activity);
-        if(bundle != null){
-            intent.putExtra("data",bundle);
+    public void goToActivity(Class activity, Bundle bundle) {
+        Intent intent = new Intent(this, activity);
+        if (bundle != null) {
+            intent.putExtra("data", bundle);
         }
         startActivity(intent);
     }
+
     //设置背景透明度
     public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
         getWindow().setAttributes(lp);
+    }
+
+    //进度对话框
+    public ProgressDialog getProgressDialog() {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("正在上传中...");
+        progressDialog.show();
+        return progressDialog;
     }
 
 }

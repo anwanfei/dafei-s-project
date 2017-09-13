@@ -55,6 +55,8 @@ public class CrewDetailsActivity extends BaseActivity {
     private String personName;
     private String mobilePhone;
     private String crewId;
+    private String id;
+    private CrewDetailsBean crewDetailsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,11 @@ public class CrewDetailsActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String id = intent.getStringExtra(Constants.ID);
+        id = intent.getStringExtra(Constants.ID);
+        netGetCrewInfo();
+    }
+
+    private void netGetCrewInfo() {
         NetUtils.postWithHeader(this, ConstantsUrls.CREW_DETAILS)
                 .addParams(Constants.ID, id)
                 .build()
@@ -91,7 +97,7 @@ public class CrewDetailsActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                CrewDetailsBean crewDetailsBean = new Gson().fromJson(response, CrewDetailsBean.class);
+                                crewDetailsBean = new Gson().fromJson(response, CrewDetailsBean.class);
                                 CrewDetailsBean.DataBean.ObjectBean crewObject = crewDetailsBean.getData().getObject();
                                 mobilePhone = crewObject.getMobilePhone();
                                 crewId = crewObject.getId();
@@ -152,11 +158,18 @@ public class CrewDetailsActivity extends BaseActivity {
                 break;
             case R.id.tv_setting:
                 Intent intent = new Intent(CrewDetailsActivity.this, ModifyCrewInfoActivity.class);
-                intent.putExtra(Constants.PERSON_NAME,personName);
+                /*intent.putExtra(Constants.PERSON_NAME,personName);
                 intent.putExtra(Constants.PHONE,mobilePhone);
-                intent.putExtra(Constants.ID,crewId);
+                intent.putExtra(Constants.ID,crewId);*/
+                intent.putExtra(Constants.CREW_BEAN,crewDetailsBean);
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetCrewInfo();
     }
 }

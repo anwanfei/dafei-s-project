@@ -110,9 +110,8 @@ public class ForgetPwdActivity extends BaseActivity {
         boolean mobile = MultiVerify.isMobile(phone);
 
         if (mobile) {
-            OkHttpUtils
-                    .post()
-                    .url(ConstantsUrls.VERIFY_SMS_FORGET_PWD)
+
+            NetUtils.postWithNoHeader(this,ConstantsUrls.VERIFY_SMS_FORGET_PWD)
                     .addParams(Constants.PHONE, phone)
                     .addParams(Constants.VCODE, verifyCode)
                     .build()

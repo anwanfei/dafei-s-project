@@ -1,15 +1,30 @@
 package com.junhangxintong.chuanzhangtong.dynamic.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.dynamic.bean.ShipCertificateExpireBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class CrewCertificateActivity extends BaseActivity {
 
@@ -55,7 +70,48 @@ public class CrewCertificateActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+        Intent intent = getIntent();
+        String id = intent.getStringExtra(Constants.ID);
+        NetUtils.postWithHeader(this, ConstantsUrls.DYNAMIC_DETAILS)
+                .addParams(Constants.ID, id)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(CrewCertificateActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(CrewCertificateActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                ShipCertificateExpireBean shipCertificateExpireBean = new Gson().fromJson(response, ShipCertificateExpireBean.class);
+                                ShipCertificateExpireBean.DataBean.ObjectBean shipCertificateExpireDetatls = shipCertificateExpireBean.getData().getObject();
+                                tvName.setText(shipCertificateExpireDetatls.getShipName());
+                                tvCertificateName.setText(shipCertificateExpireDetatls.getName());
+                                tvCertificateNumber.setText(shipCertificateExpireDetatls.getCertifNo());
+                                tvIssueDate.setText(shipCertificateExpireDetatls.getIssueDate());
+                                tvCertificateEndTime.setText(shipCertificateExpireDetatls.getValidDate());
+                                tvCertificateIssuePostion.setText(shipCertificateExpireDetatls.getIssueAddress());
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(CrewCertificateActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(CrewCertificateActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(CrewCertificateActivity.this, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override

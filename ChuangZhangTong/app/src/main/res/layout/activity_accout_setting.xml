@@ -24,7 +24,6 @@
             <TextView
                 style="@style/account_setting_left_textview"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/reset_pwd" />
 
             <TextView
@@ -43,7 +42,6 @@
             <TextView
                 style="@style/account_setting_left_textview"
                 android:layout_centerVertical="true"
-                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/personal_info" />
 
             <TextView style="@style/account_setting_right_textview_with_arrow" />

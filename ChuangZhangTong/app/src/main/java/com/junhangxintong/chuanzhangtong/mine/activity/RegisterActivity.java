@@ -24,7 +24,6 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
@@ -124,10 +123,8 @@ public class RegisterActivity extends BaseActivity {
 
         boolean mobile = MultiVerify.isMobile(phone);
 
-        if (mobile) {
-            OkHttpUtils
-                    .post()
-                    .url(ConstantsUrls.REGISTER_BY_PHNOE)
+        if (true) {
+            NetUtils.postWithNoHeader(this, ConstantsUrls.REGISTER_BY_PHNOE)
                     .addParams(Constants.PHONE, phone)
                     .addParams(Constants.VCODE, verifyCode)
                     .addParams(Constants.PASSWORD, pwd)
@@ -152,10 +149,11 @@ public class RegisterActivity extends BaseActivity {
                                 } else {
                                     LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
                                     String message = loginResult.getMessage();
+                                    String token = loginResult.getData().getToken();
                                     Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
 
                                     //保存token
-                                    CacheUtils.putString(RegisterActivity.this, Constants.TOKEN, loginResult.getData().getToken());
+                                    CacheUtils.putString(RegisterActivity.this, Constants.TOKEN, token);
 
                                     //保存id
                                     CacheUtils.putString(RegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
@@ -170,6 +168,7 @@ public class RegisterActivity extends BaseActivity {
                             }
                         }
                     });
+
         } else {
             Toast.makeText(RegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
         }
@@ -179,7 +178,7 @@ public class RegisterActivity extends BaseActivity {
 
         String phone = etInputPhone.getText().toString();
         boolean mobile = MultiVerify.isMobile(phone);
-        if (mobile) {
+        if (true) {
             NetUtils.postWithNoHeader(this, ConstantsUrls.REGIDTER_SEND_VERIFICATION_CODE)
                     .addParams(Constants.PHONE, phone)
                     .build()

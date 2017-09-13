@@ -61,6 +61,7 @@
     <string name="forget_pwd">忘记密码</string>
     <string name="login">登录</string>
     <string name="add_first_ship">亲，请添加您的第一条船哦~</string>
+    <string name="follow_first_ship">亲，请关注您的第一条船哦~</string>
     <string name="add_first_certificate">亲，请添加您的第一张证书哦~</string>
     <string name="add_first_crew">亲，请添加您的船员哦~</string>
     <string name="register">注册</string>
@@ -119,7 +120,7 @@
     <string name="check_updata">检查更新</string>
     <string name="feed_back">意见反馈</string>
     <string name="feed_back_hint">输入遇到的问题或者建议</string>
-    <string name="max_length_400">400</string>
+    <string name="max_length_400">400以内</string>
     <string name="phone_requested">手机（选填）:</string>
     <string name="mail_box_requested">邮箱（必填）:</string>
     <string name="mail_box_requested_hint">方便我们联系您</string>
@@ -140,6 +141,7 @@
     <string name="input_certificate_number">输入证书编号</string>
     <string name="certificate_type">证书类型</string>
     <string name="certificates_type">证件类型</string>
+    <string name="input_certificates_type">输入证件类型</string>
     <string name="certificate_type_colon">证书类型:</string>
     <string name="type">类型</string>
     <string name="type_with_colon">类型:</string>
@@ -177,6 +179,7 @@
     <string name="add_crews">添船员</string>
     <string name="edit">编辑</string>
     <string name="ship_certificate_lists">船舶证书</string>
+    <string name="certificate_photo">证书图片</string>
     <string name="choose_all">全选</string>
     <string name="delete">删除</string>
     <string name="delete_success">成功删除</string>
@@ -412,6 +415,7 @@
     <string name="issue_address">签发地点</string>
     <string name="is_permanent_effective">是否永久有效</string>
     <string name="effective_date">有效日期</string>
+    <string name="effective_date_colon">有效日期：</string>
     <string name="id_often_use">是否常用</string>
     <string name="photo">照片</string>
     <string name="add_certificate">添加证件</string>
@@ -486,6 +490,9 @@
     <string name="unexit_file">文件不存在</string>
     <string name="modify_crew_info">修改船员信息</string>
     <string name="loadPort">装货港/卸货港</string>
+    <string name="no_ship">您还没有船</string>
+
+
 
     <!---->
 

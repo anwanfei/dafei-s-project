@@ -16,7 +16,7 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewCertificateAdapter;
-import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateRemindBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
@@ -58,7 +58,7 @@ public class CrewCertificateListsActivity extends BaseActivity {
     private List<String> certificates;
     String[] arrCrewCertificates = {"适任证书", "海员证", "健康证", "高级消防培训合格证书", "船员服务证"};
     private String id;
-    private List<CrewCeretificateBean.DataBean.ArrayBean> crewCertificatesLists;
+    private List<CrewCeretificateRemindBean.DataBean.ArrayBean> crewCertificatesLists;
     private CrewCertificateAdapter crewCertificateAdapter;
 
     @Override
@@ -124,13 +124,14 @@ public class CrewCertificateListsActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                CrewCeretificateBean crewCeretificateBean = new Gson().fromJson(response, CrewCeretificateBean.class);
+                                CrewCeretificateRemindBean crewCeretificateBean = new Gson().fromJson(response, CrewCeretificateRemindBean.class);
 
                                 crewCertificatesLists = crewCeretificateBean.getData().getArray();
 
                                 updataGridview();
                                 crewCertificateAdapter = new CrewCertificateAdapter(CrewCertificateListsActivity.this, crewCertificatesLists);
                                 gvCertificate.setAdapter(crewCertificateAdapter);
+
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -191,7 +192,7 @@ public class CrewCertificateListsActivity extends BaseActivity {
     }
 
     private void gotoAddCertificateActivity() {
-        Intent intent = new Intent(CrewCertificateListsActivity.this, AddCertificateActivity.class);
+        Intent intent = new Intent(CrewCertificateListsActivity.this, AddCrewCertificateActivity.class);
         intent.putExtra(Constants.CREW_CERTIFICATE, 1);
         intent.putExtra(Constants.ID, id);
         startActivity(intent);

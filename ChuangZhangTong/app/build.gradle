@@ -72,6 +72,7 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.2'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.zhy:okhttputils:2.6.2'
+    compile 'commons-lang:commons-lang:2.6'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }

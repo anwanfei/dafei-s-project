@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/7.
  */
 
-public class CrewDetailsBean {
+public class CrewDetailsBean implements Serializable{
     /**
      * message : 查询成功
      * status : success
@@ -49,7 +51,7 @@ public class CrewDetailsBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * object : {"shipId":"1","deptName":"","sex":"0","superAdminUserId":"1","roleName":"船长","modifyDate":"","contactPersonPhone":"","cardType":"0","nation":"","personName":"2","cardNo":"","id":"17","mobilePhone":"15810512120","postName":"","email":"","jobNo":"","contactPersonName":"2","createDate":"2017-08-30 15:33:46","roleId":"2"}
          */
@@ -64,28 +66,7 @@ public class CrewDetailsBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
-            /**
-             * shipId : 1
-             * deptName :
-             * sex : 0
-             * superAdminUserId : 1
-             * roleName : 船长
-             * modifyDate :
-             * contactPersonPhone :
-             * cardType : 0
-             * nation :
-             * personName : 2
-             * cardNo :
-             * id : 17
-             * mobilePhone : 15810512120
-             * postName :
-             * email :
-             * jobNo :
-             * contactPersonName : 2
-             * createDate : 2017-08-30 15:33:46
-             * roleId : 2
-             */
+        public static class ObjectBean implements Serializable{
 
             private String shipId;
             private String deptName;

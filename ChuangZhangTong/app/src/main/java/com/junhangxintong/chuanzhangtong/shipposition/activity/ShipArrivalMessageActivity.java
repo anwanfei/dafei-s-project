@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindArrivalReportBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.ArrivalReportInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -96,61 +97,85 @@ public class ShipArrivalMessageActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String shipId = intent.getStringExtra(Constants.SHIP_ID);
-        String shipName = intent.getStringExtra(Constants.SHIP_NAME);
-        tvShipMessageName.setText(shipName);
 
-        NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
-                .addParams(Constants.ID, shipId)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ShipArrivalMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+        String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        if (fromDynamic!=null) {
+            DynamicRemindArrivalReportBean dynamicRemindNonnReportBean = (DynamicRemindArrivalReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
+            DynamicRemindArrivalReportBean.DataBean.ObjectBean arrivalInfo = dynamicRemindNonnReportBean.getData().getObject();
+            tvShipMessageName.setText(arrivalInfo.getShipName());
+            tvShipTime.setText(arrivalInfo.getCreateDate());
+            tvArrivalPort.setText(arrivalInfo.getArrivePort());
+            tvAnchorPosotion.setText(arrivalInfo.getPortRadsteadBerth());
+            tvAnchorArrivalTime.setText(arrivalInfo.getArriveAnchorDate());
+            tvAnchorPosotion.setText(arrivalInfo.getAnchorPosition());
+            tvLatitude.setText(arrivalInfo.getLatitude());
+            tvLongtitude.setText(arrivalInfo.getLongitude());
+            tvShipDirection.setText(arrivalInfo.getCourse());
+            tvShipSpeed.setText(arrivalInfo.getCurrShipSpeed());
+            tvTheShipHeavyOil.setText(arrivalInfo.getShipHeavyOil());
+            tvShipDraft.setText(arrivalInfo.getShipForwardDraft());
+            tvTheShipLightOil.setText(arrivalInfo.getShipLightOil());
+            tvTheShipFrashwater.setText(arrivalInfo.getShipFreshwater());
+            tvLightOilConsume.setText(arrivalInfo.getLightOilConsumption());
+            tvFrashwaterConsume.setText(arrivalInfo.getFreshwaterConsumption());
+            tvRemark.setText(arrivalInfo.getRemark());
+        } else {
+            String id = intent.getStringExtra(Constants.ID);
+            String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+            tvShipMessageName.setText(shipName);
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
+            NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
+                    .addParams(Constants.ID, id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
                             Toast.makeText(ShipArrivalMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                ArrivalReportInfoBean arrivalReportInfoBean = new Gson().fromJson(response, ArrivalReportInfoBean.class);
-                                ArrivalReportInfoBean.DataBean.ObjectBean arrivalInfo = arrivalReportInfoBean.getData().getObject();
+                        }
 
-                                tvShipTime.setText(arrivalInfo.getCreateDate());
-                                tvArrivalPort.setText(arrivalInfo.getArrivePort());
-                                tvAnchorPosotion.setText(arrivalInfo.getPortRadsteadBerth());
-                                tvAnchorArrivalTime.setText(arrivalInfo.getArriveAnchorDate());
-                                tvAnchorPosotion.setText(arrivalInfo.getAnchorPosition());
-                                tvLatitude.setText(arrivalInfo.getLatitude());
-                                tvLongtitude.setText(arrivalInfo.getLongitude());
-                                tvShipDirection.setText(arrivalInfo.getCourse());
-                                tvShipSpeed.setText(arrivalInfo.getCurrShipSpeed());
-                                tvTheShipHeavyOil.setText(arrivalInfo.getShipHeavyOil());
-                                tvShipDraft.setText(arrivalInfo.getShipForwardDraft());
-                                tvTheShipLightOil.setText(arrivalInfo.getShipLightOil());
-                                tvTheShipFrashwater.setText(arrivalInfo.getShipFreshwater());
-                                tvLightOilConsume.setText(arrivalInfo.getLightOilConsumption());
-                                tvFrashwaterConsume.setText(arrivalInfo.getFreshwaterConsumption());
-                                tvRemark.setText(arrivalInfo.getRemark());
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ShipArrivalMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ShipArrivalMessageActivity.this, LoginRegisterActivity.class));
-                                finish();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(ShipArrivalMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ShipArrivalMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    ArrivalReportInfoBean arrivalReportInfoBean = new Gson().fromJson(response, ArrivalReportInfoBean.class);
+                                    ArrivalReportInfoBean.DataBean.ObjectBean arrivalInfo = arrivalReportInfoBean.getData().getObject();
+
+                                    tvShipTime.setText(arrivalInfo.getCreateDate());
+                                    tvArrivalPort.setText(arrivalInfo.getArrivePort());
+                                    tvAnchorPosotion.setText(arrivalInfo.getPortRadsteadBerth());
+                                    tvAnchorArrivalTime.setText(arrivalInfo.getArriveAnchorDate());
+                                    tvAnchorPosotion.setText(arrivalInfo.getAnchorPosition());
+                                    tvLatitude.setText(arrivalInfo.getLatitude());
+                                    tvLongtitude.setText(arrivalInfo.getLongitude());
+                                    tvShipDirection.setText(arrivalInfo.getCourse());
+                                    tvShipSpeed.setText(arrivalInfo.getCurrShipSpeed());
+                                    tvTheShipHeavyOil.setText(arrivalInfo.getShipHeavyOil());
+                                    tvShipDraft.setText(arrivalInfo.getShipForwardDraft());
+                                    tvTheShipLightOil.setText(arrivalInfo.getShipLightOil());
+                                    tvTheShipFrashwater.setText(arrivalInfo.getShipFreshwater());
+                                    tvLightOilConsume.setText(arrivalInfo.getLightOilConsumption());
+                                    tvFrashwaterConsume.setText(arrivalInfo.getFreshwaterConsumption());
+                                    tvRemark.setText(arrivalInfo.getRemark());
+
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(ShipArrivalMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(ShipArrivalMessageActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(ShipArrivalMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override

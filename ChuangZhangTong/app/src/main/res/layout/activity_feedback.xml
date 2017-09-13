@@ -7,17 +7,18 @@
     android:orientation="vertical"
     tools:context="com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity">
 
-    <include layout="@layout/titlebar"
-        android:id="@+id/include"/>
+    <include
+        android:id="@+id/include"
+        layout="@layout/titlebar" />
 
     <LinearLayout
         android:id="@+id/ll_feedback_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/include"
         android:layout_marginTop="1dp"
         android:background="@color/white"
         android:focusable="true"
-        android:layout_below="@id/include"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
@@ -72,12 +73,12 @@
 
     <LinearLayout
         android:id="@+id/ll_feedback_mail"
-        android:layout_below="@id/ll_feedback_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ll_feedback_content"
         android:layout_marginTop="10dp"
-        android:visibility="gone"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,9 +102,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@id/ll_feedback_mail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ll_feedback_mail"
         android:layout_marginTop="10dp"
         android:background="@color/white">
 
@@ -128,11 +129,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/tv_save"

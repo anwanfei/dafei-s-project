@@ -194,7 +194,6 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.TYPE, "4")
                 .addParams(Constants.REPORT_JSON, json)
                 .build()

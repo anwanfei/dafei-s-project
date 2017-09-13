@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindLeaveReportBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.LeaveReportInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -90,63 +91,91 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String shipId = intent.getStringExtra(Constants.SHIP_ID);
-        String shipName = intent.getStringExtra(Constants.SHIP_NAME);
-        tvShipMessageName.setText(shipName);
 
-        NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
-                .addParams(Constants.ID, shipId)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ShipLeavePortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+        String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        if (fromDynamic!=null) {
+            DynamicRemindLeaveReportBean dynamicRemindNonnReportBean = (DynamicRemindLeaveReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
+            DynamicRemindLeaveReportBean.DataBean.ObjectBean leavaReportInfo = dynamicRemindNonnReportBean.getData().getObject();
+            tvShipMessageName.setText(leavaReportInfo.getShipName());
+            tvShipTime.setText(leavaReportInfo.getCreateDate());
+            tvLoadingUnloadingCargoPort.setText(leavaReportInfo.getLoadPort());
+            tvCartgoType.setText(leavaReportInfo.getGoodsType());
+            tvCartgoNum.setText(leavaReportInfo.getGoodsNum());
+            tvLoadingUnloadingCargoStartTime.setText(leavaReportInfo.getLoadBeginDate());
+            tvLoadingUnloadingCargoCompleteTime.setText(leavaReportInfo.getLeavaBerthDate());
+            tvLeaveTime.setText(leavaReportInfo.getLeavaBerthDate());
+            tvReTimeArrivePort.setText(leavaReportInfo.getExpectArriveBearthDate());
+            tvTugUseNum.setText(leavaReportInfo.getTugUseNum());
+            tvShipDraft.setText(leavaReportInfo.getShipForwardDraft());
+            String isPilotage = leavaReportInfo.getIsPilotage();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
+            if (isPilotage != null){
+                if (isPilotage.equals("1")) {
+                    tvRemark.setText(getResources().getString(R.string.yes));
+                } else {
+                    tvRemark.setText(getResources().getString(R.string.no));
+                }
+            }
+        } else {
+
+            String id = intent.getStringExtra(Constants.ID);
+            String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+            tvShipMessageName.setText(shipName);
+
+            NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
+                    .addParams(Constants.ID, id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
                             Toast.makeText(ShipLeavePortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                LeaveReportInfoBean leaveReportInfoBean = new Gson().fromJson(response, LeaveReportInfoBean.class);
-                                LeaveReportInfoBean.DataBean.ObjectBean leavaReportInfo = leaveReportInfoBean.getData().getObject();
-                                tvShipTime.setText(leavaReportInfo.getCreateDate());
-                                tvLoadingUnloadingCargoPort.setText(leavaReportInfo.getLoadPort());
-                                tvCartgoType.setText(leavaReportInfo.getGoodsType());
-                                tvCartgoNum.setText(leavaReportInfo.getGoodsNum());
-                                tvLoadingUnloadingCargoStartTime.setText(leavaReportInfo.getLoadBeginDate());
-                                tvLoadingUnloadingCargoCompleteTime.setText(leavaReportInfo.getLeavaBerthDate());
-                                tvLeaveTime.setText(leavaReportInfo.getLeavaBerthDate());
-                                tvReTimeArrivePort.setText(leavaReportInfo.getExpectArriveBearthDate());
-                                tvTugUseNum.setText(leavaReportInfo.getTugUseNum());
-                                tvShipDraft.setText(leavaReportInfo.getShipForwardDraft());
-                                String isPilotage = leavaReportInfo.getIsPilotage();
+                        }
 
-                                if (isPilotage != null){
-                                    if (isPilotage.equals("1")) {
-                                        tvRemark.setText(getResources().getString(R.string.yes));
-                                    } else {
-                                        tvRemark.setText(getResources().getString(R.string.no));
-                                    }
-                                }
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ShipLeavePortMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ShipLeavePortMessageActivity.this, LoginRegisterActivity.class));
-                                finish();
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(ShipLeavePortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ShipLeavePortMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    LeaveReportInfoBean leaveReportInfoBean = new Gson().fromJson(response, LeaveReportInfoBean.class);
+                                    LeaveReportInfoBean.DataBean.ObjectBean leavaReportInfo = leaveReportInfoBean.getData().getObject();
+                                    tvShipTime.setText(leavaReportInfo.getCreateDate());
+                                    tvLoadingUnloadingCargoPort.setText(leavaReportInfo.getLoadPort());
+                                    tvCartgoType.setText(leavaReportInfo.getGoodsType());
+                                    tvCartgoNum.setText(leavaReportInfo.getGoodsNum());
+                                    tvLoadingUnloadingCargoStartTime.setText(leavaReportInfo.getLoadBeginDate());
+                                    tvLoadingUnloadingCargoCompleteTime.setText(leavaReportInfo.getLeavaBerthDate());
+                                    tvLeaveTime.setText(leavaReportInfo.getLeavaBerthDate());
+                                    tvReTimeArrivePort.setText(leavaReportInfo.getExpectArriveBearthDate());
+                                    tvTugUseNum.setText(leavaReportInfo.getTugUseNum());
+                                    tvShipDraft.setText(leavaReportInfo.getShipForwardDraft());
+                                    String isPilotage = leavaReportInfo.getIsPilotage();
+
+                                    if (isPilotage != null){
+                                        if (isPilotage.equals("1")) {
+                                            tvRemark.setText(getResources().getString(R.string.yes));
+                                        } else {
+                                            tvRemark.setText(getResources().getString(R.string.no));
+                                        }
+                                    }
+
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(ShipLeavePortMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(ShipLeavePortMessageActivity.this, LoginRegisterActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(ShipLeavePortMessageActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override

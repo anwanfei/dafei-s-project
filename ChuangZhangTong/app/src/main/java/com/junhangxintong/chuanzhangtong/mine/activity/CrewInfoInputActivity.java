@@ -65,6 +65,7 @@ public class CrewInfoInputActivity extends BaseActivity {
     private String certificateTypeNum = "";
     private String belongShip = "";
     private String certificateType = "1";
+    private String shipId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,13 +168,13 @@ public class CrewInfoInputActivity extends BaseActivity {
                 .addParams(Constants.PERSON_NAME, crewName)
                 .addParams(Constants.MOBILEPHONE, crewPhone)
                 .addParams(Constants.NATION, country)
-                .addParams(Constants.CARDTYPE, certificateType)
-                .addParams(Constants.CARDNO, certificateTypeNum)
+                .addParams(Constants.CARDTYPE, certificateTypeNum)
+                .addParams(Constants.CARDNO, certificateNum)
                 .addParams(Constants.POSTNAME, duty)
                 .addParams(Constants.JOB_NO, jobNum)
                 .addParams(Constants.EMAIL, email)
                 // TODO: 2017/9/7 传选择船id
-                .addParams(Constants.SHIP_ID, "")
+                .addParams(Constants.SHIP_ID, shipId)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -204,20 +205,6 @@ public class CrewInfoInputActivity extends BaseActivity {
                         }
                     }
                 });
-
-     /*   crewBean.setCrewName(crewName);
-        crewBean.setJobNum(jobNum);
-        crewBean.setDuty(duty);
-        crewBean.setPhoneNum(crewPhone);
-
-        Intent intent = getIntent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.CREW_BEAN, crewBean);
-        intent.putExtras(bundle);
-
-        setResult(Constants.REQUEST_CODE0, intent);
-
-        finish();*/
     }
 
     @Override
@@ -226,8 +213,9 @@ public class CrewInfoInputActivity extends BaseActivity {
         if (data != null) {
             switch (requestCode) {
                 case Constants.REQUEST_CODE4:
-                    String dutyName = data.getStringExtra(Constants.DUTY);
-                    etDuty.setText(dutyName);
+                    String shipName = data.getStringExtra(Constants.SHIP_NAME);
+                    shipId = data.getStringExtra(Constants.SHIP_ID);
+                    tvBelongShip.setText(shipName);
                     break;
                 case Constants.REQUEST_CODE5:
                     country = data.getStringExtra(Constants.COUNTRY);
@@ -236,7 +224,7 @@ public class CrewInfoInputActivity extends BaseActivity {
                 case Constants.REQUEST_CODE6:
                     certificateType = data.getStringExtra(Constants.CERTIFICATE_TYPE);
                     certificateTypeNum = data.getStringExtra(Constants.CERTIFICATE_TYPE_NUM);
-                    tvType.setText(certificateTypeNum);
+                    tvType.setText(certificateType);
                     break;
             }
         }

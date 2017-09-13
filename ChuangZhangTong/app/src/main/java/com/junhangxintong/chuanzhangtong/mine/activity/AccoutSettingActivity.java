@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -259,6 +262,11 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                             getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                             //保存获取权限的sp
                             CacheUtils.putBoolean(AccoutSettingActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+
+                            //删除本地保存的头像
+                            String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
+                            File mFile = new File(path);
+                            mFile.delete();
                         }
                     }
                 });

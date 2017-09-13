@@ -5,10 +5,11 @@ package com.junhangxintong.chuanzhangtong.mine.bean;
  */
 
 public class ShipCertificateOrInsuranceInfoBean {
+
     /**
      * message : 查询成功
      * status : success
-     * data : {"object":{"shipId":1,"assureType":"类型1","certifNo":"","imoNo":"1423","isUse":1,"shipName":"海洋一号","issueDate":"2017-09-07 10:29:44","issueAddress":"青岛市","modifyDate":"","advanceWarnDay":1,"shipCall":"124","isExpire":1,"id":1,"imgUrl":"","certifType":2,"name":"船保险","validDate":"","shipNameOrAddress":"青岛","shipNationaPort":"青岛港","createDate":"2017-09-07 10:29:44","isValid":0,"createUserId":0,"issueOrganization":"中国海洋总公司"}}
+     * data : {"object":{"shipId":1,"assureType":"类型1","certifNo":"","imoNo":"1423","isUse":1,"shipName":"海洋一号","issueDate":"2017-09-07 10:29:44","issueAddress":"青岛市","modifyDate":"","advanceWarnDay":1,"shipCall":"124","isExpire":1,"id":1,"imgUrl":"[{\"picUrl\":\"buiness/user/pic/suggest/17/1/20170912151039.jpg\",\"seq\":1},{\"picUrl\":\"buiness/user/pic/suggest/17/2/20170912151039.jpg\",\"seq\":2},{\"picUrl\":\"buiness/user/pic/suggest/17/3/20170912151040.jpg\",\"seq\":3}]","certifType":2,"name":"船保险","validDate":"","shipNameOrAddress":"青岛","shipNationaPort":"青岛港","createDate":"2017-09-07 10:29:44","isValid":0,"createUserId":0,"issueOrganization":"中国海洋总公司","domain":"http://ow5f3r531.bkt.clouddn.com/"}}
      * code : 200
      */
 
@@ -51,7 +52,7 @@ public class ShipCertificateOrInsuranceInfoBean {
 
     public static class DataBean {
         /**
-         * object : {"shipId":1,"assureType":"类型1","certifNo":"","imoNo":"1423","isUse":1,"shipName":"海洋一号","issueDate":"2017-09-07 10:29:44","issueAddress":"青岛市","modifyDate":"","advanceWarnDay":1,"shipCall":"124","isExpire":1,"id":1,"imgUrl":"","certifType":2,"name":"船保险","validDate":"","shipNameOrAddress":"青岛","shipNationaPort":"青岛港","createDate":"2017-09-07 10:29:44","isValid":0,"createUserId":0,"issueOrganization":"中国海洋总公司"}
+         * object : {"shipId":1,"assureType":"类型1","certifNo":"","imoNo":"1423","isUse":1,"shipName":"海洋一号","issueDate":"2017-09-07 10:29:44","issueAddress":"青岛市","modifyDate":"","advanceWarnDay":1,"shipCall":"124","isExpire":1,"id":1,"imgUrl":"[{\"picUrl\":\"buiness/user/pic/suggest/17/1/20170912151039.jpg\",\"seq\":1},{\"picUrl\":\"buiness/user/pic/suggest/17/2/20170912151039.jpg\",\"seq\":2},{\"picUrl\":\"buiness/user/pic/suggest/17/3/20170912151040.jpg\",\"seq\":3}]","certifType":2,"name":"船保险","validDate":"","shipNameOrAddress":"青岛","shipNationaPort":"青岛港","createDate":"2017-09-07 10:29:44","isValid":0,"createUserId":0,"issueOrganization":"中国海洋总公司","domain":"http://ow5f3r531.bkt.clouddn.com/"}
          */
 
         private ObjectBean object;
@@ -79,7 +80,7 @@ public class ShipCertificateOrInsuranceInfoBean {
              * shipCall : 124
              * isExpire : 1
              * id : 1
-             * imgUrl :
+             * imgUrl : [{"picUrl":"buiness/user/pic/suggest/17/1/20170912151039.jpg","seq":1},{"picUrl":"buiness/user/pic/suggest/17/2/20170912151039.jpg","seq":2},{"picUrl":"buiness/user/pic/suggest/17/3/20170912151040.jpg","seq":3}]
              * certifType : 2
              * name : 船保险
              * validDate :
@@ -89,6 +90,7 @@ public class ShipCertificateOrInsuranceInfoBean {
              * isValid : 0
              * createUserId : 0
              * issueOrganization : 中国海洋总公司
+             * domain : http://ow5f3r531.bkt.clouddn.com/
              */
 
             private int shipId;
@@ -114,6 +116,7 @@ public class ShipCertificateOrInsuranceInfoBean {
             private int isValid;
             private int createUserId;
             private String issueOrganization;
+            private String domain;
 
             public int getShipId() {
                 return shipId;
@@ -297,6 +300,14 @@ public class ShipCertificateOrInsuranceInfoBean {
 
             public void setIssueOrganization(String issueOrganization) {
                 this.issueOrganization = issueOrganization;
+            }
+
+            public String getDomain() {
+                return domain;
+            }
+
+            public void setDomain(String domain) {
+                this.domain = domain;
             }
         }
     }

@@ -194,7 +194,6 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.TYPE, "2")
                 .addParams(Constants.REPORT_JSON, json)
                 .build()

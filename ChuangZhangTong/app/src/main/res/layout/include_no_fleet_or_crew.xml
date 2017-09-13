@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="27dp"
         android:gravity="center"
-        android:text="@string/add_first_ship"
+        android:text="@string/follow_first_ship"
         android:textSize="14dp" />
 
     <TextView

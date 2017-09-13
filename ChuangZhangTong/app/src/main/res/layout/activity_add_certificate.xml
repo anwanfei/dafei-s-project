@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.AddCertificateActivity">
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.AddCrewCertificateActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,11 +62,11 @@
                 android:layout_centerVertical="true"
                 android:text="@string/certificate_type" />
 
-            <TextView
+            <EditText
                 android:id="@+id/et_certificate_type"
-                style="@style/account_setting_right_textview_with_arrow"
+                style="@style/edittext_no_arrow"
                 android:gravity="center_vertical"
-                android:text="@string/type" />
+                android:hint="@string/input_certificates_type" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -235,22 +235,37 @@
             </RadioGroup>
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:background="@color/white"
-            android:padding="15dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_add_certificate_photo"
-                style="@style/account_setting_left_textview"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvResultPhoto"
                 android:layout_width="match_parent"
-                android:drawableRight="@drawable/iv_add_certificate_photo"
-                android:gravity="center_vertical"
-                android:text="@string/add_certificate_photo" />
+                android:layout_height="wrap_content" />
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_add_certificate_photo"
+                    style="@style/account_setting_left_textview"
+                    android:layout_width="match_parent"
+                    android:drawableRight="@drawable/iv_add_certificate_photo"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_certificate_photo" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_crew_info_complete"

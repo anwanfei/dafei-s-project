@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
@@ -34,6 +35,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -109,6 +112,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
             String contactPersonName = loginResult.getData().getObject().getContactPersonName();
             String roleName = loginResult.getData().getObject().getRoleName();
             String contactPersonPhone = loginResult.getData().getObject().getContactPersonPhone();
+            String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
 
             tvUserName.setText(personName);
             tvContactNumber.setText(mobilePhone);
@@ -122,6 +126,17 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
 
             tvEmergencyContactor.setText(contactPersonName);
             tvEmergencyContactorPhone.setText(contactPersonPhone);
+
+            //获取拍的照片
+            String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
+            File file = new File(path);
+            if (file.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                ivPhoto.setImageBitmap(bitmap);
+            } else if (StringUtils.isNotEmpty(headImgUrl)) {
+                Glide.with(this).load(headImgUrl).into(ivPhoto);
+            }
+
         }
 
         String userName = CacheUtils.getString(this, Constants.USER_NAME);
@@ -130,13 +145,8 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         String emergency_contactor = CacheUtils.getString(this, Constants.EMERGENCY_CONTACTOR);
         String emergency_contactor_phone = CacheUtils.getString(this, Constants.EMERGENCY_CONTACTOR_PHONE);
         String duty = CacheUtils.getString(this, Constants.DUTY);
-        //获取拍的照片
-        String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
-        File file = new File(path);
-        if (file.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            ivPhoto.setImageBitmap(bitmap);
-        }
+
+
         if (!userName.isEmpty()) {
             tvUserName.setText(userName);
         }
@@ -244,7 +254,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                         saveImage(bitmap);
 
                         //上传服务器
-//                        netSendPhoneToService();
+                        netSendPhoneToService();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -277,7 +287,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     c.close();
                     //本地保存
                     saveImage(bm);
-                    // TODO: 2017/8/15  图片上传
+                    //2017/8/15  图片上传
                     netSendPhoneToService();
                     break;
             }

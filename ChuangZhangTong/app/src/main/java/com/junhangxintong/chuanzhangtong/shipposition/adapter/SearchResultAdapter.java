@@ -90,9 +90,14 @@ public class SearchResultAdapter extends BaseAdapter {
         holder.tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, OtherShipDetailsActivity.class));
+                Long shipId = shipDetailsBeanList.get(i).getShipId();
+                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
+                intent.putExtra(Constants.ID, String.valueOf(shipId));
+                intent.putExtra(Constants.SHIP_INFO,Constants.SHIP_POSITION);
+                mContext.startActivity(intent);
             }
         });
+
         final ViewHolder finalHolder = holder;
         holder.tvSearchFollow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +111,8 @@ public class SearchResultAdapter extends BaseAdapter {
                     mContext.startActivity(new Intent(mContext, LoginRegisterActivity.class));
                 } else {
                     if (isFollowed) {//已经关注
-                        NetUtils.postWithHeader(mContext,ConstantsUrls.DELETE_FOLLOW_SHIP)
-                                .addParams(Constants.IDS,String.valueOf(shipId))
+                        NetUtils.postWithHeader(mContext, ConstantsUrls.DELETE_FOLLOW_SHIP)
+                                .addParams(Constants.IDS, String.valueOf(shipId))
                                 .build()
                                 .execute(new StringCallback() {
                                     @Override

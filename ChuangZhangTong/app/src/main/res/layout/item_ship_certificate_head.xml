@@ -19,5 +19,4 @@
         android:text="@string/certificate"
         android:textColor="@color/white"
         android:textSize="14sp" />
-
 </LinearLayout>

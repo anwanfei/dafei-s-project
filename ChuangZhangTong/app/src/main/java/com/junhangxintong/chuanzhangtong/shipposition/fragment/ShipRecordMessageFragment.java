@@ -144,10 +144,6 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                     }
                 });
 
-        for (int i = 0; i < 5; i++) {
-            messages.add("华海一号正午报");
-        }
-
         lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -179,8 +175,8 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
 
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.huahai_one));
-        ivShare.setVisibility(View.VISIBLE);
-        tvSetting.setVisibility(View.VISIBLE);
+//        ivShare.setVisibility(View.VISIBLE);
+//        tvSetting.setVisibility(View.VISIBLE);
         ivShare.setImageResource(R.drawable.ic_input_message);
         tvSetting.setText(getResources().getString(R.string.input_message));
         return rootView;

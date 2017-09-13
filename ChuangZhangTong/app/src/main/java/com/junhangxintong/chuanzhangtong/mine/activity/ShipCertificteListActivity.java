@@ -61,8 +61,6 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
     private PopupWindow popupWindow;
     private boolean isShowPop;
     private String id;
-    private List<CustomCertificateBean> shipCertificates = new ArrayList<>();
-    private List<CustomCertificateBean> shipInsurances = new ArrayList<>();
     private List<ShipCertificateInsuranceListsBean.DataBean.ArrayBean> shipCertificateInsuranceLists;
     private ShipCertificateInsuranceAdapter shipCertificateInsuranceAdapter;
 
@@ -111,14 +109,15 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
+                                List<CustomCertificateBean> shipCertificates = new ArrayList<CustomCertificateBean>();
+                                List<CustomCertificateBean> shipInsurances = new ArrayList<CustomCertificateBean>();
                                 ShipCertificateInsuranceListsBean shipCertificateInsuranceListsBean = new Gson().fromJson(response, ShipCertificateInsuranceListsBean.class);
                                 shipCertificateInsuranceLists = shipCertificateInsuranceListsBean.getData().getArray();
-
+                                CustomCertificateBean customCertificateBean = null;
                                 for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
-
-                                    CustomCertificateBean customCertificateBean = new CustomCertificateBean();
-
+                                    customCertificateBean = new CustomCertificateBean();
                                     int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
+
                                     String name = shipCertificateInsuranceLists.get(i).getName();
                                     String certifNo = shipCertificateInsuranceLists.get(i).getCertifNo();
                                     String issueOrganization = shipCertificateInsuranceLists.get(i).getIssueOrganization();

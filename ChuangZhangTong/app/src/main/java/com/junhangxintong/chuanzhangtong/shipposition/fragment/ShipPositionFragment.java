@@ -49,16 +49,23 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.dbmanager.DaoManager;
 import com.junhangxintong.chuanzhangtong.dbmanager.ShipDetailsDaoUtil;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.adapter.SearchResultAdapter;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.ShipDetailsBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,6 +79,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
@@ -142,6 +150,8 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     private DaoManager mManager;
     private ArrayAdapter historyListAdapter;
+    private String userId;
+    private List<ShipListBean.DataBean.ArrayBean> shipLists;
 
 
     @Override
@@ -198,6 +208,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     protected void initData() {
         super.initData();
 
+        userId = CacheUtils.getString(getActivity(), Constants.ID);
         //数据库初始化
         shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
         if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 3) {
@@ -451,7 +462,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 showPopChooseMap();
                 break;
             case R.id.tv_ship_position_my_chuandui:
-                showPopMyFleet();
+                netGetShipLists("");
                 break;
             case R.id.tv_ship_position_ceju:
                 break;
@@ -463,13 +474,19 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     }
 
 
-    private void showPopMyFleet() {
+    private void showPopMyFleet(final List<ShipListBean.DataBean.ArrayBean> shipLists) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_ship_position_my_fleet, null);
         ListView lv_my_fleet_ship_position = (ListView) view.findViewById(R.id.lv_my_fleet_ship_position);
         popupWindow = new PopupWindow(view, DensityUtil.dp2px(getActivity(), 140), LinearLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setContentView(view);
 
-        lv_my_fleet_ship_position.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_ship_position_my_fleet, R.id.tv_ship_position_fleet_name, arrMyfleet));
+        List<String> shipNames = new ArrayList<>();
+
+        for (int i = 0; i < shipLists.size(); i++) {
+            shipNames.add(shipLists.get(i).getShipName());
+        }
+
+        lv_my_fleet_ship_position.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.item_ship_position_my_fleet, R.id.tv_ship_position_fleet_name, shipNames));
 
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -485,7 +502,14 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         lv_my_fleet_ship_position.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getActivity(), MyShipDetailsActivity.class));
+                int id = shipLists.get(i).getId();
+                String shipName = shipLists.get(i).getShipName();
+
+                Intent intent = new Intent(mContext, MyShipDetailsActivity.class);
+                intent.putExtra(Constants.ID, String.valueOf(id));
+                intent.putExtra(Constants.SHIP_NAME, shipName);
+
+                startActivity(intent);
                 popupWindow.dismiss();
             }
         });
@@ -643,5 +667,49 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
         map.setMapStatus(mMapStatusUpdate);
+    }
+
+    private void netGetShipLists(String shipName) {
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.MY_SHIP_LISTS)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.SHIP_NAME, shipName)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+
+                            if (code.equals("200")) {
+                                ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
+                                shipLists = shipListBean.getData().getArray();
+
+                                showPopMyFleet(shipLists);
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else if (code.equals("404")) {
+                                Toast.makeText(getActivity(), getResources().getString(R.string.no_ship), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 }

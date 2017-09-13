@@ -152,7 +152,6 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.TYPE, "1")
                 .addParams(Constants.REPORT_JSON, json)
                 .build()

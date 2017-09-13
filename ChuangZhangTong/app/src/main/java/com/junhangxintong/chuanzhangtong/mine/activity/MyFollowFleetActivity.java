@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +21,6 @@ import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFollowFleetAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
-import com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
@@ -141,23 +139,13 @@ public class MyFollowFleetActivity extends BaseActivity {
                                 finish();
                             } else if (code.equals("404")) {
                                 followShipLists = new ArrayList<FollowShipListBean.DataBean.ArrayBean>();
-//                                updataListview();
+                                updaFollowFLeetList();
                             } else {
                                 Toast.makeText(MyFollowFleetActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
                 });
-
-        lvMyFolllowFleet.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int id = followShipLists.get(i).getId();
-                Intent intent = new Intent(MyFollowFleetActivity.this, OtherShipDetailsActivity.class);
-                intent.putExtra(Constants.SHIP_ID, id);
-                startActivity(intent);
-            }
-        });
     }
 
     private void updaFollowFLeetList() {

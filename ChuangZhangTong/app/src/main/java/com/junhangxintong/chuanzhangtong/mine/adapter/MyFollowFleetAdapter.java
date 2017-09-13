@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.mine.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.List;
 
@@ -77,7 +80,16 @@ public class MyFollowFleetAdapter extends BaseAdapter implements View.OnClickLis
             holder.cbShip.setChecked(false);
         }
 
-        holder.tvItemShipName.setOnClickListener(this);
+        holder.tvItemShipName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = myFleetLists.get(position).getId();
+                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
+                intent.putExtra(Constants.ID, String.valueOf(id));
+                intent.putExtra(Constants.SHIP_INFO,Constants.FOLLOW_SHIP);
+                mContext.startActivity(intent);
+            }
+        });
 
         holder.cbShip.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,12 +13,17 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewDetailsBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,7 +64,7 @@ public class ModifyCrewInfoActivity extends BaseActivity {
     @BindView(R.id.tv_crew_info_complete)
     TextView tvCrewInfoComplete;
     private String country = "中国";
-    private String certificateTypeNum = "1";
+    private String certificateTypeNum = "";
     private String belongShip = "";
     private String userId;
     private String phone;
@@ -69,7 +74,8 @@ public class ModifyCrewInfoActivity extends BaseActivity {
     private String duty;
     private String email;
     private String certificateNum;
-    private String certificateType = "身份证";
+    private String certificateType = "1";
+    private String shipId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +95,61 @@ public class ModifyCrewInfoActivity extends BaseActivity {
         userId = CacheUtils.getString(this, Constants.ID);
 
         Intent intent = getIntent();
-        phone = intent.getStringExtra(Constants.PHONE);
-        personName = intent.getStringExtra(Constants.PERSON_NAME);
-        crewId = intent.getStringExtra(Constants.ID);
 
-        tvInputName.setText(personName);
+        CrewDetailsBean crewDetailsBean = (CrewDetailsBean) intent.getSerializableExtra(Constants.CREW_BEAN);
+        CrewDetailsBean.DataBean.ObjectBean crewDetails = crewDetailsBean.getData().getObject();
+        personName = crewDetails.getPersonName();
+        phone = crewDetails.getMobilePhone();
+        crewId = crewDetails.getId();
+        final String shipId = crewDetails.getShipId();
+
+        tvInputName.setText(this.personName);
         tvPhone.setText(phone);
+        etNationality.setText(crewDetails.getNation());
+        tvType.setText(crewDetails.getCardType());
+        etCertificateNumber.setText(crewDetails.getCardNo());
+        etDuty.setText(crewDetails.getPostName());
+        etJobNum.setText(crewDetails.getJobNo());
+        etCallSign.setText(crewDetails.getEmail());
 
-        jobNum = etJobNum.getText().toString();
-        duty = etDuty.getText().toString();
-        email = etCallSign.getText().toString();
-        certificateNum = etCertificateNumber.getText().toString();
+        if (StringUtils.isNotEmpty(shipId)) {
+            NetUtils.postWithHeader(ModifyCrewInfoActivity.this, ConstantsUrls.MY_SHIP_INFO)
+                    .addParams(Constants.ID, shipId)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            Toast.makeText(ModifyCrewInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            if (response == null || response.equals("") || response.equals("null")) {
+                                Toast.makeText(ModifyCrewInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            } else {
+                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                String message = netServiceErrort.getMessage();
+                                String code = netServiceErrort.getCode();
+                                if (code.equals("200")) {
+                                    MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
+                                    MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                                    tvBelongShip.setText(shipInfo.getShipName());
+
+                                } else if (code.equals("601")) {
+                                    //清除了sp存储
+                                    ModifyCrewInfoActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                    //保存获取权限的sp
+                                    CacheUtils.putBoolean(ModifyCrewInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                    startActivity(new Intent(ModifyCrewInfoActivity.this, LoginRegisterActivity.class));
+                                } else {
+                                    Toast.makeText(ModifyCrewInfoActivity.this, message, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+        }
+
+
     }
 
     @Override
@@ -129,6 +179,12 @@ public class ModifyCrewInfoActivity extends BaseActivity {
     }
 
     private void netModifyCrewInfo() {
+
+        jobNum = etJobNum.getText().toString();
+        duty = etDuty.getText().toString();
+        email = etCallSign.getText().toString();
+        certificateNum = etCertificateNumber.getText().toString();
+
         NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_CRWE_INFO)
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.ID, crewId)
@@ -141,7 +197,7 @@ public class ModifyCrewInfoActivity extends BaseActivity {
                 .addParams(Constants.JOB_NO, jobNum)
                 .addParams(Constants.EMAIL, email)
                 // TODO: 2017/9/7 传选择船id
-                .addParams(Constants.SHIP_ID, "")
+                .addParams(Constants.SHIP_ID, shipId)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -192,8 +248,9 @@ public class ModifyCrewInfoActivity extends BaseActivity {
         if (data != null) {
             switch (requestCode) {
                 case Constants.REQUEST_CODE4:
-                    String dutyName = data.getStringExtra(Constants.DUTY);
-                    etDuty.setText(dutyName);
+                    String shipName = data.getStringExtra(Constants.SHIP_NAME);
+                    shipId = data.getStringExtra(Constants.SHIP_ID);
+                    tvBelongShip.setText(shipName);
                     break;
                 case Constants.REQUEST_CODE5:
                     country = data.getStringExtra(Constants.COUNTRY);

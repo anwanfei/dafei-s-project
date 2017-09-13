@@ -101,6 +101,13 @@ public class Constants {
     public static final String TYPE = "type";
     public static final String CHARSET = "application/json; charset=utf-8";
     public static final String REPORT_JSON = "reportJsonData";
+    public static final String SHIP_INFO = "ship_info";
+    public static final String SHIP_POSITION = "ship_position";
+    public static final String FOLLOW_SHIP = "follow_ship";
+    public static final String REMIND_TYPE = "remindType";
+    public static final String DYNAMIC_REPORT = "dynamicReport";
+    public static final String FROM_DYNAMIC = "from_dynamic";
+    public static final String REPORT_TYPE = "reportType";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "http://www.baidu.com";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};

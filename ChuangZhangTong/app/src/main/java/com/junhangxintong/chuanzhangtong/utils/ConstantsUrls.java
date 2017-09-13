@@ -160,4 +160,18 @@ public class ConstantsUrls {
     public static final String QUERY_NEWS_DETAILS = "/ship/headline/query/info.do";
 
 
+
+    /**
+     * 动态提醒
+     */
+    //动态提醒列表
+    public static final String DYNAMIC_REMIND_LIST = "/remind/dynamic/query/list.do";
+
+    //查看动态详情
+    public static final String DYNAMIC_DETAILS = "/remind/dynamic/query/info.do";
+
+    //报文动态提醒列表
+    public static final String REPORT_DYNAMIC_LISTS = "/remind/dynamic/report/query/list.do";
+
+
 }

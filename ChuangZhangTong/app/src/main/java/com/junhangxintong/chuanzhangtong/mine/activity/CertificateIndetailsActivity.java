@@ -4,21 +4,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewCertificateDetailsBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -56,6 +65,8 @@ public class CertificateIndetailsActivity extends BaseActivity {
     ImageView ivCertificatePhone;
     @BindView(R.id.rl_warning_days)
     RelativeLayout rlWarningDays;
+    @BindView(R.id.gv_certificate_photo)
+    GridView gvCertificatePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +88,15 @@ public class CertificateIndetailsActivity extends BaseActivity {
         int certificate_from_type = intent.getIntExtra(Constants.CERTIFICATE_TYPE, 0);
         if (certificate_from_type == 1) {
             rlCertificateType.setVisibility(View.GONE);
+            netGetCetificateDetails(id, ConstantsUrls.CREW_CERTIFICATE_DETAILS);
         } else {
-            rlCertificateType.setVisibility(View.VISIBLE);
+            rlCertificateType.setVisibility(View.GONE);
+            netGetCetificateDetails(id, ConstantsUrls.SHIP_CERTIFICATE_INFO);
         }
-        NetUtils.postWithHeader(this, ConstantsUrls.CREW_CERTIFICATE_DETAILS)
+    }
+
+    private void netGetCetificateDetails(String id, String url) {
+        NetUtils.postWithHeader(this, url)
                 .addParams(Constants.ID, id)
                 .build()
                 .execute(new StringCallback() {
@@ -115,11 +131,22 @@ public class CertificateIndetailsActivity extends BaseActivity {
                                     tvEndDate.setText(crewCertificateDetails.getValidDate());
                                 }
 
+                                String imgUrl = crewCertificateDetails.getImgUrl();
+                                if (StringUtils.isNotBlank(imgUrl)) {
+                                    Type type = new TypeToken<ArrayList<UrlBean>>() {
+                                    }.getType();
+                                    ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
+
+                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(CertificateIndetailsActivity.this, urlLists, crewCertificateDetails.getDomain());
+                                    gvCertificatePhoto.setAdapter(showPhotoAdapter);
+                                }
+
                                 if (isUse == 1) {
                                     tvCommon.setText(getResources().getString(R.string.commoned));
                                 } else if (isUse == 2) {
                                     tvCommon.setText(getResources().getString(R.string.no_commoned));
                                 }
+
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储

@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
@@ -32,6 +33,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 
@@ -72,6 +75,7 @@ public class MyFragment extends BaseFragment {
     private LoginResultBean loginResult;
     private String token;
 
+
     @Override
     protected View initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -84,7 +88,7 @@ public class MyFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
-        if (token.equals("")) {
+        if (StringUtils.isEmpty(token)) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
             getActivity().finish();
         }
@@ -93,9 +97,21 @@ public class MyFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        if (!token.equals("")) {
+        if (StringUtils.isNotBlank(token)) {
             getPersonalInfoFromNet();
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        ivUserinfoBg.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                return false;
+            }
+        });
     }
 
     private void getPersonalInfoFromNet() {
@@ -118,14 +134,25 @@ public class MyFragment extends BaseFragment {
                             String code = netServiceErrortBean.getCode();
                             if (code.equals("200")) {
                                 loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
                                 String personName = loginResult.getData().getObject().getPersonName();
                                 String roleName = loginResult.getData().getObject().getRoleName();
-                                if (personName.equals("")) {
+                                if (StringUtils.isEmpty(personName)) {
                                     tvUserName.setText(getResources().getString(R.string.name));
                                 } else {
                                     tvUserName.setText(personName);
                                 }
                                 tvIdentity.setText(roleName);
+
+                                if (StringUtils.isNotEmpty(headImgUrl)) {
+                                    Glide.with(getActivity())
+                                            .load(headImgUrl)
+                                            .into(ivPhoto);
+                                } else {
+                                    ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
+                                }
+
+
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -143,14 +170,14 @@ public class MyFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
+        // TODO: inflatoe a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        if (true) {
+        /*if (StringUtils.isNotBlank(token)) {
             rlChuanguan.setVisibility(View.VISIBLE);
         } else {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-        }
+        }*/
         return rootView;
     }
 
@@ -163,19 +190,35 @@ public class MyFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (StringUtils.isNotBlank(token)) {
+            getPersonalInfoFromNet();
+        }
         String userName = CacheUtils.getString(getActivity(), Constants.USER_NAME);
         String roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
+        String personNameFromNet = "";
+        String headImgUrl = "";
+        if (loginResult != null) {
+            headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
+            personNameFromNet = loginResult.getData().getObject().getPersonName();
+        }
         //获取拍的照片
         String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
         File file = new File(path);
         if (file.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             ivPhoto.setImageBitmap(bitmap);
+        } else if (StringUtils.isNotEmpty(headImgUrl)) {
+            Glide.with(getActivity())
+                    .load(headImgUrl)
+                    .into(ivPhoto);
         } else {
             ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
         }
-        if (!userName.isEmpty()) {
+        if (StringUtils.isNotEmpty(userName)) {
             tvUserName.setText(userName);
+        } else if (StringUtils.isNotEmpty(personNameFromNet)) {
+            tvUserName.setText(personNameFromNet);
         } else {
             tvUserName.setText(getResources().getString(R.string.name));
         }
@@ -201,7 +244,7 @@ public class MyFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
-                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+
                 break;
             case R.id.iv_photo:
                 gotoPersonalInfoActivity();
