@@ -44,6 +44,7 @@ import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -386,7 +387,6 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
         String issueAddress = etIssueAddress.getText().toString();
         String effectiveDate = tvEffectiveDate.getText().toString();
 
-
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
             try {
@@ -398,22 +398,30 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
             }
         }
 
-        if (insuranceName.equals("")) {
+        if (StringUtils.isEmpty(insuranceName)) {
             Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_insurance_name), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (shipName.equals("")) {
+        if (StringUtils.isEmpty(shipName)) {
             Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_ship_name), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final ProgressDialog progressDialog = getProgressDialog();
 
-        if (shipHuhaoBianhao.equals("")) {
+        if (StringUtils.isEmpty(shipHuhaoBianhao)) {
             Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_ship_bianhao), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (isEffectiveForever.equals("2")) {
+            if (StringUtils.isEmpty(effectiveDate)) {
+                Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_effective_date), Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        final ProgressDialog progressDialog = getProgressDialog();
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_SHIP_INSURANCE)
                 .addParams(Constants.USER_ID, userId)
@@ -459,6 +467,7 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
 
                     @Override
                     public void onResponse(String response, int id) {
+                        progressDialog.dismiss();
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(AddInsuranceActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
@@ -475,7 +484,6 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
                                 finish();
                             }
                             if (code.equals("200")) {
-                                progressDialog.dismiss();
                                 finish();
                             }
                         }

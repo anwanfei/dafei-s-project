@@ -109,7 +109,7 @@ public class Constants {
     public static final String FROM_DYNAMIC = "from_dynamic";
     public static final String REPORT_TYPE = "reportType";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
-    public static String SHARE_URL = "http://www.baidu.com";
+    public static String SHARE_URL = "https://www.pgyer.com/22dL";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};
 
 }

@@ -54,8 +54,6 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
     TextView tvPlaceTop;
     @BindView(R.id.ll_zhengwu_bottom)
     LinearLayout llZhengwuBottom;
-    @BindView(R.id.ll_layout_horizental_gray_line)
-    LinearLayout llLayoutHorizentalGrayLine;
     @BindView(R.id.tv_loading_unloading_cargo_port)
     TextView tvLoadingUnloadingCargoPort;
     @BindView(R.id.tv_cartgo_type)

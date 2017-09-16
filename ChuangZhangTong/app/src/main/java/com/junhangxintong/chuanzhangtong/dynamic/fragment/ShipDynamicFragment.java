@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
-import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -23,6 +21,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +45,7 @@ public class ShipDynamicFragment extends BaseFragment {
     ListView lvDynamicShip;
     Unbinder unbinder;
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
+    private String token;
 
     @Override
     protected View initView() {
@@ -58,15 +59,21 @@ public class ShipDynamicFragment extends BaseFragment {
     protected void initData() {
         super.initData();
 
-        netGetDynamicRemindList("2");
+        token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
-        lvDynamicShip.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
-                view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+        if (StringUtils.isNotEmpty(token)) {
+            netGetDynamicRemindList("2");
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            if (StringUtils.isNotEmpty(token)) {
+                netGetDynamicRemindList("2");
             }
-        });
+        }
     }
 
     @Override
@@ -82,7 +89,11 @@ public class ShipDynamicFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(getActivity(), "动态", Toast.LENGTH_SHORT).show();
+    }
     private void netGetDynamicRemindList(String remindType) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
@@ -106,11 +117,18 @@ public class ShipDynamicFragment extends BaseFragment {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                               /* DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
+                           /*     DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
                                 dynamincRemindLists = dynamicRemindListBean.getData().getArray();
 
                                 DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
-                                lvMessage.setAdapter(dynamicRemindListsAdapter);*/
+                                lvMessage.setAdapter(dynamicRemindListsAdapter);
+                                lvDynamicShip.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
+                                        view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+                                    }
+                                });*/
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储

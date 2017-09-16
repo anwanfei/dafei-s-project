@@ -149,6 +149,9 @@ public class ConstantsUrls {
     //查看我关注的船的详情
     public static final String FOLLOW_SHIP_INFO = "/my/ship/attention/query/info.do";
 
+    //取消我关注的船
+    public static final String CANCEL_FOLLOW_SHIP = "/my/ship/attention/cancel.do";
+
 
     /**
      * 航运头条

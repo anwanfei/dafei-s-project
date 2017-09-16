@@ -35,7 +35,8 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@id/tv_message_title"
-            android:src="@drawable/iv_message_new" />
+            android:src="@drawable/iv_message_new"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <ImageView

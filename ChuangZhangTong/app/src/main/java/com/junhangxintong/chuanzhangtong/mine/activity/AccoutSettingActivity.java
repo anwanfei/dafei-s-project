@@ -90,12 +90,6 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     private PopupWindow loginOutPopWindow;
     private Dialog dialog;
 
-
-    private String local_base_url = "http://192.168.0.101:8082";
-    private String www_test_base_url = "http://116.62.152.191:8082";
-    private String www_base_url = "http://192.168.0.101:8082";
-    public static final String BASE_URL = "http://116.62.152.191:8082";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

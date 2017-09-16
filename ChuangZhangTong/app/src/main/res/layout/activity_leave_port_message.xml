@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:text="@string/date_demo"
                 android:textSize="12sp" />
 
             <View
@@ -72,33 +71,14 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_zhengwu_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true">
-
-        <include layout="@layout/include_message_bottom" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_layout_horizental_gray_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/ll_zhengwu_bottom">
-
-        <include layout="@layout/layout_horizental_gray_line" />
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:scrollbars="none"
-        android:layout_below="@+id/ll_ship_name_time"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ll_ship_name_time"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,7 +110,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="卸货港"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -159,7 +138,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="食品"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -188,7 +166,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="1000"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -216,7 +193,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/date_time"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -245,7 +221,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/date_time"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -273,7 +248,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/date_time"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -302,7 +276,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="@string/date_time"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -330,7 +303,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="20"
                     android:textSize="14sp" />
             </RelativeLayout>
 
@@ -358,7 +330,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="3dp"
                     android:layout_marginRight="20dp"
-                    android:text="20m"
                     android:textSize="14sp" />
 
             </RelativeLayout>
@@ -384,15 +355,29 @@
                     android:id="@+id/tv_remark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
-                    android:text="否"
-                    android:textSize="14sp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="18dp" />
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginRight="18dp"
+                    android:textSize="14sp" />
 
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_zhengwu_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <include layout="@layout/include_message_bottom" />
+
+    </LinearLayout>
+
 </RelativeLayout>

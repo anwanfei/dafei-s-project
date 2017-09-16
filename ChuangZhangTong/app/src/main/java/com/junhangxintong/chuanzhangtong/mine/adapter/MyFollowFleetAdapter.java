@@ -86,7 +86,8 @@ public class MyFollowFleetAdapter extends BaseAdapter implements View.OnClickLis
                 int id = myFleetLists.get(position).getId();
                 Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
                 intent.putExtra(Constants.ID, String.valueOf(id));
-                intent.putExtra(Constants.SHIP_INFO,Constants.FOLLOW_SHIP);
+                intent.putExtra(Constants.FOLLOW_SHIP,true);
+                intent.putExtra(Constants.SHIP_ID,String.valueOf(myFleetLists.get(position).getShipId()));
                 mContext.startActivity(intent);
             }
         });

@@ -26,6 +26,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
 
+import static com.junhangxintong.chuanzhangtong.common.MyApplication.token;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
@@ -74,18 +77,22 @@ public class ShipCertificateFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        netGetDynamicRemindList("4");
 
-        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int id = dynamincRemindLists.get(i).getId();
-                Intent intent = new Intent(getActivity(), ShipCertificateActivity.class);
-                intent.putExtra(Constants.ID, String.valueOf(id));
-                startActivity(intent);
-                view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+        if (StringUtils.isNotEmpty(token)) {
+            netGetDynamicRemindList("4");
+        }
+
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (StringUtils.isNotEmpty(token)) {
+                netGetDynamicRemindList("4");
             }
-        });
+        }
     }
 
     private void netGetDynamicRemindList(String remindType) {
@@ -116,6 +123,16 @@ public class ShipCertificateFragment extends BaseFragment {
 
                                 DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
                                 lvMessage.setAdapter(dynamicRemindListsAdapter);
+                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        int id = dynamincRemindLists.get(i).getId();
+                                        Intent intent = new Intent(getActivity(), ShipCertificateActivity.class);
+                                        intent.putExtra(Constants.ID, String.valueOf(id));
+                                        startActivity(intent);
+                                        view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+                                    }
+                                });
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储
@@ -132,5 +149,11 @@ public class ShipCertificateFragment extends BaseFragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(getActivity(), "船舶", Toast.LENGTH_SHORT).show();
     }
 }

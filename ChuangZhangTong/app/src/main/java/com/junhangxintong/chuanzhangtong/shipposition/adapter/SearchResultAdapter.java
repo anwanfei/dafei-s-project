@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.ShipDetailsBean;
@@ -20,6 +22,7 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,10 +39,14 @@ public class SearchResultAdapter extends BaseAdapter {
     private Context mContext;
     private List<ShipDetailsBean> shipDetailsBeanList;
     private boolean isFollowed;
+    private String userId = "";
+    private ArrayList<String> followShipIds = new ArrayList<String>();
+    private String shipName;
 
     public SearchResultAdapter(Context mContext, List<ShipDetailsBean> shipDetailsBeanList) {
         this.mContext = mContext;
         this.shipDetailsBeanList = shipDetailsBeanList;
+        userId = CacheUtils.getString(mContext, Constants.ID);
     }
 
     @Override
@@ -63,16 +70,11 @@ public class SearchResultAdapter extends BaseAdapter {
         //1、创建或获取viewHolder
         ViewHolder holder = null;
         if (convertView == null) {
-            //创建holder对象
-            holder = new ViewHolder();
+
             //加载条目布局
             convertView = View.inflate(mContext, R.layout.item_ship_position_search, null);
-
-            //找控件
-            holder.tvSearchShipName = (TextView) convertView.findViewById(R.id.tv_search_ship_name);
-            holder.tvSearchShipMmsi = (TextView) convertView.findViewById(R.id.tv_search_ship_mmsi);
-            holder.tvSearchShipDetails = (TextView) convertView.findViewById(R.id.tv_search_ship_details);
-            holder.tvSearchFollow = (TextView) convertView.findViewById(R.id.tv_search_follow);
+            //创建holder对象
+            holder = new ViewHolder(convertView);
 
             //保存holder
             convertView.setTag(holder);
@@ -82,21 +84,13 @@ public class SearchResultAdapter extends BaseAdapter {
         //2、获取当前的item数据
         ShipDetailsBean shipDetailsBean = shipDetailsBeanList.get(i);
         String mmsi = shipDetailsBean.getMmsi();
-        String shipName = shipDetailsBean.getShipName();
+        shipName = shipDetailsBean.getShipName();
+        String shipId = String.valueOf(shipDetailsBean.getShipId());
+
+        netGetFollowFleetList(shipName, shipId, holder.tvSearchFollow, holder.tvSearchShipDetails, i);
 
         holder.tvSearchShipName.setText(shipName);
         holder.tvSearchShipMmsi.setText(mContext.getResources().getString(R.string.MMSI_withColon) + mmsi);
-
-        holder.tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Long shipId = shipDetailsBeanList.get(i).getShipId();
-                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
-                intent.putExtra(Constants.ID, String.valueOf(shipId));
-                intent.putExtra(Constants.SHIP_INFO,Constants.SHIP_POSITION);
-                mContext.startActivity(intent);
-            }
-        });
 
         final ViewHolder finalHolder = holder;
         holder.tvSearchFollow.setOnClickListener(new View.OnClickListener() {
@@ -104,15 +98,16 @@ public class SearchResultAdapter extends BaseAdapter {
             public void onClick(View view) {
 
                 Long shipId = shipDetailsBeanList.get(i).getShipId();
-                String userId = CacheUtils.getString(mContext, Constants.ID);
+
                 String token = CacheUtils.getString(mContext, Constants.TOKEN);
 
                 if (token.equals("")) {
                     mContext.startActivity(new Intent(mContext, LoginRegisterActivity.class));
                 } else {
                     if (isFollowed) {//已经关注
-                        NetUtils.postWithHeader(mContext, ConstantsUrls.DELETE_FOLLOW_SHIP)
-                                .addParams(Constants.IDS, String.valueOf(shipId))
+                        NetUtils.postWithHeader(mContext, ConstantsUrls.CANCEL_FOLLOW_SHIP)
+                                .addParams(Constants.SHIP_ID, String.valueOf(shipId))
+                                .addParams(Constants.USER_ID, userId)
                                 .build()
                                 .execute(new StringCallback() {
                                     @Override
@@ -175,7 +170,7 @@ public class SearchResultAdapter extends BaseAdapter {
                                             }
                                             if (code.equals("200")) {
                                                 isFollowed = true;
-                                                finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.followed));
+                                                finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.cancel_follow));
                                                 finalHolder.tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_gray_bg);
                                                 finalHolder.tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.gray_identity));
                                             }
@@ -183,7 +178,6 @@ public class SearchResultAdapter extends BaseAdapter {
                                     }
                                 });
                     }
-
                 }
             }
         });
@@ -207,8 +201,69 @@ public class SearchResultAdapter extends BaseAdapter {
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
 
-        ViewHolder() {
-        }
+    private void netGetFollowFleetList(String shipName, final String shipId, final TextView tvSearchFollow, final TextView tvSearchShipDetails, final int i) {
+        NetUtils.postWithHeader(mContext, ConstantsUrls.FOLLOW_SHIP_LIST)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.SHIP_NAME, shipName)
+                .build()
+                .execute(new StringCallback() {
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(mContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(mContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                FollowShipListBean followShipListBean = new Gson().fromJson(response, FollowShipListBean.class);
+                                List<FollowShipListBean.DataBean.ArrayBean> followShipLists = followShipListBean.getData().getArray();
+
+                                for (int i = 0; i < followShipLists.size(); i++) {
+                                    followShipIds.add(String.valueOf(followShipLists.get(i).getShipId()));
+                                }
+                                if (followShipIds.size() > 0) {
+                                    if (followShipIds.contains(shipId)) {
+                                        tvSearchFollow.setText(mContext.getResources().getString(R.string.cancel_follow));
+                                        tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_gray_bg);
+                                        tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.gray_identity));
+                                        isFollowed = true;
+                                    }
+                                }
+
+                            } else if (code.equals("601")) {
+                            } else if (code.equals("404")) {
+                            } else {
+                                Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
+                                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
+                                intent.putExtra(Constants.ID, shipId);
+                                if (followShipIds.size() > 0) {
+                                    if (followShipIds.contains(shipId)) {
+                                        intent.putExtra(Constants.FOLLOW_SHIP, true);
+                                    }
+                                }
+                                intent.putExtra(Constants.SHIP_ID, shipId);
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
+                });
     }
 }

@@ -23,6 +23,7 @@ import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.MyCertificateActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFleetListActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.MyFollowFleetActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.PersonalInfoActivity;
@@ -72,6 +73,8 @@ public class MyFragment extends BaseFragment {
     RelativeLayout rlChuanguan;
     @BindView(R.id.rl_follew_fleet)
     RelativeLayout rlFollewFleet;
+    @BindView(R.id.rl_my_certificate)
+    RelativeLayout rlMyCertificate;
     private LoginResultBean loginResult;
     private String token;
 
@@ -98,7 +101,7 @@ public class MyFragment extends BaseFragment {
     protected void initData() {
         super.initData();
         if (StringUtils.isNotBlank(token)) {
-            getPersonalInfoFromNet();
+//            getPersonalInfoFromNet();
         }
     }
 
@@ -193,54 +196,55 @@ public class MyFragment extends BaseFragment {
 
         if (StringUtils.isNotBlank(token)) {
             getPersonalInfoFromNet();
-        }
-        String userName = CacheUtils.getString(getActivity(), Constants.USER_NAME);
-        String roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
-        String personNameFromNet = "";
-        String headImgUrl = "";
-        if (loginResult != null) {
-            headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
-            personNameFromNet = loginResult.getData().getObject().getPersonName();
-        }
-        //获取拍的照片
-        String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
-        File file = new File(path);
-        if (file.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            ivPhoto.setImageBitmap(bitmap);
-        } else if (StringUtils.isNotEmpty(headImgUrl)) {
-            Glide.with(getActivity())
-                    .load(headImgUrl)
-                    .into(ivPhoto);
-        } else {
-            ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
-        }
-        if (StringUtils.isNotEmpty(userName)) {
-            tvUserName.setText(userName);
-        } else if (StringUtils.isNotEmpty(personNameFromNet)) {
-            tvUserName.setText(personNameFromNet);
-        } else {
-            tvUserName.setText(getResources().getString(R.string.name));
-        }
 
-        switch (roleId) {
-            case "1":
-                tvIdentity.setText(Constants.ROLE_NAME[0]);
-                break;
-            case "2":
-                tvIdentity.setText(Constants.ROLE_NAME[1]);
-                break;
-            case "3":
-                tvIdentity.setText(Constants.ROLE_NAME[2]);
-                break;
-            case "4":
-                tvIdentity.setText(Constants.ROLE_NAME[3]);
-                break;
+            String userName = CacheUtils.getString(getActivity(), Constants.USER_NAME);
+            String roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
+            String personNameFromNet = "";
+            String headImgUrl = "";
+            if (loginResult != null) {
+                headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
+                personNameFromNet = loginResult.getData().getObject().getPersonName();
+            }
+            //获取拍的照片
+            String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
+            File file = new File(path);
+            if (file.exists()) {
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                ivPhoto.setImageBitmap(bitmap);
+            } else if (StringUtils.isNotEmpty(headImgUrl)) {
+                Glide.with(getActivity())
+                        .load(headImgUrl)
+                        .into(ivPhoto);
+            } else {
+                ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
+            }
+            if (StringUtils.isNotEmpty(userName)) {
+                tvUserName.setText(userName);
+            } else if (StringUtils.isNotEmpty(personNameFromNet)) {
+                tvUserName.setText(personNameFromNet);
+            } else {
+                tvUserName.setText(getResources().getString(R.string.name));
+            }
+
+            switch (roleId) {
+                case "1":
+                    tvIdentity.setText(Constants.ROLE_NAME[0]);
+                    break;
+                case "2":
+                    tvIdentity.setText(Constants.ROLE_NAME[1]);
+                    break;
+                case "3":
+                    tvIdentity.setText(Constants.ROLE_NAME[2]);
+                    break;
+                case "4":
+                    tvIdentity.setText(Constants.ROLE_NAME[3]);
+                    break;
+            }
         }
     }
 
     @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_feed_back,
-            R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan})
+            R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan,R.id.rl_my_certificate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:
@@ -271,6 +275,9 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_feed_back:
                 startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                break;
+            case R.id.rl_my_certificate:
+                startActivity(new Intent(getActivity(), MyCertificateActivity.class));
                 break;
         }
     }

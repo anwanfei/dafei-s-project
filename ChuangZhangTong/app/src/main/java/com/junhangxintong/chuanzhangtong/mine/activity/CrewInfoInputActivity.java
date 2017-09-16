@@ -22,6 +22,8 @@ import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -62,10 +64,10 @@ public class CrewInfoInputActivity extends BaseActivity {
     @BindView(R.id.tv_belong_ship)
     TextView tvBelongShip;
     private String country = "中国";
-    private String certificateTypeNum = "";
+    private String certificateTypeNum = "1";
     private String belongShip = "";
     private String certificateType = "1";
-    private String shipId;
+    private String shipId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +144,7 @@ public class CrewInfoInputActivity extends BaseActivity {
         String email = etCallSign.getText().toString();
         String certificateNum = etCertificateNumber.getText().toString();
 
+        boolean mail = MultiVerify.isMail(email);
         boolean mobile = MultiVerify.isMobile(crewPhone);
 
         if (crewName.equals("")) {
@@ -161,6 +164,14 @@ public class CrewInfoInputActivity extends BaseActivity {
         if (duty.equals("")) {
             Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.input_duty), Toast.LENGTH_SHORT).show();
             return;
+        }
+
+
+        if(StringUtils.isNotBlank(email)) {
+            if(!mail) {
+                Toast.makeText(CrewInfoInputActivity.this, getResources().getString(R.string.email_error), Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_CREW)

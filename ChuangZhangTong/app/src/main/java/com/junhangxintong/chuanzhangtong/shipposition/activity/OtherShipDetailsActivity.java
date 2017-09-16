@@ -18,6 +18,7 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.FollowShipDetailsBean;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -106,6 +107,11 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     private boolean isShowShipOthorDetails = true;
     private boolean isShowShareAndFollow = true;
     private PopupWindow popupWindow;
+    private boolean isFollow;
+    private String shipId = "";
+    private String userId;
+    private boolean isFollowed = true;
+    private String id;
 
     @Override
     protected void initView() {
@@ -117,10 +123,13 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
+        userId = CacheUtils.getString(this, Constants.ID);
         Intent intent = getIntent();
-        String id = intent.getStringExtra(Constants.ID);
-        String shipInfoFromWhere = intent.getStringExtra(Constants.SHIP_INFO);
-        if (shipInfoFromWhere.equals(Constants.SHIP_POSITION)) {
+        id = intent.getStringExtra(Constants.ID);
+        isFollow = intent.getBooleanExtra(Constants.FOLLOW_SHIP, false);
+        shipId = intent.getStringExtra(Constants.SHIP_ID);
+
+        if (!isFollow) {
             NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_INFO)
                     .addParams(Constants.ID, id)
                     .build()
@@ -158,12 +167,12 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                                     startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
                     });
-        } else if (shipInfoFromWhere.equals(Constants.FOLLOW_SHIP)) {
+        } else {
             NetUtils.postWithHeader(this, ConstantsUrls.FOLLOW_SHIP_INFO)
                     .addParams(Constants.ID, id)
                     .build()
@@ -201,7 +210,7 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                                     startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -248,42 +257,129 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.iv_trajactory:
-                Toast.makeText(OtherShipDetailsActivity.this, "正在拼命开发中...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.developing), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
     private void showShareAndFollowShipPop() {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_ship_details_menu, null);
-        TextView tv_follow_ship = (TextView) view.findViewById(R.id.tv_follow_ship);
+        final TextView tv_follow_ship = (TextView) view.findViewById(R.id.tv_follow_ship);
         TextView tv_share_ship = (TextView) view.findViewById(R.id.tv_share_ship);
+        if (isFollow) {
+            tv_follow_ship.setText(getResources().getString(R.string.cancel_follow));
+        }
 
         popupWindow = new PopupWindow(view, DensityUtil.dp2px(this, 120), LinearLayout.LayoutParams.WRAP_CONTENT, false);
         popupWindow.setContentView(view);
         popupWindow.showAsDropDown(ivShare, 0, 0);
 
-        tv_follow_ship.setOnClickListener(this);
+        tv_follow_ship.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+                isShowShareAndFollow = true;
+                if (isFollow) {
+                    netCannelFollowShip(tv_follow_ship);
+                } else {
+                    netFollowShip(tv_follow_ship);
+                }
+            }
+        });
         tv_share_ship.setOnClickListener(this);
+    }
 
+    private void netCannelFollowShip(final TextView tv_follow_ship) {
+        NetUtils.postWithHeader(OtherShipDetailsActivity.this, ConstantsUrls.CANCEL_FOLLOW_SHIP)
+                .addParams(Constants.SHIP_ID, shipId)
+                .addParams(Constants.USER_ID, userId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                OtherShipDetailsActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                OtherShipDetailsActivity.this.startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
+                            }
+                            if (code.equals("200")) {
+                                isFollow = false;
+                                tv_follow_ship.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.follow));
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case tv_follow_ship:
-                popupWindow.dismiss();
-                isShowShareAndFollow = true;
-                Toast.makeText(OtherShipDetailsActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
+
                 // TODO: 2017/8/8
                 break;
 
             case tv_share_ship:
                 popupWindow.dismiss();
                 isShowShareAndFollow = true;
-                Toast.makeText(OtherShipDetailsActivity.this, "分享成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.developing), Toast.LENGTH_SHORT).show();
                 // TODO: 2017/8/8
 
                 break;
         }
     }
+
+    private void netFollowShip(final TextView textView) {
+        NetUtils.postWithHeader(this, ConstantsUrls.ADD_FOLLOW_SHIP)
+                .addParams(Constants.SHIP_ID, shipId)
+                .addParams(Constants.USER_ID, userId)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                OtherShipDetailsActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                OtherShipDetailsActivity.this.startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
+                            }
+                            if (code.equals("200")) {
+                                isFollow = true;
+                                textView.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.cancel_follow));
+//                                textView.setBackgroundResource(R.drawable.tv_frame_gray_bg);
+                                textView.setTextColor(OtherShipDetailsActivity.this.getResources().getColor(R.color.gray_identity));
+                            }
+                        }
+                    }
+                });
+    }
+
+
 }

@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.ShipCertificateExpireBean;
+import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicCrewDetails;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
@@ -90,14 +90,17 @@ public class CrewCertificateActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                ShipCertificateExpireBean shipCertificateExpireBean = new Gson().fromJson(response, ShipCertificateExpireBean.class);
-                                ShipCertificateExpireBean.DataBean.ObjectBean shipCertificateExpireDetatls = shipCertificateExpireBean.getData().getObject();
-                                tvName.setText(shipCertificateExpireDetatls.getShipName());
+                                DynamicCrewDetails shipCertificateExpireBean = new Gson().fromJson(response, DynamicCrewDetails.class);
+                                DynamicCrewDetails.DataBean.ObjectBean shipCertificateExpireDetatls = shipCertificateExpireBean.getData().getObject();
+                                tvName.setText(shipCertificateExpireDetatls.getPersonName());
                                 tvCertificateName.setText(shipCertificateExpireDetatls.getName());
                                 tvCertificateNumber.setText(shipCertificateExpireDetatls.getCertifNo());
-                                tvIssueDate.setText(shipCertificateExpireDetatls.getIssueDate());
+                                int certifType = shipCertificateExpireDetatls.getCertifType();
+                                if (certifType == 1) {
+                                    tvIssueDate.setText(getResources().getString(R.string.certificate));
+                                }
                                 tvCertificateEndTime.setText(shipCertificateExpireDetatls.getValidDate());
-                                tvCertificateIssuePostion.setText(shipCertificateExpireDetatls.getIssueAddress());
+                                tvCertificateIssuePostion.setText(shipCertificateExpireDetatls.getIssueOrganization());
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储

@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:text="@string/date_demo"
                 android:textSize="12sp" />
 
             <View
@@ -72,29 +71,9 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_zhengwu_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true">
-
-        <include layout="@layout/include_message_bottom" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_layout_horizental_gray_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/ll_zhengwu_bottom">
-
-        <include layout="@layout/layout_horizental_gray_line" />
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_layout_horizental_gray_line"
         android:layout_below="@id/ll_ship_name_time"
         android:overScrollMode="never"
         android:scrollbars="none">
@@ -363,4 +342,19 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_zhengwu_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <include layout="@layout/include_message_bottom" />
+
+    </LinearLayout>
+
 </RelativeLayout>

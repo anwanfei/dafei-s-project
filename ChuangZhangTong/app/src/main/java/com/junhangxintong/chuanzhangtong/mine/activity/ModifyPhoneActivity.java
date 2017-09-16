@@ -23,6 +23,8 @@ import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -120,6 +122,12 @@ public class ModifyPhoneActivity extends BaseActivity {
         final String newPhone = etInputPhone.getText().toString();
         String userId = CacheUtils.getString(this, Constants.ID);
         String verifyCode = etInputVerifyCode.getText().toString();
+
+        if(StringUtils.isEmpty(newPhone)) {
+            Toast.makeText(ModifyPhoneActivity.this, getResources().getString(R.string.input_new_phone), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(verifyCode.equals("")){
             Toast.makeText(ModifyPhoneActivity.this, getResources().getString(R.string.input_verify_code), Toast.LENGTH_SHORT).show();
         } else {

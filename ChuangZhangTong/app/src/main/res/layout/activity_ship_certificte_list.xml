@@ -25,10 +25,71 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_certificate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/item_ship_certificate_head" />
+            </LinearLayout>
+
+            <com.junhangxintong.chuanzhangtong.view.MyGridview
+                android:id="@+id/gv_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:horizontalSpacing="10dp"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:verticalSpacing="12dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_insurance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_certificate_insurance"
+                    android:drawableLeft="@drawable/spot_white"
+                    android:drawablePadding="10dp"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="6dp"
+                    android:text="@string/insurance"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <com.junhangxintong.chuanzhangtong.view.MyGridview
+                android:id="@+id/gv_insurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:horizontalSpacing="10dp"
+                android:numColumns="2"
+                android:scrollbars="none"
+                android:verticalSpacing="12dp" />
+        </LinearLayout>
+    </ScrollView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_certificate"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="10dp"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="gone" />
 </LinearLayout>

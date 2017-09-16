@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -20,12 +22,14 @@ import okhttp3.OkHttpClient;
 
 public class MyApplication extends Application {
     public static Context appContext;
+    public static String token;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         appContext = getApplicationContext();
+        token = CacheUtils.getString(appContext, Constants.TOKEN);
 
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);

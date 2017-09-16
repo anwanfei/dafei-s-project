@@ -46,25 +46,13 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
     public int getItemViewType(int position) {
         if (position == 0) {
             return ITEM_TYPE.ITEM_TYPE_HEAD.ordinal();
-        } else if (position > 0 && position <= (int) (Math.ceil(shipCertificates.size() / 2))) {
+        } else if (position > 0 && position <= (int) (Math.ceil((double) shipCertificates.size() / 2))) {
             return ITEM_TYPE.ITEM_TYPE_CONTENT.ordinal();
-        } else if (position == ((int) (Math.ceil(shipCertificates.size() / 2)) + 1)) {
+        } else if (position == ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1)) {
             return ITEM_TYPE.ITEM_TYPE_HEAD.ordinal();
         } else {
             return ITEM_TYPE.ITEM_TYPE_CONTENT.ordinal();
         }
-/*
-        if (position == 0) {
-            return ITEM_TYPE.ITEM_TYPE_HEAD.ordinal();
-        } else if (position > 0 && position <= Math.ceil(arrShipCertificates.length / 2)) {
-            return ITEM_TYPE.ITEM_TYPE_CONTENT.ordinal();
-        } else if (position == Math.ceil(arrShipCertificates.length / 2) + 1) {
-            return ITEM_TYPE.ITEM_TYPE_HEAD.ordinal();
-        } else {
-            return ITEM_TYPE.ITEM_TYPE_CONTENT.ordinal();
-        }
-*/
-
     }
 
     @Override
@@ -85,19 +73,15 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
         if (holder instanceof HeaderViewHolder) {
             if (position == 0) {
                 ((HeaderViewHolder) holder).tvType.setText(mContext.getResources().getString(R.string.certificate));
-            } else if (position == Math.ceil(shipCertificates.size() / 2) + 1) {
+            } else if (position == Math.ceil((double) shipCertificates.size() / 2) + 1) {
                 ((HeaderViewHolder) holder).tvType.setText(mContext.getResources().getString(R.string.insurance));
             }
         } else if (holder instanceof ContentViewHolder) {
-            if (position > 0 && position <= Math.ceil(shipCertificates.size() / 2)) {
+            if (position > 0 && position <= Math.ceil((double) shipCertificates.size() / 2)) {
                 ((ContentViewHolder) holder).tvCertificateName1.setText(shipCertificates.get(2 * (position - 1)).getName());
-                ((ContentViewHolder) holder).tvCertificateName2.setText(shipCertificates.get(2 * position - 1).getName());
                 ((ContentViewHolder) holder).tvCertificateNumber1.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipCertificates.get(2 * (position - 1)).getBinahao());
-                ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipCertificates.get(2 * position - 1).getBinahao());
                 ((ContentViewHolder) holder).tvCertificateIssuingAuthority1.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipCertificates.get(2 * (position - 1)).getIssueArgument());
-                ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipCertificates.get(2 * position - 1).getIssueArgument());
                 ((ContentViewHolder) holder).tvCertificateType1.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipCertificates.get(2 * (position - 1)).getValidDate());
-                ((ContentViewHolder) holder).tvCertificateName2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipCertificates.get(2 * position - 1).getName());
 
                 //点击详情跳转
                 ((ContentViewHolder) holder).llItemLeft.setOnClickListener(new View.OnClickListener() {
@@ -106,32 +90,42 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
                         gotoShipCertificateDetailsActivity(2 * (position - 1));
                     }
                 });
-                ((ContentViewHolder) holder).llItemRight.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        gotoShipCertificateDetailsActivity(2 * position - 1);
-                    }
-                });
+
+                if (shipCertificates.size() > (2 * position - 1)) {
+                    ((ContentViewHolder) holder).tvCertificateName2.setText(shipCertificates.get(2 * position - 1).getName());
+                    ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipCertificates.get(2 * position - 1).getBinahao());
+                    ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipCertificates.get(2 * position - 1).getIssueArgument());
+                    ((ContentViewHolder) holder).tvCertificateName2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipCertificates.get(2 * position - 1).getName());
+
+                    //点击详情跳转
+                    ((ContentViewHolder) holder).llItemRight.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            gotoShipCertificateDetailsActivity(2 * position - 1);
+                        }
+                    });
+                }
+
             } else {
-                ((ContentViewHolder) holder).tvCertificateName1.setText(shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getName());
-                ((ContentViewHolder) holder).tvCertificateName2.setText(shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getName());
-                ((ContentViewHolder) holder).tvCertificateNumber1.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getBinahao());
-                ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getBinahao());
-                ((ContentViewHolder) holder).tvCertificateIssuingAuthority1.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getIssueArgument());
-                ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getIssueArgument());
-                ((ContentViewHolder) holder).tvCertificateType1.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getValidDate());
-                ((ContentViewHolder) holder).tvCertificateType2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2))).getValidDate());
+                ((ContentViewHolder) holder).tvCertificateName1.setText(shipInsurances.get(2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getName());
+                ((ContentViewHolder) holder).tvCertificateName2.setText(shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getName());
+                ((ContentViewHolder) holder).tvCertificateNumber1.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateNumber2.setText(mContext.getResources().getString(R.string.certificate_number_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getBinahao());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority1.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateIssuingAuthority2.setText(mContext.getResources().getString(R.string.issuing_authority_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getIssueArgument());
+                ((ContentViewHolder) holder).tvCertificateType1.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getValidDate());
+                ((ContentViewHolder) holder).tvCertificateType2.setText(mContext.getResources().getString(R.string.effective_date_colon) + shipInsurances.get(1 + 2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1))).getValidDate());
 
                 ((ContentViewHolder) holder).llItemLeft.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gotoShipInsuranceDetailsActivity(2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2)));
+                        gotoShipInsuranceDetailsActivity(2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1)));
                     }
                 });
                 ((ContentViewHolder) holder).llItemRight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gotoShipInsuranceDetailsActivity(1 + 2 * (position - ((int) (Math.ceil(shipCertificates.size() / 2)) + 2)));
+                        gotoShipInsuranceDetailsActivity(1 + 2 * (position - ((int) (Math.ceil((double) shipCertificates.size() / 2)) + 1)));
                     }
                 });
             }
@@ -153,7 +147,7 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-        int num = (int) (Math.ceil(shipCertificates.size() / 2)) + (int) (Math.ceil(shipInsurances.size() / 2));
+        int num = (int) (Math.ceil((double) (double) shipCertificates.size() / 2)) + (int) (Math.ceil((double) shipInsurances.size() / 2));
         return num + 2;
     }
 

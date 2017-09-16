@@ -20,7 +20,6 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:lineSpacingMultiplier="1.2"
-        android:text="@string/convention_name"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/spot_blue"
             android:drawablePadding="5dp"
-            android:text="@string/convention_wenhao"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -46,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_convention_name_field"
-            android:text="沪航警号0378"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:visibility="gone" />
@@ -56,7 +53,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="上海海事局"
             android:textSize="14sp" />
     </RelativeLayout>
 
@@ -73,7 +69,6 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/spot_blue"
             android:drawablePadding="5dp"
-            android:text="@string/convention_suoyinhao"
             android:textColor="@color/black"
             android:visibility="gone" />
 
@@ -82,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/tv_convention_suoyinhao_field"
-            android:text="MSA-2017-23623"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:visibility="gone" />
@@ -91,8 +85,7 @@
             android:id="@+id/tv_convention_suoyinhao_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="@string/date_demo" />
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <TextView
@@ -105,6 +98,5 @@
         android:background="@drawable/bg_gray"
         android:lineSpacingMultiplier="1.4"
         android:padding="20dp"
-        android:text="@string/convention_content"
         android:textColor="@color/black" />
 </LinearLayout>

@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="26°3`17``N"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -51,7 +50,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="26°3`17``N"
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -82,7 +80,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="30t"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -104,7 +101,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="26m"
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -135,7 +131,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="20t"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -156,7 +151,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="100t"
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -187,7 +181,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="30t"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -209,7 +202,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
-                android:text="25.1t"
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>

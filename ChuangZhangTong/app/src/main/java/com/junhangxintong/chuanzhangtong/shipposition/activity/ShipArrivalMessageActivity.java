@@ -50,8 +50,6 @@ public class ShipArrivalMessageActivity extends BaseActivity {
     TextView tvPlaceTop;
     @BindView(R.id.ll_zhengwu_bottom)
     LinearLayout llZhengwuBottom;
-    @BindView(R.id.ll_layout_horizental_gray_line)
-    LinearLayout llLayoutHorizentalGrayLine;
     @BindView(R.id.tv_arrival_port)
     TextView tvArrivalPort;
     @BindView(R.id.tv_port_stop_position)

@@ -37,6 +37,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +48,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import okhttp3.Call;
 
+import static com.junhangxintong.chuanzhangtong.common.MyApplication.token;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
@@ -87,13 +90,32 @@ public class MessageRecoedFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        netGetDynamicRemindList("1");
+        if (StringUtils.isNotEmpty(token)) {
+            netGetDynamicRemindList("1");
+        }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            if (StringUtils.isNotEmpty(token)) {
+                netGetDynamicRemindList("1");
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(getActivity(), "报文记录", Toast.LENGTH_SHORT).show();
+    }
+
 
     @OnClick(R.id.ll_show_all_messages)
     public void onViewClicked() {
         Intent intent = new Intent(getActivity(), AllMessagesActivity.class);
-        intent.putExtra(Constants.FROM_DYNAMIC,Constants.FROM_DYNAMIC);
+        intent.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
         startActivity(intent);
     }
 

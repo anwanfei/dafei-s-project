@@ -98,6 +98,10 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         shipName = intent.getStringExtra(Constants.SHIP_NAME);
         tvTitle.setText(shipName);
 
+        netGetNewestReport();
+    }
+
+    private void netGetNewestReport() {
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "5")
@@ -128,6 +132,28 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                                 ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
                                 lvMessage.setAdapter(shipMessagesAdapter);
 
+                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        // TODO: 2017/8/10 根据条目类型跳转
+                                        int type = reportLists.get(i).getType();
+                                        switch (type) {
+                                            case 1:
+                                                gotoMessageDetailsActivity(0);
+                                                break;
+                                            case 2:
+                                                gotoMessageDetailsActivity(1);
+                                                break;
+                                            case 3:
+                                                gotoMessageDetailsActivity(2);
+                                                break;
+                                            case 4:
+                                                gotoMessageDetailsActivity(3);
+                                                break;
+                                        }
+                                    }
+                                });
+
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -143,28 +169,6 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                         }
                     }
                 });
-
-        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO: 2017/8/10 根据条目类型跳转
-                int type = reportLists.get(i).getType();
-                switch (type) {
-                    case 1 :
-                       gotoMessageDetailsActivity(0);
-                        break;
-                    case 2 :
-                        gotoMessageDetailsActivity(1);
-                        break;
-                    case 3 :
-                        gotoMessageDetailsActivity(2);
-                        break;
-                    case 4 :
-                        gotoMessageDetailsActivity(3);
-                        break;
-                }
-            }
-        });
     }
 
     @Override
@@ -175,8 +179,8 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
 
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.huahai_one));
-//        ivShare.setVisibility(View.VISIBLE);
-//        tvSetting.setVisibility(View.VISIBLE);
+        ivShare.setVisibility(View.GONE);
+        tvSetting.setVisibility(View.GONE);
         ivShare.setImageResource(R.drawable.ic_input_message);
         tvSetting.setText(getResources().getString(R.string.input_message));
         return rootView;
@@ -206,10 +210,16 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        netGetNewestReport();
+    }
+
     private void gotoAllMesageAcitivity() {
         Intent intent = new Intent(getActivity(), AllMessagesActivity.class);
-        intent.putExtra(Constants.ID,id);
-        intent.putExtra(Constants.SHIP_NAME,shipName);
+        intent.putExtra(Constants.ID, id);
+        intent.putExtra(Constants.SHIP_NAME, shipName);
         startActivity(intent);
     }
 
@@ -285,7 +295,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
 
     private void gotoMessageDetailsActivity(int num) {
         Intent intent = new Intent(getActivity(), arrClasses[num]);
-        intent.putExtra(Constants.SHIP_ID, id);
+        intent.putExtra(Constants.ID, id);
         intent.putExtra(Constants.SHIP_NAME, shipName);
         startActivity(intent);
     }

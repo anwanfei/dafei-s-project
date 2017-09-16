@@ -89,9 +89,14 @@ public class ShipCertificateActivity extends BaseActivity {
                                 tvShipName.setText(shipCertificateExpireDetatls.getShipName());
                                 tvCertificateName.setText(shipCertificateExpireDetatls.getName());
                                 tvCertificateNumber.setText(shipCertificateExpireDetatls.getCertifNo());
-                                tvIssueDate.setText(shipCertificateExpireDetatls.getIssueDate());
+                                int certifType = shipCertificateExpireDetatls.getCertifType();
+                                if (certifType == 1) {
+                                    tvIssueDate.setText(getResources().getString(R.string.certificate));
+                                } else {
+                                    tvIssueDate.setText(getResources().getString(R.string.insurance));
+                                }
                                 tvCertificateEndTime.setText(shipCertificateExpireDetatls.getValidDate());
-                                tvCertificateIssuePostion.setText(shipCertificateExpireDetatls.getIssueAddress());
+                                tvCertificateIssuePostion.setText(shipCertificateExpireDetatls.getIssueOrganization());
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();

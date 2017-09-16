@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.common.MyApplication;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicReportListsAdapter;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
@@ -29,6 +30,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +82,7 @@ public class NoonzMessageFragment extends BaseFragment {
         shipName = intent.getStringExtra(Constants.SHIP_NAME);
 
         fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
-        if (fromDynamic != null) {
+        if (StringUtils.isNotBlank(fromDynamic)) {
             netGetNoonReportListFromDynamic();
         } else {
             netGetNoonReportListFromShip();
@@ -97,7 +100,7 @@ public class NoonzMessageFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApplication.appContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -245,7 +248,7 @@ public class NoonzMessageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (fromDynamic != null) {
+        if (StringUtils.isNotBlank(fromDynamic)) {
             netGetNoonReportListFromDynamic();
         } else {
             netGetNoonReportListFromShip();

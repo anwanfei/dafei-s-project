@@ -13,22 +13,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewDetailsBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
-import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.apache.commons.lang.StringUtils;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+import static com.junhangxintong.chuanzhangtong.mine.activity.ChooseCertificateTypeActivity.arrCertificates;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ModifyCrewInfoActivity extends BaseActivity {
@@ -86,7 +83,6 @@ public class ModifyCrewInfoActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.modify_crew_info));
-
     }
 
     @Override
@@ -98,6 +94,7 @@ public class ModifyCrewInfoActivity extends BaseActivity {
 
         CrewDetailsBean crewDetailsBean = (CrewDetailsBean) intent.getSerializableExtra(Constants.CREW_BEAN);
         CrewDetailsBean.DataBean.ObjectBean crewDetails = crewDetailsBean.getData().getObject();
+
         personName = crewDetails.getPersonName();
         phone = crewDetails.getMobilePhone();
         crewId = crewDetails.getId();
@@ -106,50 +103,29 @@ public class ModifyCrewInfoActivity extends BaseActivity {
         tvInputName.setText(this.personName);
         tvPhone.setText(phone);
         etNationality.setText(crewDetails.getNation());
-        tvType.setText(crewDetails.getCardType());
+        String cardType = crewDetails.getCardType();
+        switch (cardType) {
+            case "1":
+                tvType.setText(arrCertificates[0]);
+                break;
+            case "2":
+                tvType.setText(arrCertificates[1]);
+                break;
+            case "3":
+                tvType.setText(arrCertificates[2]);
+                break;
+            case "4":
+                tvType.setText(arrCertificates[3]);
+                break;
+            case "5":
+                tvType.setText(arrCertificates[4]);
+                break;
+        }
         etCertificateNumber.setText(crewDetails.getCardNo());
         etDuty.setText(crewDetails.getPostName());
         etJobNum.setText(crewDetails.getJobNo());
         etCallSign.setText(crewDetails.getEmail());
-
-        if (StringUtils.isNotEmpty(shipId)) {
-            NetUtils.postWithHeader(ModifyCrewInfoActivity.this, ConstantsUrls.MY_SHIP_INFO)
-                    .addParams(Constants.ID, shipId)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(ModifyCrewInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(ModifyCrewInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
-                                String message = netServiceErrort.getMessage();
-                                String code = netServiceErrort.getCode();
-                                if (code.equals("200")) {
-                                    MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
-                                    MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
-                                    tvBelongShip.setText(shipInfo.getShipName());
-
-                                } else if (code.equals("601")) {
-                                    //清除了sp存储
-                                    ModifyCrewInfoActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(ModifyCrewInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(ModifyCrewInfoActivity.this, LoginRegisterActivity.class));
-                                } else {
-                                    Toast.makeText(ModifyCrewInfoActivity.this, message, Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-        }
-
-
+        tvBelongShip.setText(crewDetails.getShipName());
     }
 
     @Override

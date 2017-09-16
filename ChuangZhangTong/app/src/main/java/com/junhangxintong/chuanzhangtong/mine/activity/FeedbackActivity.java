@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -211,12 +212,12 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void inProgress(float progress, long total, int id) {
                         super.inProgress(progress, total, id);
-
                         progressDialog.setProgress((int) progress);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        progressDialog.dismiss();
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(FeedbackActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
@@ -233,7 +234,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                                 finish();
                             }
                             if (code.equals("200")) {
-                                progressDialog.dismiss();
+
                                 finish();
                             }
                         }
@@ -243,6 +244,8 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void showChoosePhotesPop() {
+
+        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(FeedbackActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         View inflate = LayoutInflater.from(this).inflate(R.layout.choose_gender_picker_popupwindow_layut, null);
 
         popupWindow = new PopupWindow(inflate, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

@@ -33,16 +33,19 @@
     <TextView
         android:id="@+id/tv_score"
         style="@style/textview_style_about"
+        android:gravity="center_vertical"
         android:text="@string/score" />
 
     <TextView
         android:id="@+id/tv_about_version"
         style="@style/textview_style_about"
-        android:text="@string/version_info" />
+        android:text="@string/version_info"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_check_updata"
         style="@style/textview_style_about"
+        android:gravity="center_vertical"
         android:text="@string/check_updata" />
 
     <TextView

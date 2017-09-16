@@ -62,8 +62,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="君航" />
+                    android:gravity="center_vertical" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -98,8 +97,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="@string/contact_phone" />
+                    android:gravity="center_vertical" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -131,8 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:text="@string/chuanguan" />
+                    android:layout_marginRight="10dp" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -167,8 +164,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="大幅" />
+                    android:gravity="center_vertical" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -202,8 +198,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="男" />
+                    android:gravity="center_vertical" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -238,8 +233,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="君航" />
+                    android:gravity="center_vertical" />
 
             </RelativeLayout>
         </LinearLayout>
@@ -274,8 +268,7 @@
                     android:layout_alignParentRight="true"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/arrow_right"
-                    android:gravity="center_vertical"
-                    android:text="@string/contact_phone" />
+                    android:gravity="center_vertical" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

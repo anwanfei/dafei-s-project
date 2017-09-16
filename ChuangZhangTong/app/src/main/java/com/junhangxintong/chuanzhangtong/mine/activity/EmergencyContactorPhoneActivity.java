@@ -37,6 +37,7 @@ public class EmergencyContactorPhoneActivity extends BaseActivity {
     EditText etInputName;
     @BindView(R.id.tv_save)
     TextView tvSave;
+    private String emergencyPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,12 @@ public class EmergencyContactorPhoneActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
-                netCommitEmergencyContactPhone();
+                emergencyPhone = etInputName.getText().toString();
+                if (emergencyPhone.isEmpty()) {
+                    Toast.makeText(EmergencyContactorPhoneActivity.this, getResources().getString(R.string.no_empty), Toast.LENGTH_SHORT).show();
+                } else {
+                    netCommitEmergencyContactPhone();
+                }
                 break;
         }
     }
@@ -75,7 +81,7 @@ public class EmergencyContactorPhoneActivity extends BaseActivity {
     private void netCommitEmergencyContactPhone() {
 
         String userId = CacheUtils.getString(this, Constants.ID);
-        final String emergencyPhone = etInputName.getText().toString();
+
         boolean mobile = MultiVerify.isMobile(emergencyPhone);
         if (mobile) {
             NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)

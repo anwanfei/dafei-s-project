@@ -22,6 +22,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -108,7 +110,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
         Intent intent = getIntent();
 
         String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
-        if (fromDynamic != null) {
+        if (StringUtils.isNotBlank(fromDynamic)) {
             DynamicRemindNonnReportBean dynamicRemindNonnReportBean = (DynamicRemindNonnReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
             DynamicRemindNonnReportBean.DataBean.ObjectBean noonReportInfo = dynamicRemindNonnReportBean.getData().getObject();
             tvShipMessageName.setText(noonReportInfo.getShipName());

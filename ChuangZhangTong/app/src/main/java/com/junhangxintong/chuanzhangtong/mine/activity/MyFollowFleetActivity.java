@@ -3,6 +3,8 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +28,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +73,8 @@ public class MyFollowFleetActivity extends BaseActivity {
     EditText etSearchShipName;
     @BindView(R.id.ll_search_ship_name)
     LinearLayout llSearchShipName;
+    @BindView(R.id.tv_search_ship)
+    TextView tvSearchShip;
 
     private List<FollowShipListBean.DataBean.ArrayBean> myFollowFleetLists;
     private MyFollowFleetAdapter myFollowFleetAdapter;
@@ -80,17 +86,39 @@ public class MyFollowFleetActivity extends BaseActivity {
     private List<FollowShipListBean.DataBean.ArrayBean> followShipLists;
     private ArrayList<String> choosedShipIdLists;
     private String userId;
+    private List<String> followShipIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initlistener();
+    }
+
+    private void initlistener() {
+        etSearchShipName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String shipName = etSearchShipName.getText().toString();
+                netGetFollowFleetList(shipName);
+            }
+        });
     }
 
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.follow_fleets));
-        tvShare.setVisibility(View.VISIBLE);
+
         tvShare.setText(getResources().getString(R.string.delete));
         tvNothing.setText(getResources().getString(R.string.follow_fisrt_ship));
         tvAddShip.setText(getResources().getString(R.string.search));
@@ -100,10 +128,21 @@ public class MyFollowFleetActivity extends BaseActivity {
     protected void initData() {
 
         userId = CacheUtils.getString(this, Constants.ID);
+        netGetFollowFleetList("");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetFollowFleetList("");
+    }
+
+    private void netGetFollowFleetList(String shipName) {
         NetUtils.postWithHeader(this, ConstantsUrls.FOLLOW_SHIP_LIST)
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.SHIP_NAME, shipName)
                 .build()
                 .execute(new StringCallback() {
 
@@ -124,6 +163,10 @@ public class MyFollowFleetActivity extends BaseActivity {
                                 FollowShipListBean followShipListBean = new Gson().fromJson(response, FollowShipListBean.class);
                                 followShipLists = followShipListBean.getData().getArray();
 
+                                followShipIds = new ArrayList<String>();
+                                for (int i = 0; i < followShipLists.size(); i++) {
+                                    followShipIds.add(String.valueOf(followShipLists.get(i).getId()));
+                                }
                                 updaFollowFLeetList();
 
                                 myFollowFleetAdapter = new MyFollowFleetAdapter(MyFollowFleetActivity.this, followShipLists);
@@ -153,11 +196,15 @@ public class MyFollowFleetActivity extends BaseActivity {
             lvMyFolllowFleet.setVisibility(View.VISIBLE);
             llNoFollowFleet.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
+            tvSearchShip.setVisibility(View.VISIBLE);
+            tvAddShip.setVisibility(View.VISIBLE);
         } else {
             lvMyFolllowFleet.setVisibility(View.GONE);
             llNoFollowFleet.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
+            tvSearchShip.setVisibility(View.GONE);
+            tvNothing.setVisibility(View.GONE);
         }
     }
 
@@ -166,13 +213,16 @@ public class MyFollowFleetActivity extends BaseActivity {
         return R.layout.activity_my_follow_fleet;
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_add_ship, R.id.tv_my_fleet_list_choose_all, R.id.tv_my_fleet_list_delete, R.id.rl_choose_all_delete, R.id.tv_share})
+    @OnClick({R.id.iv_back, R.id.tv_add_ship, R.id.tv_search_ship, R.id.tv_my_fleet_list_choose_all, R.id.tv_my_fleet_list_delete, R.id.rl_choose_all_delete, R.id.tv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.tv_add_ship:
+                searchShipNameToMainActivity();
+                break;
+            case R.id.tv_search_ship:
                 searchShipNameToMainActivity();
                 break;
             case R.id.tv_my_fleet_list_choose_all:
@@ -192,15 +242,22 @@ public class MyFollowFleetActivity extends BaseActivity {
 
     private void searchShipNameToMainActivity() {
         String searchShipName = etSearchShipName.getText().toString();
-        if (searchShipName.equals("")) {
+
+        if (StringUtils.isEmpty(searchShipName)) {
             Toast.makeText(MyFollowFleetActivity.this, getResources().getString(R.string.input_ship_name), Toast.LENGTH_SHORT).show();
-        } else {
-            Intent intent = new Intent(MyFollowFleetActivity.this, MainActivity.class);
-            intent.putExtra(Constants.SEARCHSHIPNAME, searchShipName);
-            startActivity(intent);
-            CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.SEARCHSHIPNAME, true);
-            finish();
+            return;
         }
+
+        if (followShipLists.size() > 0) {
+            Toast.makeText(MyFollowFleetActivity.this, getResources().getString(R.string.followed_ship), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(MyFollowFleetActivity.this, MainActivity.class);
+        intent.putExtra(Constants.SEARCHSHIPNAME, searchShipName);
+        startActivity(intent);
+        CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.SEARCHSHIPNAME, true);
+        finish();
     }
 
     private void editFollowFleet() {
@@ -210,12 +267,15 @@ public class MyFollowFleetActivity extends BaseActivity {
             myFollowFleetAdapter.controlCheckboxShow(isChoose);
             isChoose = false;
             myFollowFleetAdapter.notifyDataSetChanged();
+            tvSearchShip.setVisibility(View.GONE);
         } else {
             rlChooseAllDelete.setVisibility(View.GONE);
             tvShare.setText(getResources().getString(R.string.edit));
             myFollowFleetAdapter.controlCheckboxShow(isChoose);
             isChoose = true;
             myFollowFleetAdapter.notifyDataSetChanged();
+            tvSearchShip.setVisibility(View.VISIBLE
+            );
         }
     }
 
@@ -267,8 +327,8 @@ public class MyFollowFleetActivity extends BaseActivity {
         }
 
         String ids = sb.toString().substring(0, sb.length() - 1);
-        NetUtils.postWithHeader(MyFollowFleetActivity.this,ConstantsUrls.DELETE_FOLLOW_SHIP)
-                .addParams(Constants.IDS,ids)
+        NetUtils.postWithHeader(MyFollowFleetActivity.this, ConstantsUrls.DELETE_FOLLOW_SHIP)
+                .addParams(Constants.IDS, ids)
                 .build()
                 .execute(new StringCallback() {
                     @Override

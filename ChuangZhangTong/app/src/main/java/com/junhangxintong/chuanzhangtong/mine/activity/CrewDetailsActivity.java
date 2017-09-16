@@ -125,7 +125,7 @@ public class CrewDetailsActivity extends BaseActivity {
                                 }
 
                                 tvCrweCertificateNumber.setText(crewObject.getCardNo());
-                                tvBelongShip.setText(crewId);
+                                tvBelongShip.setText(crewObject.getShipName());
                                 tvCrewDuty.setText(crewObject.getPostName());
                                 tvCrewJobNum.setText(crewObject.getJobNo());
                                 tvCrewMailBox.setText(crewObject.getEmail());
@@ -158,9 +158,6 @@ public class CrewDetailsActivity extends BaseActivity {
                 break;
             case R.id.tv_setting:
                 Intent intent = new Intent(CrewDetailsActivity.this, ModifyCrewInfoActivity.class);
-                /*intent.putExtra(Constants.PERSON_NAME,personName);
-                intent.putExtra(Constants.PHONE,mobilePhone);
-                intent.putExtra(Constants.ID,crewId);*/
                 intent.putExtra(Constants.CREW_BEAN,crewDetailsBean);
                 startActivity(intent);
                 break;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,18 @@ public class ChooseBelongShipActivity extends BaseActivity {
     TextView tvTitle;
     @BindView(R.id.listview_choose_certificate_type)
     ListView listviewChooseCertificateType;
+    @BindView(R.id.iv_nothing)
+    ImageView ivNothing;
+    @BindView(R.id.tv_nothing)
+    TextView tvNothing;
+    @BindView(R.id.ll_no_fleet)
+    LinearLayout llNoFleet;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.iv_share)
+    ImageView ivShare;
+    @BindView(R.id.tv_add_ship)
+    TextView tvAddShip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +62,7 @@ public class ChooseBelongShipActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.choose_belong_ship));
+        tvNothing.setText("亲，您尚没有船舶");
     }
 
     @Override
@@ -96,7 +110,6 @@ public class ChooseBelongShipActivity extends BaseActivity {
                                         finish();
                                     }
                                 });
-
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -105,7 +118,11 @@ public class ChooseBelongShipActivity extends BaseActivity {
                                 startActivity(new Intent(ChooseBelongShipActivity.this, LoginRegisterActivity.class));
                                 finish();
                             } else if (code.equals("404")) {
-//                                shipLists = new ArrayList<ShipListBean.DataBean.ArrayBean>();
+                                listviewChooseCertificateType.setVisibility(View.GONE);
+                                llNoFleet.setVisibility(View.VISIBLE);
+                                tvSetting.setVisibility(View.GONE);
+                                ivShare.setVisibility(View.GONE);
+                                tvAddShip.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(ChooseBelongShipActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
@@ -122,5 +139,6 @@ public class ChooseBelongShipActivity extends BaseActivity {
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
+        finish();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
+import com.junhangxintong.chuanzhangtong.common.MyApplication;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
@@ -25,6 +26,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +103,10 @@ public class CrewManagementActivity extends BaseActivity {
 
         userId = CacheUtils.getString(this, Constants.ID);
 
-        netGetCrewsLists();
+        if (StringUtils.isNotEmpty(MyApplication.token)) {
+            netGetCrewsLists();
+        }
+
     }
 
     private void netGetCrewsLists() {
@@ -154,11 +160,13 @@ public class CrewManagementActivity extends BaseActivity {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
+            tvSetting.setVisibility(View.VISIBLE);
         } else {
             lvMyCrew.setVisibility(View.GONE);
             llNoCrew.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
+            tvSetting.setVisibility(View.GONE);
         }
     }
 
@@ -281,7 +289,9 @@ public class CrewManagementActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        netGetCrewsLists();
+        if (StringUtils.isNotEmpty(MyApplication.token)) {
+            netGetCrewsLists();
+        }
     }
 
     public void chooseAllOrNot() {
@@ -317,22 +327,4 @@ public class CrewManagementActivity extends BaseActivity {
             crewListsAdapter.notifyDataSetChanged();
         }
     }
-
-  /*  @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            switch (requestCode) {
-                case Constants.REQUEST_CODE0:
-                    CrewBean crewBean = (CrewBean) data.getSerializableExtra(Constants.CREW_BEAN);
-                    crews.add(crewBean);
-                    updatecrewListsList();
-                    crewListsAdapter.notifyDataSetChanged();
-
-                    break;
-            }
-
-        }
-    }*/
-
 }

@@ -37,6 +37,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,7 @@ public class AllMessageFragment extends BaseFragment {
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLists;
     Class[] arrClasses = {ShipDynamicActivity.class, CrewCertificateActivity.class, ShipCertificateActivity.class};
+    private String token;
 
     @Override
     protected View initView() {
@@ -78,6 +81,18 @@ public class AllMessageFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 根据是否登录判断是否要进入登录界面
+        token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+
+        if (StringUtils.isEmpty(token)) {
+            startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+            getActivity().finish();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -86,8 +101,27 @@ public class AllMessageFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        netGetDynamicRemindList("");
+        if (StringUtils.isNotEmpty(token)) {
+            netGetDynamicRemindList("");
+        }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            if (StringUtils.isNotEmpty(token)) {
+                netGetDynamicRemindList("");
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(getActivity(), "所有", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void netGetDynamicRemindList(String remindType) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);

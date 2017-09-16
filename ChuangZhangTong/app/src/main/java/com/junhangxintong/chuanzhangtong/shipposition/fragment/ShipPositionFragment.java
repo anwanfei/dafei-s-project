@@ -211,10 +211,12 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         userId = CacheUtils.getString(getActivity(), Constants.ID);
         //数据库初始化
         shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
-        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 3) {
+        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 5) {
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 1, "君航号", "中国", "mmsi001", "超大型货船"));
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 2, "中国号", "中国", "mmsi002", "大船"));
-            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 3, "辽宁好空欧冠母舰", "中国", "mmsi003", "航空母舰"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 3, "辽宁号航空母舰", "中国", "mmsi003", "航空母舰"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 4, "远洋号", "中国", "mmsi004", "客船"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 5, "长征号", "中国", "mmsi005", "货船"));
         }
 
         // TODO: 2017/8/26 关注界面带搜索关键字跳转过来
@@ -247,7 +249,9 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 inputContent = etSearch.getText().toString();
                 if (inputContent.isEmpty()) {
                     // 显示历史记录
-                    showHistoryLists();
+                    if (historyLists.size() > 0) {
+                        showHistoryLists();
+                    }
                     llSearchResult.setVisibility(View.GONE);
                     ivClear.setVisibility(View.GONE);
                 } else {
@@ -261,8 +265,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
                     // 此处为得到焦点时的处理内容
-                    llSearch.setVisibility(View.VISIBLE);
-                    showHistoryLists();
+                    if (historyLists.size() > 0) {
+                        llSearch.setVisibility(View.VISIBLE);
+                        showHistoryLists();
+                    }
                 } else {
                     // 此处为失去焦点时的处理内容
 //                    llSearchResult.setVisibility(View.GONE);
@@ -289,6 +295,15 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             }
         });
 
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            llSearch.setVisibility(View.GONE);
+            etSearch.clearFocus();
+        }
     }
 
     //当输入内容不为空时，显示搜索结果
@@ -469,10 +484,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             case R.id.tv_clear_history:
                 historyLists.clear();
                 historyListAdapter.notifyDataSetChanged();
+                llHistory.setVisibility(View.GONE);
                 break;
         }
     }
-
 
     private void showPopMyFleet(final List<ShipListBean.DataBean.ArrayBean> shipLists) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.pop_ship_position_my_fleet, null);

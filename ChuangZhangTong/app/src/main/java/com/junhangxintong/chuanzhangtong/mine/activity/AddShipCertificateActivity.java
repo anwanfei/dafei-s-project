@@ -45,6 +45,7 @@ import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -260,16 +261,17 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
             GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).open(this);
         }
     }
+
     private void initListener() {
         rgIsEffective.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 if (i == rbNo.getId()) {
-                    isEffective = "1";
+                    isEffective = "2";
                     rlEffectiveDate.setVisibility(View.VISIBLE);
                     rlReWarningDays.setVisibility(View.VISIBLE);
                 } else if (i == rbYes.getId()) {
-                    isEffective = "2";
+                    isEffective = "1";
                     rlEffectiveDate.setVisibility(View.GONE);
                     rlReWarningDays.setVisibility(View.GONE);
                 }
@@ -370,18 +372,21 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
             }
         }
 
-        if (certificateName.equals("")) {
+        if (StringUtils.isEmpty(certificateName)) {
             Toast.makeText(AddShipCertificateActivity.this, getResources().getString(R.string.certificate_name_cannot_empty), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (certificateName.equals("")) {
+        if (StringUtils.isEmpty(certificateNum)) {
             Toast.makeText(AddShipCertificateActivity.this, getResources().getString(com.junhangxintong.chuanzhangtong.R.string.certificate_num_cannot_empty), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(issuingAuthory.equals("")) {
-            Toast.makeText(AddShipCertificateActivity.this, getResources().getString(R.string.certificate_issuing_authory_cannot_empty), Toast.LENGTH_SHORT).show();
+        if (isEffective.equals("2")) {
+            if (StringUtils.isEmpty(ettectiveDate)) {
+                Toast.makeText(AddShipCertificateActivity.this, getResources().getString(R.string.input_effective_date), Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         final ProgressDialog progressDialog = getProgressDialog();
@@ -411,6 +416,7 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
 
                     @Override
                     public void onResponse(String response, int id) {
+                        progressDialog.dismiss();
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(AddShipCertificateActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
@@ -427,7 +433,6 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
                                 finish();
                             }
                             if (code.equals("200")) {
-                                progressDialog.dismiss();
                                 finish();
                             }
                         }

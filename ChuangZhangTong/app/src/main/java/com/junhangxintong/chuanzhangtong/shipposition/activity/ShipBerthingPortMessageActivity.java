@@ -22,6 +22,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -50,8 +52,6 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
     TextView tvPlaceTop;
     @BindView(R.id.ll_zhengwu_bottom)
     LinearLayout llZhengwuBottom;
-    @BindView(R.id.ll_layout_horizental_gray_line)
-    LinearLayout llLayoutHorizentalGrayLine;
     @BindView(R.id.tv_loading_unloading_cargo_port)
     TextView tvLoadingUnloadingCargoPort;
     @BindView(R.id.tv_anchor_leave_time)
@@ -88,7 +88,7 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
 
         //来自动态提醒
         String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
-        if (fromDynamic != null) {
+        if (StringUtils.isNotBlank(fromDynamic)) {
             DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean = (DynamicRemindBerthingReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
             DynamicRemindBerthingReportBean.DataBean.ObjectBean berthingReportInfo = dynamicRemindBerthingReportBean.getData().getObject();
             tvShipMessageName.setText(berthingReportInfo.getShipName());

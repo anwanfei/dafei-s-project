@@ -138,6 +138,7 @@
             <TextView
                 style="@style/account_setting_left_textview"
                 android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/duty" />
 
             <EditText
@@ -156,6 +157,7 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/job_num" />
 
             <EditText

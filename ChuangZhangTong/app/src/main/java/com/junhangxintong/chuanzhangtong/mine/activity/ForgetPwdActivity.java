@@ -21,8 +21,9 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -107,46 +108,50 @@ public class ForgetPwdActivity extends BaseActivity {
         final String phone = etInputPhone.getText().toString();
         final String verifyCode = etInputVerifyCode.getText().toString();
 
+
         boolean mobile = MultiVerify.isMobile(phone);
 
-        if (mobile) {
-
-            NetUtils.postWithNoHeader(this,ConstantsUrls.VERIFY_SMS_FORGET_PWD)
-                    .addParams(Constants.PHONE, phone)
-                    .addParams(Constants.VCODE, verifyCode)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(ForgetPwdActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(ForgetPwdActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
-                                if (!netServiceErrortBean.getCode().equals("200")) {
-                                    Toast.makeText(ForgetPwdActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
-                                    String message = loginResult.getMessage();
-                                    Toast.makeText(ForgetPwdActivity.this, message, Toast.LENGTH_SHORT).show();
-
-                                    Intent intent = new Intent(ForgetPwdActivity.this, InputPwdActivity.class);
-                                    intent.putExtra(Constants.PHONE, phone);
-                                    intent.putExtra(Constants.VCODE, verifyCode);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-
-                        }
-                    });
-        } else {
+        if (!mobile) {
             Toast.makeText(ForgetPwdActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
         }
+        if (StringUtils.isEmpty(verifyCode)) {
+            Toast.makeText(ForgetPwdActivity.this, getResources().getString(R.string.input_verify_code), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        NetUtils.postWithNoHeader(this, ConstantsUrls.VERIFY_SMS_FORGET_PWD)
+                .addParams(Constants.PHONE, phone)
+                .addParams(Constants.VCODE, verifyCode)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ForgetPwdActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(ForgetPwdActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            if (!netServiceErrortBean.getCode().equals("200")) {
+                                Toast.makeText(ForgetPwdActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                String message = loginResult.getMessage();
+                                Toast.makeText(ForgetPwdActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(ForgetPwdActivity.this, InputPwdActivity.class);
+                                intent.putExtra(Constants.PHONE, phone);
+                                intent.putExtra(Constants.VCODE, verifyCode);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+
+                    }
+                });
     }
 
     private void netSendVerifyCode() {

@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +13,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
-import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
-import com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity;
+import com.junhangxintong.chuanzhangtong.common.MyApplication;
+import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
+import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +40,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+
+import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/8/8.
@@ -61,14 +76,15 @@ public class ShipCrewInfoFragment extends BaseFragment {
     @BindView(R.id.rl_choose_all_delete)
     RelativeLayout rlChooseAllDelete;
     Unbinder unbinder;
-    private ArrayList<CrewBean> crews;
-    private MyCrewAdapter myCrewAdapter;
-    private ArrayList<CrewBean> choosedCrewsLists;
     private boolean isChoose = true;
     private boolean isChooseAll = true;
     private List<String> savelist = new ArrayList();
     private Map<String, Boolean> map = new HashMap<>();
-    private List<CrewBean> choosedLists;
+    private List<CrewServeBean.DataBean.ArrayBean> choosedLists;
+    private String userId;
+    private List<CrewServeBean.DataBean.ArrayBean> crewLists;
+    private CrewListsAdapter crewListsAdapter;
+    private ArrayList<String> choosedCrewIdLists;
 
 
     public ShipCrewInfoFragment() {
@@ -98,19 +114,58 @@ public class ShipCrewInfoFragment extends BaseFragment {
     @Override
     protected void initData() {
         super.initData();
-        crews = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            CrewBean crewBean = new CrewBean();
-            crewBean.setCrewName("船员" + i + "号");
-            crewBean.setDuty("大副" + i + "号");
-            crewBean.setJobNum("00" + i + "号");
-            crewBean.setNationality("中国");
-            crews.add(crewBean);
+        userId = CacheUtils.getString(getActivity(), Constants.ID);
+
+        if (StringUtils.isNotEmpty(MyApplication.token)) {
+            netGetCrewsLists();
         }
 
-        updateCrewsList();
-        myCrewAdapter = new MyCrewAdapter(getActivity(), crews);
-        lvMyCrew.setAdapter(myCrewAdapter);
+    }
+
+    private void netGetCrewsLists() {
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.CREW_LISTS)
+                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.PERSON_NAME, "")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            String message = netServiceErrort.getMessage();
+                            String code = netServiceErrort.getCode();
+                            if (code.equals("200")) {
+                                CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
+                                crewLists = crewServerBean.getData().getArray();
+
+                                updateCrewsList();
+                                crewListsAdapter = new CrewListsAdapter(getActivity(), crewLists);
+                                lvMyCrew.setAdapter(crewListsAdapter);
+
+                            } else if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else if (code.equals("404")) {
+                                crewLists = new ArrayList<CrewServeBean.DataBean.ArrayBean>();
+                                updateCrewsList();
+                            } else {
+                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -119,16 +174,26 @@ public class ShipCrewInfoFragment extends BaseFragment {
         unbinder.unbind();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (StringUtils.isNotEmpty(MyApplication.token)) {
+            netGetCrewsLists();
+        }
+    }
+
     private void updateCrewsList() {
-        if (crews.size() > 0) {
+        if (crewLists.size() > 0) {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
+            tvSetting.setVisibility(View.VISIBLE);
         } else {
             lvMyCrew.setVisibility(View.GONE);
             llNoCrew.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
+            tvSetting.setVisibility(View.GONE);
         }
     }
 
@@ -139,13 +204,10 @@ public class ShipCrewInfoFragment extends BaseFragment {
                 getActivity().finish();
                 break;
             case R.id.iv_share:
+                addCrew();
                 break;
             case R.id.tv_setting:
-                if (isChoose) {
-                    addCrew();
-                } else {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.can_not_add_when_edit), Toast.LENGTH_SHORT).show();
-                }
+                addCrew();
                 break;
             case R.id.tv_share:
                 editCrews();
@@ -167,26 +229,31 @@ public class ShipCrewInfoFragment extends BaseFragment {
     }
 
     private void deleteChoosedItems() {
+
         //清除集合
         savelist.clear();
         map.clear();
 
-        //选中的船作为一个集合，集中处理
+        //选中的船员作为一个集合，集中处理
         choosedLists = new ArrayList<>();
+        //选中的船员id作为一个集合，集中处理
+        choosedCrewIdLists = new ArrayList<>();
 
         //找到选中的位置，并保存在map
-        for (int i = 0; i < crews.size(); i++) {
-            boolean checkbox = crews.get(i).isCheckbox();
+        for (int i = 0; i < crewLists.size(); i++) {
+            boolean checkbox = crewLists.get(i).isCheckbox();
             if (checkbox) {
                 map.put(i + "", true);
-                choosedLists.add(crews.get(i));
+                choosedCrewIdLists.add(String.valueOf(crewLists.get(i).getId()));
+                choosedLists.add(crewLists.get(i));
             } else {
                 map.put(i + "", false);
             }
         }
-        crews.removeAll(choosedLists);
+        crewLists.removeAll(choosedLists);
+        netDeleteChoosedCrews();
         updateCrewsList();
-        myCrewAdapter.notifyDataSetChanged();
+        crewListsAdapter.notifyDataSetChanged();
 
         //遍历map
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {
@@ -198,57 +265,81 @@ public class ShipCrewInfoFragment extends BaseFragment {
         }
     }
 
+    private void netDeleteChoosedCrews() {
+
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < choosedCrewIdLists.size(); i++) {
+            sb.append(choosedCrewIdLists.get(i) + ",");
+        }
+
+        String ids = sb.toString().substring(0, sb.length() - 1);
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.DELETE_CREW)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.IDS, ids)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity(), Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            }
+                        }
+                    }
+                });
+    }
+
 
     public void chooseAllOrNot() {
         if (isChooseAll) {
             isChooseAll = false;
-            for (int i = 0; i < crews.size(); i++) {
-                crews.get(i).setCheckbox(true);
+            for (int i = 0; i < crewLists.size(); i++) {
+                crewLists.get(i).setCheckbox(true);
             }
             tvMyCrewListChooseAll.setText(getResources().getString(R.string.cancel_choose_all));
-            myCrewAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         } else {
             isChooseAll = true;
-            for (int i = 0; i < crews.size(); i++) {
-                crews.get(i).setCheckbox(false);
+            for (int i = 0; i < crewLists.size(); i++) {
+                crewLists.get(i).setCheckbox(false);
             }
             tvMyCrewListChooseAll.setText(getResources().getString(R.string.choose_all));
-            myCrewAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         }
     }
 
     private void addCrew() {
-        startActivityForResult(new Intent(getActivity(), AddCrewActivity.class), Constants.REQUEST_CODE0);
+        startActivity(new Intent(getActivity(), CrewInfoInputActivity.class));
     }
 
     private void editCrews() {
         if (isChoose) {
             rlChooseAllDelete.setVisibility(View.VISIBLE);
             tvShare.setText(getResources().getString(R.string.cancel));
-            myCrewAdapter.controlCheckboxShow(isChoose);
+            crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = false;
-            myCrewAdapter.notifyDataSetChanged();
+            crewListsAdapter.notifyDataSetChanged();
         } else {
             rlChooseAllDelete.setVisibility(View.GONE);
             tvShare.setText(getResources().getString(R.string.edit));
-            myCrewAdapter.controlCheckboxShow(isChoose);
+            crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = true;
-            myCrewAdapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            switch (requestCode) {
-                case Constants.REQUEST_CODE0:
-                    choosedCrewsLists = (ArrayList<CrewBean>) data.getSerializableExtra(Constants.ADD_CREW);
-                    crews.addAll(choosedCrewsLists);
-                    updateCrewsList();
-                    myCrewAdapter.notifyDataSetChanged();
-                    break;
-            }
+            crewListsAdapter.notifyDataSetChanged();
         }
     }
 }

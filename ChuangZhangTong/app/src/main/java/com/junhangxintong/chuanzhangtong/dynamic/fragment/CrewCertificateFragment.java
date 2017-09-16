@@ -26,6 +26,8 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
 
+import static com.junhangxintong.chuanzhangtong.common.MyApplication.token;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
@@ -74,20 +77,52 @@ public class CrewCertificateFragment extends BaseFragment {
     protected void initData() {
         super.initData();
 
-        netGetDynamicRemindList("3");
+        if(StringUtils.isNotEmpty(token)) {
+            netGetDynamicRemindList("3");
 
-        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                int id = dynamincRemindLists.get(i).getId();
-                Intent intent = new Intent(getActivity(), CrewCertificateActivity.class);
-                intent.putExtra(Constants.ID, String.valueOf(id));
-                startActivity(intent);
-                view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
-            }
-        });
+                    int id = dynamincRemindLists.get(i).getId();
+                    Intent intent = new Intent(getActivity(), CrewCertificateActivity.class);
+                    intent.putExtra(Constants.ID, String.valueOf(id));
+                    startActivity(intent);
+                    view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+                }
+            });
+        }
+
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            if(StringUtils.isNotEmpty(token)) {
+                netGetDynamicRemindList("3");
+
+                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                        int id = dynamincRemindLists.get(i).getId();
+                        Intent intent = new Intent(getActivity(), CrewCertificateActivity.class);
+                        intent.putExtra(Constants.ID, String.valueOf(id));
+                        startActivity(intent);
+                        view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        Toast.makeText(getActivity(), "船员", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void netGetDynamicRemindList(String remindType) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);

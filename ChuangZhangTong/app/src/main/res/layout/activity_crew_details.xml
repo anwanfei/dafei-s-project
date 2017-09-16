@@ -22,13 +22,11 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
-                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/name" />
 
             <TextView
                 android:id="@+id/tv_crew_name"
-                style="@style/edittext_no_arrow"
-                android:text="@string/app_name" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -40,13 +38,11 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
-                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/phone" />
 
             <TextView
                 android:id="@+id/tv_crew_phone"
-                style="@style/edittext_no_arrow"
-                android:text="110" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -65,8 +61,7 @@
             <TextView
                 android:id="@+id/tv_crew_nationality"
                 style="@style/edittext_no_arrow"
-                android:gravity="center_vertical"
-                android:text="@string/nationality_china" />
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -85,8 +80,7 @@
             <TextView
                 android:id="@+id/tv_ceretificate_type"
                 style="@style/edittext_no_arrow"
-                android:gravity="center_vertical"
-                android:text="@string/ID" />
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -102,8 +96,7 @@
 
             <TextView
                 android:id="@+id/tv_crwe_certificate_number"
-                style="@style/edittext_no_arrow"
-                android:text="13077456446464546" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -119,8 +112,7 @@
 
             <TextView
                 android:id="@+id/tv_belong_ship"
-                style="@style/edittext_no_arrow"
-                android:text="@string/huahai_one" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -139,8 +131,7 @@
             <TextView
                 android:id="@+id/tv_crew_duty"
                 style="@style/edittext_no_arrow"
-                android:gravity="center_vertical"
-                android:text="船长" />
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -156,8 +147,7 @@
 
             <TextView
                 android:id="@+id/tv_crew_job_num"
-                style="@style/edittext_no_arrow"
-                android:text="@string/job_num_demo" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -173,8 +163,7 @@
 
             <TextView
                 android:id="@+id/tv_crew_mail_box"
-                style="@style/edittext_no_arrow"
-                android:text="@string/mail_box_demo" />
+                style="@style/edittext_no_arrow" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

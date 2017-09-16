@@ -99,6 +99,15 @@ public class OilPriceFragment extends BaseFragment {
                                 NewsListsAdapter newsListsAdapter = new NewsListsAdapter(getActivity(), newsLists);
                                 lvMessage.setAdapter(newsListsAdapter);
 
+                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        int id = newsLists.get(i).getId();
+                                        Intent intent = new Intent(getActivity(), OilPriceActivity.class);
+                                        intent.putExtra(Constants.ID, id);
+                                        startActivity(intent);
+                                    }
+                                });
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -111,15 +120,5 @@ public class OilPriceFragment extends BaseFragment {
                         }
                     }
                 });
-
-        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int id = newsLists.get(i).getId();
-                Intent intent = new Intent(getActivity(), OilPriceActivity.class);
-                intent.putExtra(Constants.ID, id);
-                startActivity(intent);
-            }
-        });
     }
 }

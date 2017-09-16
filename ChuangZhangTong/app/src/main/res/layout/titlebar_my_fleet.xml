@@ -39,13 +39,14 @@
             android:layout_alignParentRight="true"
             android:padding="12dp"
             android:scaleType="fitCenter"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_setting"
             android:layout_width="wrap_content"
-            android:padding="3dp"
             android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:visibility="gone"
             android:textColor="@color/black" />
 
         <TextView
@@ -54,7 +55,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:padding="3dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:visibility="gone" />
     </LinearLayout>
 
 

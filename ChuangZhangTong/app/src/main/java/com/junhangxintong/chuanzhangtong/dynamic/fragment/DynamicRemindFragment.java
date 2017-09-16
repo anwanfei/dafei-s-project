@@ -1,8 +1,8 @@
 package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +13,9 @@ import android.widget.TextView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.MessageFragmentAdapter;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
-import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
-import com.junhangxintong.chuanzhangtong.utils.Constants;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,25 +35,23 @@ public class DynamicRemindFragment extends BaseFragment {
     TabLayout tablayoutMessage;
     @BindView(R.id.viewpager_message)
     ViewPager viewpagerMessage;
+    private List<Fragment> fragments;
+    private AllMessageFragment allMessageFragment;
+    private CrewCertificateFragment crewCertificateFragment;
+    private ShipCertificateFragment shipCertificateFragment;
+    private MessageRecoedFragment messageRecoedFragment;
+    private ShipDynamicFragment shipDynamicFragment;
 
     @Override
     protected View initView() {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.fragment_message, null);
-
         return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: 2017/8/23 根据是否登录判断是否要进入登录界面
-        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
-
-        if (StringUtils.isEmpty(token)) {
-            startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-            getActivity().finish();
-        }
     }
 
     @Override
@@ -70,11 +66,24 @@ public class DynamicRemindFragment extends BaseFragment {
     protected void initData() {
         super.initData();
 
+        allMessageFragment = new AllMessageFragment();
+        crewCertificateFragment = new CrewCertificateFragment();
+        shipCertificateFragment = new ShipCertificateFragment();
+        messageRecoedFragment = new MessageRecoedFragment();
+        shipDynamicFragment = new ShipDynamicFragment();
 
+        fragments = new ArrayList<>();
+        fragments.add(allMessageFragment);
+        fragments.add(shipDynamicFragment);
+        fragments.add(messageRecoedFragment);
+        fragments.add(crewCertificateFragment);
+        fragments.add(shipCertificateFragment);
 
         tvTitle.setText(getResources().getString(R.string.message));
-        viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager()));
+        viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager(),fragments));
         tablayoutMessage.setupWithViewPager(viewpagerMessage);
+        viewpagerMessage.setOffscreenPageLimit(1);
+
 
         tablayoutMessage.getTabAt(0).setIcon(R.drawable.iv_all_messags);
         tablayoutMessage.getTabAt(1).setIcon(R.drawable.iv_ship_dynamic);

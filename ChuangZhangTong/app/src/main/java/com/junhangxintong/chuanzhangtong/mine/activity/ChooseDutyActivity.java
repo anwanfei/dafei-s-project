@@ -36,6 +36,7 @@ public class ChooseDutyActivity extends BaseActivity {
     @BindView(R.id.tv_save)
     TextView tvSave;
     private String[] arrDuties;
+    private String userDuty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,12 @@ public class ChooseDutyActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
+                userDuty = etInputDuty.getText().toString();
+                if (userDuty.isEmpty()) {
+                    Toast.makeText(ChooseDutyActivity.this, getResources().getString(R.string.no_empty), Toast.LENGTH_SHORT).show();
+                } else {
+                    netCommitUserDuty();
+                }
                 netCommitUserDuty();
                 break;
         }
@@ -74,7 +81,6 @@ public class ChooseDutyActivity extends BaseActivity {
     private void netCommitUserDuty() {
 
         String userId = CacheUtils.getString(this, Constants.ID);
-        final String userDuty = etInputDuty.getText().toString();
 
         NetUtils.postWithHeader(this, ConstantsUrls.MODIFY_USER_INFO)
                 .addParams(Constants.USER_ID, userId)

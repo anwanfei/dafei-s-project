@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
@@ -55,10 +56,12 @@ public class AboutActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_score:
+                Toast.makeText(AboutActivity.this, getResources().getString(R.string.developing), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_about_version:
                 break;
             case R.id.tv_check_updata:
+                Toast.makeText(AboutActivity.this, getResources().getString(R.string.newest_version), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.tv_feed_back:
                 startActivity(new Intent(AboutActivity.this, FeedbackActivity.class));

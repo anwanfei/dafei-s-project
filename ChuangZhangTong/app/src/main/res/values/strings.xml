@@ -142,11 +142,11 @@
     <string name="certificate_type">证书类型</string>
     <string name="certificates_type">证件类型</string>
     <string name="input_certificates_type">输入证件类型</string>
-    <string name="certificate_type_colon">证书类型:</string>
+    <string name="certificate_type_colon">证书类型：</string>
     <string name="type">类型</string>
     <string name="type_with_colon">类型:</string>
     <string name="issuing_authority">签发机构</string>
-    <string name="issuing_authority_colon">签发机构:</string>
+    <string name="issuing_authority_colon">签发机构：</string>
     <string name="end_date">到期日期</string>
     <string name="end_date_format">格式:20170714</string>
     <string name="permanent_effective">永久有效</string>
@@ -207,7 +207,7 @@
     <string name="crew_phone_cannot_empty">船员手机号不能为空</string>
     <string name="phone_cannot_empty">请输入有效手机号</string>
     <string name="crew_mail_cannot_empty">船员邮箱不能为空</string>
-    <string name="follow_fisrt_ship">亲，请关注您的提一条船哦~</string>
+    <string name="follow_fisrt_ship">亲，请关注您的第一条船哦~</string>
     <string name="certificate_details">证书详情</string>
     <string name="certificate">证书</string>
     <string name="insurance">保险</string>
@@ -215,6 +215,7 @@
     <string name="ship_detils">船舶详情</string>
     <string name="follow">+ 关注</string>
     <string name="followed">已关注</string>
+    <string name="followed_ship">已关注该船</string>
     <string name="clear_history">清除历史记录</string>
     <string name="ship_start">大连港</string>
     <string name="ship_end">胶州湾</string>
@@ -374,6 +375,7 @@
     <string name="input_port_position">请输入港口泊位</string>
     <string name="input_tug_use_num">请输入拖轮使用数</string>
     <string name="input_is_pilot">请输入是否引航</string>
+    <string name="input_data">请输入日期</string>
 
     <string name="share_ship_with_colon">分享该船</string>
     <string name="warm_close">关闭提醒</string>
@@ -418,7 +420,7 @@
     <string name="effective_date_colon">有效日期：</string>
     <string name="id_often_use">是否常用</string>
     <string name="photo">照片</string>
-    <string name="add_certificate">添加证件</string>
+    <string name="add_certificate">添加证书</string>
     <string name="add_insurance">添加保险</string>
 
     <string name="input_insurance_type">请输入保险类型</string>
@@ -490,8 +492,15 @@
     <string name="unexit_file">文件不存在</string>
     <string name="modify_crew_info">修改船员信息</string>
     <string name="loadPort">装货港/卸货港</string>
-    <string name="no_ship">您还没有船</string>
-
+    <string name="no_ship">亲，您还没有船</string>
+    <string name="loading">正在加载中...</string>
+    <string name="developing">拼命开发中...</string>
+    <string name="email_error">请输入有效邮箱</string>
+    <string name="newest_version">已经是最新版本</string>
+    <string name="search_no_ship">亲，没有搜索到您的船舶信息哦</string>
+    <string name="input_new_phone">请输入新的手机号</string>
+    <string name="mycertificate">我的证书</string>
+    <string name="cancel_follow">取消关注</string>
 
 
     <!---->

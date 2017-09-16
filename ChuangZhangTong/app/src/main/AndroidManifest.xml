@@ -115,7 +115,7 @@
             android:process=":remote" />
 
         <activity android:name=".mine.activity.CertificateIndetailsActivity" />
-        <activity android:name=".mine.activity.ShipCertificateIndetailsActivity"/>
+        <activity android:name=".mine.activity.ShipCertificateIndetailsActivity" />
         <activity android:name=".shipposition.activity.MyShipDetailsActivity" />
         <activity android:name=".shipposition.activity.AllMessagesActivity" />
         <activity android:name=".shipposition.activity.AddCrewActivity" />
@@ -191,8 +191,9 @@
         <activity android:name=".shipposition.activity.WriteLeaveMessageActivity" />
         <activity android:name=".mine.activity.ScanPhotoActivity" />
         <activity android:name=".mine.activity.ChooseBelongShipActivity" />
-        <activity android:name=".mine.activity.ModifyCrewInfoActivity"/>
-        <activity android:name=".mine.activity.AddShipCertificateActivity"/>
+        <activity android:name=".mine.activity.ModifyCrewInfoActivity" />
+        <activity android:name=".mine.activity.AddShipCertificateActivity" />
+        <activity android:name=".mine.activity.MyCertificateActivity"></activity>
     </application>
 
 </manifest>

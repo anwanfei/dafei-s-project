@@ -9,7 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout">
 
         <include layout="@layout/titlebar" />
 
@@ -31,7 +34,6 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="君航"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -55,7 +57,6 @@
                 android:id="@+id/tv_duty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="船长"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -78,7 +79,6 @@
                 android:id="@+id/tv_certificate_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="海员证"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -101,7 +101,6 @@
                 android:id="@+id/tv_certificate_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="A001"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -117,14 +116,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/issue_date_colon"
+                android:text="@string/certificate_type_colon"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_issue_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/date_demo"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -140,40 +138,39 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/end_time_colon"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tv_certificate_end_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/date_demo"
-                android:textColor="@color/black" />
-
-        </LinearLayout>
-
-        <include layout="@layout/layout_horizental_gray_line" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/issue_position_colon"
+                android:text="@string/issuing_authority_colon"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_certificate_issue_postion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上海海事局"
                 android:textColor="@color/black" />
 
         </LinearLayout>
+
+        <include layout="@layout/layout_horizental_gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/effective_date_colon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_certificate_end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
 
         <include layout="@layout/layout_horizental_gray_line" />
 
@@ -183,7 +180,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/linearLayout">
 
         <include layout="@layout/layout_horizental_gray_line" />
 

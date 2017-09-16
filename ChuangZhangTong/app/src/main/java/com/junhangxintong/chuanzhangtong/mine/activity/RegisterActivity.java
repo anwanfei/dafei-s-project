@@ -26,6 +26,8 @@ import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -120,65 +122,82 @@ public class RegisterActivity extends BaseActivity {
         String verifyCode = etInputVerifyCode.getText().toString();
         String pwd = etInputPwd.getText().toString();
         String confirmPwd = etInputConfirmPwd.getText().toString();
-
         boolean mobile = MultiVerify.isMobile(phone);
 
-        if (true) {
-            NetUtils.postWithNoHeader(this, ConstantsUrls.REGISTER_BY_PHNOE)
-                    .addParams(Constants.PHONE, phone)
-                    .addParams(Constants.VCODE, verifyCode)
-                    .addParams(Constants.PASSWORD, pwd)
-                    .addParams(Constants.CONFIRM_PWD, confirmPwd)
-                    .addParams(Constants.ROLEID, roleId)
-                    .addParams(Constants.SOURCE, Constants.VCODE_TWO)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(RegisterActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        }
+        if (!mobile) {
+            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtils.isEmpty(verifyCode)) {
+            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.input_verify_code), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(RegisterActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+        if (StringUtils.isEmpty(pwd)) {
+            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.input_pwd), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (StringUtils.isEmpty(confirmPwd)) {
+            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.input_pwd_agian), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!pwd.equals(confirmPwd)) {
+            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.two_pwd_not_equal), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        NetUtils.postWithNoHeader(this, ConstantsUrls.REGISTER_BY_PHNOE)
+                .addParams(Constants.PHONE, phone)
+                .addParams(Constants.VCODE, verifyCode)
+                .addParams(Constants.PASSWORD, pwd)
+                .addParams(Constants.CONFIRM_PWD, confirmPwd)
+                .addParams(Constants.ROLEID, roleId)
+                .addParams(Constants.SOURCE, Constants.VCODE_TWO)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(RegisterActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(RegisterActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            if (!netServiceErrortBean.getCode().equals("200")) {
+                                Toast.makeText(RegisterActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
-                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
-                                if (!netServiceErrortBean.getCode().equals("200")) {
-                                    Toast.makeText(RegisterActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
-                                    String message = loginResult.getMessage();
-                                    String token = loginResult.getData().getToken();
-                                    Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+                                LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                String message = loginResult.getMessage();
+                                String token = loginResult.getData().getToken();
+                                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                                    //保存token
-                                    CacheUtils.putString(RegisterActivity.this, Constants.TOKEN, token);
+                                //保存token
+                                CacheUtils.putString(RegisterActivity.this, Constants.TOKEN, token);
 
-                                    //保存id
-                                    CacheUtils.putString(RegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
+                                //保存id
+                                CacheUtils.putString(RegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
 
-                                    //保存角色id
-                                    CacheUtils.putString(RegisterActivity.this, Constants.ROLEID, loginResult.getData().getObject().getRoleId());
+                                //保存角色id
+                                CacheUtils.putString(RegisterActivity.this, Constants.ROLEID, loginResult.getData().getObject().getRoleId());
 
-                                    //注册成功直接回到首页
-                                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                                    finish();
-                                }
+                                //注册成功直接回到首页
+                                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                finish();
                             }
                         }
-                    });
-
-        } else {
-            Toast.makeText(RegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     private void netSendVerifyCode() {
 
         String phone = etInputPhone.getText().toString();
         boolean mobile = MultiVerify.isMobile(phone);
-        if (true) {
+        if (mobile) {
             NetUtils.postWithNoHeader(this, ConstantsUrls.REGIDTER_SEND_VERIFICATION_CODE)
                     .addParams(Constants.PHONE, phone)
                     .build()

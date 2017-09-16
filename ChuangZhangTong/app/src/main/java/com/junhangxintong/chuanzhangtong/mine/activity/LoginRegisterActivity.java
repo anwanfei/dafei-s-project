@@ -28,6 +28,8 @@ import com.junhangxintong.chuanzhangtong.utils.MultiVerify;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -164,51 +166,58 @@ public class LoginRegisterActivity extends BaseActivity {
     private void netLoginByPwd() {
         String phone = etInputPhone.getText().toString();
         String pwd = etInputPwd.getText().toString();
+
         boolean mobile = MultiVerify.isMobile(phone);
-        if (mobile) {
-            NetUtils.postWithNoHeader(this, ConstantsUrls.LOGIN_BY_PHNOE)
-                    .addParams(Constants.PHONE, phone)
-                    .addParams(Constants.PASSWORD, pwd)
-                    .addParams(Constants.SOURCE, Constants.VCODE_TWO)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        }
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
-                                if (!netServiceErrortBean.getCode().equals("200")) {
-                                    Toast.makeText(LoginRegisterActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {
-                                    LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
-                                    String message = loginResult.getMessage();
-                                    Toast.makeText(LoginRegisterActivity.this, message, Toast.LENGTH_SHORT).show();
-
-                                    //保存token
-                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.TOKEN, loginResult.getData().getToken());
-
-                                    //保存id
-                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
-
-                                    //保存角色id
-                                    CacheUtils.putString(LoginRegisterActivity.this, Constants.ROLEID, loginResult.getData().getObject().getRoleId());
-
-                                    //登录成功回到首页
-                                    startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));
-                                    finish();
-                                }
-                            }
-
-                        }
-                    });
-        } else {
+        if (!mobile) {
             Toast.makeText(LoginRegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        if (StringUtils.isEmpty(pwd)) {
+            Toast.makeText(LoginRegisterActivity.this, getResources().getString(R.string.input_pwd), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        NetUtils.postWithNoHeader(this, ConstantsUrls.LOGIN_BY_PHNOE)
+                .addParams(Constants.PHONE, phone)
+                .addParams(Constants.PASSWORD, pwd)
+                .addParams(Constants.SOURCE, Constants.VCODE_TWO)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(LoginRegisterActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            if (!netServiceErrortBean.getCode().equals("200")) {
+                                Toast.makeText(LoginRegisterActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                LoginResultBean loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                                String message = loginResult.getMessage();
+                                Toast.makeText(LoginRegisterActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                                //保存token
+                                CacheUtils.putString(LoginRegisterActivity.this, Constants.TOKEN, loginResult.getData().getToken());
+
+                                //保存id
+                                CacheUtils.putString(LoginRegisterActivity.this, Constants.ID, loginResult.getData().getObject().getId());
+
+                                //保存角色id
+                                CacheUtils.putString(LoginRegisterActivity.this, Constants.ROLEID, loginResult.getData().getObject().getRoleId());
+
+                                //登录成功回到首页
+                                startActivity(new Intent(LoginRegisterActivity.this, MainActivity.class));
+                                finish();
+                            }
+                        }
+
+                    }
+                });
     }
 }

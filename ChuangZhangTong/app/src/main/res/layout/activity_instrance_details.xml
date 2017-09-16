@@ -28,8 +28,7 @@
 
             <TextView
                 android:id="@+id/tv_insurance_type"
-                style="@style/textview_style_certificate"
-                android:text="@string/ship_insturance" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -46,8 +45,7 @@
 
             <TextView
                 android:id="@+id/tv_ship_name"
-                style="@style/textview_style_certificate"
-                android:text="@string/huahai_one" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -59,12 +57,12 @@
 
             <TextView
                 style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
                 android:text="@string/ship_bianhao" />
 
             <TextView
                 android:id="@+id/tv_ship_bianhao"
-                style="@style/textview_style_certificate"
-                android:text="@string/job_num_demo" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -81,8 +79,7 @@
 
             <TextView
                 android:id="@+id/tv_ship_imo"
-                style="@style/textview_style_certificate"
-                android:text="@string/job_num_demo" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -98,8 +95,7 @@
 
             <TextView
                 android:id="@+id/tv_ship_nationality_harbor"
-                style="@style/textview_style_certificate"
-                android:text="@string/ship_start" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -115,8 +111,7 @@
 
             <TextView
                 android:id="@+id/tv_name_address_of_ship"
-                style="@style/textview_style_certificate"
-                android:text="@string/junhang" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -132,8 +127,7 @@
 
             <TextView
                 android:id="@+id/tv_gurantee_type"
-                style="@style/textview_style_certificate"
-                android:text="@string/issuing_authority" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -149,8 +143,7 @@
 
             <TextView
                 android:id="@+id/tv_issue_date"
-                style="@style/textview_style_certificate"
-                android:text="@string/date_demo" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -166,8 +159,7 @@
 
             <TextView
                 android:id="@+id/tv_issuing_authority"
-                style="@style/textview_style_certificate"
-                android:text="@string/junhang" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -184,8 +176,7 @@
 
             <TextView
                 android:id="@+id/tv_issue_address"
-                style="@style/textview_style_certificate"
-                android:text="@string/shanghai" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -201,8 +192,7 @@
 
             <TextView
                 android:id="@+id/tv_is_permanent_effective"
-                style="@style/textview_style_certificate"
-                android:text="@string/yes" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -219,8 +209,7 @@
 
             <TextView
                 android:id="@+id/tv_effective_date"
-                style="@style/textview_style_certificate"
-                android:text="@string/date_demo" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -237,8 +226,7 @@
 
             <TextView
                 android:id="@+id/tv_warning_days"
-                style="@style/textview_style_certificate"
-                android:text="@string/re_warning_days" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -254,8 +242,7 @@
 
             <TextView
                 android:id="@+id/tv_common"
-                style="@style/textview_style_certificate"
-                android:text="@string/is_common" />
+                style="@style/textview_style_certificate" />
         </RelativeLayout>
 
         <RelativeLayout

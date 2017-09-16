@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +27,8 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +118,7 @@ public class MyFleetListActivity extends BaseActivity {
         tvSetting.setVisibility(View.GONE);
         ivShare.setVisibility(View.GONE);
         tvAddShip.setVisibility(View.GONE);
+
 //        tvSetting.setVisibility(View.GONE);
 //        tvShare.setVisibility(View.GONE);
 //        ivShare.setVisibility(View.GONE);
@@ -131,20 +133,9 @@ public class MyFleetListActivity extends BaseActivity {
         userId = CacheUtils.getString(this, Constants.ID);
 
         netGetShipLists("");
-
-        myFleetLists = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-            MyFleetBean myFleetBean = new MyFleetBean();
-            myFleetBean.setShipName("华海" + i + "号");
-            myFleetLists.add(myFleetBean);
-        }
-
-        // TODO: 2017/8/26 搜索船名
-
     }
 
-    private void netGetShipLists(String shipName) {
-        final ProgressDialog progressDialog = getProgressDialog();
+    private void netGetShipLists(final String shipName) {
         NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
@@ -155,7 +146,6 @@ public class MyFleetListActivity extends BaseActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(MyFleetListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -175,8 +165,6 @@ public class MyFleetListActivity extends BaseActivity {
                                 myFleetAdapter = new MyFleetAdapter(MyFleetListActivity.this, shipLists);
                                 lvMyFleet.setAdapter(myFleetAdapter);
                                 myFleetAdapter.notifyDataSetChanged();
-                                progressDialog.dismiss();
-
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -185,6 +173,11 @@ public class MyFleetListActivity extends BaseActivity {
                                 startActivity(new Intent(MyFleetListActivity.this, LoginRegisterActivity.class));
                                 finish();
                             } else if (code.equals("404")) {
+                                if (StringUtils.isNotBlank(shipName)) {
+                                    tvNothing.setText(getResources().getString(R.string.search_no_ship));
+                                } else {
+                                    tvNothing.setText(getResources().getString(R.string.no_ship));
+                                }
                                 shipLists = new ArrayList<ShipListBean.DataBean.ArrayBean>();
                                 updataListview();
                             } else {
@@ -206,7 +199,7 @@ public class MyFleetListActivity extends BaseActivity {
             llNoFleet.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
-            llSearchShipName.setVisibility(View.GONE);
+
         }
 
     }

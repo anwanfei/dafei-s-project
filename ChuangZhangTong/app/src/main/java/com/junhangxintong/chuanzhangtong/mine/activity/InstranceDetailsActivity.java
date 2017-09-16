@@ -126,7 +126,7 @@ public class InstranceDetailsActivity extends BaseActivity {
 
                                 tvInsuranceType.setText(shipCertificateOrInsuranceInfo.getName());
                                 tvShipName.setText(shipCertificateOrInsuranceInfo.getShipName());
-                                tvShipBianhao.setText(String.valueOf(shipCertificateOrInsuranceInfo.getCertifNo()));
+                                tvShipBianhao.setText(String.valueOf(shipCertificateOrInsuranceInfo.getShipCall()));
                                 tvShipImo.setText(shipCertificateOrInsuranceInfo.getImoNo());
                                 tvShipNationalityHarbor.setText(shipCertificateOrInsuranceInfo.getShipNationaPort());
                                 tvNameAddressOfShip.setText(shipCertificateOrInsuranceInfo.getShipNameOrAddress());
