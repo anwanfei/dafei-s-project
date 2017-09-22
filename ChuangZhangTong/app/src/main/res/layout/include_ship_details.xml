@@ -547,6 +547,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/white">
 
                     <TextView
@@ -562,7 +563,7 @@
                         android:id="@+id/tv_update_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         android:paddingRight="20dp"
                         android:text="@string/date_time" />
                 </LinearLayout>

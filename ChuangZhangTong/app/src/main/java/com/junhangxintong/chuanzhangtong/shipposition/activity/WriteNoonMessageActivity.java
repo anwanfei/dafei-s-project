@@ -78,8 +78,6 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
     EditText etInputConsume;
     @BindView(R.id.et_input_remark)
     EditText etInputRemark;
-    @BindView(R.id.ll_commit)
-    LinearLayout llCommit;
     private AlertDialog show;
     private String id;
     private String reArrivalTiem = "";

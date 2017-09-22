@@ -68,12 +68,12 @@ public class ShipCertificatesInsrancesAdapter extends BaseAdapter {
         String validDate = certificates.get(position).getValidDate();
 
         holder.tvCertificateName.setText(certificateName);
-        holder.tvCertificateIssuingAuthority.setText("签发机构：" + issueOrganization);
-        holder.tvCertificateNumber.setText("证书编号：" + certifNo);
+        holder.tvCertificateIssuingAuthority.setText(issueOrganization);
+        holder.tvCertificateNumber.setText("证书编号:" + certifNo);
         if (validDate.equals("")) {
-            holder.tvCertificateType.setText("有效日期：永久有效");
+            holder.tvCertificateType.setText("有效日期:永久有效");
         } else {
-            holder.tvCertificateType.setText("有效日期：" + validDate);
+            holder.tvCertificateType.setText("有效日期:" + validDate);
         }
         //返回view
         return convertView;

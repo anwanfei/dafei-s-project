@@ -3,10 +3,12 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import okhttp3.Call;
 
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
-public class InstranceDetailsActivity extends BaseActivity {
+public class InsuranceDetailsActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -87,6 +89,8 @@ public class InstranceDetailsActivity extends BaseActivity {
     TextView tvSetting;
     @BindView(R.id.gv_certificate_photo)
     GridView gvCertificatePhoto;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,7 @@ public class InstranceDetailsActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.ship_insturance));
+
     }
 
     @Override
@@ -109,13 +114,13 @@ public class InstranceDetailsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(InstranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(InsuranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(InstranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InsuranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
                             NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
                             String message = netServiceErrort.getMessage();
@@ -148,25 +153,33 @@ public class InstranceDetailsActivity extends BaseActivity {
                                 } else {
                                     tvCommon.setText(getResources().getString(R.string.no));
                                 }
-                                
+
                                 String imgUrl = shipCertificateOrInsuranceInfo.getImgUrl();
                                 if (StringUtils.isNotBlank(imgUrl)) {
                                     Type type = new TypeToken<ArrayList<UrlBean>>() {
                                     }.getType();
                                     ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
 
-                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(InstranceDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
+                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(InsuranceDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
                                     gvCertificatePhoto.setAdapter(showPhotoAdapter);
+
+                                    //scrollview数据处理
+                                    new Handler().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            scrollView.scrollTo(0, 0);
+                                        }
+                                    });
                                 }
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                                 //保存获取权限的sp
-                                CacheUtils.putBoolean(InstranceDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(InstranceDetailsActivity.this, LoginRegisterActivity.class));
+                                CacheUtils.putBoolean(InsuranceDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(InsuranceDetailsActivity.this, LoginRegisterActivity.class));
                                 finish();
                             } else {
-                                Toast.makeText(InstranceDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InsuranceDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

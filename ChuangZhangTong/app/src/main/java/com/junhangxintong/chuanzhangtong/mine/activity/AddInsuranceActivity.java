@@ -371,8 +371,6 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void addInsuranceComplete() {
-
-
         String userId = CacheUtils.getString(this, Constants.ID);
 
         String insuranceName = etInsuranceName.getText().toString();
@@ -419,6 +417,8 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
                 Toast.makeText(AddInsuranceActivity.this, getResources().getString(R.string.input_effective_date), Toast.LENGTH_SHORT).show();
                 return;
             }
+        } else {
+            effectiveDate = "";
         }
 
         final ProgressDialog progressDialog = getProgressDialog();

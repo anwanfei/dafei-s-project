@@ -13,28 +13,28 @@ import java.util.List;
 
 public class MessageFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"所有消息", "船舶动态", "报文记录", "船员证书", "船舶证书"};
-
+    private List<String> mtitles;
     private List<Fragment> fragments;
 
-    public MessageFragmentAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public MessageFragmentAdapter(FragmentManager fm, List<Fragment> fragments, List<String> mtitles) {
         super(fm);
         this.fragments = fragments;
+        this.mtitles = mtitles;
     }
 
     @Override
     public Fragment getItem(int position) {
-       return fragments.get(position);
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return mtitles.length;
+        return mtitles.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mtitles[position];
+        return mtitles.get(position);
     }
 
     @Override

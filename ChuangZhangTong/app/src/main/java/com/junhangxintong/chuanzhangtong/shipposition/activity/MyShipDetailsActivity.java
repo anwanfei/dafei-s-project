@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,10 +16,13 @@ import android.widget.TextView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
+import com.junhangxintong.chuanzhangtong.mine.Utils.RoleEnum;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.ShipCommunicateFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.ShipCrewInfoFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.ShipDetailsFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.ShipRecordMessageFragment;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -42,7 +46,7 @@ public class MyShipDetailsActivity extends BaseActivity {
     @BindView(R.id.rb_communicate)
     RadioButton rbCommunicate;
     @BindView(R.id.rg_bottom_tag_ship_details)
-    RadioGroup rgBottomTagShipDetails;
+    public RadioGroup rgBottomTagShipDetails;
     @BindView(R.id.ll_titlebar)
     public LinearLayout llTitlebar;
     private int position;
@@ -80,13 +84,28 @@ public class MyShipDetailsActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        String roleId = CacheUtils.getString(this, Constants.ROLEID);
+        if (roleId.equals(String.valueOf(RoleEnum.SHIPMEMBER.getCode()))) {
+            rbMessage.setVisibility(View.GONE);
+            rbCommunicate.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_my_ship_details;
     }
 
     @OnClick(R.id.iv_back)
     public void onViewClicked() {
-        finish();
+        if (position != 0) {//不是第一个页面
+            position = 0;
+            rgBottomTagShipDetails.check(R.id.rb_ship_details);
+        } else {
+            finish();
+        }
     }
 
 
@@ -147,5 +166,22 @@ public class MyShipDetailsActivity extends BaseActivity {
             return baseFragment;
         }
         return null;
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (position != 0) {//不是第一个页面
+                position = 0;
+                rgBottomTagShipDetails.check(R.id.rb_ship_details);
+                return true;
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -75,6 +75,8 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     LinearLayout llShowAllMessages;
     @BindView(R.id.view_line)
     View viewLine;
+    @BindView(R.id.tv_show_no_message)
+    TextView tvShowNoMessage;
     private PopupWindow popupWindow;
     private boolean isShowPop;
     Class[] arrClass = {WriteNoonMessageActivity.class, WriteArrivalMessageActivity.class, WriteBerthingMessageActivity.class, WriteLeaveMessageActivity.class};
@@ -82,6 +84,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     private List<ReportListBean.DataBean.ArrayBean> reportLists;
     private String shipName;
     Class[] arrClasses = {ShipNoonMessageActivity.class, ShipBerthingPortMessageActivity.class, ShipArrivalMessageActivity.class, ShipLeavePortMessageActivity.class};
+    private String roleId;
 
     @Override
     protected View initView() {
@@ -104,7 +107,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     private void netGetNewestReport() {
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_LISTS)
                 .addParams(Constants.PAGE, "1")
-                .addParams(Constants.PAGE_SIZE, "5")
+                .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.SHIP_NAME, shipName)
                 .addParams(Constants.TYPE, "")
@@ -129,6 +132,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                                 ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
                                 reportLists = reportListBean.getData().getArray();
 
+
                                 ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
                                 lvMessage.setAdapter(shipMessagesAdapter);
 
@@ -137,18 +141,19 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                         // TODO: 2017/8/10 根据条目类型跳转
                                         int type = reportLists.get(i).getType();
+                                        int id = reportLists.get(i).getId();
                                         switch (type) {
                                             case 1:
-                                                gotoMessageDetailsActivity(0);
+                                                gotoMessageDetailsActivity(0, id);
                                                 break;
                                             case 2:
-                                                gotoMessageDetailsActivity(1);
+                                                gotoMessageDetailsActivity(1, id);
                                                 break;
                                             case 3:
-                                                gotoMessageDetailsActivity(2);
+                                                gotoMessageDetailsActivity(2, id);
                                                 break;
                                             case 4:
-                                                gotoMessageDetailsActivity(3);
+                                                gotoMessageDetailsActivity(3, id);
                                                 break;
                                         }
                                     }
@@ -162,7 +167,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                                 startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
                             } else if (code.equals("404")) {
                                 lvMessage.setVisibility(View.GONE);
-                                llShowAllMessages.setVisibility(View.GONE);
+                                tvShowNoMessage.setVisibility(View.VISIBLE);
                             } else {
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                             }
@@ -177,12 +182,17 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
 
-        ivBack.setVisibility(View.VISIBLE);
+        roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
+
+        ivBack.setVisibility(View.GONE);
         tvTitle.setText(getResources().getString(R.string.huahai_one));
-        ivShare.setVisibility(View.GONE);
-        tvSetting.setVisibility(View.GONE);
-        ivShare.setImageResource(R.drawable.ic_input_message);
-        tvSetting.setText(getResources().getString(R.string.input_message));
+        ivShare.setVisibility(View.VISIBLE);
+        tvSetting.setVisibility(View.VISIBLE);
+        if (roleId.equals("2")) {
+            ivShare.setImageResource(R.drawable.ic_input_message);
+            tvSetting.setText(getResources().getString(R.string.input_message));
+        }
+
         return rootView;
     }
 
@@ -280,7 +290,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         Intent intent = new Intent(getActivity(), arrClass[num]);
         intent.putExtra(Constants.ID, id);
         startActivity(intent);
-        getActivity().finish();
+        hidePop();
     }
 
     @Override
@@ -293,9 +303,9 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         }
     }
 
-    private void gotoMessageDetailsActivity(int num) {
+    private void gotoMessageDetailsActivity(int num, int id) {
         Intent intent = new Intent(getActivity(), arrClasses[num]);
-        intent.putExtra(Constants.ID, id);
+        intent.putExtra(Constants.ID, String.valueOf(id));
         intent.putExtra(Constants.SHIP_NAME, shipName);
         startActivity(intent);
     }

@@ -3,14 +3,19 @@ package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
@@ -57,6 +62,8 @@ public class AllMessageFragment extends BaseFragment {
     @BindView(R.id.lv_message)
     ListView lvMessage;
     Unbinder unbinder;
+    @BindView(R.id.refrsh)
+    XRefreshView refresh;
     private int a = 0;
 
     List<String> allMessages = new ArrayList<>();
@@ -64,6 +71,9 @@ public class AllMessageFragment extends BaseFragment {
     private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLists;
     Class[] arrClasses = {ShipDynamicActivity.class, CrewCertificateActivity.class, ShipCertificateActivity.class};
     private String token;
+    private boolean isGetData = false;
+    private int page = 1;
+    private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLoadMoreLists;
 
     @Override
     protected View initView() {
@@ -77,6 +87,7 @@ public class AllMessageFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        refresh.setPullLoadEnable(true);
         return rootView;
     }
 
@@ -102,52 +113,127 @@ public class AllMessageFragment extends BaseFragment {
     protected void initData() {
         super.initData();
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList("");
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         }
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList("");
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
             }
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//        Toast.makeText(getActivity(), "所有", Toast.LENGTH_SHORT).show();
+    protected void initListener() {
+        super.initListener();
+
+        refresh.setPinnedTime(1000);
+        refresh.setAutoLoadMore(false);
+        refresh.setMoveForHorizontal(true);
+        refresh.setMoveHeadWhenDisablePullRefresh(true);//当下拉的时候不能上拉
+
+        //设置当非RecyclerView上拉加载完成以后的回弹时间
+        refresh.setScrollBackDuration(300);
+
+        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page += 1;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), true);
+                    }
+                },2000);
+            }
+        });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isGetData) {
+            isGetData = true;
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
+        }
+    }
 
-    private void netGetDynamicRemindList(String remindType) {
+    @Override
+    public void onPause() {
+        super.onPause();
+        isGetData = false;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //   进入当前Fragment
+        if (enter && !isGetData) {
+            Log.e("TAG", "所有消息");
+            isGetData = true;
+            //这里可以做网络请求或者需要的数据刷新操作
+            netGetDynamicRemindList("10", "1", false);
+        } else {
+            isGetData = false;
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    private void netGetDynamicRemindList(String pageSize, String page, final boolean isLoadmore) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
-                .addParams(Constants.PAGE_SIZE, "100")
-                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, pageSize)
+                .addParams(Constants.PAGE, page)
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.REMIND_TYPE, remindType)
+                .addParams(Constants.REMIND_TYPE, "")
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        refreshLoadmoreFail();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            refreshLoadmoreFail();
                         } else {
                             NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
                                 DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
-                                dynamincRemindLists = dynamicRemindListBean.getData().getArray();
+                                int count = dynamicRemindListBean.getData().getCount();
+
+                                if (isLoadmore) {
+                                    dynamincRemindLoadMoreLists = dynamicRemindListBean.getData().getArray();
+                                    dynamincRemindLists.addAll(dynamincRemindLoadMoreLists);
+                                } else {
+                                    dynamincRemindLists = dynamicRemindListBean.getData().getArray();
+                                }
+
+                                refresh.stopRefresh();
+
+                                if (dynamincRemindLists.size() <= count) {
+                                    if (Build.VERSION.SDK_INT >= 11) {
+                                        dynamincRemindLists.addAll(dynamincRemindLists);
+                                    }
+                                    refresh.stopLoadMore();
+                                } else {
+                                    refresh.setLoadComplete(true);
+                                }
 
                                 DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
                                 lvMessage.setAdapter(dynamicRemindListsAdapter);
@@ -190,6 +276,11 @@ public class AllMessageFragment extends BaseFragment {
                         }
                     }
                 });
+    }
+
+    private void refreshLoadmoreFail() {
+        refresh.stopRefresh(false);
+        refresh.stopLoadMore(false);
     }
 
     private void netGetReportType(String id) {

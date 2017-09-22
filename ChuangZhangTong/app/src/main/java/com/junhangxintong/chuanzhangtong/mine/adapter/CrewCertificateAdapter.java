@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class CrewCertificateAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<CrewCeretificateRemindBean.DataBean.ArrayBean> certificates;
+    private boolean isShowCheckBox;
 
     public CrewCertificateAdapter(Context mContext, List<CrewCeretificateRemindBean.DataBean.ArrayBean> myFleetLists) {
         this.mContext = mContext;
@@ -50,18 +52,12 @@ public class CrewCertificateAdapter extends BaseAdapter {
         //1、创建或获取viewHolder
         ViewHolder holder = null;
         if (convertView == null) {
-            //创建holder对象
-            holder = new ViewHolder();
 
             //加载条目布局
             convertView = View.inflate(mContext, R.layout.item_certificate, null);
 
-            //找控件
-            holder.tvCertificateName = (TextView) convertView.findViewById(R.id.tv_certificate_name);
-            holder.tvCertificateNumber = (TextView) convertView.findViewById(R.id.tv_certificate_number);
-            holder.tvCertificateType = (TextView) convertView.findViewById(R.id.tv_certificate_type);
-            holder.tvCertificateIssuingAuthority = (TextView) convertView.findViewById(R.id.tv_certificate_issuing_authority);
-            holder.llCetificate = (LinearLayout) convertView.findViewById(R.id.ll_cetificate);
+            //创建holder对象
+            holder = new ViewHolder(convertView);
 
             //保存holder
             convertView.setTag(holder);
@@ -73,20 +69,46 @@ public class CrewCertificateAdapter extends BaseAdapter {
         String certifNo = certificates.get(position).getCertifNo();
         String issueOrganization = certificates.get(position).getIssueOrganization();
         String validDate = certificates.get(position).getValidDate();
+        boolean checkbox = certificates.get(position).isCheckbox();
 
         holder.tvCertificateName.setText(certificateName);
-        holder.tvCertificateIssuingAuthority.setText("签发机构：" + issueOrganization);
-        holder.tvCertificateNumber.setText("证书编号：" + certifNo);
+        holder.tvCertificateIssuingAuthority.setText(issueOrganization);
+        holder.tvCertificateNumber.setText("证书编号:" + certifNo);
+
         if (validDate.equals("")) {
-            holder.tvCertificateType.setText("有效日期：永久有效");
+            holder.tvCertificateType.setText("有效日期:永久有效");
         } else {
-            holder.tvCertificateType.setText("有效日期：" + validDate);
+            holder.tvCertificateType.setText("有效日期:" + validDate);
+        }
+
+        if (checkbox) {
+            holder.cbShip.setChecked(true);
+        } else {
+            holder.cbShip.setChecked(false);
+        }
+        holder.cbShip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isCb = certificates.get(position).isCheckbox();
+                if (isCb) {
+                    certificates.get(position).setCheckbox(false);
+                } else {
+                    certificates.get(position).setCheckbox(true);
+                }
+            }
+        });
+
+
+        if (isShowCheckBox) {
+            holder.cbShip.setVisibility(View.VISIBLE);
+        } else {
+            holder.cbShip.setVisibility(View.INVISIBLE);
         }
 /*
         holder.llCetificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, CertificateIndetailsActivity.class);
+                Intent intent = new Intent(mContext, CrewCertificateDetailsActivity.class);
                 int id = certificates.get(position).getId();
                 intent.putExtra(Constants.ID, String.valueOf(id));
                 mContext.startActivity(intent);
@@ -97,22 +119,30 @@ public class CrewCertificateAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
+        @BindView(R.id.tv_label_certificate)
+        TextView tvLabelCertificate;
+        @BindView(R.id.tv_label_insurance)
+        TextView tvLabelInsurance;
+        @BindView(R.id.cb_ship)
+        CheckBox cbShip;
         @BindView(R.id.tv_certificate_name)
         TextView tvCertificateName;
         @BindView(R.id.tv_certificate_number)
         TextView tvCertificateNumber;
-        @BindView(R.id.tv_certificate_type)
-        TextView tvCertificateType;
         @BindView(R.id.tv_certificate_issuing_authority)
         TextView tvCertificateIssuingAuthority;
+        @BindView(R.id.tv_certificate_type)
+        TextView tvCertificateType;
         @BindView(R.id.ll_cetificate)
         LinearLayout llCetificate;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
+    }
 
-        ViewHolder() {
-        }
+    public void controlCheckboxShow(boolean b) {
+        isShowCheckBox = b;
+        notifyDataSetChanged();
     }
 }

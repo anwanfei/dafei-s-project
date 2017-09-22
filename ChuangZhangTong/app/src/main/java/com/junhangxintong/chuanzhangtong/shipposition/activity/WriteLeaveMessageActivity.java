@@ -190,6 +190,7 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
 
         if (loadingUnloadingCargoPort.equals("")) {
             Toast.makeText(WriteLeaveMessageActivity.this, getResources().getString(R.string.loadPort), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)

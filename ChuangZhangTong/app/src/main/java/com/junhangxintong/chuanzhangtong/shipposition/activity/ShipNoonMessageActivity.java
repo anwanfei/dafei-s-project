@@ -93,6 +93,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
     TextView tvPlaceTop;
     @BindView(R.id.ll_zhengwu_bottom)
     LinearLayout llZhengwuBottom;
+    private String id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +137,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
             tvConsume.setText(noonReportInfo.getConsume());
             tvRemark.setText(noonReportInfo.getRemark());
         } else {
-            String id = intent.getStringExtra(Constants.ID);
+            id = intent.getStringExtra(Constants.ID);
             final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
             tvShipMessageName.setText(shipName);
 

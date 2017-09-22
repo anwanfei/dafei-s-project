@@ -126,6 +126,15 @@ public class ShipCertificateInsuranceListsBean {
             private int isValid;
             private int createUserId;
             private String issueOrganization;
+            private boolean isCheckbox;
+
+            public boolean isCheckbox() {
+                return isCheckbox;
+            }
+
+            public void setCheckbox(boolean checkbox) {
+                isCheckbox = checkbox;
+            }
 
             public int getShipId() {
                 return shipId;

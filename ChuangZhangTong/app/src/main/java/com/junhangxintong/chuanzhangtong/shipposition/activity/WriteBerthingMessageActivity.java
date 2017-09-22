@@ -190,6 +190,7 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
 
         if(loadingUnloadingCargoPort.equals("")) {
             Toast.makeText(WriteBerthingMessageActivity.this, getResources().getString(R.string.loadPort), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)

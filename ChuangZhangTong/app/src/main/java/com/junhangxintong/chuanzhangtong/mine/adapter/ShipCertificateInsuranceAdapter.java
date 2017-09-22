@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.activity.CertificateIndetailsActivity;
-import com.junhangxintong.chuanzhangtong.mine.activity.InstranceDetailsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateDetailsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.InsuranceDetailsActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.CustomCertificateBean;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
@@ -134,13 +134,13 @@ public class ShipCertificateInsuranceAdapter extends RecyclerView.Adapter<Recycl
     }
 
     private void gotoShipInsuranceDetailsActivity(int position) {
-        Intent intent = new Intent(mContext, InstranceDetailsActivity.class);
+        Intent intent = new Intent(mContext, InsuranceDetailsActivity.class);
         intent.putExtra(Constants.ID, shipInsurances.get(position).getId());
         mContext.startActivity(intent);
     }
 
     private void gotoShipCertificateDetailsActivity(int position) {
-        Intent intent = new Intent(mContext, CertificateIndetailsActivity.class);
+        Intent intent = new Intent(mContext, CrewCertificateDetailsActivity.class);
         intent.putExtra(Constants.ID, shipCertificates.get(position).getId());
         mContext.startActivity(intent);
     }

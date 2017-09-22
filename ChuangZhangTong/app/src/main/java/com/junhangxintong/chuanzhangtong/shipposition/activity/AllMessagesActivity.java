@@ -20,6 +20,7 @@ import com.junhangxintong.chuanzhangtong.shipposition.fragment.ArrivaMessageFrag
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.BerthingMessageFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.LeaveMessageFragment;
 import com.junhangxintong.chuanzhangtong.shipposition.fragment.NoonzMessageFragment;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 
@@ -61,7 +62,11 @@ public class AllMessagesActivity extends BaseActivity implements View.OnClickLis
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.all_history_messages));
         ivShare.setVisibility(View.VISIBLE);
-        tvSetting.setVisibility(View.VISIBLE);
+        String roleId = CacheUtils.getString(this, Constants.ROLEID);
+        if (!roleId.equals("2")) {
+            tvSetting.setVisibility(View.GONE);
+            ivShare.setVisibility(View.GONE);
+        }
         ivShare.setImageResource(R.drawable.ic_input_message);
         tvSetting.setText(getResources().getString(R.string.input_message));
     }
@@ -149,6 +154,7 @@ public class AllMessagesActivity extends BaseActivity implements View.OnClickLis
             isShowPop = true;
         }
     }
+
     private void showPopShipMessage() {
         View view = LayoutInflater.from(this).inflate(R.layout.pop_ship_message, null);
         TextView tv_pop_noon_message = (TextView) view.findViewById(R.id.tv_pop_noon_message);
@@ -191,6 +197,7 @@ public class AllMessagesActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
     public void gotoWriteMessageActivity(int num) {
         Intent intent = new Intent(this, arrClass[num]);
         intent.putExtra(Constants.ID, id);

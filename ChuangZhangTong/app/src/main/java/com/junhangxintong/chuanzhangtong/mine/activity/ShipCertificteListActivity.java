@@ -10,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,20 +18,23 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
-import com.junhangxintong.chuanzhangtong.mine.adapter.ShipCertificateInsuranceAdapter;
-import com.junhangxintong.chuanzhangtong.mine.adapter.ShipCertificatesInsrancesAdapter;
-import com.junhangxintong.chuanzhangtong.mine.adapter.ShipInsrancesAdapter;
-import com.junhangxintong.chuanzhangtong.mine.bean.CustomCertificateBean;
+import com.junhangxintong.chuanzhangtong.mine.adapter.ShipCertificatesAndInsrancesAdapter;
+import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateInsuranceListsBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.junhangxintong.chuanzhangtong.view.MyGridview;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,11 +73,26 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
     LinearLayout llCertificate;
     @BindView(R.id.ll_insurance)
     LinearLayout llInsurance;
+    @BindView(R.id.gv_certificate_insurance)
+    MyGridview gvCertificateInsurance;
+    @BindView(R.id.tv_my_crew_list_choose_all)
+    TextView tvMyCrewListChooseAll;
+    @BindView(R.id.tv_my_crew_list_delete)
+    TextView tvMyCrewListDelete;
+    @BindView(R.id.rl_choose_all_delete)
+    RelativeLayout rlChooseAllDelete;
     private PopupWindow popupWindow;
     private boolean isShowPop;
     private String id;
     private List<ShipCertificateInsuranceListsBean.DataBean.ArrayBean> shipCertificateInsuranceLists;
-    private ShipCertificateInsuranceAdapter shipCertificateInsuranceAdapter;
+    private String userId;
+    private boolean isChoose = true;
+    private ShipCertificatesAndInsrancesAdapter shipCertificatesAndInsrancesAdapter;
+    private boolean isChooseAll = true;
+    private List<String> savelist = new ArrayList();
+    private Map<String, Boolean> map = new HashMap<>();
+    private ArrayList<ShipCertificateInsuranceListsBean.DataBean.ArrayBean> choosedLists;
+    private ArrayList<String> choosedCrewIdLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,20 +104,21 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.ship_certificate));
         tvSetting.setVisibility(View.VISIBLE);
-        ivShare.setVisibility(View.VISIBLE);
+        ivShare.setVisibility(View.GONE);
         ivShare.setBackgroundResource(R.drawable.add_certificate);
         tvSetting.setText(getResources().getString(R.string.add));
+        tvShare.setVisibility(View.VISIBLE);
+        tvShare.setText(getResources().getString(R.string.delete));
         ivNothing.setImageResource(R.drawable.iv_no_certificate);
         tvNothing.setText(getResources().getString(R.string.add_first_certificate));
     }
 
     @Override
     protected void initData() {
-
         Intent intent = getIntent();
         id = intent.getStringExtra(Constants.ID);
+        userId = CacheUtils.getString(this, Constants.ID);
         netGetCertificateOrInsurances();
-
     }
 
     private void netGetCertificateOrInsurances() {
@@ -122,11 +142,31 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                final List<CustomCertificateBean> shipCertificates = new ArrayList<CustomCertificateBean>();
-                                final List<CustomCertificateBean> shipInsurances = new ArrayList<CustomCertificateBean>();
+                                /*final List<CustomCertificateBean> shipCertificates = new ArrayList<CustomCertificateBean>();
+                                final List<CustomCertificateBean> shipInsurances = new ArrayList<CustomCertificateBean>();*/
                                 ShipCertificateInsuranceListsBean shipCertificateInsuranceListsBean = new Gson().fromJson(response, ShipCertificateInsuranceListsBean.class);
                                 shipCertificateInsuranceLists = shipCertificateInsuranceListsBean.getData().getArray();
-                                CustomCertificateBean customCertificateBean = null;
+                                shipCertificatesAndInsrancesAdapter = new ShipCertificatesAndInsrancesAdapter(ShipCertificteListActivity.this, shipCertificateInsuranceLists);
+                                updata();
+                                gvCertificateInsurance.setAdapter(shipCertificatesAndInsrancesAdapter);
+                                gvCertificateInsurance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
+                                        int id = shipCertificateInsuranceLists.get(i).getId();
+                                        if (certifType == 1) {
+                                            Intent intent = new Intent(ShipCertificteListActivity.this, CrewCertificateDetailsActivity.class);
+                                            intent.putExtra(Constants.ID, String.valueOf(id));
+                                            startActivity(intent);
+
+                                        } else {
+                                            Intent intent = new Intent(ShipCertificteListActivity.this, InsuranceDetailsActivity.class);
+                                            intent.putExtra(Constants.ID, String.valueOf(id));
+                                            startActivity(intent);
+                                        }
+                                    }
+                                });
+                                /*CustomCertificateBean customCertificateBean = null;
                                 for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
                                     customCertificateBean = new CustomCertificateBean();
                                     int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
@@ -154,6 +194,7 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
 
                                 if (shipCertificates.size() > 0) {
                                     llCertificate.setVisibility(View.VISIBLE);
+
                                 } else {
                                     llCertificate.setVisibility(View.GONE);
                                 }
@@ -174,7 +215,7 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                                 gvInsurance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(ShipCertificteListActivity.this, InstranceDetailsActivity.class);
+                                        Intent intent = new Intent(ShipCertificteListActivity.this, InsuranceDetailsActivity.class);
                                         intent.putExtra(Constants.ID, shipInsurances.get(i).getId());
                                         startActivity(intent);
                                     }
@@ -183,11 +224,11 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                                 gvCertificate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(ShipCertificteListActivity.this, CertificateIndetailsActivity.class);
+                                        Intent intent = new Intent(ShipCertificteListActivity.this, CrewCertificateDetailsActivity.class);
                                         intent.putExtra(Constants.ID, shipCertificates.get(i).getId());
                                         startActivity(intent);
                                     }
-                                });
+                                });*/
 
 
                             } else if (code.equals("601")) {
@@ -224,13 +265,14 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
         return R.layout.activity_ship_certificte_list;
     }
 
-    @OnClick({R.id.iv_back, R.id.iv_share, R.id.tv_setting, R.id.tv_add_ship, R.id.ll_no_fleet})
+    @OnClick({R.id.iv_back, R.id.tv_share, R.id.tv_setting, R.id.tv_add_ship, R.id.ll_no_fleet, R.id.tv_my_crew_list_choose_all, R.id.tv_my_crew_list_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.iv_share:
+            case R.id.tv_share:
+                editCrews();
                 break;
             case R.id.tv_setting:
                 if (isShowPop) {
@@ -252,7 +294,131 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                 break;
             case R.id.ll_no_fleet:
                 break;
+            case R.id.tv_my_crew_list_choose_all:
+                chooseAllOrNot();
+                break;
+            case R.id.tv_my_crew_list_delete:
+                deleteChoosedItems();
+                break;
         }
+    }
+
+    private void editCrews() {
+        if (isChoose) {
+            rlChooseAllDelete.setVisibility(View.VISIBLE);
+            tvShare.setText(getResources().getString(R.string.cancel));
+            shipCertificatesAndInsrancesAdapter.controlCheckboxShow(isChoose);
+            isChoose = false;
+            shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+        } else {
+            rlChooseAllDelete.setVisibility(View.GONE);
+            tvShare.setText(getResources().getString(R.string.delete));
+            shipCertificatesAndInsrancesAdapter.controlCheckboxShow(isChoose);
+            isChoose = true;
+            shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void chooseAllOrNot() {
+        if (isChooseAll) {
+            isChooseAll = false;
+            for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
+                shipCertificateInsuranceLists.get(i).setCheckbox(true);
+            }
+            tvMyCrewListChooseAll.setText(getResources().getString(R.string.cancel_choose_all));
+            shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+        } else {
+            isChooseAll = true;
+            for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
+                shipCertificateInsuranceLists.get(i).setCheckbox(false);
+            }
+            tvMyCrewListChooseAll.setText(getResources().getString(R.string.choose_all));
+            shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void deleteChoosedItems() {
+
+        //清除集合
+        savelist.clear();
+        map.clear();
+
+        //选中的船员作为一个集合，集中处理
+        choosedLists = new ArrayList<>();
+        //选中的船员id作为一个集合，集中处理
+        choosedCrewIdLists = new ArrayList<>();
+
+        //找到选中的位置，并保存在map
+        for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
+            boolean checkbox = shipCertificateInsuranceLists.get(i).isCheckbox();
+            if (checkbox) {
+                map.put(i + "", true);
+                choosedCrewIdLists.add(String.valueOf(shipCertificateInsuranceLists.get(i).getId()));
+                choosedLists.add(shipCertificateInsuranceLists.get(i));
+            } else {
+                map.put(i + "", false);
+            }
+        }
+
+        netDeleteChoosedCrews();
+        updata();
+        shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+
+        //遍历map
+        for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+            String key = entry.getKey();
+            Boolean value = entry.getValue();
+            if (value) {
+                savelist.add(key);
+            }
+        }
+    }
+
+    private void netDeleteChoosedCrews() {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < choosedCrewIdLists.size(); i++) {
+            sb.append(choosedCrewIdLists.get(i) + ",");
+        }
+
+        if (StringUtils.isBlank(sb.toString())) {
+            Toast.makeText(ShipCertificteListActivity.this, getResources().getString(R.string.choose_one), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String ids = sb.toString().substring(0, sb.length() - 1);
+        NetUtils.postWithHeader(this, ConstantsUrls.DELETE_SHIP_CERTIFICATE)
+                .addParams(Constants.USER_ID, userId)
+                .addParams(Constants.IDS, ids)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(ShipCertificteListActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        if (response == null || response.equals("") || response.equals("null")) {
+                            Toast.makeText(ShipCertificteListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        } else {
+                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
+                            String message = sendVerifyCode.getMessage();
+                            String code = sendVerifyCode.getCode();
+                            Toast.makeText(ShipCertificteListActivity.this, message, Toast.LENGTH_SHORT).show();
+                            if (code.equals("601")) {
+                                //清除了sp存储
+                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
+                                //保存获取权限的sp
+                                CacheUtils.putBoolean(ShipCertificteListActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(ShipCertificteListActivity.this, LoginRegisterActivity.class));
+                                finish();
+                            } else if (code.equals("200")) {
+                                shipCertificateInsuranceLists.removeAll(choosedLists);
+                                updata();
+                                shipCertificatesAndInsrancesAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
     }
 
     private void updata() {
@@ -266,6 +432,8 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
             tvShare.setVisibility(View.GONE);
             llInsurance.setVisibility(View.GONE);
             llCertificate.setVisibility(View.GONE);
+            rlChooseAllDelete.setVisibility(View.GONE);
+            tvShare.setText(getResources().getString(R.string.delete));
         }
     }
 
@@ -316,4 +484,5 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
         intent.putExtra(Constants.ID, id);
         startActivity(intent);
     }
+
 }

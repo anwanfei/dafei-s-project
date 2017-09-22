@@ -29,8 +29,6 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -121,7 +119,7 @@ public class MyFollowFleetActivity extends BaseActivity {
 
         tvShare.setText(getResources().getString(R.string.delete));
         tvNothing.setText(getResources().getString(R.string.follow_fisrt_ship));
-        tvAddShip.setText(getResources().getString(R.string.search));
+        tvAddShip.setText(getResources().getString(R.string.add));
     }
 
     @Override
@@ -243,17 +241,18 @@ public class MyFollowFleetActivity extends BaseActivity {
     private void searchShipNameToMainActivity() {
         String searchShipName = etSearchShipName.getText().toString();
 
-        if (StringUtils.isEmpty(searchShipName)) {
+       /*if (StringUtils.isEmpty(searchShipName)) {
             Toast.makeText(MyFollowFleetActivity.this, getResources().getString(R.string.input_ship_name), Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
-        if (followShipLists.size() > 0) {
+       /* if (followShipLists.size() > 0) {
             Toast.makeText(MyFollowFleetActivity.this, getResources().getString(R.string.followed_ship), Toast.LENGTH_SHORT).show();
             return;
         }
-
+*/
         Intent intent = new Intent(MyFollowFleetActivity.this, MainActivity.class);
+//        intent.putExtra(Constants.SEARCHSHIPNAME, searchShipName);
         intent.putExtra(Constants.SEARCHSHIPNAME, searchShipName);
         startActivity(intent);
         CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.SEARCHSHIPNAME, true);

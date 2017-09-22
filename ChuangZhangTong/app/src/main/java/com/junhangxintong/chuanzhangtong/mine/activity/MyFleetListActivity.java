@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +20,9 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.mine.Utils.RoleEnum;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFleetAdapter;
+import com.junhangxintong.chuanzhangtong.mine.adapter.MyShipAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.MyFleetBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -83,6 +86,7 @@ public class MyFleetListActivity extends BaseActivity {
     private List<MyFleetBean> choosedLists;
     private List<ShipListBean.DataBean.ArrayBean> shipLists;
     private String userId;
+    private MyShipAdapter myShipAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +116,16 @@ public class MyFleetListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+
+        String roleID = CacheUtils.getString(this, Constants.ROLEID);
+
+        if (roleID.equals(String.valueOf(RoleEnum.SHIPMASTER.getCode())) || roleID.equals(String.valueOf(RoleEnum.SHIPMEMBER.getCode()))) {
+            tvTitle.setText(getResources().getString(R.string.my_ship));
+        } else {
+            tvTitle.setText(getResources().getString(R.string.my_fleet));
+        }
+
         ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.my_fleet));
 
         tvSetting.setVisibility(View.GONE);
         ivShare.setVisibility(View.GONE);
@@ -136,6 +148,7 @@ public class MyFleetListActivity extends BaseActivity {
     }
 
     private void netGetShipLists(final String shipName) {
+        final String roleId = CacheUtils.getString(this, Constants.ROLEID);
         NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
@@ -162,9 +175,16 @@ public class MyFleetListActivity extends BaseActivity {
                                 shipLists = shipListBean.getData().getArray();
 
                                 updataListview();
-                                myFleetAdapter = new MyFleetAdapter(MyFleetListActivity.this, shipLists);
-                                lvMyFleet.setAdapter(myFleetAdapter);
-                                myFleetAdapter.notifyDataSetChanged();
+
+                                if (roleId.equals(String.valueOf(RoleEnum.SHIPMEMBER.getCode()))) {
+                                    myShipAdapter = new MyShipAdapter(MyFleetListActivity.this, shipLists);
+                                    lvMyFleet.setAdapter(myShipAdapter);
+                                    myShipAdapter.notifyDataSetChanged();
+                                } else {
+                                    myFleetAdapter = new MyFleetAdapter(MyFleetListActivity.this, shipLists);
+                                    lvMyFleet.setAdapter(myFleetAdapter);
+                                    myFleetAdapter.notifyDataSetChanged();
+                                }
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -332,5 +352,13 @@ public class MyFleetListActivity extends BaseActivity {
             isChoose = true;
             myFleetAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_BACK) {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

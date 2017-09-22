@@ -62,7 +62,7 @@ public class ShipCommunicateFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
 
-        ivBack.setVisibility(View.VISIBLE);
+        ivBack.setVisibility(View.GONE);
         tvTitle.setText(getResources().getString(R.string.communication));
         return rootView;
     }

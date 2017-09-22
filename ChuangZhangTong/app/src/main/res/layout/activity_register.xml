@@ -116,7 +116,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@drawable/rb_choose_selector"
-                android:checked="true"
                 android:text="@string/messager" />
 
             <RadioButton
@@ -141,6 +140,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@drawable/rb_choose_selector"
+                android:checked="true"
                 android:text="@string/other" />
 
         </RadioGroup>
@@ -156,7 +156,6 @@
             android:gravity="center"
             android:text="@string/register"
             android:textColor="@color/black" />
-
 
 
         <LinearLayout

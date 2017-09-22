@@ -36,6 +36,18 @@
             android:textSize="14sp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_no_crew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include layout="@layout/include_no_fleet_or_crew" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/lv_additive_crew"
         android:layout_width="match_parent"

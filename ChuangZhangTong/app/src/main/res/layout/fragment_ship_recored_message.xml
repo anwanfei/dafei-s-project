@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
+    <LinearLayout
         android:id="@id/include"
-        layout="@layout/titlebar" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <include layout="@layout/titlebar" />
+
+    </LinearLayout>
 
     <View
         android:id="@+id/view_line"
@@ -16,11 +20,36 @@
         android:layout_below="@id/include"
         android:background="@color/gray_identity" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_line"
+        android:background="@color/gray_ship_details_bg">
+
+        <ListView
+            android:id="@+id/lv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ship_details_main"
+            android:divider="@color/gray_ship_details_bg"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_show_no_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/show_no_message"
+        android:visibility="gone" />
+
     <com.baidu.mapapi.map.MapView
         android:id="@+id/baidu_map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view_line" />
+        android:layout_below="@id/view_line"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/ll_show_all_messages"
@@ -46,25 +75,6 @@
             android:text="@string/show_all_messages"
             android:textColor="@color/blue"
             android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/ll_show_all_messages"
-        android:background="@color/gray_ship_details_bg">
-
-        <ListView
-            android:id="@+id/lv_message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/bg_ship_details_main"
-            android:divider="@color/gray_ship_details_bg"
-            android:dividerHeight="1dp"
-            android:scrollbars="none" />
     </LinearLayout>
 
 </RelativeLayout>

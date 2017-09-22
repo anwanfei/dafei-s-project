@@ -114,8 +114,8 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".mine.activity.CertificateIndetailsActivity" />
-        <activity android:name=".mine.activity.ShipCertificateIndetailsActivity" />
+        <activity android:name=".mine.activity.CrewCertificateDetailsActivity" />
+        <activity android:name=".mine.activity.ShipCertificateDetailsActivity" />
         <activity android:name=".shipposition.activity.MyShipDetailsActivity" />
         <activity android:name=".shipposition.activity.AllMessagesActivity" />
         <activity android:name=".shipposition.activity.AddCrewActivity" />
@@ -179,11 +179,16 @@
             android:name="UMENG_APPKEY"
             android:value="5993f8201c5dd07683000473" />
 
+        <!-- 渠道ID -->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" />
+
         <activity android:name=".mine.activity.ChooseCountryActivity" />
         <activity android:name=".mine.activity.ChooseCertificateTypeActivity" />
         <activity android:name=".mine.activity.CrewDetailsActivity" />
         <activity android:name=".mine.activity.ShipCertificteListActivity" />
-        <activity android:name=".mine.activity.InstranceDetailsActivity" />
+        <activity android:name=".mine.activity.InsuranceDetailsActivity" />
         <activity android:name=".mine.activity.AddInsuranceActivity" />
         <activity android:name=".shipposition.activity.WriteNoonMessageActivity" />
         <activity android:name=".shipposition.activity.WriteArrivalMessageActivity" />
@@ -193,7 +198,9 @@
         <activity android:name=".mine.activity.ChooseBelongShipActivity" />
         <activity android:name=".mine.activity.ModifyCrewInfoActivity" />
         <activity android:name=".mine.activity.AddShipCertificateActivity" />
-        <activity android:name=".mine.activity.MyCertificateActivity"></activity>
+        <activity android:name=".mine.activity.MyCertificateActivity" />
+        <activity android:name=".mine.activity.ShipCrewInfoActivity" />
+        <activity android:name=".news.activity.WeatherDetailsActivity"></activity>
     </application>
 
 </manifest>

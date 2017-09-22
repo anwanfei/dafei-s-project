@@ -58,7 +58,7 @@ public class RegisterActivity extends BaseActivity {
     RadioButton rbChuanzhang;
     @BindView(R.id.et_input_confirm_pwd)
     EditText etInputConfirmPwd;
-    private String roleId = "1";
+    private String roleId = "4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

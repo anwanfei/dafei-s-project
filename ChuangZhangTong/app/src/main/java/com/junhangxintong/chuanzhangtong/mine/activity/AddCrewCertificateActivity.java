@@ -123,7 +123,7 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
     private String id;
     private String isOftenUse = "1";
     private String isEffective = "2";
-    private String reWarningDays = "";
+    private String reWarningDays = "30";
     private String ettectiveDate = "";
     private PopupWindow popupWindow;
 
@@ -335,6 +335,8 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
                 Toast.makeText(AddCrewCertificateActivity.this, getResources().getString(R.string.input_effective_date), Toast.LENGTH_SHORT).show();
                 return;
             }
+        } else {
+            ettectiveDate = "";
         }
         final ProgressDialog progressDialog = getProgressDialog();
 

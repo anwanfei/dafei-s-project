@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ public class ShipDynamicFragment extends BaseFragment {
     Unbinder unbinder;
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private String token;
+    private boolean isGetData = false;
 
     @Override
     protected View initView() {
@@ -54,7 +57,6 @@ public class ShipDynamicFragment extends BaseFragment {
         return view;
     }
 
-
     @Override
     protected void initData() {
         super.initData();
@@ -62,16 +64,16 @@ public class ShipDynamicFragment extends BaseFragment {
         token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList("2");
+            netGetDynamicRemindList();
         }
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList("2");
+                netGetDynamicRemindList();
             }
         }
     }
@@ -89,18 +91,43 @@ public class ShipDynamicFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     @Override
     public void onResume() {
         super.onResume();
-//        Toast.makeText(getActivity(), "动态", Toast.LENGTH_SHORT).show();
+        if (!isGetData) {
+            isGetData = true;
+            netGetDynamicRemindList();
+        }
     }
-    private void netGetDynamicRemindList(String remindType) {
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isGetData = false;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //进入当前Fragment
+        if (enter && !isGetData) {
+            Log.e("TAG", "船舶动态");
+            isGetData = true;
+            //这里可以做网络请求或者需要的数据刷新操作
+            netGetDynamicRemindList();
+        } else {
+            isGetData = false;
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    private void netGetDynamicRemindList() {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.REMIND_TYPE, remindType)
+                .addParams(Constants.REMIND_TYPE, "2")
                 .build()
                 .execute(new StringCallback() {
                     @Override

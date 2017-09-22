@@ -3,9 +3,11 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,7 @@ import okhttp3.Call;
 import static com.junhangxintong.chuanzhangtong.R.id.et_certificate_type;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
-public class ShipCertificateIndetailsActivity extends BaseActivity {
+public class ShipCertificateDetailsActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -57,6 +59,8 @@ public class ShipCertificateIndetailsActivity extends BaseActivity {
     ImageView ivCertificatePhone;
     @BindView(R.id.rl_warning_days)
     RelativeLayout rlWarningDays;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +85,13 @@ public class ShipCertificateIndetailsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ShipCertificateIndetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ShipCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(ShipCertificateIndetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ShipCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
                             NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
                             String message = netServiceErrort.getMessage();
@@ -108,15 +112,22 @@ public class ShipCertificateIndetailsActivity extends BaseActivity {
                                     tvCommon.setText(getResources().getString(R.string.no));
                                 }
 
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scrollView.scrollTo(0, 0);
+                                    }
+                                });
+
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                                 //保存获取权限的sp
-                                CacheUtils.putBoolean(ShipCertificateIndetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ShipCertificateIndetailsActivity.this, LoginRegisterActivity.class));
+                                CacheUtils.putBoolean(ShipCertificateDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(ShipCertificateDetailsActivity.this, LoginRegisterActivity.class));
                                 finish();
                             } else {
-                                Toast.makeText(ShipCertificateIndetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ShipCertificateDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

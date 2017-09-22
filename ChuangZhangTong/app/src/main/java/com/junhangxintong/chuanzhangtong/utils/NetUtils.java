@@ -1,6 +1,8 @@
 package com.junhangxintong.chuanzhangtong.utils;
 
 import android.content.Context;
+import android.os.Build;
+import android.webkit.WebSettings;
 
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
@@ -9,6 +11,7 @@ import com.zhy.http.okhttp.builder.PostStringBuilder;
 import okhttp3.MediaType;
 
 import static com.junhangxintong.chuanzhangtong.utils.Constants.TOKEN;
+import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by anwanfei on 2017/8/31.
@@ -34,6 +37,7 @@ public class NetUtils {
                 .post()
                 .addHeader(Constants.TOKEN, token)
                 .addHeader(Constants.USER_ID, userId)
+                .addHeader(Constants.AGENT, getUserAgent())
                 .url(baseUrl + url);
     }
 
@@ -43,7 +47,7 @@ public class NetUtils {
         if (baseUrl.equals("")) {
             baseUrl = ConstantsUrls.WWW_TEST_BASE_URL;
         }
-        return OkHttpUtils.post().url(baseUrl + url);
+        return OkHttpUtils.post().addHeader(Constants.AGENT, getUserAgent()).url(baseUrl + url);
     }
 
     //post方法，带header
@@ -58,8 +62,32 @@ public class NetUtils {
                 .postString()
                 .addHeader(TOKEN, token)
                 .addHeader(Constants.USER_ID, userId)
+                .addHeader(Constants.AGENT,getUserAgent())
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .content(json)
                 .url(baseUrl + url);
+    }
+
+    private static String getUserAgent() {
+        String userAgent = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                userAgent = WebSettings.getDefaultUserAgent(context);
+            } catch (Exception e) {
+                userAgent = System.getProperty("http.agent");
+            }
+        } else {
+            userAgent = System.getProperty("http.agent");
+        }
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0, length = userAgent.length(); i < length; i++) {
+            char c = userAgent.charAt(i);
+            if (c <= '\u001f' || c >= '\u007f') {
+                sb.append(String.format("\\u%04x", (int) c));
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

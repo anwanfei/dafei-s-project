@@ -81,6 +81,7 @@
                 android:layout_marginRight="60dp">
 
                 <TextView
+                    android:id="@+id/tv_my_fleet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/icon_chuanduiguanli"
@@ -100,6 +101,7 @@
             </RelativeLayout>
 
             <View
+                android:id="@+id/view_my_fleet"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_marginTop="10dp"

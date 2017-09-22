@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -122,6 +123,8 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     TextView tvResultSize;
     @BindView(R.id.root)
     RelativeLayout root;
+    @BindView(R.id.rl_search)
+    RelativeLayout rlSearch;
 
     private PopupWindow popupWindow;
     private BaiduMap baiduMap;
@@ -211,24 +214,29 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         userId = CacheUtils.getString(getActivity(), Constants.ID);
         //数据库初始化
         shipDetailsDaoUtil = new ShipDetailsDaoUtil(getActivity());
-        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 5) {
+        if (shipDetailsDaoUtil.queryAllShipDetailsBean().size() < 6) {
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 1, "君航号", "中国", "mmsi001", "超大型货船"));
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 2, "中国号", "中国", "mmsi002", "大船"));
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 3, "辽宁号航空母舰", "中国", "mmsi003", "航空母舰"));
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 4, "远洋号", "中国", "mmsi004", "客船"));
             shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 5, "长征号", "中国", "mmsi005", "货船"));
+            shipDetailsDaoUtil.insertShipDetailsBean(new ShipDetailsBean((long) 6, "华海号", "中国", "mmsi006", "货船"));
         }
 
-        // TODO: 2017/8/26 关注界面带搜索关键字跳转过来
+        // 关注界面带搜索关键字跳转过来
         boolean isFromFollow = CacheUtils.getBoolean(getActivity(), Constants.SEARCHSHIPNAME, false);
         if (isFromFollow) {
             //清除在关注界面的搜索记录
             getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().remove(Constants.SEARCHSHIPNAME).commit();
             Intent intent = getActivity().getIntent();
             String searchShipNameFromFollowShip = intent.getStringExtra(Constants.SEARCHSHIPNAME);
-            etSearch.setText(searchShipNameFromFollowShip);
-            searchResultByInput(etSearch.getText().toString());
+            etSearch.setText("");
+//            searchResultByInput(etSearch.getText().toString());
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            etSearch.setFocusableInTouchMode(true);
             etSearch.requestFocus();
+            imm.showSoftInput(etSearch, InputMethodManager.SHOW_FORCED);
+
             llSearch.setVisibility(View.VISIBLE);
         }
 
@@ -260,6 +268,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             }
         });
 
+        //搜索框聚焦监听
         etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -429,7 +438,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             getPermission();
             CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
         }
-
     }
 
     //获取权限的方法

@@ -42,26 +42,25 @@
         <RadioButton
             android:id="@+id/rb_ship_details"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/selector_rb_ship_details"
+            android:drawableTop="@drawable/iv_ship_details_pressed"
             android:text="@string/ship_detils" />
 
         <RadioButton
             android:id="@+id/rb_message"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/selector_rb_ship_message"
+            android:drawableTop="@drawable/iv_baowen_pressed"
             android:text="@string/record_message" />
 
         <RadioButton
             android:id="@+id/rb_crew_info"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/selector_rb_crew_info"
+            android:drawableTop="@drawable/iv_crew_info_pressed"
             android:text="@string/crew_info" />
 
         <RadioButton
             android:id="@+id/rb_communicate"
             style="@style/botttom_tag_style"
-            android:drawableTop="@drawable/selector_rb_communicate"
+            android:drawableTop="@drawable/iv_communicate_pressed"
             android:text="@string/communication" />
-
     </RadioGroup>
 </LinearLayout>

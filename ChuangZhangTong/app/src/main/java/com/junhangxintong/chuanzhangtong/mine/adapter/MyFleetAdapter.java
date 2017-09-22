@@ -72,6 +72,7 @@ public class MyFleetAdapter extends BaseAdapter {
         String myFleetName = myFleetLists.get(position).getShipName();
         holder.tvItemShipName.setText(myFleetName);
         boolean checkbox = myFleetLists.get(position).isCheckbox();
+
         if (checkbox) {
             holder.cbShip.setChecked(true);
         } else {

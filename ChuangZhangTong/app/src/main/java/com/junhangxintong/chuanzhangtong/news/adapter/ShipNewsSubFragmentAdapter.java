@@ -51,7 +51,6 @@ public class ShipNewsSubFragmentAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-
             view = View.inflate(mContext, R.layout.item_ship_messages, null);
             viewHolder = new ViewHolder(view);
 

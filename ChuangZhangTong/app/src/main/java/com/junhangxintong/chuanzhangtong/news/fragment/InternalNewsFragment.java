@@ -118,8 +118,5 @@ public class InternalNewsFragment extends BaseFragment {
                         }
                     }
                 });
-
-
-
     }
 }

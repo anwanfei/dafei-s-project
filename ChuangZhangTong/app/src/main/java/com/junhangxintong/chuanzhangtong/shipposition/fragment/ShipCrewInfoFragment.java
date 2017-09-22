@@ -3,9 +3,12 @@ package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,6 +26,7 @@ import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
@@ -59,6 +63,10 @@ public class ShipCrewInfoFragment extends BaseFragment {
     TextView tvSetting;
     @BindView(R.id.tv_share)
     TextView tvShare;
+    @BindView(R.id.et_search_crew_name)
+    EditText etSearchCrewName;
+    @BindView(R.id.ll_search_crew_name)
+    LinearLayout llSearchCrewName;
     @BindView(R.id.iv_nothing)
     ImageView ivNothing;
     @BindView(R.id.tv_nothing)
@@ -76,6 +84,9 @@ public class ShipCrewInfoFragment extends BaseFragment {
     @BindView(R.id.rl_choose_all_delete)
     RelativeLayout rlChooseAllDelete;
     Unbinder unbinder;
+    private String roleId;
+    private String shipId;
+
     private boolean isChoose = true;
     private boolean isChooseAll = true;
     private List<String> savelist = new ArrayList();
@@ -86,13 +97,9 @@ public class ShipCrewInfoFragment extends BaseFragment {
     private CrewListsAdapter crewListsAdapter;
     private ArrayList<String> choosedCrewIdLists;
 
-
-    public ShipCrewInfoFragment() {
-    }
-
     @Override
     protected View initView() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_crew_management, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_crew_management, null);
         return view;
     }
 
@@ -101,14 +108,45 @@ public class ShipCrewInfoFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        ivBack.setVisibility(View.VISIBLE);
-        tvTitle.setText(getResources().getString(R.string.chuanyuanguanli));
+        roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
+        ivBack.setVisibility(View.GONE);
+        tvTitle.setText(getResources().getString(R.string.crew_list));
         ivShare.setVisibility(View.GONE);
-        tvSetting.setText(getResources().getString(R.string.add_crews));
-        tvShare.setText(getResources().getString(R.string.edit));
+
+        tvSetting.setText(getResources().getString(R.string.add));
+        tvShare.setText(getResources().getString(R.string.delete));
         tvNothing.setText(getResources().getString(R.string.add_first_crew));
         ivNothing.setImageResource(R.drawable.iv_no_crew);
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        etSearchCrewName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String crewName = etSearchCrewName.getText().toString();
+                netGetCrewsLists(crewName);
+            }
+        });
     }
 
     @Override
@@ -116,18 +154,21 @@ public class ShipCrewInfoFragment extends BaseFragment {
         super.initData();
         userId = CacheUtils.getString(getActivity(), Constants.ID);
 
-        if (StringUtils.isNotEmpty(MyApplication.token)) {
-            netGetCrewsLists();
-        }
+        Intent intent = getActivity().getIntent();
+        shipId = intent.getStringExtra(Constants.ID);
 
+        if (StringUtils.isNotEmpty(MyApplication.token)) {
+            netGetCrewsLists("");
+        }
     }
 
-    private void netGetCrewsLists() {
-        NetUtils.postWithHeader(getActivity(), ConstantsUrls.CREW_LISTS)
+    private void netGetCrewsLists(String crweName) {
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.SHIP_CREW_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.PERSON_NAME, "")
+                .addParams(Constants.SHIP_ID, shipId)
+                .addParams(Constants.PERSON_NAME, crweName)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -169,16 +210,10 @@ public class ShipCrewInfoFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (StringUtils.isNotEmpty(MyApplication.token)) {
-            netGetCrewsLists();
+            netGetCrewsLists("");
         }
     }
 
@@ -186,45 +221,15 @@ public class ShipCrewInfoFragment extends BaseFragment {
         if (crewLists.size() > 0) {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
-            tvShare.setVisibility(View.VISIBLE);
-            tvSetting.setVisibility(View.VISIBLE);
+            if (!roleId.equals("3")) {
+                tvShare.setVisibility(View.VISIBLE);
+                tvSetting.setVisibility(View.VISIBLE);
+            }
         } else {
             lvMyCrew.setVisibility(View.GONE);
             llNoCrew.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
-            tvSetting.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick({R.id.iv_back, R.id.iv_share, R.id.tv_setting, R.id.tv_share, R.id.tv_add_ship, R.id.ll_no_crew, R.id.tv_my_crew_list_choose_all, R.id.tv_my_crew_list_delete, R.id.rl_choose_all_delete})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                getActivity().finish();
-                break;
-            case R.id.iv_share:
-                addCrew();
-                break;
-            case R.id.tv_setting:
-                addCrew();
-                break;
-            case R.id.tv_share:
-                editCrews();
-                break;
-            case R.id.tv_add_ship:
-                addCrew();
-                break;
-            case R.id.ll_no_crew:
-                break;
-            case R.id.tv_my_crew_list_choose_all:
-                chooseAllOrNot();
-                break;
-            case R.id.tv_my_crew_list_delete:
-                deleteChoosedItems();
-                break;
-            case R.id.rl_choose_all_delete:
-                break;
         }
     }
 
@@ -250,10 +255,7 @@ public class ShipCrewInfoFragment extends BaseFragment {
                 map.put(i + "", false);
             }
         }
-        crewLists.removeAll(choosedLists);
         netDeleteChoosedCrews();
-        updateCrewsList();
-        crewListsAdapter.notifyDataSetChanged();
 
         //遍历map
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {
@@ -273,7 +275,12 @@ public class ShipCrewInfoFragment extends BaseFragment {
         }
 
         String ids = sb.toString().substring(0, sb.length() - 1);
-        NetUtils.postWithHeader(getActivity(), ConstantsUrls.DELETE_CREW)
+
+        if (StringUtils.isEmpty(ids)) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.please_choos_crew), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        NetUtils.postWithHeader(getActivity(), ConstantsUrls.SHIP_DELETE_CREW)
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.IDS, ids)
                 .build()
@@ -298,6 +305,9 @@ public class ShipCrewInfoFragment extends BaseFragment {
                                 //保存获取权限的sp
                                 CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                            } else if (code.equals("200")) {
+                                updateCrewsList();
+                                crewListsAdapter.notifyDataSetChanged();
                             }
                         }
                     }
@@ -336,10 +346,43 @@ public class ShipCrewInfoFragment extends BaseFragment {
             crewListsAdapter.notifyDataSetChanged();
         } else {
             rlChooseAllDelete.setVisibility(View.GONE);
-            tvShare.setText(getResources().getString(R.string.edit));
+            tvShare.setText(getResources().getString(R.string.delete));
             crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = true;
             crewListsAdapter.notifyDataSetChanged();
         }
+    }
+
+    @OnClick({R.id.iv_back, R.id.iv_share, R.id.tv_setting, R.id.tv_share, R.id.tv_add_ship, R.id.tv_my_crew_list_choose_all, R.id.tv_my_crew_list_delete})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                getActivity().finish();
+                break;
+            case R.id.iv_share:
+                gotoAddCrewActivity();
+                break;
+            case R.id.tv_setting:
+                gotoAddCrewActivity();
+                break;
+            case R.id.tv_share:
+                editCrews();
+                break;
+            case R.id.tv_add_ship:
+                gotoAddCrewActivity();
+                break;
+            case R.id.tv_my_crew_list_choose_all:
+                chooseAllOrNot();
+                break;
+            case R.id.tv_my_crew_list_delete:
+                deleteChoosedItems();
+                break;
+        }
+    }
+
+    private void gotoAddCrewActivity() {
+        Intent intent = new Intent(getActivity(), AddCrewActivity.class);
+        intent.putExtra(Constants.SHIP_ID, shipId);
+        startActivity(intent);
     }
 }

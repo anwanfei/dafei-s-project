@@ -3,10 +3,12 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ import okhttp3.Call;
 
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
-public class CertificateIndetailsActivity extends BaseActivity {
+public class CrewCertificateDetailsActivity extends BaseActivity {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -67,6 +69,8 @@ public class CertificateIndetailsActivity extends BaseActivity {
     RelativeLayout rlWarningDays;
     @BindView(R.id.gv_certificate_photo)
     GridView gvCertificatePhoto;
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,13 +106,13 @@ public class CertificateIndetailsActivity extends BaseActivity {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(CertificateIndetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CrewCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(CertificateIndetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CrewCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
                             NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
                             String message = netServiceErrort.getMessage();
@@ -137,7 +141,7 @@ public class CertificateIndetailsActivity extends BaseActivity {
                                     }.getType();
                                     ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
 
-                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(CertificateIndetailsActivity.this, urlLists, crewCertificateDetails.getDomain());
+                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(CrewCertificateDetailsActivity.this, urlLists, crewCertificateDetails.getDomain());
                                     gvCertificatePhoto.setAdapter(showPhotoAdapter);
                                 }
 
@@ -147,15 +151,22 @@ public class CertificateIndetailsActivity extends BaseActivity {
                                     tvCommon.setText(getResources().getString(R.string.no_commoned));
                                 }
 
+                                new Handler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scrollView.scrollTo(0, 0);
+                                    }
+                                });
+
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                                 //保存获取权限的sp
-                                CacheUtils.putBoolean(CertificateIndetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(CertificateIndetailsActivity.this, LoginRegisterActivity.class));
+                                CacheUtils.putBoolean(CrewCertificateDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
+                                startActivity(new Intent(CrewCertificateDetailsActivity.this, LoginRegisterActivity.class));
                             } else {
-                                Toast.makeText(CertificateIndetailsActivity.this, message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CrewCertificateDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

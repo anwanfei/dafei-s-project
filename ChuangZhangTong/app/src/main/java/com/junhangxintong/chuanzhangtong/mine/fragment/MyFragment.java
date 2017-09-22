@@ -75,8 +75,15 @@ public class MyFragment extends BaseFragment {
     RelativeLayout rlFollewFleet;
     @BindView(R.id.rl_my_certificate)
     RelativeLayout rlMyCertificate;
+    @BindView(R.id.view_my_fleet)
+    View viewMyFleet;
+    @BindView(R.id.view_line2)
+    View viewLine2;
+    @BindView(R.id.tv_my_fleet)
+    TextView tvMyFleet;
     private LoginResultBean loginResult;
     private String token;
+    private String roleId;
 
 
     @Override
@@ -90,6 +97,7 @@ public class MyFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+        roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
 
         if (StringUtils.isEmpty(token)) {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
@@ -181,6 +189,22 @@ public class MyFragment extends BaseFragment {
         } else {
             startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
         }*/
+        if (roleId.equals("4")) {
+            rlChuanduiguanli.setVisibility(View.GONE);
+            viewMyFleet.setVisibility(View.GONE);
+            viewLine2.setVisibility(View.GONE);
+            rlChuanyuanguanli.setVisibility(View.GONE);
+        }
+        if (roleId.equals("3")) {
+            tvMyFleet.setText(getResources().getString(R.string.my_ship));
+            rlChuanyuanguanli.setVisibility(View.GONE);
+            viewLine2.setVisibility(View.GONE);
+        }
+
+        if (roleId.equals("2")) {
+            tvMyFleet.setText(getResources().getString(R.string.my_ship));
+        }
+
         return rootView;
     }
 
@@ -193,6 +217,7 @@ public class MyFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
         if (StringUtils.isNotBlank(token)) {
             getPersonalInfoFromNet();
@@ -244,7 +269,7 @@ public class MyFragment extends BaseFragment {
     }
 
     @OnClick({R.id.iv_userinfo_bg, R.id.iv_photo, R.id.tv_user_name, R.id.tv_identity, R.id.rl_user_info, R.id.rl_feed_back,
-            R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan,R.id.rl_my_certificate})
+            R.id.rl_chuanduiguanli, R.id.rl_follew_fleet, R.id.rl_chuanyuanguanli, R.id.rl_account_setting, R.id.rl_chuanguan, R.id.rl_my_certificate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_userinfo_bg:

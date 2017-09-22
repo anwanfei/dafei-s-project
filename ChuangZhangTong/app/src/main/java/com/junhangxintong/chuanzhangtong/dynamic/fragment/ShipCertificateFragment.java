@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class ShipCertificateFragment extends BaseFragment {
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private boolean isRead = true;
     private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLists;
+    private boolean isGetData = false;
 
     @Override
     protected View initView() {
@@ -80,7 +83,7 @@ public class ShipCertificateFragment extends BaseFragment {
 
         String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList("4");
+            netGetDynamicRemindList();
         }
 
     }
@@ -90,18 +93,18 @@ public class ShipCertificateFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList("4");
+                netGetDynamicRemindList();
             }
         }
     }
 
-    private void netGetDynamicRemindList(String remindType) {
+    private void netGetDynamicRemindList() {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.REMIND_TYPE, remindType)
+                .addParams(Constants.REMIND_TYPE, "4")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -154,6 +157,29 @@ public class ShipCertificateFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        Toast.makeText(getActivity(), "船舶", Toast.LENGTH_SHORT).show();
+        if (!isGetData) {
+            isGetData = true;
+            netGetDynamicRemindList();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isGetData = false;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //   进入当前Fragment
+        if (enter && !isGetData) {
+            Log.e("TAG", "船舶证书");
+            isGetData = true;
+            //这里可以做网络请求或者需要的数据刷新操作
+            netGetDynamicRemindList();
+        } else {
+            isGetData = false;
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
     }
 }

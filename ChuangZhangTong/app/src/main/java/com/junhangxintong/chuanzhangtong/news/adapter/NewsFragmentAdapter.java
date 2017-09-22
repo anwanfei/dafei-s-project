@@ -8,6 +8,7 @@ import com.junhangxintong.chuanzhangtong.news.fragment.InternalNewsFragment;
 import com.junhangxintong.chuanzhangtong.news.fragment.NationalityFragment;
 import com.junhangxintong.chuanzhangtong.news.fragment.NewestNewsFragment;
 import com.junhangxintong.chuanzhangtong.news.fragment.OilPriceFragment;
+import com.junhangxintong.chuanzhangtong.news.fragment.WeatherFragment;
 
 /**
  * Created by edz on 2017/7/8.
@@ -15,7 +16,7 @@ import com.junhangxintong.chuanzhangtong.news.fragment.OilPriceFragment;
 
 public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"最新消息", "油市快递", "国际公约", "国内公约"};
+    private String[] mtitles = {"最新消息", "气象中心", "油市快递", "国际公约", "国内公约"};
 
     public NewsFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -26,8 +27,10 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
         if (position == 0) {
             return new NewestNewsFragment();
         } else if (position == 1) {
-            return new OilPriceFragment();
+            return new WeatherFragment();
         } else if (position == 2) {
+            return new OilPriceFragment();
+        } else if (position == 3) {
             return new InternalNewsFragment();
         }
         return new NationalityFragment();

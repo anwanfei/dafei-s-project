@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -65,6 +67,7 @@ public class MessageRecoedFragment extends BaseFragment {
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private Unbinder unbinder;
     private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLists;
+    private boolean isGetData = false;
 
     @Override
     protected View initView() {
@@ -91,7 +94,7 @@ public class MessageRecoedFragment extends BaseFragment {
     protected void initData() {
         super.initData();
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList("1");
+            netGetDynamicRemindList();
         }
     }
 
@@ -100,17 +103,40 @@ public class MessageRecoedFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList("1");
+                netGetDynamicRemindList();
             }
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-//        Toast.makeText(getActivity(), "报文记录", Toast.LENGTH_SHORT).show();
+        if (!isGetData) {
+            isGetData = true;
+            netGetDynamicRemindList();
+        }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isGetData = false;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //   进入当前Fragment
+        if (enter && !isGetData) {
+            Log.e("TAG", "报文");
+            isGetData = true;
+            //这里可以做网络请求或者需要的数据刷新操作
+            netGetDynamicRemindList();
+        } else {
+            isGetData = false;
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
 
     @OnClick(R.id.ll_show_all_messages)
     public void onViewClicked() {
@@ -119,13 +145,13 @@ public class MessageRecoedFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    private void netGetDynamicRemindList(String remindType) {
+    private void netGetDynamicRemindList() {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
-                .addParams(Constants.PAGE_SIZE, "15")
+                .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.REMIND_TYPE, remindType)
+                .addParams(Constants.REMIND_TYPE, "1")
                 .build()
                 .execute(new StringCallback() {
                     @Override

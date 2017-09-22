@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateListsActivity;
-import com.junhangxintong.chuanzhangtong.mine.activity.CrewDetailsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.ShipCrewInfoActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
@@ -72,11 +72,11 @@ public class CrewListsAdapter extends BaseAdapter implements View.OnClickListene
         String myCrewDuty = myCrewLists.get(position).getPostName();
         String myCrewJobNum = myCrewLists.get(position).getJobNo();
         String myCrewNationnality = myCrewLists.get(position).getNation();
+        boolean checkbox = myCrewLists.get(position).isCheckbox();
         holder.tvItemCrewName.setText(myCrewName);
         holder.tvItemCrewDuty.setText(myCrewDuty);
         holder.tvItemCrewJobNum.setText(myCrewJobNum);
         holder.tvItemCrewNationality.setText(myCrewNationnality);
-        boolean checkbox = myCrewLists.get(position).isCheckbox();
         if (checkbox) {
             holder.cbShip.setChecked(true);
         } else {
@@ -94,7 +94,7 @@ public class CrewListsAdapter extends BaseAdapter implements View.OnClickListene
         holder.llCrewDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, CrewDetailsActivity.class);
+                Intent intent = new Intent(mContext, ShipCrewInfoActivity.class);
                 intent.putExtra(Constants.ID, String.valueOf(myCrewLists.get(position).getId()));
                 mContext.startActivity(intent);
             }

@@ -14,6 +14,7 @@ import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class ChooseCertificateTypeActivity extends BaseActivity {
 
@@ -55,5 +56,10 @@ public class ChooseCertificateTypeActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_certificate_type;
+    }
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked() {
+        finish();
     }
 }

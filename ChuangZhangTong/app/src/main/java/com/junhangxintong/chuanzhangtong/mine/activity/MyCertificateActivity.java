@@ -108,7 +108,7 @@ public class MyCertificateActivity extends BaseActivity {
                                 gvCertificate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(MyCertificateActivity.this, CertificateIndetailsActivity.class);
+                                        Intent intent = new Intent(MyCertificateActivity.this, CrewCertificateDetailsActivity.class);
                                         int id = myCertificatesLists.get(i).getId();
                                         intent.putExtra(Constants.ID, String.valueOf(id));
                                         intent.putExtra(Constants.CERTIFICATE_TYPE, 1);

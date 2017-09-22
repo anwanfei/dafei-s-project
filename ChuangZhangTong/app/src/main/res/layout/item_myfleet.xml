@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:paddingTop="10dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingTop="10dp">
 
     <CheckBox
         android:id="@+id/cb_ship"
@@ -38,5 +38,6 @@
         android:paddingRight="30dp"
         android:text="@string/certificate_list"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="visible" />
 </LinearLayout>

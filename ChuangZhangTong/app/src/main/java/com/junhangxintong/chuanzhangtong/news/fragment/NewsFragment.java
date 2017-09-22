@@ -53,8 +53,9 @@ public class NewsFragment extends BaseFragment {
         tablayoutNews.setupWithViewPager(viewpagerNews);
         tablayoutNews.getTabAt(0).setIcon(R.drawable.iv_all_messags);
         tablayoutNews.getTabAt(1).setIcon(R.drawable.iv_oil_price);
-        tablayoutNews.getTabAt(2).setIcon(R.drawable.iv_nationality_convention);
-        tablayoutNews.getTabAt(3).setIcon(R.drawable.iv_international_convention);
+        tablayoutNews.getTabAt(2).setIcon(R.drawable.iv_oil_price);
+        tablayoutNews.getTabAt(3).setIcon(R.drawable.iv_nationality_convention);
+        tablayoutNews.getTabAt(4).setIcon(R.drawable.iv_international_convention);
 
         // TODO: 2017/9/14  消息提醒
         final BadgeView badgeView = new BadgeView(getActivity(), tablayoutNews);

@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -497,10 +498,16 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                                     CacheUtils.putString(PersonalInfoActivity.this, Constants.GENDER, getResources().getString(R.string.woman));
                                     genderPopWindow.dismiss();
                                 }
-
                             }
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        finish();
+        return super.onKeyDown(keyCode, event);
+
     }
 }

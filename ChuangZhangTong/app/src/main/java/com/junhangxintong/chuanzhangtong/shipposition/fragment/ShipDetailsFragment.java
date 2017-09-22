@@ -182,7 +182,8 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                                 tvShipImo.setText(shipInfo.getImo());
                                 tvShipType.setText(shipInfo.getType());
                                 tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
-                                tvUpdateTime.setText(shipInfo.getModifyDate());
+//                                tvUpdateTime.setText(shipInfo.getModifyDate());
+                                tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储
@@ -259,6 +260,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                     tv_warm_close.setText(getResources().getString(R.string.warm_open));
                     Log.e("TAG", "tv_warm_close==========" + tv_warm_close.getText().toString());
                     Toast.makeText(getActivity(), getResources().getString(R.string.warm_close), Toast.LENGTH_SHORT).show();
+                    tv_warm_close.setTextColor(getResources().getColor(R.color.black));
                     isOpenWarm = false;
                     isShowPop = true;
                     // TODO: 2017/8/13 关闭提醒的操作
@@ -266,6 +268,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                     Log.e("TAG", "tv_warm_close==========" + tv_warm_close.getText().toString());
                     tv_warm_close.setText(getResources().getString(R.string.warm_close));
                     Toast.makeText(getActivity(), getResources().getString(R.string.warm_open), Toast.LENGTH_SHORT).show();
+                    tv_warm_close.setTextColor(getResources().getColor(R.color.textcolor_gray80));
                     isOpenWarm = true;
                     isShowPop = true;
                     // TODO: 2017/8/13 打开提醒的操作
@@ -305,4 +308,5 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
             popupWindow.dismiss();
         }
     }
+
 }

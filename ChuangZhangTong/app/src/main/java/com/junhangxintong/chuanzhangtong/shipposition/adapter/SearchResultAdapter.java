@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,7 +88,7 @@ public class SearchResultAdapter extends BaseAdapter {
         shipName = shipDetailsBean.getShipName();
         String shipId = String.valueOf(shipDetailsBean.getShipId());
 
-        netGetFollowFleetList(shipName, shipId, holder.tvSearchFollow, holder.tvSearchShipDetails, i);
+        netGetFollowFleetList(shipName, shipId, holder.tvSearchFollow, holder.tvSearchShipDetails, holder.rlSearchResult, i);
 
         holder.tvSearchShipName.setText(shipName);
         holder.tvSearchShipMmsi.setText(mContext.getResources().getString(R.string.MMSI_withColon) + mmsi);
@@ -186,24 +187,7 @@ public class SearchResultAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder {
-        @BindView(R.id.tv_search_ship_name)
-        TextView tvSearchShipName;
-        @BindView(R.id.tv_search_ship_mmsi)
-        TextView tvSearchShipMmsi;
-        @BindView(R.id.tv_search_update_time)
-        TextView tvSearchUpdateTime;
-        @BindView(R.id.tv_search_ship_details)
-        TextView tvSearchShipDetails;
-        @BindView(R.id.tv_search_follow)
-        TextView tvSearchFollow;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    private void netGetFollowFleetList(String shipName, final String shipId, final TextView tvSearchFollow, final TextView tvSearchShipDetails, final int i) {
+    private void netGetFollowFleetList(String shipName, final String shipId, final TextView tvSearchFollow, final TextView tvSearchShipDetails, final RelativeLayout rlSearchResult, final int i) {
         NetUtils.postWithHeader(mContext, ConstantsUrls.FOLLOW_SHIP_LIST)
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.PAGE, "1")
@@ -263,7 +247,41 @@ public class SearchResultAdapter extends BaseAdapter {
                                 mContext.startActivity(intent);
                             }
                         });
+                        rlSearchResult.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
+                                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
+                                intent.putExtra(Constants.ID, shipId);
+                                if (followShipIds.size() > 0) {
+                                    if (followShipIds.contains(shipId)) {
+                                        intent.putExtra(Constants.FOLLOW_SHIP, true);
+                                    }
+                                }
+                                intent.putExtra(Constants.SHIP_ID, shipId);
+                                mContext.startActivity(intent);
+                            }
+                        });
                     }
                 });
+    }
+
+    static class ViewHolder {
+        @BindView(R.id.tv_search_ship_name)
+        TextView tvSearchShipName;
+        @BindView(R.id.tv_search_ship_mmsi)
+        TextView tvSearchShipMmsi;
+        @BindView(R.id.tv_search_update_time)
+        TextView tvSearchUpdateTime;
+        @BindView(R.id.tv_search_ship_details)
+        TextView tvSearchShipDetails;
+        @BindView(R.id.tv_search_follow)
+        TextView tvSearchFollow;
+        @BindView(R.id.rl_search_result)
+        RelativeLayout rlSearchResult;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

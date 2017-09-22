@@ -12,12 +12,11 @@
         layout="@layout/titlebar" />
 
     <ScrollView
-        android:layout_below="@id/include_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/include_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -377,6 +376,7 @@
 
                 <TextView
                     style="@style/account_setting_left_textview"
+                    android:paddingBottom="80dp"
                     android:text="@string/remark" />
 
                 <EditText
@@ -385,27 +385,27 @@
                     android:hint="@string/input_remark" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_commit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:paddingBottom="20dp"
-                android:paddingTop="20dp">
-
-                <TextView
-                    android:id="@+id/tv_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/tv_bg"
-                    android:gravity="center"
-                    android:text="@string/commit"
-                    android:textColor="@color/white"
-                    android:textSize="16dp" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tv_bg"
+            android:gravity="center"
+            android:text="@string/commit"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </LinearLayout>
 </RelativeLayout>

@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.MessageFragmentAdapter;
+import com.junhangxintong.chuanzhangtong.mine.Utils.RoleEnum;
+import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
+import com.junhangxintong.chuanzhangtong.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,7 @@ public class DynamicRemindFragment extends BaseFragment {
     private ShipCertificateFragment shipCertificateFragment;
     private MessageRecoedFragment messageRecoedFragment;
     private ShipDynamicFragment shipDynamicFragment;
+    private List<String> mtitles;
 
     @Override
     protected View initView() {
@@ -66,30 +70,60 @@ public class DynamicRemindFragment extends BaseFragment {
     protected void initData() {
         super.initData();
 
+        mtitles = new ArrayList<>();
+
         allMessageFragment = new AllMessageFragment();
         crewCertificateFragment = new CrewCertificateFragment();
+        shipDynamicFragment = new ShipDynamicFragment();
         shipCertificateFragment = new ShipCertificateFragment();
         messageRecoedFragment = new MessageRecoedFragment();
-        shipDynamicFragment = new ShipDynamicFragment();
 
         fragments = new ArrayList<>();
         fragments.add(allMessageFragment);
         fragments.add(shipDynamicFragment);
-        fragments.add(messageRecoedFragment);
         fragments.add(crewCertificateFragment);
-        fragments.add(shipCertificateFragment);
+
+        mtitles.add("所有消息");
+        mtitles.add("船舶动态");
+        mtitles.add("船员证书");
+
+        String roleID = CacheUtils.getString(getActivity(), Constants.ROLEID);
+        if (!roleID.equals(String.valueOf(RoleEnum.SHIPMEMBER.getCode()))) {
+            fragments.clear();
+
+            fragments.add(allMessageFragment);
+            fragments.add(shipDynamicFragment);
+            fragments.add(messageRecoedFragment);
+            fragments.add(shipCertificateFragment);
+            fragments.add(crewCertificateFragment);
+
+            mtitles.clear();
+
+            mtitles.add("所有消息");
+            mtitles.add("船舶动态");
+            mtitles.add("报文记录");
+            mtitles.add("船舶证书");
+            mtitles.add("船员证书");
+        }
 
         tvTitle.setText(getResources().getString(R.string.message));
-        viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager(),fragments));
+        viewpagerMessage.setAdapter(new MessageFragmentAdapter(getFragmentManager(), fragments, mtitles));
         tablayoutMessage.setupWithViewPager(viewpagerMessage);
         viewpagerMessage.setOffscreenPageLimit(1);
-
 
         tablayoutMessage.getTabAt(0).setIcon(R.drawable.iv_all_messags);
         tablayoutMessage.getTabAt(1).setIcon(R.drawable.iv_ship_dynamic);
         tablayoutMessage.getTabAt(2).setIcon(R.drawable.ic_message_record);
-        tablayoutMessage.getTabAt(3).setIcon(R.drawable.iv_crew_certificate);
-        tablayoutMessage.getTabAt(4).setIcon(R.drawable.iv_ship_certificate);
+
+        if (!CacheUtils.getString(getActivity(), Constants.ROLEID).equals(String.valueOf(RoleEnum.SHIPMEMBER.getCode()))) {
+            tablayoutMessage.getTabAt(3).setIcon(R.drawable.iv_ship_certificate);
+            tablayoutMessage.getTabAt(4).setIcon(R.drawable.iv_crew_certificate);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

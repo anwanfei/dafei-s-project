@@ -391,8 +391,9 @@
     <string name="show_all_messages">显示所有报文</string>
     <string name="all_history_messages">报文记录</string>
     <string name="search_additive_crews">请输入姓名/编号/职务</string>
-    <string name="choose_additive_crews">选择添加人员</string>
+    <string name="choose_additive_crews">可添加人员</string>
     <string name="choosed_crew_num">已选择0人</string>
+    <string name="please_choos_crew">请选择船员</string>
     <string name="add_ok">确认添加</string>
     <string name="can_not_add_when_edit">编辑状态不能添加</string>
     <string name="ship_num">航次号</string>
@@ -501,6 +502,13 @@
     <string name="input_new_phone">请输入新的手机号</string>
     <string name="mycertificate">我的证书</string>
     <string name="cancel_follow">取消关注</string>
+    <string name="my_ship">我的船</string>
+    <string name="show_no_message">该船舶尚未有报文信息，请联系船长！</string>
+    <string name="search_crew_name">搜索名字 编号 职务</string>
+    <string name="crew_list">船员列表</string>
+    <string name="input_crew_info">录入船员信息</string>
+    <string name="choose_one">至少选择一个</string>
+    <string name="weather_center">气象中心</string>
 
 
     <!---->

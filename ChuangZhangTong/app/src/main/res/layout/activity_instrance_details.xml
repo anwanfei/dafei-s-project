@@ -1,287 +1,293 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.InstranceDetailsActivity">
+    android:orientation="vertical"
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.InsuranceDetailsActivity">
 
-    <LinearLayout
+    <include layout="@layout/titlebar" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray_bg"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <include layout="@layout/titlebar" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:padding="15dp">
+            android:background="@color/gray_bg"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:drawableLeft="@drawable/ic_xingbiao"
-                android:text="@string/insurance_name" />
-
-            <TextView
-                android:id="@+id/tv_insurance_type"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:drawableLeft="@drawable/ic_xingbiao"
-                android:text="@string/ship_name" />
-
-            <TextView
-                android:id="@+id/tv_ship_name"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:drawableLeft="@drawable/ic_xingbiao"
-                android:text="@string/ship_bianhao" />
-
-            <TextView
-                android:id="@+id/tv_ship_bianhao"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_certificate_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/ship_imo" />
-
-            <TextView
-                android:id="@+id/tv_ship_imo"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/ship_nationality_harbor" />
-
-            <TextView
-                android:id="@+id/tv_ship_nationality_harbor"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/name_address_of_ship" />
-
-            <TextView
-                android:id="@+id/tv_name_address_of_ship"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/gurantee_type" />
-
-            <TextView
-                android:id="@+id/tv_gurantee_type"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/issue_date" />
-
-            <TextView
-                android:id="@+id/tv_issue_date"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/issuing_authority" />
-
-            <TextView
-                android:id="@+id/tv_issuing_authority"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_issuing_authority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/issue_address" />
-
-            <TextView
-                android:id="@+id/tv_issue_address"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/is_permanent_effective" />
-
-            <TextView
-                android:id="@+id/tv_is_permanent_effective"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_effective_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/effective_date" />
-
-            <TextView
-                android:id="@+id/tv_effective_date"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_re_warning_days"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/re_warning_days" />
-
-            <TextView
-                android:id="@+id/tv_warning_days"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                style="@style/account_setting_left_textview"
-                android:text="@string/is_common" />
-
-            <TextView
-                android:id="@+id/tv_common"
-                style="@style/textview_style_certificate" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:padding="15dp">
-
-            <TextView
-                android:id="@+id/tv_add_certificate_photo"
-                style="@style/account_setting_left_textview"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
-                android:text="@string/certificate_photo" />
-
-            <ImageView
-                android:id="@+id/iv_certificate_phone"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/add_certificate"
-                android:visibility="gone" />
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:padding="15dp">
 
-        </RelativeLayout>
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:drawableLeft="@drawable/ic_xingbiao"
+                    android:text="@string/insurance_name" />
 
-        <com.junhangxintong.chuanzhangtong.view.MyGridview
-            android:id="@+id/gv_certificate_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@color/white"
-            android:horizontalSpacing="10dp"
-            android:numColumns="3"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scrollbars="none"
-            android:verticalSpacing="10dp" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_insurance_type"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
 
-</ScrollView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:drawableLeft="@drawable/ic_xingbiao"
+                    android:text="@string/ship_name" />
+
+                <TextView
+                    android:id="@+id/tv_ship_name"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:drawableLeft="@drawable/ic_xingbiao"
+                    android:text="@string/ship_bianhao" />
+
+                <TextView
+                    android:id="@+id/tv_ship_bianhao"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_certificate_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_imo" />
+
+                <TextView
+                    android:id="@+id/tv_ship_imo"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_nationality_harbor" />
+
+                <TextView
+                    android:id="@+id/tv_ship_nationality_harbor"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/name_address_of_ship" />
+
+                <TextView
+                    android:id="@+id/tv_name_address_of_ship"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/gurantee_type" />
+
+                <TextView
+                    android:id="@+id/tv_gurantee_type"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/issue_date" />
+
+                <TextView
+                    android:id="@+id/tv_issue_date"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/issuing_authority" />
+
+                <TextView
+                    android:id="@+id/tv_issuing_authority"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_issuing_authority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/issue_address" />
+
+                <TextView
+                    android:id="@+id/tv_issue_address"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/is_permanent_effective" />
+
+                <TextView
+                    android:id="@+id/tv_is_permanent_effective"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_effective_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/effective_date" />
+
+                <TextView
+                    android:id="@+id/tv_effective_date"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_re_warning_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/re_warning_days" />
+
+                <TextView
+                    android:id="@+id/tv_warning_days"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/is_common" />
+
+                <TextView
+                    android:id="@+id/tv_common"
+                    style="@style/textview_style_certificate" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_add_certificate_photo"
+                    style="@style/account_setting_left_textview"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/certificate_photo" />
+
+                <ImageView
+                    android:id="@+id/iv_certificate_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/add_certificate"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <com.junhangxintong.chuanzhangtong.view.MyGridview
+                android:id="@+id/gv_certificate_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:horizontalSpacing="10dp"
+                android:numColumns="3"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scrollbars="none"
+                android:verticalSpacing="10dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

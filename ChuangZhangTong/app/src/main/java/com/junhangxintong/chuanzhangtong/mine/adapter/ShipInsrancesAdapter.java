@@ -68,7 +68,7 @@ public class ShipInsrancesAdapter extends BaseAdapter {
         String validDate = certificates.get(position).getValidDate();
 
         holder.tvCertificateName.setText(certificateName);
-        holder.tvCertificateIssuingAuthority.setText("签发机构：" + issueOrganization);
+        holder.tvCertificateIssuingAuthority.setText(issueOrganization);
         holder.tvCertificateNumber.setText("船舶名称：" + certifNo);
         if (validDate.equals("")) {
             holder.tvCertificateType.setText("有效日期：永久有效");

@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient;
 public class MyApplication extends Application {
     public static Context appContext;
     public static String token;
+    public static String roleID;
 
     @Override
     public void onCreate() {
@@ -30,6 +31,7 @@ public class MyApplication extends Application {
 
         appContext = getApplicationContext();
         token = CacheUtils.getString(appContext, Constants.TOKEN);
+        roleID = CacheUtils.getString(appContext, Constants.ROLEID);
 
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
@@ -50,6 +52,9 @@ public class MyApplication extends Application {
                 .build();
 
         com.zhy.http.okhttp.OkHttpUtils.initClient(okHttpClient);
+
+        //发生异常时候
+//        CrashHandler.getInstance().init(appContext);
     }
 
     {

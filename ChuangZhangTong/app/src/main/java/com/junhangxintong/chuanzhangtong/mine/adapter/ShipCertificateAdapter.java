@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.activity.CertificateIndetailsActivity;
-import com.junhangxintong.chuanzhangtong.mine.activity.InstranceDetailsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateDetailsActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.InsuranceDetailsActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,14 +148,14 @@ public class ShipCertificateAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private class MyCertificateListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            mContext.startActivity(new Intent(mContext, CertificateIndetailsActivity.class));
+            mContext.startActivity(new Intent(mContext, CrewCertificateDetailsActivity.class));
         }
     }
 
     private class MyInsuranceListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            mContext.startActivity(new Intent(mContext, InstranceDetailsActivity.class));
+            mContext.startActivity(new Intent(mContext, InsuranceDetailsActivity.class));
         }
     }
 }

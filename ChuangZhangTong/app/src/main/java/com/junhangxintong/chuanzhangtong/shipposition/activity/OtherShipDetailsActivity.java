@@ -24,6 +24,7 @@ import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -158,7 +159,8 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                                     tvShipImo.setText(shipInfo.getImo());
                                     tvShipType.setText(shipInfo.getType());
                                     tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
-                                    tvUpdateTime.setText(shipInfo.getModifyDate());
+//                                    tvUpdateTime.setText(shipInfo.getModifyDate());
+                                    tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
                                 } else if (code.equals("601")) {
                                     //清除了sp存储
                                     getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();

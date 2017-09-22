@@ -3,7 +3,10 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -70,6 +73,10 @@ public class CrewManagementActivity extends BaseActivity {
     ImageView ivShare;
     @BindView(R.id.tv_setting)
     TextView tvSetting;
+    @BindView(R.id.et_search_crew_name)
+    EditText etSearchCrewName;
+    @BindView(R.id.ll_search_crew_name)
+    LinearLayout llSearchCrewName;
     private MyCrewAdapter myFleetAdapter;
     private boolean isChoose = true;
     private boolean isChooseAll = true;
@@ -85,6 +92,27 @@ public class CrewManagementActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initListener();
+    }
+
+    private void initListener() {
+        etSearchCrewName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String crewName = etSearchCrewName.getText().toString();
+                netGetCrewsLists(crewName);
+            }
+        });
     }
 
     @Override
@@ -104,17 +132,17 @@ public class CrewManagementActivity extends BaseActivity {
         userId = CacheUtils.getString(this, Constants.ID);
 
         if (StringUtils.isNotEmpty(MyApplication.token)) {
-            netGetCrewsLists();
+            netGetCrewsLists("");
         }
 
     }
 
-    private void netGetCrewsLists() {
+    private void netGetCrewsLists(String crewName) {
         NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.USER_ID, userId)
-                .addParams(Constants.PERSON_NAME, "")
+                .addParams(Constants.PERSON_NAME, crewName)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -166,7 +194,7 @@ public class CrewManagementActivity extends BaseActivity {
             llNoCrew.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
-            tvSetting.setVisibility(View.GONE);
+            tvShare.setText(getResources().getString(R.string.delete));
         }
     }
 
@@ -231,7 +259,7 @@ public class CrewManagementActivity extends BaseActivity {
                 map.put(i + "", false);
             }
         }
-        crewLists.removeAll(choosedLists);
+
         netDeleteChoosedCrews();
         updateCrewsList();
         crewListsAdapter.notifyDataSetChanged();
@@ -252,7 +280,9 @@ public class CrewManagementActivity extends BaseActivity {
         for (int i = 0; i < choosedCrewIdLists.size(); i++) {
             sb.append(choosedCrewIdLists.get(i) + ",");
         }
-
+        for (int i = 0; i < choosedCrewIdLists.size(); i++) {
+            sb.append(choosedCrewIdLists.get(i) + ",");
+        }
         String ids = sb.toString().substring(0, sb.length() - 1);
         NetUtils.postWithHeader(this, ConstantsUrls.DELETE_CREW)
                 .addParams(Constants.USER_ID, userId)
@@ -280,6 +310,11 @@ public class CrewManagementActivity extends BaseActivity {
                                 CacheUtils.putBoolean(CrewManagementActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
                                 startActivity(new Intent(CrewManagementActivity.this, LoginRegisterActivity.class));
                                 finish();
+                            } else if (code.equals("200")) {
+                                crewLists.removeAll(choosedLists);
+                                updateCrewsList();
+                                crewListsAdapter.notifyDataSetChanged();
+
                             }
                         }
                     }
@@ -290,7 +325,7 @@ public class CrewManagementActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (StringUtils.isNotEmpty(MyApplication.token)) {
-            netGetCrewsLists();
+            netGetCrewsLists("");
         }
     }
 
@@ -321,7 +356,7 @@ public class CrewManagementActivity extends BaseActivity {
             crewListsAdapter.notifyDataSetChanged();
         } else {
             rlChooseAllDelete.setVisibility(View.GONE);
-            tvShare.setText(getResources().getString(R.string.edit));
+            tvShare.setText(getResources().getString(R.string.delete));
             crewListsAdapter.controlCheckboxShow(isChoose);
             isChoose = true;
             crewListsAdapter.notifyDataSetChanged();

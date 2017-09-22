@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.junhangxintong.chuanzhangtong.R;
-import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
 
 import java.util.ArrayList;
 
@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
 
 public class AdditiveCrewAdapter extends BaseAdapter {
     private Context mContext;
-    private ArrayList<CrewBean> crews;
+    private ArrayList<CrewServeBean.DataBean.ArrayBean> crews;
     private ViewHolder holder;
     public int choosedNums = 0;
     private TextView tvChoosedCrewNum;
 
 
-    public AdditiveCrewAdapter(Context mContext, ArrayList<CrewBean> crews, TextView tvChoosedCrewNum) {
+    public AdditiveCrewAdapter(Context mContext, ArrayList<CrewServeBean.DataBean.ArrayBean> crews, TextView tvChoosedCrewNum) {
         this.mContext = mContext;
         this.crews = crews;
         this.tvChoosedCrewNum = tvChoosedCrewNum;

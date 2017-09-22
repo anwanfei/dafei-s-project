@@ -177,4 +177,22 @@ public class ConstantsUrls {
     public static final String REPORT_DYNAMIC_LISTS = "/remind/dynamic/report/query/list.do";
 
 
+    /**
+     * 船员信息
+     */
+    //确认添加船员
+    public static final String SHIP_ADD_CREW = "/ship/employeeInfo/add.do";
+
+    //船员列表
+    public static final String SHIP_CREW_LISTS = "/ship/employeeInfo/query/list.do";
+
+    //查看船员详情信息
+    public static final String SHIP_CREW_DETAILS = "/ship/employeeInfo/query/info.do";
+
+    //删除船员
+    public static final String SHIP_DELETE_CREW = "/ship/employeeInfo/delete.do";
+
+    //可添加船员
+    public static final String SHIP_ADDTIVE_CRWE_LIST = "/ship/employeeInfo/add/list.do";
+
 }

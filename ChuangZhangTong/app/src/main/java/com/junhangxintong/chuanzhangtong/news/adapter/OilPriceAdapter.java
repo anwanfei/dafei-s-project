@@ -62,10 +62,12 @@ public class OilPriceAdapter extends BaseAdapter {
 
         if (i % 2 != 0 && i != 0) {
             viewHolder.llOilPriceItemRoot.setBackgroundColor(mContext.getResources().getColor(R.color.gray_F5));
+        }else {
+            viewHolder.llOilPriceItemRoot.setBackgroundColor(mContext.getResources().getColor(R.color.white99));
         }
 
         if (i == 0) {
-            viewHolder.llOilPriceItemRoot.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            viewHolder.llOilPriceItemRoot.setBackgroundColor(mContext.getResources().getColor(R.color.white99));
         }
 
         NewsOilPriceBean oilPriceBean = oilPriceLists.get(i);

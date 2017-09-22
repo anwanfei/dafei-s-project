@@ -181,6 +181,7 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
 
         if (arrivalPort.equals("")) {
             Toast.makeText(WriteArrivalMessageActivity.this, getResources().getString(R.string.input_arrival_port), Toast.LENGTH_SHORT).show();
+            return;
         }
 
         NetUtils.postWithHeader(this, ConstantsUrls.ADD_REPORT)

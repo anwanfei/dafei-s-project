@@ -113,3 +113,15 @@
 	-keep class com.linkedin.** { *; }
 	-keepattributes Signature
 
+#	友盟统计
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class com.junhangxintong.chuanzhangtong.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
