@@ -65,7 +65,6 @@ public class ChooseCountryActivity extends BaseActivity {
                 finish();
             }
         });
-
     }
 
     @Override

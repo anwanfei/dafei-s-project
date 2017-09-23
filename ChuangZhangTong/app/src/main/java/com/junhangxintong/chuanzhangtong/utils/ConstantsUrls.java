@@ -101,6 +101,9 @@ public class ConstantsUrls {
     //删除船员证书
     public static final String DELETE_CREW_CERTIFICATE = "/my/certificate/user/delete.do";
 
+    //修改船员证书
+    public static final String MODIFY_CREW_CERTIFICATE = "/my/certificate/user/update.do";
+
 
     //我的船队
     //我的船（船队列表）

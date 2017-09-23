@@ -266,7 +266,7 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
                 addCertificateComplete();
                 break;
             case R.id.tv_effective_date:
-                DateUtil.showChooseTimeDialog(this, tvEffectiveDate);
+                DateUtil.getDateTime(this, tvEffectiveDate);
                 break;
         }
     }
@@ -302,7 +302,6 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
 
 
     private void addCertificateComplete() {
-
 
         certificateName = etInputCertificateName.getText().toString();
         certificateNum = etCertificateNumber.getText().toString();

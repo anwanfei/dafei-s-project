@@ -103,7 +103,7 @@ public class WriteArrivalMessageActivity extends BaseActivity implements View.On
                 finish();
                 break;
             case R.id.tv_choose_anchor_arrival_time:
-                DateUtil.showChooseTimeDialog(this, tvChooseAnchorArrivalTime);
+                DateUtil.getDateTime(this, tvChooseAnchorArrivalTime);
                 break;
             case R.id.ll_commit:
                 showCommitDialog();

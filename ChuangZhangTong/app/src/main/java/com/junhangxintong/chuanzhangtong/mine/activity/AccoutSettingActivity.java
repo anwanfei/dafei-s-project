@@ -23,6 +23,7 @@ import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.DataCleanManager;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
 import com.umeng.socialize.media.UMImage;
@@ -89,6 +90,7 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
     //    private AlertDialog show_clear_buffer_dialog;
     private PopupWindow loginOutPopWindow;
     private Dialog dialog;
+    private String totalCacheSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,12 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initData() {
-
+        try {
+            totalCacheSize = DataCleanManager.getTotalCacheSize(AccoutSettingActivity.this);
+            tvClearBuffer.setText(totalCacheSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -212,8 +219,16 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
                 dialog.dismiss();
                 break;
             case R.id.tv_ok_clear_butter:
-                Toast.makeText(AccoutSettingActivity.this, "已清除", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                DataCleanManager.clearAllCache(this);
+                try {
+                    String totalCacheSize = DataCleanManager.getTotalCacheSize(this);
+                    Toast.makeText(AccoutSettingActivity.this, "已清除", Toast.LENGTH_SHORT).show();
+                    tvClearBuffer.setText(totalCacheSize);
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case R.id.tv_cancel_choose_gender:
                 loginOutPopWindow.dismiss();

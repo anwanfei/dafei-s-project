@@ -71,6 +71,9 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
     GridView gvCertificatePhoto;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    private CrewCertificateDetailsBean crewCertificateDetailsBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,8 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.certificate_details));
+        tvSetting.setVisibility(View.VISIBLE);
+        tvSetting.setText(getResources().getString(R.string.edit));
     }
 
     @Override
@@ -118,7 +123,7 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                CrewCertificateDetailsBean crewCertificateDetailsBean = new Gson().fromJson(response, CrewCertificateDetailsBean.class);
+                                crewCertificateDetailsBean = new Gson().fromJson(response, CrewCertificateDetailsBean.class);
                                 CrewCertificateDetailsBean.DataBean.ObjectBean crewCertificateDetails = crewCertificateDetailsBean.getData().getObject();
                                 int isUse = crewCertificateDetails.getIsUse();
                                 int isValid = crewCertificateDetails.getIsValid();
@@ -178,8 +183,18 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
         return R.layout.activity_certificate_indetails;
     }
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        finish();
+
+    @OnClick({R.id.iv_back, R.id.tv_setting})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_setting:
+                Intent intent = new Intent(CrewCertificateDetailsActivity.this, ModifyCrewCertificateActivity.class);
+                intent.putExtra(Constants.CREW_DETAILS_BEAN, crewCertificateDetailsBean);
+                startActivity(intent);
+                break;
+        }
     }
 }

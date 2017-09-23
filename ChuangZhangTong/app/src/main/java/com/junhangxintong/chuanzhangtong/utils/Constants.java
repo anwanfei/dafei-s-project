@@ -110,6 +110,7 @@ public class Constants {
     public static final String REPORT_TYPE = "reportType";
     public static final String PAGE_SIZE_10 = "10";
     public static final String AGENT = "User-Agent";
+    public static final String CREW_DETAILS_BEAN = "crew_details_bean";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "https://www.pgyer.com/22dL";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};

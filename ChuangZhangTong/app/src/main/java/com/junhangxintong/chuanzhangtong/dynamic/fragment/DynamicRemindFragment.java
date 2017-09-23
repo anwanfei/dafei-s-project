@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.MessageFragmentAdapter;
-import com.junhangxintong.chuanzhangtong.mine.Utils.RoleEnum;
+import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 

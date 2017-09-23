@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
-import com.junhangxintong.chuanzhangtong.mine.Utils.RoleEnum;
+import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFleetAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyShipAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.MyFleetBean;

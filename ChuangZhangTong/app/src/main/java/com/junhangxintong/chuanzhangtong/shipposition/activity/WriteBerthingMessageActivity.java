@@ -117,16 +117,16 @@ public class WriteBerthingMessageActivity extends BaseActivity implements View.O
                 finish();
                 break;
             case R.id.tv_input_anchor_arrival_time:
-                DateUtil.showChooseTimeDialog(this, tvInputAnchorArrivalTime);
+                DateUtil.getDateTime(this, tvInputAnchorArrivalTime);
                 break;
             case R.id.tv_input_system_stop_time:
-                DateUtil.showChooseTimeDialog(this, tvInputSystemStopTime);
+                DateUtil.getDateTime(this, tvInputSystemStopTime);
                 break;
             case R.id.tv_input_test_cabin_start_time:
-                DateUtil.showChooseTimeDialog(this, tvInputTestCabinStartTime);
+                DateUtil.getDateTime(this, tvInputTestCabinStartTime);
                 break;
             case R.id.tv_input_test_cabin_end_time:
-                DateUtil.showChooseTimeDialog(this, tvInputTestCabinEndTime);
+                DateUtil.getDateTime(this, tvInputTestCabinEndTime);
                 break;
             case R.id.ll_commit:
                 showCommitDialog();

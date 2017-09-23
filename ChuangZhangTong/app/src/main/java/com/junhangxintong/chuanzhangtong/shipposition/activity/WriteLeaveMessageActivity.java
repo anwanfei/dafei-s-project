@@ -115,16 +115,16 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
                 finish();
                 break;
             case R.id.tv_input_loading_unloading_cargo_start_time:
-                DateUtil.showChooseTimeDialog(this, tvInputLoadingUnloadingCargoStartTime);
+                DateUtil.getDateTime(this, tvInputLoadingUnloadingCargoStartTime);
                 break;
             case R.id.tv_input_loading_unloading_cargo_complete_time:
-                DateUtil.showChooseTimeDialog(this, tvInputLoadingUnloadingCargoCompleteTime);
+                DateUtil.getDateTime(this, tvInputLoadingUnloadingCargoCompleteTime);
                 break;
             case R.id.tv_input_leave_time:
-                DateUtil.showChooseTimeDialog(this, tvInputLeaveTime);
+                DateUtil.getDateTime(this, tvInputLeaveTime);
                 break;
             case R.id.tv_input_re_time_arrive_port:
-                DateUtil.showChooseTimeDialog(this, tvInputReTimeArrivePort);
+                DateUtil.getDateTime(this, tvInputReTimeArrivePort);
                 break;
             case R.id.ll_commit:
                 showCommitDialog();

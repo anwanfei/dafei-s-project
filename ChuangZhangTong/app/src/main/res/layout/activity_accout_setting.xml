@@ -162,8 +162,7 @@
             <TextView
                 android:id="@+id/tv_clear_buffer"
                 style="@style/account_setting_right_textview_with_arrow"
-                android:gravity="center_vertical"
-                android:text="@string/clear_buffer_demo" />
+                android:gravity="center_vertical" />
         </RelativeLayout>
 
         <RelativeLayout

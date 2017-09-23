@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/8.
  */
 
-public class CrewCertificateDetailsBean {
+public class CrewCertificateDetailsBean implements Serializable{
 
 
     private String message;
@@ -44,7 +46,7 @@ public class CrewCertificateDetailsBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * object : {"certifNo":"123456","isUse":1,"advanceWarnDay":20,"modifyDate":"","isExpire":1,"id":1,"imgUrl":"[{\"picUrl\":\"buiness/user/pic/suggest/17/1/20170912151039.jpg\",\"seq\":1},{\"picUrl\":\"buiness/user/pic/suggest/17/2/20170912151039.jpg\",\"seq\":2},{\"picUrl\":\"buiness/user/pic/suggest/17/3/20170912151040.jpg\",\"seq\":3}]","certifType":1,"userId":22,"name":"证书1","validDate":"","domain":"http://ow5f3r531.bkt.clouddn.com/","createDate":"2017-09-07 17:15:30","isValid":1,"createUserId":17,"issueOrganization":"中国船舶公司"}
          */
@@ -59,7 +61,7 @@ public class CrewCertificateDetailsBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
+        public static class ObjectBean implements Serializable{
 
             private String certifNo;
             private int isUse;

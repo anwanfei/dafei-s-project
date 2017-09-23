@@ -29,6 +29,8 @@ public class CertificateAdapter extends BaseAdapter implements View.OnClickListe
         this.certificates = myFleetLists;
     }
 
+
+
     @Override
     public int getCount() {
         return certificates.size();

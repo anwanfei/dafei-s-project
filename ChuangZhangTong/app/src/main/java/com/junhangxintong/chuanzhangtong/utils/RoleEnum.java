@@ -1,4 +1,4 @@
-package com.junhangxintong.chuanzhangtong.mine.Utils;
+package com.junhangxintong.chuanzhangtong.utils;
 
 public enum RoleEnum {
 	ADMIN(1, "管理员"), SHIPMASTER(2, "船长"), SHIPMEMBER(3, "船员"), OTHER(4, "其他");

@@ -200,7 +200,8 @@
         <activity android:name=".mine.activity.AddShipCertificateActivity" />
         <activity android:name=".mine.activity.MyCertificateActivity" />
         <activity android:name=".mine.activity.ShipCrewInfoActivity" />
-        <activity android:name=".news.activity.WeatherDetailsActivity"></activity>
+        <activity android:name=".news.activity.WeatherDetailsActivity" />
+        <activity android:name=".mine.activity.ModifyCrewCertificateActivity"></activity>
     </application>
 
 </manifest>

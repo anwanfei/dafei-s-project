@@ -314,7 +314,6 @@ public class CrewManagementActivity extends BaseActivity {
                                 crewLists.removeAll(choosedLists);
                                 updateCrewsList();
                                 crewListsAdapter.notifyDataSetChanged();
-
                             }
                         }
                     }

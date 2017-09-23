@@ -197,7 +197,7 @@ public class WriteNoonMessageActivity extends BaseActivity implements View.OnCli
                 finish();
                 break;
             case R.id.tv_input_re_arrival_time:
-                DateUtil.showChooseTimeDialog(this, tvInputReArrivalTime);
+                DateUtil.getDateTime(this, tvInputReArrivalTime);
                 break;
             case R.id.ll_commit:
                 showCommitDialog();
