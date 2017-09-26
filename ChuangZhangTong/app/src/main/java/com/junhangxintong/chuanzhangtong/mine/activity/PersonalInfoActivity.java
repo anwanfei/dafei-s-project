@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -125,7 +125,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String code = netServiceErrortBean.getCode();
                             if (code.equals("200")) {
                                 loginResult = new Gson().fromJson(response, LoginResultBean.class);
@@ -356,7 +356,6 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             File filesDir = this.getExternalFilesDir(null);//sdcard/Android/data/应用包名/file/...jpg
             File file = new File(filesDir, "icon.jpg");
-
             try {
                 image.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
             } catch (FileNotFoundException e) {
@@ -477,7 +476,7 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String code = netServiceErrortBean.getCode();
                             Toast.makeText(PersonalInfoActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                             if (code.equals("601")) {

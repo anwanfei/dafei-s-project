@@ -4,7 +4,7 @@ package com.junhangxintong.chuanzhangtong.common;
  * Created by anwanfei on 2017/8/31.
  */
 
-public class NetServiceErrortBean {
+public class NetServiceCodeBean {
 
     private String message;
     private String status;

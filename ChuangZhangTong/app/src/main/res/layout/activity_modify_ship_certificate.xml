@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.ModifyShipCertificateActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:focusableInTouchMode="true"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/certificate_name" />
+
+            <EditText
+                android:id="@+id/et_input_certificate_name"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/certificate_name" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/certificate_number" />
+
+            <EditText
+                android:id="@+id/et_certificate_number"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_certificate_number" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_certificate_type"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
+                android:text="@string/certificate_type" />
+
+            <EditText
+                android:id="@+id/et_certificate_type"
+                style="@style/edittext_no_arrow"
+                android:gravity="center_vertical"
+                android:hint="@string/input_certificates_type" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_issuing_authority"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:layout_centerVertical="true"
+                android:text="@string/issuing_authority" />
+
+            <!--<TextView
+                android:id="@+id/tv_issuing_authority"
+                style="@style/account_setting_right_textview_with_arrow"
+                android:gravity="center_vertical" />-->
+            <EditText
+                android:id="@+id/tv_issuing_authority"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_issue_department" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_permanent_effective" />
+
+            <RadioGroup
+                android:id="@+id/rg_is_effective"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_effective_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/effective_date" />
+
+            <TextView
+                android:id="@+id/tv_effective_date"
+                style="@style/textview_style_certificate"
+                android:hint="@string/choose_time"
+                android:textColor="@color/textcolor_gray80" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_reWarning_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/re_warning_days" />
+
+            <RadioGroup
+                android:id="@+id/rg_warn_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_time_30_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_30_days" />
+
+                <RadioButton
+                    android:id="@+id/rb_time_90_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_90_days" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_common" />
+
+            <RadioGroup
+                android:id="@+id/rg_is_ofton_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_commoned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/commoned" />
+
+                <RadioButton
+                    android:id="@+id/rb_no_commoned"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/no_commoned" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvResultPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_add_certificate_photo"
+                    style="@style/account_setting_left_textview"
+                    android:layout_width="match_parent"
+                    android:drawableRight="@drawable/iv_add_certificate_photo"
+                    android:gravity="center_vertical"
+                    android:text="@string/add_certificate_photo" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_crew_info_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/tv_bg"
+                android:gravity="center"
+                android:text="@string/complete"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -12,15 +12,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
+import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateOrInsuranceInfoBean;
+import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.junhangxintong.chuanzhangtong.view.MyGridview;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,6 +70,12 @@ public class ShipCertificateDetailsActivity extends BaseActivity {
     RelativeLayout rlWarningDays;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
+    @BindView(R.id.gv_certificate_photo)
+    MyGridview gvCertificatePhoto;
+    private ShipCertificateOrInsuranceInfoBean shipCertificateOrInsuranceInfoBean;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +86,20 @@ public class ShipCertificateDetailsActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.certificate_details));
+        tvSetting.setVisibility(View.VISIBLE);
+        tvSetting.setText(getResources().getString(R.string.edit));
     }
 
     @Override
     protected void initData() {
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra(Constants.ID);
+        id = intent.getStringExtra(Constants.ID);
 
+        netGetShipCertificateDetails();
+    }
+
+    private void netGetShipCertificateDetails() {
         NetUtils.postWithHeader(this, ConstantsUrls.SHIP_CERTIFICATE_INFO)
                 .addParams(Constants.ID, id)
                 .build()
@@ -93,11 +114,11 @@ public class ShipCertificateDetailsActivity extends BaseActivity {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(ShipCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                ShipCertificateOrInsuranceInfoBean shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
+                                shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
                                 ShipCertificateOrInsuranceInfoBean.DataBean.ObjectBean shipCertificateOrInsuranceInfo = shipCertificateOrInsuranceInfoBean.getData().getObject();
 
                                 tvInputCertificateName.setText(shipCertificateOrInsuranceInfo.getName());
@@ -119,6 +140,16 @@ public class ShipCertificateDetailsActivity extends BaseActivity {
                                     }
                                 });
 
+                                String imgUrl = shipCertificateOrInsuranceInfo.getImgUrl();
+                                if (StringUtils.isNotBlank(imgUrl)) {
+                                    Type type = new TypeToken<ArrayList<UrlBean>>() {
+                                    }.getType();
+                                    ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
+
+                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(ShipCertificateDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
+                                    gvCertificatePhoto.setAdapter(showPhotoAdapter);
+                                }
+
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
@@ -139,8 +170,24 @@ public class ShipCertificateDetailsActivity extends BaseActivity {
         return R.layout.activity_certificate_indetails;
     }
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.iv_back, R.id.tv_setting})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_setting:
+                Intent intent = new Intent(ShipCertificateDetailsActivity.this, ModifyShipCertificateActivity.class);
+                intent.putExtra(Constants.SHIP_CERTIFICATE_DETAILS_BEAN, shipCertificateOrInsuranceInfoBean);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetShipCertificateDetails();
+
     }
 }

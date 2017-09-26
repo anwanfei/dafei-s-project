@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicReportListsAdapter;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportBean;
@@ -108,7 +108,7 @@ public class NoonzMessageFragment extends BaseFragment {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
@@ -162,7 +162,7 @@ public class NoonzMessageFragment extends BaseFragment {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {

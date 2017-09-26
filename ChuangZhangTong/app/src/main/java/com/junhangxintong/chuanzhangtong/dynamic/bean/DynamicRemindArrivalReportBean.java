@@ -116,6 +116,15 @@ public class DynamicRemindArrivalReportBean implements Serializable {
             private String freshwaterConsumption;
             private String currShipSpeed;
             private int createUserId;
+            private int isShowEditBtn;
+
+            public int getIsShowEditBtn() {
+                return isShowEditBtn;
+            }
+
+            public void setIsShowEditBtn(int isShowEditBtn) {
+                this.isShowEditBtn = isShowEditBtn;
+            }
 
             public int getShipId() {
                 return shipId;

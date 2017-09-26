@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateOrInsuranceInfoBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
@@ -91,6 +91,7 @@ public class InsuranceDetailsActivity extends BaseActivity {
     GridView gvCertificatePhoto;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    private ShipCertificateOrInsuranceInfoBean shipCertificateOrInsuranceInfoBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,8 @@ public class InsuranceDetailsActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.ship_insturance));
-
+        tvSetting.setVisibility(View.VISIBLE);
+        tvSetting.setText(getResources().getString(R.string.edit));
     }
 
     @Override
@@ -122,11 +124,11 @@ public class InsuranceDetailsActivity extends BaseActivity {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(InsuranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
-                                ShipCertificateOrInsuranceInfoBean shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
+                                shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
                                 ShipCertificateOrInsuranceInfoBean.DataBean.ObjectBean shipCertificateOrInsuranceInfo = shipCertificateOrInsuranceInfoBean.getData().getObject();
 
                                 tvInsuranceType.setText(shipCertificateOrInsuranceInfo.getName());
@@ -202,6 +204,9 @@ public class InsuranceDetailsActivity extends BaseActivity {
             case R.id.iv_share:
                 break;
             case R.id.tv_setting:
+                Intent intent = new Intent(InsuranceDetailsActivity.this, ModifyShipInsuranceActivity.class);
+                intent.putExtra(Constants.SHIP_INSURANCE_DETAILS_BEAN, shipCertificateOrInsuranceInfoBean);
+                startActivity(intent);
                 break;
         }
     }

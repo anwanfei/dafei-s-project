@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * Created by anwanfei on 2017/7/14.
  */
 
-public class CrewListsAdapter extends BaseAdapter implements View.OnClickListener {
+public class CrewListsAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<CrewServeBean.DataBean.ArrayBean> myCrewLists;
@@ -123,18 +123,6 @@ public class CrewListsAdapter extends BaseAdapter implements View.OnClickListene
 
         //返回view
         return convertView;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_item_ship_name:
-                break;
-            case R.id.tv_certificate:
-                break;
-            case R.id.cb_ship:
-                break;
-        }
     }
 
     public void controlCheckboxShow(boolean b) {

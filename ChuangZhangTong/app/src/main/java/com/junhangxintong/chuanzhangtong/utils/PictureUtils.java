@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -7,8 +8,13 @@ import android.os.Environment;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -19,6 +25,7 @@ public class PictureUtils {
 
     /**
      * 1.质量压缩
+     *
      * @param image
      * @return
      */
@@ -149,8 +156,53 @@ public class PictureUtils {
             File file = new File(string);
             if (file.exists()) {
                 file.delete();
+        }
+        }
+    }
+
+
+    //把bitmap对象保存到本地
+    public static void saveImage(Bitmap image, String imageName, Context context) {
+        //判断sd卡是否处于挂载状态
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            File filesDir = context.getExternalFilesDir(null);//sdcard/Android/data/应用包名/file/...jpg
+            File file = new File(filesDir, imageName + ".jpg");
+            try {
+                image.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 根据图片的url路径获得Bitmap对象
+     *
+     * @param url
+     * @return
+     */
+    public static Bitmap decodeUriAsBitmapFromNet(String url) {
+        URL fileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            fileUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HttpURLConnection conn = (HttpURLConnection) fileUrl
+                    .openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
 
     }
 }

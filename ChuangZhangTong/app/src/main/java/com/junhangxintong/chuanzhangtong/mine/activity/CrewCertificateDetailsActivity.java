@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewCertificateDetailsBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
@@ -74,6 +74,7 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
     @BindView(R.id.tv_setting)
     TextView tvSetting;
     private CrewCertificateDetailsBean crewCertificateDetailsBean;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
     protected void initData() {
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra(Constants.ID);
+        id = intent.getStringExtra(Constants.ID);
 
         int certificate_from_type = intent.getIntExtra(Constants.CERTIFICATE_TYPE, 0);
         if (certificate_from_type == 1) {
@@ -119,7 +120,7 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(CrewCertificateDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
@@ -197,4 +198,11 @@ public class CrewCertificateDetailsActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetCetificateDetails(id, ConstantsUrls.CREW_CERTIFICATE_DETAILS);
+    }
+
 }

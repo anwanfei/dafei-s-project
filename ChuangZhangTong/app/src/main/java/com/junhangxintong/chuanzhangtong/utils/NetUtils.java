@@ -3,15 +3,18 @@ package com.junhangxintong.chuanzhangtong.utils;
 import android.content.Context;
 import android.os.Build;
 import android.webkit.WebSettings;
+import android.widget.Toast;
 
+import com.junhangxintong.chuanzhangtong.common.MyApplication;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.builder.PostStringBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import okhttp3.Call;
 import okhttp3.MediaType;
 
 import static com.junhangxintong.chuanzhangtong.utils.Constants.TOKEN;
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by anwanfei on 2017/8/31.
@@ -62,7 +65,7 @@ public class NetUtils {
                 .postString()
                 .addHeader(TOKEN, token)
                 .addHeader(Constants.USER_ID, userId)
-                .addHeader(Constants.AGENT,getUserAgent())
+                .addHeader(Constants.AGENT, getUserAgent())
                 .mediaType(MediaType.parse("application/json; charset=utf-8"))
                 .content(json)
                 .url(baseUrl + url);
@@ -72,7 +75,7 @@ public class NetUtils {
         String userAgent = "";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             try {
-                userAgent = WebSettings.getDefaultUserAgent(context);
+                userAgent = WebSettings.getDefaultUserAgent(MyApplication.appContext);
             } catch (Exception e) {
                 userAgent = System.getProperty("http.agent");
             }
@@ -89,5 +92,19 @@ public class NetUtils {
             }
         }
         return sb.toString();
+    }
+
+    public static void postWithTest(Context context, String url) {
+        String baseUrl = CacheUtils.getString(context, Constants.BASE_URL);
+        if (baseUrl.equals("")) {
+            baseUrl = ConstantsUrls.WWW_TEST_BASE_URL;
+        }
+    }
+
+    public abstract static class MyStringCallback extends StringCallback {
+        @Override
+        public void onError(Call call, Exception e, int id) {
+            Toast.makeText(MyApplication.appContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+        }
     }
 }

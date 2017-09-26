@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
@@ -99,7 +99,7 @@ public class EmergencyContactorPhoneActivity extends BaseActivity {
                             if (response == null || response.equals("") || response.equals("null")) {
                                 Toast.makeText(EmergencyContactorPhoneActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
                                 String code = netServiceErrortBean.getCode();
                                 Toast.makeText(EmergencyContactorPhoneActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                                 if (code.equals("601")) {

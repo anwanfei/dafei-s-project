@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewDetailsBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
@@ -92,7 +92,7 @@ public class ShipCrewInfoActivity extends BaseActivity {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(ShipCrewInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {

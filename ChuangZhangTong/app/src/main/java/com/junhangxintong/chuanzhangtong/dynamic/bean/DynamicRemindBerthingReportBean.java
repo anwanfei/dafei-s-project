@@ -111,6 +111,15 @@ public class DynamicRemindBerthingReportBean implements Serializable {
             private String holdInspectionBeginDate;
             private int createUserId;
             private String tugUseNum;
+            private int isShowEditBtn;
+
+            public int getIsShowEditBtn() {
+                return isShowEditBtn;
+            }
+
+            public void setIsShowEditBtn(int isShowEditBtn) {
+                this.isShowEditBtn = isShowEditBtn;
+            }
 
             public int getShipId() {
                 return shipId;

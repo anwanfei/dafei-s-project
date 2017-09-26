@@ -514,6 +514,8 @@
     <string name="downloading_new_version">正在下载更新</string>
     <string name="download_new_version_fail">下载新版本失败</string>
     <string name="modify_certificate_info">修改船员证书</string>
+    <string name="modify_ship_insurance_info">修改船舶证书</string>
+    <string name="modify_ship_certificate_info">修改船舶证书</string>
 
 
     <!---->

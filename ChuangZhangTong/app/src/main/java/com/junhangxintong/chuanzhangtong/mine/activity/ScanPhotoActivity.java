@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,5 +140,15 @@ public class ScanPhotoActivity extends BaseActivity {
                 .load(photos.get(position))
                 .centerCrop()
                 .into(imageView);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == event.KEYCODE_BACK) {
+            EventBus.getDefault().post(new EventBusMessage(photos));
+            finish();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

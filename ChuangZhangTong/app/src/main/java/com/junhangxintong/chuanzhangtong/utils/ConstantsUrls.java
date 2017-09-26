@@ -138,6 +138,12 @@ public class ConstantsUrls {
     //删除船舶证书
     public static final String DELETE_SHIP_CERTIFICATE = "/my/certificate/ship/delete.do";
 
+    //修改船舶保险
+    public static final String MODIFY_SHIP_INSERANCE = "/my/certificate/ship/update.do";
+
+    //修改船舶证书
+    public static final String MODIFY_SHIP_CERTIFICATE = "/my/certificate/ship/update.do";
+
 
     //我关注的船
     //我关注的船列表
@@ -164,7 +170,6 @@ public class ConstantsUrls {
 
     //查询详情信息
     public static final String QUERY_NEWS_DETAILS = "/ship/headline/query/info.do";
-
 
 
     /**

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.NoonReportInfoBean;
@@ -93,6 +93,8 @@ public class ShipNoonMessageActivity extends BaseActivity {
     TextView tvPlaceTop;
     @BindView(R.id.ll_zhengwu_bottom)
     LinearLayout llZhengwuBottom;
+    @BindView(R.id.tv_setting)
+    TextView tvSetting;
     private String id = "";
 
     @Override
@@ -136,6 +138,14 @@ public class ShipNoonMessageActivity extends BaseActivity {
             tvWindDirection.setText(noonReportInfo.getWindDirection());
             tvConsume.setText(noonReportInfo.getConsume());
             tvRemark.setText(noonReportInfo.getRemark());
+
+           /* int isShowEditBtn = noonReportInfo.getIsShowEditBtn();
+            if (isShowEditBtn == 1) {
+                tvSetting.setVisibility(View.VISIBLE);
+                tvSetting.set
+            } else {
+                tvSetting.setVisibility(View.GONE);
+            }*/
         } else {
             id = intent.getStringExtra(Constants.ID);
             final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
@@ -155,7 +165,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
                             if (response == null || response.equals("") || response.equals("null")) {
                                 Toast.makeText(ShipNoonMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                                 String message = netServiceErrort.getMessage();
                                 String code = netServiceErrort.getCode();
                                 if (code.equals("200")) {
@@ -204,7 +214,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
         return R.layout.activity_ship_zhengwu_message;
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_share, R.id.tv_sign_no_read, R.id.tv_place_top})
+    @OnClick({R.id.iv_back, R.id.tv_share, R.id.tv_sign_no_read, R.id.tv_place_top, R.id.tv_setting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -215,6 +225,8 @@ public class ShipNoonMessageActivity extends BaseActivity {
             case R.id.tv_sign_no_read:
                 break;
             case R.id.tv_place_top:
+                break;
+            case R.id.tv_setting:
                 break;
         }
     }

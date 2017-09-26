@@ -100,6 +100,15 @@ public class DynamicRemindNonnReportBean implements Serializable {
             private String expectArrivalDate;
             private String currShipSpeed;
             private int createUserId;
+            private int isShowEditBtn;
+
+            public int getIsShowEditBtn() {
+                return isShowEditBtn;
+            }
+
+            public void setIsShowEditBtn(int isShowEditBtn) {
+                this.isShowEditBtn = isShowEditBtn;
+            }
 
             public int getShipId() {
                 return shipId;

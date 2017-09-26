@@ -19,7 +19,7 @@ import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.CrewCertificateActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
@@ -210,7 +210,7 @@ public class AllMessageFragment extends BaseFragment {
                             Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             refreshLoadmoreFail();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {

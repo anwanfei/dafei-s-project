@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindBerthingReportBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.BerthingReportInfoBean;
@@ -130,7 +130,7 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
                             if (response == null || response.equals("") || response.equals("null")) {
                                 Toast.makeText(ShipBerthingPortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                             } else {
-                                NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                                NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                                 String message = netServiceErrort.getMessage();
                                 String code = netServiceErrort.getCode();
                                 if (code.equals("200")) {

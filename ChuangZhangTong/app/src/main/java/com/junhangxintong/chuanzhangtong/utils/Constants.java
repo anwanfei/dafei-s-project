@@ -24,6 +24,7 @@ public class Constants {
     public static final int REQUEST_CODE_ALBUM = 6;
     public static final String DATA = "data";
     public static final String PHONE_PATH = "/Android/data/com.junhangxintong.chuanzhangtong/files/icon.jpg";
+    public static final String PHONE_PATH_NO_NAMA = "/Gallery/Pictures/";
     public static final String DUTY_CREW_INFO = "duty_crew_info";
     public static final String SHIP_NAME = "shipName";
     public static final String CERTIFICATE_NAME = "CERTIFICATE_NAME";
@@ -111,6 +112,8 @@ public class Constants {
     public static final String PAGE_SIZE_10 = "10";
     public static final String AGENT = "User-Agent";
     public static final String CREW_DETAILS_BEAN = "crew_details_bean";
+    public static final String SHIP_INSURANCE_DETAILS_BEAN = "ship_insurance_details_bean";
+    public static final String SHIP_CERTIFICATE_DETAILS_BEAN = "ship_certificate_details_bean";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "https://www.pgyer.com/22dL";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};

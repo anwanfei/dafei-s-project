@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MainActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -110,7 +110,7 @@ public class MessageVerifyLoginActivity extends BaseActivity {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(MessageVerifyLoginActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
                             if (!netServiceErrortBean.getCode().equals("200")) {
                                 Toast.makeText(MessageVerifyLoginActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.ShipCertificatesAndInsrancesAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateInsuranceListsBean;
@@ -138,7 +138,7 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(ShipCertificteListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
@@ -155,7 +155,7 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                                         int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
                                         int id = shipCertificateInsuranceLists.get(i).getId();
                                         if (certifType == 1) {
-                                            Intent intent = new Intent(ShipCertificteListActivity.this, CrewCertificateDetailsActivity.class);
+                                            Intent intent = new Intent(ShipCertificteListActivity.this, ShipCertificateDetailsActivity.class);
                                             intent.putExtra(Constants.ID, String.valueOf(id));
                                             startActivity(intent);
 

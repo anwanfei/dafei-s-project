@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.mine.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/9.
  */
 
-public class ShipCertificateOrInsuranceInfoBean {
+public class ShipCertificateOrInsuranceInfoBean implements Serializable {
 
     /**
      * message : 查询成功
@@ -50,7 +52,7 @@ public class ShipCertificateOrInsuranceInfoBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * object : {"shipId":1,"assureType":"类型1","certifNo":"","imoNo":"1423","isUse":1,"shipName":"海洋一号","issueDate":"2017-09-07 10:29:44","issueAddress":"青岛市","modifyDate":"","advanceWarnDay":1,"shipCall":"124","isExpire":1,"id":1,"imgUrl":"[{\"picUrl\":\"buiness/user/pic/suggest/17/1/20170912151039.jpg\",\"seq\":1},{\"picUrl\":\"buiness/user/pic/suggest/17/2/20170912151039.jpg\",\"seq\":2},{\"picUrl\":\"buiness/user/pic/suggest/17/3/20170912151040.jpg\",\"seq\":3}]","certifType":2,"name":"船保险","validDate":"","shipNameOrAddress":"青岛","shipNationaPort":"青岛港","createDate":"2017-09-07 10:29:44","isValid":0,"createUserId":0,"issueOrganization":"中国海洋总公司","domain":"http://ow5f3r531.bkt.clouddn.com/"}
          */
@@ -65,7 +67,7 @@ public class ShipCertificateOrInsuranceInfoBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
+        public static class ObjectBean implements Serializable{
             /**
              * shipId : 1
              * assureType : 类型1

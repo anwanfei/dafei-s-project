@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.jaeger.library.StatusBarUtil;
 import com.junhangxintong.chuanzhangtong.R;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.ButterKnife;
 
@@ -94,4 +95,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }*/
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkHttpUtils.getInstance().cancelTag(this);
+    }
 }

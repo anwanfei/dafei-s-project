@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
@@ -141,7 +141,7 @@ public class MyFragment extends BaseFragment {
                         if (response == null || response.equals("") || response.equals("null")) {
                             Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrortBean = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String code = netServiceErrortBean.getCode();
                             if (code.equals("200")) {
                                 loginResult = new Gson().fromJson(response, LoginResultBean.class);

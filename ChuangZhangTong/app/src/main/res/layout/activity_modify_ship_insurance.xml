@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView"
+    android:background="@color/white"
+    android:scrollbars="none"
+    tools:context="com.junhangxintong.chuanzhangtong.mine.activity.ModifyShipInsuranceActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bg"
+        android:orientation="vertical">
+
+        <include layout="@layout/titlebar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_insurance_name"
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/insurance_name" />
+
+            <EditText
+                android:id="@+id/et_insurance_name"
+                style="@style/textview_style_certificate"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tv_insurance_name"
+                android:gravity="end"
+                android:hint="@string/input_insurance_name" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:drawableLeft="@drawable/ic_xingbiao"
+                android:text="@string/ship_name" />
+
+            <EditText
+                android:id="@+id/et_ship_name"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_name" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                android:drawableLeft="@drawable/ic_xingbiao"
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_bianhao" />
+
+            <EditText
+                android:id="@+id/et_ship_bianhao"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_bianhao" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_certificate_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_imo" />
+
+            <EditText
+                android:id="@+id/et_ship_imo"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_IMO" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/ship_nationality_harbor" />
+
+            <EditText
+                android:id="@+id/et_ship_nationality_harbor"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_ship_nationality_harbor" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/name_address_of_ship" />
+
+            <EditText
+                android:id="@+id/tv_name_address_of_ship"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_name_address_of_ship" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/gurantee_type" />
+
+            <EditText
+                android:id="@+id/et_gurantee_type"
+                style="@style/edittext_no_arrow"
+                android:hint="@string/input_insurance_type" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issue_date" />
+
+            <TextView
+                android:id="@+id/tv_issue_date"
+                style="@style/textview_style_certificate"
+                android:hint="@string/choose_time"
+                android:textColor="@color/textcolor_gray80" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issuing_authority" />
+
+            <EditText
+                android:id="@+id/et_issuing_authority"
+                style="@style/textview_style_certificate"
+                android:hint="@string/input_issue_department"
+                android:textColor="@color/textcolor_gray80" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_issuing_authority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/issue_address" />
+
+            <EditText
+                android:id="@+id/et_issue_address"
+                style="@style/textview_style_certificate"
+                android:hint="@string/input_issue_address" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_permanent_effective" />
+
+            <RadioGroup
+                android:id="@+id/rg_choose_is_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+
+                <RadioButton
+                    android:id="@+id/rb_yes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_effective_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/effective_date" />
+
+            <TextView
+                android:id="@+id/tv_effective_date"
+                style="@style/textview_style_certificate"
+                android:hint="@string/choose_time"
+                android:textColor="@color/textcolor_gray80"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_re_warning_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/re_warning_days" />
+
+            <RadioGroup
+                android:id="@+id/rg_warn_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_time_30_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_30_days" />
+
+                <RadioButton
+                    android:id="@+id/rb_time_90_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="6dp"
+                    android:text="@string/time_90_days" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:padding="15dp">
+
+            <TextView
+                style="@style/account_setting_left_textview"
+                android:text="@string/is_common" />
+
+            <RadioGroup
+                android:id="@+id/rg_is_ofton_use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/rb_is_ofton_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/yes" />
+
+                <RadioButton
+                    android:id="@+id/rb_no_ofton_use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:layout_marginLeft="20dp"
+                    android:drawableLeft="@drawable/rb_choose_selector"
+                    android:drawablePadding="3dp"
+                    android:text="@string/no" />
+            </RadioGroup>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvResultPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/tv_add_certificate_photo"
+                    style="@style/account_setting_left_textview"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:text="@string/add_certificate_photo" />
+
+                <ImageView
+                    android:id="@+id/iv_add_images"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/iv_add_certificate_photo" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/tv_add_insurance_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/tv_bg"
+                android:gravity="center"
+                android:text="@string/complete"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

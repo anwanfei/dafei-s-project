@@ -156,6 +156,7 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
                 .iHandlerCallBack(iHandlerCallBack)
                 .provider("com.junhangxintong.chuanzhangtong.fileprovider")
                 .pathList(path)
+                .crop(true)
                 .multiSelect(true)
                 .multiSelect(true, 6)
                 .maxSize(6)
@@ -266,7 +267,7 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
                 addCertificateComplete();
                 break;
             case R.id.tv_effective_date:
-                DateUtil.getDateTime(this, tvEffectiveDate);
+                DateUtil.showChooseTimeDialog(this, tvEffectiveDate);
                 break;
         }
     }

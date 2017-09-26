@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.common.NetServiceErrortBean;
+import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
@@ -138,24 +138,20 @@ public class CrewManagementActivity extends BaseActivity {
     }
 
     private void netGetCrewsLists(String crewName) {
+
         NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
                 .addParams(Constants.PAGE, "1")
-                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.PAGE_SIZE, "50")
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.PERSON_NAME, crewName)
                 .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
-
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
                     public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
+                        if (StringUtils.isBlank(response)) {
                             Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
                         } else {
-                            NetServiceErrortBean netServiceErrort = new Gson().fromJson(response, NetServiceErrortBean.class);
+                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
                             if (code.equals("200")) {
