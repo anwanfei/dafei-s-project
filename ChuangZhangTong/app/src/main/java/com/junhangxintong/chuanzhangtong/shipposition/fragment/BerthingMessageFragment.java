@@ -16,9 +16,7 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicReportListsAdapter;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindBerthingReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportTypeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.ReportListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.ShipBerthingPortMessageActivity;
@@ -54,6 +52,7 @@ public class BerthingMessageFragment extends BaseFragment {
     private List<DynamicReportBean.DataBean.ArrayBean> dynamicReportLists;
     private String fromDynamic = "";
     private Intent intent;
+    private String shipName;
 
     @Override
     protected View initView() {
@@ -115,7 +114,11 @@ public class BerthingMessageFragment extends BaseFragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                         int id = dynamicReportLists.get(i).getId();
-                                        netGetReportType(String.valueOf(id));
+                                        Intent intent = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
+                                        intent.putExtra(Constants.ID, String.valueOf(id));
+                                        String shipName = dynamicReportLists.get(i).getShipName();
+                                        intent.putExtra(Constants.SHIP_NAME,shipName);
+                                        startActivity(intent);
                                     }
                                 });
 
@@ -148,7 +151,7 @@ public class BerthingMessageFragment extends BaseFragment {
 
     private void netGetBerthingReportFromShip() {
         final String shipId = intent.getStringExtra(Constants.ID);
-        final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+        shipName = intent.getStringExtra(Constants.SHIP_NAME);
 
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_LISTS)
                 .addParams(Constants.PAGE, "1")
@@ -183,8 +186,8 @@ public class BerthingMessageFragment extends BaseFragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                         Intent intent = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
-                                        int id = reportLists.get(i).getId();
-                                        intent.putExtra(Constants.ID, String.valueOf(id));
+                                        String id = String.valueOf(reportLists.get(i).getId());
+                                        intent.putExtra(Constants.ID, id);
                                         intent.putExtra(Constants.SHIP_NAME, shipName);
                                         startActivity(intent);
                                     }
@@ -212,45 +215,4 @@ public class BerthingMessageFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    private void netGetReportType(String id) {
-
-        NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_INFO)
-                .addParams(Constants.ID, id)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            DynamicReportTypeBean dynamicReportTypeBean = new Gson().fromJson(response, DynamicReportTypeBean.class);
-                            String message = dynamicReportTypeBean.getMessage();
-                            String code = dynamicReportTypeBean.getCode();
-                            if (code.equals("200")) {
-                                DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean = new Gson().fromJson(response, DynamicRemindBerthingReportBean.class);
-                                Intent intent2 = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
-                                intent2.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindBerthingReportBean);
-                                intent2.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
-                                startActivity(intent2);
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-    }
-
 }

@@ -70,7 +70,7 @@ public class DynamicRemindArrivalReportBean implements Serializable {
             this.object = object;
         }
 
-        public static class ObjectBean implements Serializable{
+        public static class ObjectBean implements Serializable {
             /**
              * shipId : 1
              * shipName : 中国号
@@ -117,6 +117,15 @@ public class DynamicRemindArrivalReportBean implements Serializable {
             private String currShipSpeed;
             private int createUserId;
             private int isShowEditBtn;
+            private int timer;
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
+            }
 
             public int getIsShowEditBtn() {
                 return isShowEditBtn;

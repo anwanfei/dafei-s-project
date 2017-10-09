@@ -3,6 +3,8 @@ package com.junhangxintong.chuanzhangtong.shipposition.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +22,10 @@ import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.apache.commons.lang.StringUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -80,6 +85,63 @@ public class ShipArrivalMessageActivity extends BaseActivity {
     TextView tvFrashwaterConsume;
     @BindView(R.id.tv_remark)
     TextView tvRemark;
+    @BindView(R.id.tv_minite)
+    TextView tvMinite;
+    @BindView(R.id.tv_second)
+    TextView tvSecond;
+    @BindView(R.id.tv_edit)
+    TextView tvEdit;
+    @BindView(R.id.ll_countdown_time)
+    LinearLayout llCountdownTime;
+    private Intent intent;
+    private String fromDynamic;
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    if (minute > 0) {
+                        tvMinite.setText("0" + String.valueOf(minute));
+                    } else {
+                        tvMinite.setText("00");
+                    }
+
+                    if (second >= 10) {
+                        tvSecond.setText(String.valueOf(second));
+                    } else {
+                        tvSecond.setText("0" + String.valueOf(second));
+                    }
+
+                    //实现秒大于0的时候自减，等于0的时候分减一，秒置90
+                    if (second > 0) {
+                        second--;
+                    } else {
+                        //倒计时到头的处理
+                        if (minute == 0 && second == 0) {
+                            tvMinite.setText("00");
+                            tvSecond.setText("00");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tvMinite.setText("");
+                                    llCountdownTime.setVisibility(View.GONE);
+                                }
+                            }, 1000);
+
+                        }
+                        minute--;
+                        second = 59;
+                    }
+
+            }
+            super.handleMessage(msg);
+        }
+    };
+    private boolean threadExit = true;
+    private int minute;
+    private int second;
+    private DynamicRemindArrivalReportBean.DataBean.ObjectBean arrivalInfoFromDynamic;
+    private ArrivalReportInfoBean.DataBean.ObjectBean arrivalInfoFromNet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,29 +156,47 @@ public class ShipArrivalMessageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Intent intent = getIntent();
+        intent = getIntent();
 
-        String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
-        if (fromDynamic!=null) {
-            DynamicRemindArrivalReportBean dynamicRemindNonnReportBean = (DynamicRemindArrivalReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
-            DynamicRemindArrivalReportBean.DataBean.ObjectBean arrivalInfo = dynamicRemindNonnReportBean.getData().getObject();
-            tvShipMessageName.setText(arrivalInfo.getShipName());
-            tvShipTime.setText(arrivalInfo.getCreateDate());
-            tvArrivalPort.setText(arrivalInfo.getArrivePort());
-            tvAnchorPosotion.setText(arrivalInfo.getPortRadsteadBerth());
-            tvAnchorArrivalTime.setText(arrivalInfo.getArriveAnchorDate());
-            tvAnchorPosotion.setText(arrivalInfo.getAnchorPosition());
-            tvLatitude.setText(arrivalInfo.getLatitude());
-            tvLongtitude.setText(arrivalInfo.getLongitude());
-            tvShipDirection.setText(arrivalInfo.getCourse());
-            tvShipSpeed.setText(arrivalInfo.getCurrShipSpeed());
-            tvTheShipHeavyOil.setText(arrivalInfo.getShipHeavyOil());
-            tvShipDraft.setText(arrivalInfo.getShipForwardDraft());
-            tvTheShipLightOil.setText(arrivalInfo.getShipLightOil());
-            tvTheShipFrashwater.setText(arrivalInfo.getShipFreshwater());
-            tvLightOilConsume.setText(arrivalInfo.getLightOilConsumption());
-            tvFrashwaterConsume.setText(arrivalInfo.getFreshwaterConsumption());
-            tvRemark.setText(arrivalInfo.getRemark());
+        fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        getArrivalReport(true);
+    }
+
+    private void getArrivalReport(final boolean isShowCountdownTime) {
+        if (StringUtils.isNotBlank(fromDynamic)) {
+            String dynamic_id = intent.getStringExtra(Constants.ID);
+            NetUtils.postWithHeader(this, ConstantsUrls.DYNAMIC_DETAILS)
+                    .addParams(Constants.ID, dynamic_id)
+                    .build()
+                    .execute(new NetUtils.MyStringCallback() {
+                        @Override
+                        protected void onSuccess(String response, String message) {
+                            DynamicRemindArrivalReportBean dynamicRemindNonnReportBean = new Gson().fromJson(response, DynamicRemindArrivalReportBean.class);
+                            arrivalInfoFromDynamic = dynamicRemindNonnReportBean.getData().getObject();
+                            tvShipMessageName.setText(arrivalInfoFromDynamic.getShipName());
+                            tvShipTime.setText(arrivalInfoFromDynamic.getCreateDate());
+                            tvArrivalPort.setText(arrivalInfoFromDynamic.getArrivePort());
+                            tvAnchorPosotion.setText(arrivalInfoFromDynamic.getPortRadsteadBerth());
+                            tvAnchorArrivalTime.setText(arrivalInfoFromDynamic.getArriveAnchorDate());
+                            tvAnchorPosotion.setText(arrivalInfoFromDynamic.getAnchorPosition());
+                            tvLatitude.setText(arrivalInfoFromDynamic.getLatitude());
+                            tvLongtitude.setText(arrivalInfoFromDynamic.getLongitude());
+                            tvShipDirection.setText(arrivalInfoFromDynamic.getCourse());
+                            tvShipSpeed.setText(arrivalInfoFromDynamic.getCurrShipSpeed());
+                            tvTheShipHeavyOil.setText(arrivalInfoFromDynamic.getShipHeavyOil());
+                            tvShipDraft.setText(arrivalInfoFromDynamic.getShipForwardDraft());
+                            tvTheShipLightOil.setText(arrivalInfoFromDynamic.getShipLightOil());
+                            tvTheShipFrashwater.setText(arrivalInfoFromDynamic.getShipFreshwater());
+                            tvLightOilConsume.setText(arrivalInfoFromDynamic.getLightOilConsumption());
+                            tvFrashwaterConsume.setText(arrivalInfoFromDynamic.getFreshwaterConsumption());
+                            tvRemark.setText(arrivalInfoFromDynamic.getRemark());
+
+
+                            int timer = arrivalInfoFromDynamic.getTimer();
+
+                            CountdownTime(isShowCountdownTime, 10000);
+                        }
+                    });
         } else {
             String id = intent.getStringExtra(Constants.ID);
             String shipName = intent.getStringExtra(Constants.SHIP_NAME);
@@ -141,24 +221,26 @@ public class ShipArrivalMessageActivity extends BaseActivity {
                                 String code = netServiceErrort.getCode();
                                 if (code.equals("200")) {
                                     ArrivalReportInfoBean arrivalReportInfoBean = new Gson().fromJson(response, ArrivalReportInfoBean.class);
-                                    ArrivalReportInfoBean.DataBean.ObjectBean arrivalInfo = arrivalReportInfoBean.getData().getObject();
+                                    arrivalInfoFromNet = arrivalReportInfoBean.getData().getObject();
 
-                                    tvShipTime.setText(arrivalInfo.getCreateDate());
-                                    tvArrivalPort.setText(arrivalInfo.getArrivePort());
-                                    tvAnchorPosotion.setText(arrivalInfo.getPortRadsteadBerth());
-                                    tvAnchorArrivalTime.setText(arrivalInfo.getArriveAnchorDate());
-                                    tvAnchorPosotion.setText(arrivalInfo.getAnchorPosition());
-                                    tvLatitude.setText(arrivalInfo.getLatitude());
-                                    tvLongtitude.setText(arrivalInfo.getLongitude());
-                                    tvShipDirection.setText(arrivalInfo.getCourse());
-                                    tvShipSpeed.setText(arrivalInfo.getCurrShipSpeed());
-                                    tvTheShipHeavyOil.setText(arrivalInfo.getShipHeavyOil());
-                                    tvShipDraft.setText(arrivalInfo.getShipForwardDraft());
-                                    tvTheShipLightOil.setText(arrivalInfo.getShipLightOil());
-                                    tvTheShipFrashwater.setText(arrivalInfo.getShipFreshwater());
-                                    tvLightOilConsume.setText(arrivalInfo.getLightOilConsumption());
-                                    tvFrashwaterConsume.setText(arrivalInfo.getFreshwaterConsumption());
-                                    tvRemark.setText(arrivalInfo.getRemark());
+                                    tvShipTime.setText(arrivalInfoFromNet.getCreateDate());
+                                    tvArrivalPort.setText(arrivalInfoFromNet.getArrivePort());
+                                    tvAnchorPosotion.setText(arrivalInfoFromNet.getPortRadsteadBerth());
+                                    tvAnchorArrivalTime.setText(arrivalInfoFromNet.getArriveAnchorDate());
+                                    tvAnchorPosotion.setText(arrivalInfoFromNet.getAnchorPosition());
+                                    tvLatitude.setText(arrivalInfoFromNet.getLatitude());
+                                    tvLongtitude.setText(arrivalInfoFromNet.getLongitude());
+                                    tvShipDirection.setText(arrivalInfoFromNet.getCourse());
+                                    tvShipSpeed.setText(arrivalInfoFromNet.getCurrShipSpeed());
+                                    tvTheShipHeavyOil.setText(arrivalInfoFromNet.getShipHeavyOil());
+                                    tvShipDraft.setText(arrivalInfoFromNet.getShipForwardDraft());
+                                    tvTheShipLightOil.setText(arrivalInfoFromNet.getShipLightOil());
+                                    tvTheShipFrashwater.setText(arrivalInfoFromNet.getShipFreshwater());
+                                    tvLightOilConsume.setText(arrivalInfoFromNet.getLightOilConsumption());
+                                    tvFrashwaterConsume.setText(arrivalInfoFromNet.getFreshwaterConsumption());
+                                    tvRemark.setText(arrivalInfoFromNet.getRemark());
+
+                                    CountdownTime(isShowCountdownTime, 10000);
 
                                 } else if (code.equals("601")) {
                                     //清除了sp存储
@@ -176,23 +258,99 @@ public class ShipArrivalMessageActivity extends BaseActivity {
         }
     }
 
+    private void CountdownTime(boolean isShowCountdownTime, int timer) {
+
+        if (isShowCountdownTime) {
+            String roleId = CacheUtils.getString(ShipArrivalMessageActivity.this, Constants.ROLEID);
+            //倒计时
+
+            if (timer / 1000 > 0) {
+                if (roleId.equals(String.valueOf(RoleEnum.SHIPMASTER.getCode()))) {
+                    llCountdownTime.setVisibility(View.VISIBLE);
+
+                    minute = timer / 60 / 1000;
+
+                    if (timer / 1000 % 60 != 0) {
+                        second = timer / 1000 % 60;
+                    } else {
+                        second = 60;
+                    }
+
+                    tvMinite.setText("0" + String.valueOf(minute));
+                    if (second >= 10) {
+                        tvSecond.setText(String.valueOf(second));
+                    } else {
+                        tvSecond.setText("0" + String.valueOf(second));
+                    }
+                    new Thread(new MyThread()).start();
+                }
+            }
+        }
+    }
+
+    public class MyThread implements Runnable {      // thread
+        @Override
+        public void run() {
+            while (threadExit) {
+                try {
+                    Message message = new Message();
+                    Thread.sleep(1000);     // sleep 1000ms
+                    message.what = 1;
+                    if (minute >= 0) {
+                        handler.sendMessage(message);
+                    } else {
+                        threadExit = false;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_ship_arrival_message;
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_share, R.id.tv_sign_no_read, R.id.tv_place_top})
+    @OnClick({R.id.iv_back, R.id.tv_edit, R.id.tv_sign_no_read, R.id.tv_place_top})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_share:
+            case R.id.tv_edit:
+                ModifyArrivalReport();
                 break;
             case R.id.tv_sign_no_read:
                 break;
             case R.id.tv_place_top:
                 break;
         }
+    }
+
+    private void ModifyArrivalReport() {
+        if (StringUtils.isNotBlank(fromDynamic)) {
+            Intent intent = new Intent(ShipArrivalMessageActivity.this, ModifyArrivalReportActivity.class);
+            intent.putExtra(Constants.ARRIVAL_REPORT_INFO, arrivalInfoFromDynamic);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(ShipArrivalMessageActivity.this, ModifyArrivalReportActivity.class);
+            intent.putExtra(Constants.ARRIVAL_REPORT_INFO, arrivalInfoFromNet);
+            intent.putExtra(Constants.FROM_SHIP, true);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getArrivalReport(false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        threadExit = false;
     }
 }

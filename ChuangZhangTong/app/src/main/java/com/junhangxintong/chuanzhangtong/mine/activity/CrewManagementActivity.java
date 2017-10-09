@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,21 +13,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
+import com.junhangxintong.chuanzhangtong.net.HttpUtils;
+import com.junhangxintong.chuanzhangtong.net.ICrewManagementService;
+import com.junhangxintong.chuanzhangtong.net.MyCallback;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -39,9 +37,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
+import retrofit2.Response;
 
 public class CrewManagementActivity extends BaseActivity {
 
@@ -119,7 +115,8 @@ public class CrewManagementActivity extends BaseActivity {
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);
         tvTitle.setText(getResources().getString(R.string.chuanyuanguanli));
-        ivShare.setVisibility(View.GONE);
+        ivShare.setVisibility(View.VISIBLE);
+        tvSetting.setVisibility(View.VISIBLE);
         tvSetting.setText(getResources().getString(R.string.add_ships));
         tvShare.setText(getResources().getString(R.string.delete));
         tvNothing.setText(getResources().getString(R.string.add_first_crew));
@@ -138,8 +135,7 @@ public class CrewManagementActivity extends BaseActivity {
     }
 
     private void netGetCrewsLists(String crewName) {
-
-        NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
+       /* NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "50")
                 .addParams(Constants.USER_ID, userId)
@@ -147,36 +143,36 @@ public class CrewManagementActivity extends BaseActivity {
                 .build()
                 .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (StringUtils.isBlank(response)) {
-                            Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
-                                crewLists = crewServerBean.getData().getArray();
+                    protected void onSuccess(String response, String message) {
+                        CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
+                        crewLists = crewServerBean.getData().getArray();
 
-                                updateCrewsList();
-                                crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
-                                lvMyCrew.setAdapter(crewListsAdapter);
+                        updateCrewsList();
+                        crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
+                        lvMyCrew.setAdapter(crewListsAdapter);
+                    }
 
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(CrewManagementActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(CrewManagementActivity.this, LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                crewLists = new ArrayList<CrewServeBean.DataBean.ArrayBean>();
-                                updateCrewsList();
-                            } else {
-                                Toast.makeText(CrewManagementActivity.this, message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onDataEmpty(String message) {
+                        showDataEmptyUI();
                     }
                 });
+*/
+        retrofit2.Call<CrewServeBean> call = HttpUtils.getDefault().getService(ICrewManagementService.class).getCrewList("1", "100", userId, crewName);
+        call.enqueue(new MyCallback<CrewServeBean>() {
+            @Override
+            public void onSuccess(Response<CrewServeBean> response) {
+                crewLists = response.body().getData().getArray();
+                updateCrewsList();
+                crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
+                lvMyCrew.setAdapter(crewListsAdapter);
+            }
+
+            @Override
+            public void onDataEmpty(String message) {
+                showDataEmptyUI();
+            }
+        });
     }
 
     private void updateCrewsList() {
@@ -184,15 +180,18 @@ public class CrewManagementActivity extends BaseActivity {
             lvMyCrew.setVisibility(View.VISIBLE);
             llNoCrew.setVisibility(View.GONE);
             tvShare.setVisibility(View.VISIBLE);
-            tvSetting.setVisibility(View.VISIBLE);
         } else {
-            lvMyCrew.setVisibility(View.GONE);
-            llNoCrew.setVisibility(View.VISIBLE);
-            tvShare.setVisibility(View.GONE);
-            rlChooseAllDelete.setVisibility(View.GONE);
-            tvShare.setText(getResources().getString(R.string.delete));
+            showDataEmptyUI();
         }
     }
+
+    private void showDataEmptyUI() {
+        lvMyCrew.setVisibility(View.GONE);
+        llNoCrew.setVisibility(View.VISIBLE);
+        rlChooseAllDelete.setVisibility(View.GONE);
+        tvShare.setVisibility(View.GONE);
+    }
+
 
     @Override
     public int getLayoutId() {
@@ -284,34 +283,13 @@ public class CrewManagementActivity extends BaseActivity {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.IDS, ids)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(CrewManagementActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(CrewManagementActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(CrewManagementActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(CrewManagementActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            } else if (code.equals("200")) {
-                                crewLists.removeAll(choosedLists);
-                                updateCrewsList();
-                                crewListsAdapter.notifyDataSetChanged();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        crewLists.removeAll(choosedLists);
+                        updateCrewsList();
+                        crewListsAdapter.notifyDataSetChanged();
+                        Toast.makeText(CrewManagementActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

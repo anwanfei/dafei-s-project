@@ -88,7 +88,6 @@ public class ChooseBelongShipActivity extends BaseActivity {
                             NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
                             String message = netServiceErrort.getMessage();
                             String code = netServiceErrort.getCode();
-                            Toast.makeText(ChooseBelongShipActivity.this, message, Toast.LENGTH_SHORT).show();
                             if (code.equals("200")) {
                                 ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
                                 final List<ShipListBean.DataBean.ArrayBean> shipLists = shipListBean.getData().getArray();

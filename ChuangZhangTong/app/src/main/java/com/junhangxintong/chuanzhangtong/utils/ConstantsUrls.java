@@ -121,6 +121,9 @@ public class ConstantsUrls {
     //新增报文
     public static final String ADD_REPORT = "/my/ship/report/add.do";
 
+    //修改报文
+    public static final String MODIFY_REPORT = "/my/ship/report/update.do";
+
 
     //船舶证书管理
     //新增船舶证书

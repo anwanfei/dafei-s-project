@@ -1,34 +1,29 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindBerthingReportBean;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.BerthingReportInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
 
 import org.apache.commons.lang.StringUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ShipBerthingPortMessageActivity extends BaseActivity {
 
@@ -70,6 +65,66 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
     TextView tvShipDraft;
     @BindView(R.id.tv_remark)
     TextView tvRemark;
+    @BindView(R.id.tv_minite)
+    TextView tvMinite;
+    @BindView(R.id.tv_second)
+    TextView tvSecond;
+    @BindView(R.id.tv_edit)
+    TextView tvEdit;
+    @BindView(R.id.ll_countdown_time)
+    LinearLayout llCountdownTime;
+    private int minute;
+    private int second;
+    private boolean threadExit = true;
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    if (minute > 0) {
+                        tvMinite.setText("0" + String.valueOf(minute));
+                    } else {
+                        tvMinite.setText("00");
+                    }
+
+                    if (second >= 10) {
+                        tvSecond.setText(String.valueOf(second));
+                    } else {
+                        tvSecond.setText("0" + String.valueOf(second));
+                    }
+
+                    //实现秒大于0的时候自减，等于0的时候分减一，秒置90
+                    if (second > 0) {
+                        second--;
+                    } else {
+                        //倒计时到头的处理
+                        if (minute == 0 && second == 0) {
+                            tvMinite.setText("00");
+                            tvSecond.setText("00");
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tvMinite.setText("");
+                                    llCountdownTime.setVisibility(View.GONE);
+                                }
+                            }, 1000);
+
+                        }
+                        minute--;
+                        second = 59;
+                    }
+
+            }
+            super.handleMessage(msg);
+        }
+    };
+    private String fromDynamic;
+    private DynamicRemindBerthingReportBean.DataBean.ObjectBean berthingReportInfoFromDynamic;
+    private BerthingReportInfoBean.DataBean.ObjectBean berthingReportInfoFromShip;
+
+    private Intent intent;
+    private String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,92 +139,145 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        Intent intent = getIntent();
+        intent = getIntent();
 
         //来自动态提醒
-        String fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        fromDynamic = intent.getStringExtra(Constants.FROM_DYNAMIC);
+        getBerthingReport(true);
+    }
+
+    private void getBerthingReport(final boolean isShowCountdownTime) {
+
         if (StringUtils.isNotBlank(fromDynamic)) {
-            DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean = (DynamicRemindBerthingReportBean) intent.getSerializableExtra(Constants.DYNAMIC_REPORT);
-            DynamicRemindBerthingReportBean.DataBean.ObjectBean berthingReportInfo = dynamicRemindBerthingReportBean.getData().getObject();
-            tvShipMessageName.setText(berthingReportInfo.getShipName());
-            tvShipTime.setText(berthingReportInfo.getCreateDate());
-            tvLoadingUnloadingCargoPort.setText(berthingReportInfo.getLoadPort());
-            tvAnchorLeaveTime.setText(berthingReportInfo.getAnchorAweighDate());
-            tvSystemStopTime.setText(berthingReportInfo.getXtBerthDate());
-            tvTestCabinStartTime.setText(berthingReportInfo.getHoldInspectionBeginDate());
-            tvTestCabinEndTime.setText(berthingReportInfo.getHoldInspectionEndDate());
-            tvPortPosition.setText(berthingReportInfo.getPortBearth());
-            tvTugUseNum.setText(berthingReportInfo.getTugUseNum());
-            tvShipDraft.setText(berthingReportInfo.getShipForwardDraft());
-
-            String isPilotage = berthingReportInfo.getIsPilotage();
-
-            if (isPilotage != null) {
-                if (isPilotage.equals("1")) {
-                    tvRemark.setText(getResources().getString(R.string.yes));
-                } else {
-                    tvRemark.setText(getResources().getString(R.string.no));
-                }
-            }
+            getBerthinReportInfoFromDynamic(isShowCountdownTime);
         } else {
-            String id = intent.getStringExtra(Constants.ID);
-            String shipName = intent.getStringExtra(Constants.SHIP_NAME);
-            tvShipMessageName.setText(shipName);
+            getBerthinReportInfoFromNet(isShowCountdownTime);
+        }
+    }
 
-            NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
-                    .addParams(Constants.ID, id)
-                    .build()
-                    .execute(new StringCallback() {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(ShipBerthingPortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        }
+    private void getBerthinReportInfoFromDynamic(final boolean isShowCountdownTime) {
+        String dynamic_id = intent.getStringExtra(Constants.ID);
+        NetUtils.postWithHeader(this, ConstantsUrls.DYNAMIC_DETAILS)
+                .addParams(Constants.ID, dynamic_id)
+                .build()
+                .execute(new NetUtils.MyStringCallback() {
+                    @Override
+                    protected void onSuccess(String response, String message) {
+                        DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean =  new Gson().fromJson(response,DynamicRemindBerthingReportBean.class);
+                        berthingReportInfoFromDynamic = dynamicRemindBerthingReportBean.getData().getObject();
+                        tvShipMessageName.setText(berthingReportInfoFromDynamic.getShipName());
+                        tvShipTime.setText(berthingReportInfoFromDynamic.getCreateDate());
+                        tvLoadingUnloadingCargoPort.setText(berthingReportInfoFromDynamic.getLoadPort());
+                        tvAnchorLeaveTime.setText(berthingReportInfoFromDynamic.getAnchorAweighDate());
+                        tvSystemStopTime.setText(berthingReportInfoFromDynamic.getXtBerthDate());
+                        tvTestCabinStartTime.setText(berthingReportInfoFromDynamic.getHoldInspectionBeginDate());
+                        tvTestCabinEndTime.setText(berthingReportInfoFromDynamic.getHoldInspectionEndDate());
+                        tvPortPosition.setText(berthingReportInfoFromDynamic.getPortBearth());
+                        tvTugUseNum.setText(berthingReportInfoFromDynamic.getTugUseNum());
+                        tvShipDraft.setText(berthingReportInfoFromDynamic.getShipForwardDraft());
 
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(ShipBerthingPortMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        String isPilotage = berthingReportInfoFromDynamic.getIsPilotage();
+                        id = String.valueOf(berthingReportInfoFromDynamic.getId());
+
+                        if (isPilotage != null) {
+                            if (isPilotage.equals("1")) {
+                                tvRemark.setText(getResources().getString(R.string.yes));
                             } else {
-                                NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                                String message = netServiceErrort.getMessage();
-                                String code = netServiceErrort.getCode();
-                                if (code.equals("200")) {
-                                    BerthingReportInfoBean berthingReportInfoBean = new Gson().fromJson(response, BerthingReportInfoBean.class);
-                                    BerthingReportInfoBean.DataBean.ObjectBean berthingReportInfo = berthingReportInfoBean.getData().getObject();
-
-                                    tvShipTime.setText(berthingReportInfo.getCreateDate());
-                                    tvLoadingUnloadingCargoPort.setText(berthingReportInfo.getLoadPort());
-                                    tvAnchorLeaveTime.setText(berthingReportInfo.getAnchorAweighDate());
-                                    tvSystemStopTime.setText(berthingReportInfo.getXtBerthDate());
-                                    tvTestCabinStartTime.setText(berthingReportInfo.getHoldInspectionBeginDate());
-                                    tvTestCabinEndTime.setText(berthingReportInfo.getHoldInspectionEndDate());
-                                    tvPortPosition.setText(berthingReportInfo.getPortBearth());
-                                    tvTugUseNum.setText(berthingReportInfo.getTugUseNum());
-                                    tvShipDraft.setText(berthingReportInfo.getShipForwardDraft());
-
-                                    String isPilotage = berthingReportInfo.getIsPilotage();
-
-                                    if (isPilotage != null) {
-                                        if (isPilotage.equals("1")) {
-                                            tvRemark.setText(getResources().getString(R.string.yes));
-                                        } else {
-                                            tvRemark.setText(getResources().getString(R.string.no));
-                                        }
-                                    }
-
-                                } else if (code.equals("601")) {
-                                    //清除了sp存储
-                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(ShipBerthingPortMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(ShipBerthingPortMessageActivity.this, LoginRegisterActivity.class));
-                                    finish();
-                                } else {
-                                    Toast.makeText(ShipBerthingPortMessageActivity.this, message, Toast.LENGTH_SHORT).show();
-                                }
+                                tvRemark.setText(getResources().getString(R.string.no));
                             }
                         }
-                    });
+
+                        int timer = berthingReportInfoFromDynamic.getTimer();
+                        CountdownTime(isShowCountdownTime, 10000);
+                    }
+                });
+    }
+
+    private void getBerthinReportInfoFromNet(final boolean isShowCountdownTime) {
+        String id = intent.getStringExtra(Constants.ID);
+        String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+        tvShipMessageName.setText(shipName);
+        NetUtils.postWithHeader(this, ConstantsUrls.REPORT_INFO)
+                .addParams(Constants.ID, id)
+                .build()
+                .execute(new NetUtils.MyStringCallback() {
+                    @Override
+                    protected void onSuccess(String response, String message) {
+                        BerthingReportInfoBean berthingReportInfoBean = new Gson().fromJson(response, BerthingReportInfoBean.class);
+                        berthingReportInfoFromShip = berthingReportInfoBean.getData().getObject();
+
+                        tvShipTime.setText(berthingReportInfoFromShip.getCreateDate());
+                        tvLoadingUnloadingCargoPort.setText(berthingReportInfoFromShip.getLoadPort());
+                        tvAnchorLeaveTime.setText(berthingReportInfoFromShip.getAnchorAweighDate());
+                        tvSystemStopTime.setText(berthingReportInfoFromShip.getXtBerthDate());
+                        tvTestCabinStartTime.setText(berthingReportInfoFromShip.getHoldInspectionBeginDate());
+                        tvTestCabinEndTime.setText(berthingReportInfoFromShip.getHoldInspectionEndDate());
+                        tvPortPosition.setText(berthingReportInfoFromShip.getPortBearth());
+                        tvTugUseNum.setText(berthingReportInfoFromShip.getTugUseNum());
+                        tvShipDraft.setText(berthingReportInfoFromShip.getShipForwardDraft());
+
+                        String isPilotage = berthingReportInfoFromShip.getIsPilotage();
+
+                        if (isPilotage != null) {
+                            if (isPilotage.equals("1")) {
+                                tvRemark.setText(getResources().getString(R.string.yes));
+                            } else {
+                                tvRemark.setText(getResources().getString(R.string.no));
+                            }
+                        }
+                        int timer = berthingReportInfoFromShip.getTimer();
+                        CountdownTime(isShowCountdownTime, 10000);
+                    }
+                });
+    }
+
+    private void CountdownTime(boolean isShowCountdownTime, int timer) {
+
+        if (isShowCountdownTime) {
+            String roleId = CacheUtils.getString(ShipBerthingPortMessageActivity.this, Constants.ROLEID);
+            //倒计时
+
+            if (timer / 1000 > 0) {
+                if (roleId.equals(String.valueOf(RoleEnum.SHIPMASTER.getCode()))) {
+                    llCountdownTime.setVisibility(View.VISIBLE);
+
+                    minute = timer / 60 / 1000;
+
+                    if (timer / 1000 % 60 != 0) {
+                        second = timer / 1000 % 60;
+                    } else {
+                        second = 60;
+                    }
+
+                    tvMinite.setText("0" + String.valueOf(minute));
+                    if (second >= 10) {
+                        tvSecond.setText(String.valueOf(second));
+                    } else {
+                        tvSecond.setText("0" + String.valueOf(second));
+                    }
+                    new Thread(new MyThread()).start();
+                }
+            }
+        }
+    }
+
+    public class MyThread implements Runnable {      // thread
+        @Override
+        public void run() {
+            while (threadExit) {
+                try {
+                    Message message = new Message();
+                    Thread.sleep(1000);     // sleep 1000ms
+                    message.what = 1;
+                    if (minute >= 0) {
+                        handler.sendMessage(message);
+                    } else {
+                        threadExit = false;
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -178,18 +286,44 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
         return R.layout.activity_ship_berthing_port_message;
     }
 
-    @OnClick({R.id.iv_back, R.id.tv_share, R.id.tv_sign_no_read, R.id.tv_place_top})
+    @OnClick({R.id.iv_back, R.id.tv_edit, R.id.tv_sign_no_read, R.id.tv_place_top})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.tv_share:
+            case R.id.tv_edit:
+                ModifyBerthingReport();
                 break;
             case R.id.tv_sign_no_read:
                 break;
             case R.id.tv_place_top:
                 break;
         }
+    }
+
+    private void ModifyBerthingReport() {
+        if (StringUtils.isNotBlank(fromDynamic)) {
+            Intent intent = new Intent(ShipBerthingPortMessageActivity.this, ModifyBerthingReportActivity.class);
+            intent.putExtra(Constants.BERTHING_REPORT_INFO, berthingReportInfoFromDynamic);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(ShipBerthingPortMessageActivity.this, ModifyBerthingReportActivity.class);
+            intent.putExtra(Constants.BERTHING_REPORT_INFO, berthingReportInfoFromShip);
+            intent.putExtra(Constants.FROM_SHIP, true);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getBerthingReport(false);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        threadExit = false;
     }
 }

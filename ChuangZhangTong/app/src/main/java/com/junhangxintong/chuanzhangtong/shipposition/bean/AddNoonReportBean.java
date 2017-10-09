@@ -97,6 +97,15 @@ public class AddNoonReportBean {
         private String freshwaterConsumption;
         private String expectArrivalDate;
         private String currShipSpeed;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getPressure() {
             return pressure;

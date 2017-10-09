@@ -7,12 +7,6 @@ import java.io.Serializable;
  */
 
 public class DynamicRemindNonnReportBean implements Serializable {
-    /**
-     * message : 查询成功
-     * status : success
-     * data : {"reportType":1,"object":{"shipId":1,"shipName":"中国号","pressure":"11","remark":"备注","windDirection":"南风","modifyDate":"","snailRange":"2","consume":"22","temperature":"23","id":1,"course":"往北","shipLightOil":"33","avgSpeed":"2","shipForwardDraft":"34","shipFreshwater":"53.33","lightOilConsumption":"2","weather":"晴天","longitude":"11.222","shipHeavyOil":"11.23","waveLevel":"4","latitude":"131.223","createDate":"2017-09-09 10:29:44","freshwaterConsumption":"2","expectArrivalDate":"2017-09-09 10:29:44","currShipSpeed":"50","createUserId":17}}
-     * code : 200
-     */
 
     private String message;
     private String status;
@@ -51,7 +45,7 @@ public class DynamicRemindNonnReportBean implements Serializable {
         this.code = code;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean implements Serializable{
 
         private int reportType;
         private ObjectBean object;
@@ -72,7 +66,7 @@ public class DynamicRemindNonnReportBean implements Serializable {
             this.object = object;
         }
 
-        public static class ObjectBean implements Serializable {
+        public static class ObjectBean implements Serializable{
 
             private int shipId;
             private String shipName;
@@ -99,16 +93,8 @@ public class DynamicRemindNonnReportBean implements Serializable {
             private String freshwaterConsumption;
             private String expectArrivalDate;
             private String currShipSpeed;
+            private int timer;
             private int createUserId;
-            private int isShowEditBtn;
-
-            public int getIsShowEditBtn() {
-                return isShowEditBtn;
-            }
-
-            public void setIsShowEditBtn(int isShowEditBtn) {
-                this.isShowEditBtn = isShowEditBtn;
-            }
 
             public int getShipId() {
                 return shipId;
@@ -308,6 +294,14 @@ public class DynamicRemindNonnReportBean implements Serializable {
 
             public void setCurrShipSpeed(String currShipSpeed) {
                 this.currShipSpeed = currShipSpeed;
+            }
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
             }
 
             public int getCreateUserId() {

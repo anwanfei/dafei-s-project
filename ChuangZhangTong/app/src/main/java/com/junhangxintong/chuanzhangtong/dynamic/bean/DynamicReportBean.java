@@ -92,6 +92,15 @@ public class DynamicReportBean {
             private String createDate;
             private int type;
             private int reportId;
+            private String shipName;
+
+            public String getShipName() {
+                return shipName;
+            }
+
+            public void setShipName(String shipName) {
+                this.shipName = shipName;
+            }
 
             public int getShipId() {
                 return shipId;

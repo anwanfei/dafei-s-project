@@ -1,5 +1,7 @@
 package com.junhangxintong.chuanzhangtong.net;
 
+import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -7,6 +9,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Retrofit {
+
+    public Retrofit(RequestService service) {
+        this.service = service;
+    }
 
     private RequestService service;
 
@@ -20,7 +26,7 @@ public class Retrofit {
 
     private Retrofit() {
         retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
-                .baseUrl("http://www.tngou.net/api/food/")
+                .baseUrl(ConstantsUrls.WWW_TEST_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

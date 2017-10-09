@@ -203,7 +203,11 @@
         <activity android:name=".news.activity.WeatherDetailsActivity" />
         <activity android:name=".mine.activity.ModifyCrewCertificateActivity" />
         <activity android:name=".mine.activity.ModifyShipInsuranceActivity" />
-        <activity android:name=".mine.activity.ModifyShipCertificateActivity"></activity>
+        <activity android:name=".mine.activity.ModifyShipCertificateActivity" />
+        <activity android:name=".shipposition.activity.ModifyNoonReportActivity" />
+        <activity android:name=".shipposition.activity.ModifyBerthingReportActivity" />
+        <activity android:name=".shipposition.activity.ModifyArrivalReportActivity" />
+        <activity android:name=".shipposition.activity.ModifyLeaveReportActivity"></activity>
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,15 +16,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicRemindListsAdapter;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindArrivalReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindBerthingReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindLeaveReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindListBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportTypeBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.ShipCertificateExpireBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.AllMessagesActivity;
@@ -153,56 +146,31 @@ public class MessageRecoedFragment extends BaseFragment {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.REMIND_TYPE, "1")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+                    protected void onSuccess(String response, String message) {
+                        final DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
+                        dynamincRemindLists = dynamicRemindListBean.getData().getArray();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                final DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
-                                dynamincRemindLists = dynamicRemindListBean.getData().getArray();
+                        DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
+                        lvMessageRecord.setAdapter(dynamicRemindListsAdapter);
 
-                                DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
-                                lvMessageRecord.setAdapter(dynamicRemindListsAdapter);
-
-                                lvMessageRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        int id = dynamincRemindLists.get(i).getId();
-                                        netGetReportType(String.valueOf(id));
-                                        view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
-                                    }
-                                });
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE);
-                                if (sharedPreferences != null) {
-                                    sharedPreferences.edit().clear().commit();
-                                }
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        lvMessageRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                int id = dynamincRemindLists.get(i).getId();
+                                netGetReportType(String.valueOf(id));
+                                view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
                             }
-                        }
+                        });
                     }
                 });
     }
 
-    private void netGetReportType(String id) {
+    private void netGetReportType(final String ids) {
 
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_DETAILS)
-                .addParams(Constants.ID, id)
+                .addParams(Constants.ID, ids)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -222,38 +190,30 @@ public class MessageRecoedFragment extends BaseFragment {
                             if (code.equals("200")) {
                                 switch (reportType) {
                                     case 1:
-                                        DynamicRemindNonnReportBean dynamicRemindNonnReportBean = new Gson().fromJson(response, DynamicRemindNonnReportBean.class);
                                         Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
-                                        intent1.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindNonnReportBean);
                                         intent1.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
+                                        intent1.putExtra(Constants.ID,ids);
                                         startActivity(intent1);
-
                                         break;
                                     case 2:
-                                        DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean = new Gson().fromJson(response, DynamicRemindBerthingReportBean.class);
                                         Intent intent2 = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
-                                        intent2.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindBerthingReportBean);
                                         intent2.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
+                                        intent2.putExtra(Constants.ID, ids);
                                         startActivity(intent2);
                                         break;
                                     case 3:
-                                        DynamicRemindArrivalReportBean dynamicRemindArrivalReportBean = new Gson().fromJson(response, DynamicRemindArrivalReportBean.class);
                                         Intent intent3 = new Intent(getActivity(), ShipArrivalMessageActivity.class);
-                                        intent3.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindArrivalReportBean);
                                         intent3.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
+                                        intent3.putExtra(Constants.ID, ids);
                                         startActivity(intent3);
                                         break;
                                     case 4:
-                                        DynamicRemindLeaveReportBean dynamicRemindLeaveReportBean = new Gson().fromJson(response, DynamicRemindLeaveReportBean.class);
                                         Intent intent4 = new Intent(getActivity(), ShipLeavePortMessageActivity.class);
-                                        intent4.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindLeaveReportBean);
                                         intent4.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
+                                        intent4.putExtra(Constants.ID, ids);
                                         startActivity(intent4);
                                         break;
                                 }
-                                ShipCertificateExpireBean shipCertificateExpireBean = new Gson().fromJson(response, ShipCertificateExpireBean.class);
-                                ShipCertificateExpireBean.DataBean.ObjectBean shipCertificateExpireDetatls = shipCertificateExpireBean.getData().getObject();
-
                             } else if (code.equals("601")) {
                                 //清除了sp存储
                                 getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();

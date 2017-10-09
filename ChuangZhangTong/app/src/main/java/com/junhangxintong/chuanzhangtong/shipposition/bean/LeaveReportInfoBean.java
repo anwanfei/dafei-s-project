@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.shipposition.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/10.
  */
 
-public class LeaveReportInfoBean {
+public class LeaveReportInfoBean implements Serializable{
     /**
      * message : 查询成功
      * status : success
@@ -49,7 +51,7 @@ public class LeaveReportInfoBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * object : {"shipId":1,"leavaBerthDate":"2017-09-11 11:29:44","modifyDate":"","goodsNum":"2","id":1,"loadPort":"离港报","shipForwardDraft":"","loadBeginDate":"2017-09-09 10:29:44","isPilotage":"1","loadDndDate":"2017-09-11 10:29:44","createDate":"2017-09-08 11:29:44","expectArriveBearthDate":"2017-09-12 11:29:44","createUserId":17,"goodsType":"重物","tugUseNum":"2"}
          */
@@ -64,7 +66,7 @@ public class LeaveReportInfoBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
+        public static class ObjectBean implements Serializable{
             /**
              * shipId : 1
              * leavaBerthDate : 2017-09-11 11:29:44
@@ -98,6 +100,15 @@ public class LeaveReportInfoBean {
             private int createUserId;
             private String goodsType;
             private String tugUseNum;
+            private int timer;
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
+            }
 
             public int getShipId() {
                 return shipId;

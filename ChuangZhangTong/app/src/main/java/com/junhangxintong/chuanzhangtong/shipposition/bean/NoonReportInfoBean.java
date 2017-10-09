@@ -1,16 +1,12 @@
 package com.junhangxintong.chuanzhangtong.shipposition.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/10.
  */
 
-public class NoonReportInfoBean {
-    /**
-     * message : 查询成功
-     * status : success
-     * data : {"object":{"shipId":1,"pressure":"11","remark":"备注","windDirection":"南风","modifyDate":"","snailRange":"22","consume":"22","temperature":"22","id":1,"course":"往北","shipLightOil":"22","avgSpeed":"22","shipForwardDraft":"22","shipFreshwater":"22","lightOilConsumption":"22","weather":"晴天","longitude":"22","shipHeavyOil":11.23,"waveLevel":"22","latitude":"131.223","createDate":"2017-09-09 10:29:44","freshwaterConsumption":"22","expectArrivalDate":"2017-09-09 10:29:44","currShipSpeed":"50","createUserId":17}}
-     * code : 200
-     */
+public class NoonReportInfoBean implements Serializable {
 
     private String message;
     private String status;
@@ -49,10 +45,7 @@ public class NoonReportInfoBean {
         this.code = code;
     }
 
-    public static class DataBean {
-        /**
-         * object : {"shipId":1,"pressure":"11","remark":"备注","windDirection":"南风","modifyDate":"","snailRange":"22","consume":"22","temperature":"22","id":1,"course":"往北","shipLightOil":"22","avgSpeed":"22","shipForwardDraft":"22","shipFreshwater":"22","lightOilConsumption":"22","weather":"晴天","longitude":"22","shipHeavyOil":11.23,"waveLevel":"22","latitude":"131.223","createDate":"2017-09-09 10:29:44","freshwaterConsumption":"22","expectArrivalDate":"2017-09-09 10:29:44","currShipSpeed":"50","createUserId":17}
-         */
+    public static class DataBean implements Serializable{
 
         private ObjectBean object;
 
@@ -64,34 +57,7 @@ public class NoonReportInfoBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
-            /**
-             * shipId : 1
-             * pressure : 11
-             * remark : 备注
-             * windDirection : 南风
-             * modifyDate :
-             * snailRange : 22
-             * consume : 22
-             * temperature : 22
-             * id : 1
-             * course : 往北
-             * shipLightOil : 22
-             * avgSpeed : 22
-             * shipForwardDraft : 22
-             * shipFreshwater : 22
-             * lightOilConsumption : 22
-             * weather : 晴天
-             * longitude : 22
-             * shipHeavyOil : 11.23
-             * waveLevel : 22
-             * latitude : 131.223
-             * createDate : 2017-09-09 10:29:44
-             * freshwaterConsumption : 22
-             * expectArrivalDate : 2017-09-09 10:29:44
-             * currShipSpeed : 50
-             * createUserId : 17
-             */
+        public static class ObjectBean implements Serializable{
 
             private int shipId;
             private String pressure;
@@ -117,6 +83,7 @@ public class NoonReportInfoBean {
             private String freshwaterConsumption;
             private String expectArrivalDate;
             private String currShipSpeed;
+            private int timer;
             private int createUserId;
 
             public int getShipId() {
@@ -309,6 +276,14 @@ public class NoonReportInfoBean {
 
             public void setCurrShipSpeed(String currShipSpeed) {
                 this.currShipSpeed = currShipSpeed;
+            }
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
             }
 
             public int getCreateUserId() {

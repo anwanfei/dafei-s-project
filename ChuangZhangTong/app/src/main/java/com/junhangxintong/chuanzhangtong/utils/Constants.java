@@ -114,6 +114,12 @@ public class Constants {
     public static final String CREW_DETAILS_BEAN = "crew_details_bean";
     public static final String SHIP_INSURANCE_DETAILS_BEAN = "ship_insurance_details_bean";
     public static final String SHIP_CERTIFICATE_DETAILS_BEAN = "ship_certificate_details_bean";
+    public static final String NOON_REPORT_INFO = "noon_report_info";
+    public static final String FROM_SHIP = "from_ship";
+    public static final String BERTHING_REPORT_INFO = "berthing_report_info";
+    public static final String DYNAMIC_ID = "dynamic_id";
+    public static final String ARRIVAL_REPORT_INFO = "arrival_report_info";
+    public static final String LEAVE_REPORT_INFO = "leave_report_info";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
     public static String SHARE_URL = "https://www.pgyer.com/22dL";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};

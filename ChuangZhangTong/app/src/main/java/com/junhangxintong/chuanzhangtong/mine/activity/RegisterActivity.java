@@ -128,6 +128,7 @@ public class RegisterActivity extends BaseActivity {
             Toast.makeText(RegisterActivity.this, getResources().getString(R.string.phone_cannot_empty), Toast.LENGTH_SHORT).show();
             return;
         }
+
         if (StringUtils.isEmpty(verifyCode)) {
             Toast.makeText(RegisterActivity.this, getResources().getString(R.string.input_verify_code), Toast.LENGTH_SHORT).show();
             return;

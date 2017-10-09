@@ -59,6 +59,8 @@ dependencies {
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareview.jar')
     //    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile project(':cztlibrary')
+    compile group: 'com.jakewharton.retrofit', name: 'retrofit2-rxjava2-adapter', version: '1.0.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.6.0'

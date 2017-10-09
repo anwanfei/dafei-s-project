@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.ModifyArrivalReportActivity">
+
+
+    <include
+        android:id="@+id/include_title"
+        layout="@layout/titlebar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/include_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/arrival_port" />
+
+                <EditText
+                    android:id="@+id/et_input_arrival_port"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_arrival_port" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/port_stop_position" />
+
+                <EditText
+                    android:id="@+id/et_input_port_stop_position"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_port_stop_position" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/anchor_arrival_time" />
+
+                <TextView
+                    android:id="@+id/tv_choose_anchor_arrival_time"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/choose_time"
+                    android:textColor="@color/textcolor_gray80" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/anchor_posotion" />
+
+                <EditText
+                    android:id="@+id/et_input_anchor_posotion"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_anchor_posotion" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/longitude" />
+
+                <EditText
+                    android:id="@+id/et_input_longitude"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_longitude" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/latitude" />
+
+                <EditText
+                    android:id="@+id/et_input_latitude"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_latitude" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_direction" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_direction"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_direction" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/current_ship_speed" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_speed"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_speed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_heavy_oil" />
+
+                <EditText
+                    android:id="@+id/et_input_the_ship_heavy_oil"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_heavy_oil" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_light_oil" />
+
+                <EditText
+                    android:id="@+id/et_input_certificate_name"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_light_oil" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/ship_draft" />
+
+                <EditText
+                    android:id="@+id/et_input_ship_draft"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_ship_draft" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/the_ship_frashwater" />
+
+                <EditText
+                    android:id="@+id/et_input_the_ship_frashwater"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_the_ship_frashwater" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/light_oil_consume" />
+
+                <EditText
+                    android:id="@+id/et_input_light_oil_consume"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_light_oil_consume" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:text="@string/frashwater_consume" />
+
+                <EditText
+                    android:id="@+id/et_input_frashwater_consume"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_frashwater_consume" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:focusableInTouchMode="true"
+                android:padding="15dp">
+
+                <TextView
+                    style="@style/account_setting_left_textview"
+                    android:paddingBottom="80dp"
+                    android:text="@string/remark_with_colon_details" />
+
+                <EditText
+                    android:id="@+id/et_input_remark_with_colon_details"
+                    style="@style/edittext_no_arrow"
+                    android:hint="@string/input_remark" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_commit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tv_bg"
+            android:gravity="center"
+            android:text="@string/commit"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+    </LinearLayout>
+</RelativeLayout>

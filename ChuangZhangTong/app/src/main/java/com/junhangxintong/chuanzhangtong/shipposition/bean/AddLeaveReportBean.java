@@ -73,6 +73,15 @@ public class AddLeaveReportBean {
         private String expectArriveBearthDate;
         private String goodsType;
         private String tugUseNum;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getLeavaBerthDate() {
             return leavaBerthDate;

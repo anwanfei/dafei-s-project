@@ -24,11 +24,7 @@ import com.junhangxintong.chuanzhangtong.dynamic.activity.CrewCertificateActivit
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicRemindListsAdapter;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindArrivalReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindBerthingReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindLeaveReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindListBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportTypeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
@@ -139,7 +135,7 @@ public class AllMessageFragment extends BaseFragment {
         //设置当非RecyclerView上拉加载完成以后的回弹时间
         refresh.setScrollBackDuration(300);
 
-        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
             @Override
             public void onRefresh(boolean isPullDown) {
                 super.onRefresh(isPullDown);
@@ -155,7 +151,7 @@ public class AllMessageFragment extends BaseFragment {
                     public void run() {
                         netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), true);
                     }
-                },2000);
+                }, 2000);
             }
         });
     }
@@ -283,10 +279,10 @@ public class AllMessageFragment extends BaseFragment {
         refresh.stopLoadMore(false);
     }
 
-    private void netGetReportType(String id) {
+    private void netGetReportType(final String ids) {
 
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_DETAILS)
-                .addParams(Constants.ID, id)
+                .addParams(Constants.ID, ids)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -306,31 +302,26 @@ public class AllMessageFragment extends BaseFragment {
                             if (code.equals("200")) {
                                 switch (reportType) {
                                     case 1:
-                                        DynamicRemindNonnReportBean dynamicRemindNonnReportBean = new Gson().fromJson(response, DynamicRemindNonnReportBean.class);
                                         Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
-                                        intent1.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindNonnReportBean);
                                         intent1.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
+                                        intent1.putExtra(Constants.ID, ids);
                                         startActivity(intent1);
-
                                         break;
                                     case 2:
-                                        DynamicRemindBerthingReportBean dynamicRemindBerthingReportBean = new Gson().fromJson(response, DynamicRemindBerthingReportBean.class);
                                         Intent intent2 = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
-                                        intent2.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindBerthingReportBean);
+                                        intent2.putExtra(Constants.ID, ids);
                                         intent2.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
                                         startActivity(intent2);
                                         break;
                                     case 3:
-                                        DynamicRemindArrivalReportBean dynamicRemindArrivalReportBean = new Gson().fromJson(response, DynamicRemindArrivalReportBean.class);
                                         Intent intent3 = new Intent(getActivity(), ShipArrivalMessageActivity.class);
-                                        intent3.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindArrivalReportBean);
+                                        intent3.putExtra(Constants.ID, ids);
                                         intent3.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
                                         startActivity(intent3);
                                         break;
                                     case 4:
-                                        DynamicRemindLeaveReportBean dynamicRemindLeaveReportBean = new Gson().fromJson(response, DynamicRemindLeaveReportBean.class);
                                         Intent intent4 = new Intent(getActivity(), ShipLeavePortMessageActivity.class);
-                                        intent4.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindLeaveReportBean);
+                                        intent4.putExtra(Constants.ID, ids);
                                         intent4.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
                                         startActivity(intent4);
                                         break;

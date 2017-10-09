@@ -70,6 +70,10 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
     private String id;
     private String userId;
     private String isPilotage = "1";
+    private String loadingUnloadingCargoStartTime = "";
+    private String leavaTime = "";
+    private String reArrivePortTime = "";
+    private String loadingUnloadingCargoCompleteTime = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,10 +171,10 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
         String loadingUnloadingCargoPort = etInputLoadingUnloadingCargoPort.getText().toString();
         String cartgoType = etInputCartgoType.getText().toString();
         String cartgoNum = etInputCartgoNum.getText().toString();
-        String loadingUnloadingCargoStartTime = tvInputLoadingUnloadingCargoStartTime.getText().toString();
-        String loadingUnloadingCargoComplete = tvInputLoadingUnloadingCargoCompleteTime.getText().toString();
-        String leavaTime = tvInputLeaveTime.getText().toString();
-        String reArrivePortTime = tvInputReTimeArrivePort.getText().toString();
+        loadingUnloadingCargoStartTime = tvInputLoadingUnloadingCargoStartTime.getText().toString();
+        loadingUnloadingCargoCompleteTime = tvInputLoadingUnloadingCargoCompleteTime.getText().toString();
+        leavaTime = tvInputLeaveTime.getText().toString();
+        reArrivePortTime = tvInputReTimeArrivePort.getText().toString();
         String tugUseNum = etInputTugUseNum.getText().toString();
         String shipDraft = etInputShipDraft.getText().toString();
 
@@ -179,7 +183,7 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
         reportJsonData.setGoodsType(cartgoType);
         reportJsonData.setGoodsNum(cartgoNum);
         reportJsonData.setLoadBeginDate(loadingUnloadingCargoStartTime);
-        reportJsonData.setLoadDndDate(loadingUnloadingCargoComplete);
+        reportJsonData.setLoadDndDate(loadingUnloadingCargoCompleteTime);
         reportJsonData.setLeavaBerthDate(leavaTime);
         reportJsonData.setExpectArriveBearthDate(reArrivePortTime);
         reportJsonData.setTugUseNum(tugUseNum);

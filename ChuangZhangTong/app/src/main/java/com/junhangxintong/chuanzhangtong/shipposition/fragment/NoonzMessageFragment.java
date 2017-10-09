@@ -17,9 +17,7 @@ import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicReportListsAdapter;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicRemindNonnReportBean;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportBean;
-import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportTypeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.ReportListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.ShipNoonMessageActivity;
@@ -121,10 +119,15 @@ public class NoonzMessageFragment extends BaseFragment {
                                 lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        int id = dynamicReportLists.get(i).getId();
-                                        netGetReportType(String.valueOf(id));
+                                        String id = String.valueOf(dynamicReportLists.get(i).getId());
+                                        Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
+                                        String shipName = dynamicReportLists.get(i).getShipName();
+                                        intent1.putExtra(Constants.ID, id);
+                                        intent1.putExtra(Constants.SHIP_NAME, shipName);
+                                        startActivity(intent1);
                                     }
                                 });
+
 
                             } else if (code.equals("601")) {
                                 //清除了sp存储
@@ -151,93 +154,36 @@ public class NoonzMessageFragment extends BaseFragment {
                 .addParams(Constants.SHIP_NAME, shipName)
                 .addParams(Constants.TYPE, "1")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        lvMessage.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                lvMessage.setVisibility(View.VISIBLE);
-                                ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
-                                reportLists = reportListBean.getData().getArray();
+                    protected void onSuccess(String response, String message) {
+                        lvMessage.setVisibility(View.VISIBLE);
+                        ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
+                        reportLists = reportListBean.getData().getArray();
 
-                                ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
-                                lvMessage.setAdapter(shipMessagesAdapter);
+                        ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
+                        lvMessage.setAdapter(shipMessagesAdapter);
 
-                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(getActivity(), ShipNoonMessageActivity.class);
-                                        int id = reportLists.get(i).getId();
-                                        intent.putExtra(Constants.ID, String.valueOf(id));
-                                        intent.putExtra(Constants.SHIP_NAME, shipName);
-                                        startActivity(intent);
-                                    }
-                                });
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                lvMessage.setVisibility(View.GONE);
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(getActivity(), ShipNoonMessageActivity.class);
+                                int id = reportLists.get(i).getId();
+                                intent.putExtra(Constants.ID, String.valueOf(id));
+                                intent.putExtra(Constants.SHIP_NAME, shipName);
+                                startActivity(intent);
                             }
-                        }
+                        });
                     }
                 });
     }
-
-    private void netGetReportType(String id) {
-
-        NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_INFO)
-                .addParams(Constants.ID, id)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            DynamicReportTypeBean dynamicReportTypeBean = new Gson().fromJson(response, DynamicReportTypeBean.class);
-                            String message = dynamicReportTypeBean.getMessage();
-                            String code = dynamicReportTypeBean.getCode();
-                            if (code.equals("200")) {
-                                DynamicRemindNonnReportBean dynamicRemindNonnReportBean = new Gson().fromJson(response, DynamicRemindNonnReportBean.class);
-                                Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
-                                intent1.putExtra(Constants.DYNAMIC_REPORT, dynamicRemindNonnReportBean);
-                                intent1.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
-                                startActivity(intent1);
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
-    }
-
 
     @Override
     public void onDestroyView() {

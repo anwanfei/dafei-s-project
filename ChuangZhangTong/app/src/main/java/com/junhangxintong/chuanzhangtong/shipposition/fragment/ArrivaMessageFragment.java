@@ -50,6 +50,7 @@ public class ArrivaMessageFragment extends BaseFragment {
     private List<DynamicReportBean.DataBean.ArrayBean> dynamicReportLists;
     private String fromDynamic = "";
     private Intent intent;
+    private String shipName;
 
     @Override
     protected View initView() {
@@ -111,8 +112,12 @@ public class ArrivaMessageFragment extends BaseFragment {
                                 lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        int id = dynamicReportLists.get(i).getId();
-                                        netGetReportType(String.valueOf(id));
+                                        String id = String.valueOf(dynamicReportLists.get(i).getId());
+                                        String shipName = dynamicReportLists.get(i).getShipName();
+                                        Intent intent3 = new Intent(getActivity(), ShipArrivalMessageActivity.class);
+                                        intent3.putExtra(Constants.ID, id);
+                                        intent.putExtra(Constants.SHIP_NAME, ArrivaMessageFragment.this.shipName);
+                                        startActivity(intent3);
                                     }
                                 });
 
@@ -145,7 +150,7 @@ public class ArrivaMessageFragment extends BaseFragment {
 
     private void netGetArrivalReportFromShip() {
         final String shipId = intent.getStringExtra(Constants.ID);
-        final String shipName = intent.getStringExtra(Constants.SHIP_NAME);
+        shipName = intent.getStringExtra(Constants.SHIP_NAME);
 
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_LISTS)
                 .addParams(Constants.PAGE, "1")

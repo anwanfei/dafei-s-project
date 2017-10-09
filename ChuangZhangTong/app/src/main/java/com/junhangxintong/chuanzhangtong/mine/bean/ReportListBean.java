@@ -92,6 +92,15 @@ public class ReportListBean {
             private String createDate;
             private int type;
             private int reportId;
+            private String shipNama;
+
+            public String getShipNama() {
+                return shipNama;
+            }
+
+            public void setShipNama(String shipNama) {
+                this.shipNama = shipNama;
+            }
 
             public int getShipId() {
                 return shipId;

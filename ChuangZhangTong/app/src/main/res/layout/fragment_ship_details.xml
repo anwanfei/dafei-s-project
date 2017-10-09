@@ -18,7 +18,14 @@
         android:id="@+id/mapview_ship_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view_line" />
+        android:layout_below="@id/view_line"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_line"
+        android:background="@drawable/bg_haitu" />
 
     <include layout="@layout/include_ship_details" />
 </RelativeLayout>

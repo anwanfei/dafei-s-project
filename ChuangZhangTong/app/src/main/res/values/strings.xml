@@ -2,7 +2,7 @@
     <string name="app_name">船掌通</string>
     <string name="junhang">君航</string>
     <string name="ship_position">船位</string>
-    <string name="message">动态提醒</string>
+    <string name="message">航运钉钉</string>
     <string name="news">航运头条</string>
     <string name="my">我的</string>
     <string name="chuanduigunali">我的船队</string>
@@ -508,7 +508,7 @@
     <string name="crew_list">船员列表</string>
     <string name="input_crew_info">录入船员信息</string>
     <string name="choose_one">至少选择一个</string>
-    <string name="weather_center">气象中心</string>
+    <string name="weather_center">气象快讯</string>
     <string name="version_updata">版本升级</string>
     <string name="please_updata_version">发现新版本！请及时更新</string>
     <string name="downloading_new_version">正在下载更新</string>
@@ -516,6 +516,10 @@
     <string name="modify_certificate_info">修改船员证书</string>
     <string name="modify_ship_insurance_info">修改船舶证书</string>
     <string name="modify_ship_certificate_info">修改船舶证书</string>
+    <string name="modify_noon_message">修改正午报</string>
+    <string name="modify_berthing_message">修改靠舶报</string>
+    <string name="modify_arrival_message">修改抵港报</string>
+    <string name="modify_leava_message">修改离港报</string>
 
 
     <!---->

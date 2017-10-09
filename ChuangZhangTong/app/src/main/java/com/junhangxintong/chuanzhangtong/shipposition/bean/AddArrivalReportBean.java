@@ -77,6 +77,15 @@ public class AddArrivalReportBean {
         private String latitude;
         private String freshwaterConsumption;
         private String currShipSpeed;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getPortRadsteadBerth() {
             return portRadsteadBerth;

@@ -85,6 +85,15 @@ public class DynamicRemindLeaveReportBean implements Serializable {
             private String goodsType;
             private String tugUseNum;
             private int isShowEditBtn;
+            private int timer;
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
+            }
 
             public int getIsShowEditBtn() {
                 return isShowEditBtn;

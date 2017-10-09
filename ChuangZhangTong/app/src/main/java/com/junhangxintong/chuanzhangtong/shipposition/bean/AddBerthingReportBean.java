@@ -54,6 +54,15 @@ public class AddBerthingReportBean {
         private String xtBerthDate;
         private String holdInspectionBeginDate;
         private String tugUseNum;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getAnchorAweighDate() {
             return anchorAweighDate;

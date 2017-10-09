@@ -3,13 +3,21 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_haitu"
     android:orientation="vertical">
 
     <com.baidu.mapapi.map.MapView
         android:id="@+id/mapview_ship_position"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true" />
+        android:background="@drawable/bg_haitu"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_haitu" />
 
     <RelativeLayout
         android:id="@+id/rl_search"
@@ -82,8 +90,8 @@
         android:gravity="center"
         android:paddingLeft="5dp"
         android:text="@string/ceju"
-        android:visibility="gone"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_ship_position_location"

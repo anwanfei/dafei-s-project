@@ -120,7 +120,11 @@ public class LeaveMessageFragment extends BaseFragment {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                         int id = dynamicReportLists.get(i).getId();
-                                        netGetReportType(String.valueOf(id));
+                                        Intent intent = new Intent(getActivity(), ShipLeavePortMessageActivity.class);
+                                        String shipName = dynamicReportLists.get(i).getShipName();
+                                        intent.putExtra(Constants.ID, String.valueOf(id));
+                                        intent.putExtra(Constants.SHIP_NAME,shipName);
+                                        startActivity(intent);
                                     }
                                 });
 

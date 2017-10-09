@@ -29,7 +29,6 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.LoginResultBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.CircleImageView;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
@@ -316,36 +315,18 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
                     .addParams(Constants.USER_ID, userId)
                     .addFile(Constants.HEADPICTRUE, "icon.jpg", mFile)
                     .build()
-                    .execute(new StringCallback() {
+                    .execute(new NetUtils.MyStringCallback() {
                         @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                        protected void onSuccess(String response, String message) {
+                            Toast.makeText(PersonalInfoActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                                String message = sendVerifyCode.getMessage();
-                                String code = sendVerifyCode.getCode();
-                                Toast.makeText(PersonalInfoActivity.this, message, Toast.LENGTH_SHORT).show();
-                                if (code.equals("601")) {
-                                    //清除了sp存储
-                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(PersonalInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
-                                    finish();
-                                }
-                                if (code.equals("200")) {
-//                                    finish();
-                                }
-                            }
+                        protected void onDataEmpty(String message) {
+                            super.onDataEmpty(message);
+                            Toast.makeText(PersonalInfoActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
                     });
-
         } else {
             Toast.makeText(PersonalInfoActivity.this, getResources().getString(R.string.unexit_file), Toast.LENGTH_LONG).show();
         }

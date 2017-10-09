@@ -58,7 +58,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     protected void initView() {
         ivBack.setVisibility(View.VISIBLE);

@@ -1,16 +1,12 @@
 package com.junhangxintong.chuanzhangtong.shipposition.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/10.
  */
 
-public class BerthingReportInfoBean {
-    /**
-     * message : 查询成功
-     * status : success
-     * data : {"object":{"shipId":1,"anchorAweighDate":"2017-09-09 10:29:44","modifyDate":"","id":1,"loadPort":"靠泊报","portBearth":"大连港","shipForwardDraft":"","holdInspectionEndDate":"2017-09-10 10:29:44","isPilotage":"2","xtBerthDate":"2017-09-09 10:29:44","createDate":"2017-09-09 10:29:44","holdInspectionBeginDate":"2017-09-09 10:29:44","createUserId":17,"tugUseNum":"2"}}
-     * code : 200
-     */
+public class BerthingReportInfoBean implements Serializable {
 
     private String message;
     private String status;
@@ -49,10 +45,7 @@ public class BerthingReportInfoBean {
         this.code = code;
     }
 
-    public static class DataBean {
-        /**
-         * object : {"shipId":1,"anchorAweighDate":"2017-09-09 10:29:44","modifyDate":"","id":1,"loadPort":"靠泊报","portBearth":"大连港","shipForwardDraft":"","holdInspectionEndDate":"2017-09-10 10:29:44","isPilotage":"2","xtBerthDate":"2017-09-09 10:29:44","createDate":"2017-09-09 10:29:44","holdInspectionBeginDate":"2017-09-09 10:29:44","createUserId":17,"tugUseNum":"2"}
-         */
+    public static class DataBean implements Serializable {
 
         private ObjectBean object;
 
@@ -64,23 +57,7 @@ public class BerthingReportInfoBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
-            /**
-             * shipId : 1
-             * anchorAweighDate : 2017-09-09 10:29:44
-             * modifyDate :
-             * id : 1
-             * loadPort : 靠泊报
-             * portBearth : 大连港
-             * shipForwardDraft :
-             * holdInspectionEndDate : 2017-09-10 10:29:44
-             * isPilotage : 2
-             * xtBerthDate : 2017-09-09 10:29:44
-             * createDate : 2017-09-09 10:29:44
-             * holdInspectionBeginDate : 2017-09-09 10:29:44
-             * createUserId : 17
-             * tugUseNum : 2
-             */
+        public static class ObjectBean implements Serializable {
 
             private int shipId;
             private String anchorAweighDate;
@@ -96,6 +73,15 @@ public class BerthingReportInfoBean {
             private String holdInspectionBeginDate;
             private int createUserId;
             private String tugUseNum;
+            private int timer;
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
+            }
 
             public int getShipId() {
                 return shipId;

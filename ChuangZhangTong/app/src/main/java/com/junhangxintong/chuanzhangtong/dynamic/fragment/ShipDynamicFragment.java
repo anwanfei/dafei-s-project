@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,6 +17,8 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
+import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
+import com.junhangxintong.chuanzhangtong.dynamic.adapter.ShipDynamicRemindListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.news.adapter.ShipNewsSubFragmentAdapter;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -66,6 +69,22 @@ public class ShipDynamicFragment extends BaseFragment {
         if (StringUtils.isNotEmpty(token)) {
             netGetDynamicRemindList();
         }
+
+        for (int i = 0; i < 3; i++) {
+            if(allMessages.size()<3) {
+                allMessages.add("君航号靠泊提醒");
+                allMessages.add("中国号起航提醒");
+                allMessages.add("华海号离港提醒");
+            }
+        }
+        ShipDynamicRemindListsAdapter shipDynamicRemindListsAdapter = new ShipDynamicRemindListsAdapter(getActivity(), allMessages);
+        lvDynamicShip.setAdapter(shipDynamicRemindListsAdapter);
+        lvDynamicShip.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+               startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
+            }
+        });
     }
 
     @Override

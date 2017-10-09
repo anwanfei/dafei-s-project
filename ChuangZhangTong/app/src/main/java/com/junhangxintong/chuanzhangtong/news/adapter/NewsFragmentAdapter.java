@@ -16,7 +16,7 @@ import com.junhangxintong.chuanzhangtong.news.fragment.WeatherFragment;
 
 public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"最新消息", "气象中心", "油市快递", "国际公约", "国内公约"};
+    private String[] mtitles = {"最新消息", "气象快讯", "油市快递", "国际公约", "国内公约"};
 
     public NewsFragmentAdapter(FragmentManager fm) {
         super(fm);

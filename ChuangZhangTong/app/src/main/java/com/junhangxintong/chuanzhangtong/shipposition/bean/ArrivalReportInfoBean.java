@@ -1,10 +1,12 @@
 package com.junhangxintong.chuanzhangtong.shipposition.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by anwanfei on 2017/9/10.
  */
 
-public class ArrivalReportInfoBean {
+public class ArrivalReportInfoBean implements Serializable {
     /**
      * message : 查询成功
      * status : success
@@ -49,7 +51,7 @@ public class ArrivalReportInfoBean {
         this.code = code;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * object : {"shipId":1,"portRadsteadBerth":"1号","remark":"","arriveAnchorDate":"2017-09-08 10:29:44","modifyDate":"","id":1,"course":"北部","arrivePort":"上海港","shipLightOil":"12.222","anchorPosition":"12","shipForwardDraft":"12.222","shipFreshwater":"12.222","lightOilConsumption":"12.222","longitude":"12.222","shipHeavyOil":"22.345","latitude":"133.111","createDate":"2017-09-08 10:29:44","freshwaterConsumption":"12","currShipSpeed":"100","createUserId":17}
          */
@@ -64,7 +66,7 @@ public class ArrivalReportInfoBean {
             this.object = object;
         }
 
-        public static class ObjectBean {
+        public static class ObjectBean implements Serializable{
             /**
              * shipId : 1
              * portRadsteadBerth : 1号
