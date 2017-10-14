@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
@@ -48,10 +50,13 @@ public class ShipDynamicFragment extends BaseFragment {
     List<String> allMessages = new ArrayList<>();
     @BindView(R.id.lv_dynamic_ship)
     ListView lvDynamicShip;
+    @BindView(R.id.refresh)
+    XRefreshView refresh;
     Unbinder unbinder;
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private String token;
     private boolean isGetData = false;
+    private int page = 1;
 
     @Override
     protected View initView() {
@@ -67,11 +72,11 @@ public class ShipDynamicFragment extends BaseFragment {
         token = CacheUtils.getString(getActivity(), Constants.TOKEN);
 
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         }
 
         for (int i = 0; i < 3; i++) {
-            if(allMessages.size()<3) {
+            if (allMessages.size() < 3) {
                 allMessages.add("君航号靠泊提醒");
                 allMessages.add("中国号起航提醒");
                 allMessages.add("华海号离港提醒");
@@ -82,7 +87,7 @@ public class ShipDynamicFragment extends BaseFragment {
         lvDynamicShip.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-               startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
+                startActivity(new Intent(getActivity(), ShipDynamicActivity.class));
             }
         });
     }
@@ -92,9 +97,41 @@ public class ShipDynamicFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList();
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
             }
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        refresh.setPinnedTime(1000);
+        refresh.setAutoLoadMore(false);
+        refresh.setMoveForHorizontal(true);
+        refresh.setMoveHeadWhenDisablePullRefresh(true);//当下拉的时候不能上拉
+
+        //设置当非RecyclerView上拉加载完成以后的回弹时间
+        refresh.setScrollBackDuration(300);
+
+        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page += 1;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), true);
+                    }
+                }, 2000);
+            }
+        });
     }
 
     @Override
@@ -102,6 +139,7 @@ public class ShipDynamicFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        refresh.setPullLoadEnable(true);
         return rootView;
     }
 
@@ -116,7 +154,7 @@ public class ShipDynamicFragment extends BaseFragment {
         super.onResume();
         if (!isGetData) {
             isGetData = true;
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         }
     }
 
@@ -133,14 +171,14 @@ public class ShipDynamicFragment extends BaseFragment {
             Log.e("TAG", "船舶动态");
             isGetData = true;
             //这里可以做网络请求或者需要的数据刷新操作
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         } else {
             isGetData = false;
         }
         return super.onCreateAnimation(transit, enter, nextAnim);
     }
 
-    private void netGetDynamicRemindList() {
+    private void netGetDynamicRemindList(String pageSize, String page, final boolean isLoadmore) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
                 .addParams(Constants.PAGE_SIZE, "100")

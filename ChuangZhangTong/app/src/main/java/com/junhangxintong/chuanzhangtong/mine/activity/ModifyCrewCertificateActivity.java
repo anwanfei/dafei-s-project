@@ -2,7 +2,6 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,11 +36,11 @@ import com.junhangxintong.chuanzhangtong.mine.Utils.EventBusMessage;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CertificatePhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.PhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewCertificateDetailsBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.GlideImageLoader;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.junhangxintong.chuanzhangtong.utils.PictureUtils;
@@ -51,7 +50,6 @@ import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -69,8 +67,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ModifyCrewCertificateActivity extends BaseActivity implements View.OnClickListener {
 
@@ -235,21 +231,23 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
         CrewCertificateDetailsBean crewCertificateDetailsBean = (CrewCertificateDetailsBean) intent.getSerializableExtra(Constants.CREW_DETAILS_BEAN);
         crewCertificateDetails = crewCertificateDetailsBean.getData().getObject();
         int isUse = crewCertificateDetails.getIsUse();
-        etInputCertificateName.setHint(crewCertificateDetails.getName());
-        etCertificateNumber.setHint(crewCertificateDetails.getCertifNo());
+        etInputCertificateName.setText(crewCertificateDetails.getName());
+        etCertificateNumber.setText(crewCertificateDetails.getCertifNo());
         tvIssuingAuthority.setText(crewCertificateDetails.getIssueOrganization());
         certificateId = String.valueOf(crewCertificateDetails.getId());
 
         int isValid = crewCertificateDetails.getIsValid();
         if (isValid == 1) {
             rbYes.setChecked(true);
-            tvEffectiveDate.setVisibility(View.GONE);
-            rgWarnDays.setVisibility(View.GONE);
+            rlEffectiveDate.setVisibility(View.GONE);
+            rlReWarningDays.setVisibility(View.GONE);
+            isEffective = "1";
         } else {
             rbNo.setChecked(true);
-            tvEffectiveDate.setVisibility(View.VISIBLE);
-            tvEffectiveDate.setHint(crewCertificateDetails.getValidDate());
-            rgWarnDays.setVisibility(View.VISIBLE);
+            rlEffectiveDate.setVisibility(View.VISIBLE);
+            tvEffectiveDate.setText(crewCertificateDetails.getValidDate());
+            rlReWarningDays.setVisibility(View.VISIBLE);
+            isEffective = "2";
         }
 
         String imgUrl = crewCertificateDetails.getImgUrl();
@@ -285,9 +283,6 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
 
             path.addAll(localUrls);
 
-           /* ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(ModifyCrewCertificateActivity.this, urlLists, crewCertificateDetails.getDomain());
-            gvCertificatePhoto.setAdapter(showPhotoAdapter);*/
-
             GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
             gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             rvResultPhoto.setLayoutManager(gridLayoutManager);
@@ -295,10 +290,7 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
                 certificatePhotoAdapter = new CertificatePhotoAdapter(this, urlLists, crewCertificateDetails.getDomain(), localUrls);
                 rvResultPhoto.setAdapter(certificatePhotoAdapter);
             }
-
-
         }
-
         new Handler().post(new Runnable() {
             @Override
             public void run() {
@@ -327,6 +319,7 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
             case R.id.rg_is_effective:
                 break;
             case R.id.tv_effective_date:
+                DateUtil.showChooseTimeDialog(this, tvEffectiveDate);
                 break;
             case R.id.tv_add_certificate_photo:
                 showChoosePhotesPop();
@@ -377,12 +370,10 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
     protected void onResume() {
         super.onResume();
         photoAdapter.notifyDataSetChanged();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+       /* GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvResultPhoto.setLayoutManager(gridLayoutManager);
-        if (urlLists.size() > 0) {
-           /* certificatePhotoAdapter = new CertificatePhotoAdapter(this, urlLists, crewCertificateDetails.getDomain(), localUrls);
-            rvResultPhoto.setAdapter(certificatePhotoAdapter);*/
+        rvResultPhoto.setLayoutManager(gridLayoutManager);*/
+        if (path.size() > 0) {
             photoAdapter = new PhotoAdapter(this, path);
             rvResultPhoto.setAdapter(this.photoAdapter);
         }
@@ -390,10 +381,10 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
 
     private void modifyCertificateComplete() {
 
-        certificateName = etInputCertificateName.getHint().toString();
-        certificateNum = etCertificateNumber.getHint().toString();
-        issuingAuthory = tvIssuingAuthority.getHint().toString();
-        ettectiveDate = tvEffectiveDate.getHint().toString();
+        certificateName = etInputCertificateName.getText().toString();
+        certificateNum = etCertificateNumber.getText().toString();
+        issuingAuthory = tvIssuingAuthority.getText().toString();
+        ettectiveDate = tvEffectiveDate.getText().toString();
 
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
@@ -441,35 +432,11 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
                 .writeTimeOut(3000)
                 .connTimeOut(3000)
                 .readTimeOut(3000)
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ModifyCrewCertificateActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        progressDialog.dismiss();
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(ModifyCrewCertificateActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(ModifyCrewCertificateActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ModifyCrewCertificateActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ModifyCrewCertificateActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            }
-                            if (code.equals("200")) {
-                                finish();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        Toast.makeText(ModifyCrewCertificateActivity.this, message, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }
@@ -481,7 +448,11 @@ public class ModifyCrewCertificateActivity extends BaseActivity implements View.
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyCrewCertificateActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyCrewCertificateActivity.this);
+                } else {
+                    Toast.makeText(ModifyCrewCertificateActivity.this, getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:

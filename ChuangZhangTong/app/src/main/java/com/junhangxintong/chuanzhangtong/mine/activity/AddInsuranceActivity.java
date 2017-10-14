@@ -359,7 +359,11 @@ public class AddInsuranceActivity extends BaseActivity implements View.OnClickLi
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddInsuranceActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddInsuranceActivity.this);
+                } else {
+                    Toast.makeText(AddInsuranceActivity.this,getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:

@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,21 +9,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.ShowPhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateOrInsuranceInfoBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
-import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,9 +28,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class InsuranceDetailsActivity extends BaseActivity {
 
@@ -92,6 +84,7 @@ public class InsuranceDetailsActivity extends BaseActivity {
     @BindView(R.id.scrollView)
     ScrollView scrollView;
     private ShipCertificateOrInsuranceInfoBean shipCertificateOrInsuranceInfoBean;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,85 +102,73 @@ public class InsuranceDetailsActivity extends BaseActivity {
     @Override
     protected void initData() {
         Intent intent = getIntent();
-        String id = intent.getStringExtra(Constants.ID);
+        id = intent.getStringExtra(Constants.ID);
+        netGetShipInsuranceInfo();
+
+
+    }
+
+    private void netGetShipInsuranceInfo() {
         NetUtils.postWithHeader(this, ConstantsUrls.SHIP_CERTIFICATE_INFO)
                 .addParams(Constants.ID, id)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(InsuranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+                    protected void onSuccess(String response, String message) {
+                        shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
+                        ShipCertificateOrInsuranceInfoBean.DataBean.ObjectBean shipCertificateOrInsuranceInfo = shipCertificateOrInsuranceInfoBean.getData().getObject();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(InsuranceDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                        tvInsuranceType.setText(shipCertificateOrInsuranceInfo.getName());
+                        tvShipName.setText(shipCertificateOrInsuranceInfo.getShipName());
+                        tvShipBianhao.setText(String.valueOf(shipCertificateOrInsuranceInfo.getShipCall()));
+                        tvShipImo.setText(shipCertificateOrInsuranceInfo.getImoNo());
+                        tvShipNationalityHarbor.setText(shipCertificateOrInsuranceInfo.getShipNationaPort());
+                        tvNameAddressOfShip.setText(shipCertificateOrInsuranceInfo.getShipNameOrAddress());
+                        tvGuranteeType.setText(shipCertificateOrInsuranceInfo.getAssureType());
+                        tvIssueDate.setText(shipCertificateOrInsuranceInfo.getIssueDate());
+                        tvIssuingAuthority.setText(shipCertificateOrInsuranceInfo.getIssueOrganization());
+                        tvIssueAddress.setText(shipCertificateOrInsuranceInfo.getIssueAddress());
+                        int isValid = shipCertificateOrInsuranceInfo.getIsValid();
+                        if (isValid == 1) {
+                            tvEffectiveDate.setText(getResources().getString(R.string.permanent_effective));
+                            rlReWarningDays.setVisibility(View.GONE);
                         } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                shipCertificateOrInsuranceInfoBean = new Gson().fromJson(response, ShipCertificateOrInsuranceInfoBean.class);
-                                ShipCertificateOrInsuranceInfoBean.DataBean.ObjectBean shipCertificateOrInsuranceInfo = shipCertificateOrInsuranceInfoBean.getData().getObject();
+                            tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
+                            tvWarningDays.setText(String.valueOf(shipCertificateOrInsuranceInfo.getAdvanceWarnDay()));
+                            rlReWarningDays.setVisibility(View.VISIBLE);
+                        }
 
-                                tvInsuranceType.setText(shipCertificateOrInsuranceInfo.getName());
-                                tvShipName.setText(shipCertificateOrInsuranceInfo.getShipName());
-                                tvShipBianhao.setText(String.valueOf(shipCertificateOrInsuranceInfo.getShipCall()));
-                                tvShipImo.setText(shipCertificateOrInsuranceInfo.getImoNo());
-                                tvShipNationalityHarbor.setText(shipCertificateOrInsuranceInfo.getShipNationaPort());
-                                tvNameAddressOfShip.setText(shipCertificateOrInsuranceInfo.getShipNameOrAddress());
-                                tvGuranteeType.setText(shipCertificateOrInsuranceInfo.getAssureType());
-                                tvIssueDate.setText(shipCertificateOrInsuranceInfo.getIssueDate());
-                                tvIssuingAuthority.setText(shipCertificateOrInsuranceInfo.getIssueOrganization());
-                                tvIssueAddress.setText(shipCertificateOrInsuranceInfo.getIssueAddress());
-                                int isValid = shipCertificateOrInsuranceInfo.getIsValid();
-                                if (isValid == 1) {
-                                    tvIsPermanentEffective.setText(getResources().getString(R.string.yes));
-                                } else {
-                                    tvIsPermanentEffective.setText(getResources().getString(R.string.no));
+                        if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {
+                            tvCommon.setText(getResources().getString(R.string.yes));
+                        } else {
+                            tvCommon.setText(getResources().getString(R.string.no));
+                        }
+
+                        String imgUrl = shipCertificateOrInsuranceInfo.getImgUrl();
+                        if (StringUtils.isNotBlank(imgUrl)) {
+                            Type type = new TypeToken<ArrayList<UrlBean>>() {
+                            }.getType();
+                            ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
+
+                            ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(InsuranceDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
+                            gvCertificatePhoto.setAdapter(showPhotoAdapter);
+
+                            //scrollview数据处理
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollView.scrollTo(0, 0);
                                 }
-
-                                tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
-                                tvWarningDays.setText(String.valueOf(shipCertificateOrInsuranceInfo.getAdvanceWarnDay()));
-                                if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {
-                                    tvCommon.setText(getResources().getString(R.string.yes));
-                                } else {
-                                    tvCommon.setText(getResources().getString(R.string.no));
-                                }
-
-                                String imgUrl = shipCertificateOrInsuranceInfo.getImgUrl();
-                                if (StringUtils.isNotBlank(imgUrl)) {
-                                    Type type = new TypeToken<ArrayList<UrlBean>>() {
-                                    }.getType();
-                                    ArrayList<UrlBean> urlLists = new Gson().fromJson(imgUrl, type);
-
-                                    ShowPhotoAdapter showPhotoAdapter = new ShowPhotoAdapter(InsuranceDetailsActivity.this, urlLists, shipCertificateOrInsuranceInfo.getDomain());
-                                    gvCertificatePhoto.setAdapter(showPhotoAdapter);
-
-                                    //scrollview数据处理
-                                    new Handler().post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            scrollView.scrollTo(0, 0);
-                                        }
-                                    });
-                                }
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(InsuranceDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(InsuranceDetailsActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(InsuranceDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            }
+                            });
                         }
                     }
                 });
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netGetShipInsuranceInfo();
     }
 
     @Override

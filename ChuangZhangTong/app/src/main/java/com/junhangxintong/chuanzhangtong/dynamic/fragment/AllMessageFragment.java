@@ -2,7 +2,6 @@ package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +18,6 @@ import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.CrewCertificateActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipCertificateActivity;
 import com.junhangxintong.chuanzhangtong.dynamic.activity.ShipDynamicActivity;
@@ -57,10 +55,10 @@ import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENC
 public class AllMessageFragment extends BaseFragment {
     @BindView(R.id.lv_message)
     ListView lvMessage;
-    Unbinder unbinder;
     @BindView(R.id.refrsh)
     XRefreshView refresh;
     private int a = 0;
+    Unbinder unbinder;
 
     List<String> allMessages = new ArrayList<>();
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
@@ -178,7 +176,7 @@ public class AllMessageFragment extends BaseFragment {
             Log.e("TAG", "所有消息");
             isGetData = true;
             //这里可以做网络请求或者需要的数据刷新操作
-            netGetDynamicRemindList("10", "1", false);
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         } else {
             isGetData = false;
         }
@@ -193,83 +191,62 @@ public class AllMessageFragment extends BaseFragment {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.REMIND_TYPE, "")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        refreshLoadmoreFail();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        refresh.stopLoadMore();
+                        refresh.stopRefresh();
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            refreshLoadmoreFail();
+                    protected void onSuccess(String response, String message) {
+                        DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
+                        int count = dynamicRemindListBean.getData().getCount();
+
+                        if (isLoadmore) {
+                            dynamincRemindLoadMoreLists = dynamicRemindListBean.getData().getArray();
+                            dynamincRemindLists.addAll(dynamincRemindLoadMoreLists);
                         } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
-                                int count = dynamicRemindListBean.getData().getCount();
-
-                                if (isLoadmore) {
-                                    dynamincRemindLoadMoreLists = dynamicRemindListBean.getData().getArray();
-                                    dynamincRemindLists.addAll(dynamincRemindLoadMoreLists);
-                                } else {
-                                    dynamincRemindLists = dynamicRemindListBean.getData().getArray();
-                                }
-
-                                refresh.stopRefresh();
-
-                                if (dynamincRemindLists.size() <= count) {
-                                    if (Build.VERSION.SDK_INT >= 11) {
-                                        dynamincRemindLists.addAll(dynamincRemindLists);
-                                    }
-                                    refresh.stopLoadMore();
-                                } else {
-                                    refresh.setLoadComplete(true);
-                                }
-
-                                DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
-                                lvMessage.setAdapter(dynamicRemindListsAdapter);
-
-                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        int remindType = dynamincRemindLists.get(i).getRemindType();
-                                        int id = dynamincRemindLists.get(i).getId();
-                                        switch (remindType) {
-                                            case 1:
-                                                netGetReportType(String.valueOf(id));
-                                                break;
-                                            case 2:
-                                                gotoDynamicDetailsActivity(ShipDynamicActivity.class, String.valueOf(id));
-                                                break;
-                                            case 3:
-                                                gotoDynamicDetailsActivity(CrewCertificateActivity.class, String.valueOf(id));
-                                                break;
-                                            case 4:
-                                                gotoDynamicDetailsActivity(ShipCertificateActivity.class, String.valueOf(id));
-                                                break;
-                                        }
-                                        view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
-                                    }
-                                });
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE);
-                                if (sharedPreferences != null) {
-                                    sharedPreferences.edit().clear().commit();
-                                }
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
+                            dynamincRemindLists = dynamicRemindListBean.getData().getArray();
                         }
+
+                        refresh.stopRefresh();
+
+                        if (dynamincRemindLists.size() <= count) {
+                            if (Build.VERSION.SDK_INT >= 11) {
+                                dynamincRemindLists.addAll(dynamincRemindLists);
+                            }
+                            refresh.stopLoadMore();
+                        } else {
+                            refresh.setLoadComplete(true);
+                        }
+
+                        DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
+                        lvMessage.setAdapter(dynamicRemindListsAdapter);
+
+                        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                int remindType = dynamincRemindLists.get(i).getRemindType();
+                                int id = dynamincRemindLists.get(i).getId();
+                                switch (remindType) {
+                                    case 1:
+                                        netGetReportType(String.valueOf(id));
+                                        break;
+                                    case 2:
+                                        gotoDynamicDetailsActivity(ShipDynamicActivity.class, String.valueOf(id));
+                                        break;
+                                    case 3:
+                                        gotoDynamicDetailsActivity(CrewCertificateActivity.class, String.valueOf(id));
+                                        break;
+                                    case 4:
+                                        gotoDynamicDetailsActivity(ShipCertificateActivity.class, String.valueOf(id));
+                                        break;
+                                }
+                                view.findViewById(R.id.iv_show_message_new).setVisibility(View.GONE);
+                            }
+                        });
                     }
                 });
     }

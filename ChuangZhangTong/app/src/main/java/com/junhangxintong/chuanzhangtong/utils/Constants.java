@@ -120,8 +120,11 @@ public class Constants {
     public static final String DYNAMIC_ID = "dynamic_id";
     public static final String ARRIVAL_REPORT_INFO = "arrival_report_info";
     public static final String LEAVE_REPORT_INFO = "leave_report_info";
+    public static final String FROM_MY = "from_my";
+    public static final String CERTIFCATEGORY = "certifCategory";
+    public static final String MAP_STYLE = "map_style";
     public static String IS_NEED_CHECK_PERMISSION = "is_need_check_permission";
+    public static String MAPBOX_ACCESS_TOKEN = "pk.eyJ1Ijoiamh4dCIsImEiOiJjajhsa3p2YnAwcGZzMndzN2ZwMTRxdXdrIn0.E1WEom8acvHF0VS5Bhfilw";
     public static String SHARE_URL = "https://www.pgyer.com/22dL";
     public static String[] ROLE_NAME = {"管理员", "船长", "船员", "其他"};
-
 }

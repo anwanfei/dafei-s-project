@@ -2,7 +2,6 @@ package com.junhangxintong.chuanzhangtong.mine.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -36,7 +35,6 @@ import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.mine.Utils.EventBusMessage;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CertificatePhotoAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.PhotoAdapter;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateOrInsuranceInfoBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -51,7 +49,6 @@ import com.yancy.gallerypick.config.GalleryPick;
 import com.yancy.gallerypick.inter.IHandlerCallBack;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -69,8 +66,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class ModifyShipCertificateActivity extends BaseActivity implements View.OnClickListener {
 
@@ -144,6 +139,7 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
     private String issuingAuthory;
     private String id;
     private String shipId;
+    private String certicateType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,12 +304,11 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
     protected void onResume() {
         super.onResume();
         photoAdapter.notifyDataSetChanged();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+      /*  GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvResultPhoto.setLayoutManager(gridLayoutManager);
-        if (urlLists.size() > 0) {
-           /* certificatePhotoAdapter = new CertificatePhotoAdapter(this, urlLists, crewCertificateDetails.getDomain(), localUrls);
-            rvResultPhoto.setAdapter(certificatePhotoAdapter);*/
+        rvResultPhoto.setLayoutManager(gridLayoutManager);*/
+        if (path.size() > 0) {
+            rvResultPhoto.setAdapter(certificatePhotoAdapter);
             photoAdapter = new PhotoAdapter(this, path);
             rvResultPhoto.setAdapter(this.photoAdapter);
         }
@@ -334,21 +329,24 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
 
         etInputCertificateName.setText(shipCertificateOrInsuranceInfo.getName());
         etCertificateNumber.setText(String.valueOf(shipCertificateOrInsuranceInfo.getCertifNo()));
-        etCertificateType.setText(getResources().getString(R.string.certificate));
+        etCertificateType.setText(shipCertificateOrInsuranceInfo.getCertifCategory());
         tvIssuingAuthority.setText(shipCertificateOrInsuranceInfo.getIssueOrganization());
 
         int isValid = shipCertificateOrInsuranceInfo.getIsValid();
         if (isValid == 1) {
             rbYes.setChecked(true);
             rbNo.setChecked(false);
-            tvEffectiveDate.setVisibility(View.GONE);
-            rgWarnDays.setVisibility(View.GONE);
+            rlEffectiveDate.setVisibility(View.GONE);
+            rlReWarningDays.setVisibility(View.GONE);
+            isEffective = "1";
         } else {
             rbNo.setChecked(true);
             rbYes.setChecked(false);
-            tvEffectiveDate.setVisibility(View.VISIBLE);
+            rlEffectiveDate.setVisibility(View.VISIBLE);
+            rlReWarningDays.setVisibility(View.VISIBLE);
             tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
             rgWarnDays.setVisibility(View.VISIBLE);
+            isEffective = "2";
         }
 
         if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {
@@ -445,7 +443,11 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyShipCertificateActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyShipCertificateActivity.this);
+                } else {
+                    Toast.makeText(ModifyShipCertificateActivity.this,getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:
@@ -462,6 +464,7 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
         certificateNum = etCertificateNumber.getText().toString();
         issuingAuthory = tvIssuingAuthority.getText().toString();
         ettectiveDate = tvEffectiveDate.getText().toString();
+        certicateType = etCertificateType.getText().toString();
 
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
@@ -499,6 +502,7 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
                 .addParams(Constants.SHIP_ID, shipId)
                 .addParams(Constants.ID, id)
                 .addParams(Constants.CERTIF_TYPE, "1")
+                .addParams(Constants.CERTIFCATEGORY, certicateType)
                 .addParams(Constants.NAME, certificateName)
                 .addParams(Constants.CERTIFNO, certificateNum)
                 .addParams(Constants.ISSUE_ORGANIZATION, issuingAuthory)
@@ -512,35 +516,11 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
                 .connTimeOut(3000)
                 .writeTimeOut(3000)
                 .readTimeOut(3000)
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ModifyShipCertificateActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        progressDialog.dismiss();
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(ModifyShipCertificateActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(ModifyShipCertificateActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ModifyShipCertificateActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ModifyShipCertificateActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            }
-                            if (code.equals("200")) {
-                                finish();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        Toast.makeText(ModifyShipCertificateActivity.this, message, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }

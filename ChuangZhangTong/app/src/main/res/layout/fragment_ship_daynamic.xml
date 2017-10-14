@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.andview.refreshview.XRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xrefreshview="http://schemas.android.com/tools"
+    android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xrefreshview:isHeightMatchParent="true"
+    xrefreshview:isWidthMatchParent="true">
 
     <ListView
         android:id="@+id/lv_dynamic_ship"
@@ -15,4 +19,4 @@
         android:divider="@color/gray_ship_details_bg"
         android:dividerHeight="1dp"
         android:scrollbars="none" />
-</LinearLayout>
+</com.andview.refreshview.XRefreshView>

@@ -42,6 +42,7 @@ import com.junhangxintong.chuanzhangtong.mine.bean.UrlBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
+import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.GlideImageLoader;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.junhangxintong.chuanzhangtong.utils.PictureUtils;
@@ -325,17 +326,17 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
 
     private void modifyShipInsuranceComplete() {
 
-        String insuranceName = etInsuranceName.getHint().toString();
-        String shipName = etShipName.getHint().toString();
-        String shipHuhaoBianhao = etShipBianhao.getHint().toString();
-        String shipImo = etShipImo.getHint().toString();
-        String ShipNationalityHarbor = etShipNationalityHarbor.getHint().toString();
-        String nameAddressOfShip = tvNameAddressOfShip.getHint().toString();
-        String guranteeType = etGuranteeType.getHint().toString();
-        String issureDate = tvIssueDate.getHint().toString();
-        String issueAuthority = etIssuingAuthority.getHint().toString();
-        String issueAddress = etIssueAddress.getHint().toString();
-        String effectiveDate = tvEffectiveDate.getHint().toString();
+        String insuranceName = etInsuranceName.getText().toString();
+        String shipName = etShipName.getText().toString();
+        String shipHuhaoBianhao = etShipBianhao.getText().toString();
+        String shipImo = etShipImo.getText().toString();
+        String ShipNationalityHarbor = etShipNationalityHarbor.getText().toString();
+        String nameAddressOfShip = tvNameAddressOfShip.getText().toString();
+        String guranteeType = etGuranteeType.getText().toString();
+        String issureDate = tvIssueDate.getText().toString();
+        String issueAuthority = etIssuingAuthority.getText().toString();
+        String issueAddress = etIssueAddress.getText().toString();
+        String effectiveDate = tvEffectiveDate.getText().toString();
 
 
         Map<String, File> stringFileHashMap = new HashMap<>();
@@ -449,29 +450,31 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
         id = String.valueOf(shipCertificateOrInsuranceInfo.getId());
         shipId = String.valueOf(shipCertificateOrInsuranceInfo.getShipId());
 
-        etInsuranceName.setHint(shipCertificateOrInsuranceInfo.getName());
-        etShipName.setHint(shipCertificateOrInsuranceInfo.getShipName());
-        etShipBianhao.setHint(String.valueOf(shipCertificateOrInsuranceInfo.getShipCall()));
-        etShipImo.setHint(shipCertificateOrInsuranceInfo.getImoNo());
-        etShipNationalityHarbor.setHint(shipCertificateOrInsuranceInfo.getShipNationaPort());
-        tvNameAddressOfShip.setHint(shipCertificateOrInsuranceInfo.getShipNameOrAddress());
-        etGuranteeType.setHint(shipCertificateOrInsuranceInfo.getAssureType());
-        tvIssueDate.setHint(shipCertificateOrInsuranceInfo.getIssueDate());
-        etIssuingAuthority.setHint(shipCertificateOrInsuranceInfo.getIssueOrganization());
-        etIssueAddress.setHint(shipCertificateOrInsuranceInfo.getIssueAddress());
+        etInsuranceName.setText(shipCertificateOrInsuranceInfo.getName());
+        etShipName.setText(shipCertificateOrInsuranceInfo.getShipName());
+        etShipBianhao.setText(String.valueOf(shipCertificateOrInsuranceInfo.getShipCall()));
+        etShipImo.setText(shipCertificateOrInsuranceInfo.getImoNo());
+        etShipNationalityHarbor.setText(shipCertificateOrInsuranceInfo.getShipNationaPort());
+        tvNameAddressOfShip.setText(shipCertificateOrInsuranceInfo.getShipNameOrAddress());
+        etGuranteeType.setText(shipCertificateOrInsuranceInfo.getAssureType());
+        tvIssueDate.setText(shipCertificateOrInsuranceInfo.getIssueDate());
+        etIssuingAuthority.setText(shipCertificateOrInsuranceInfo.getIssueOrganization());
+        etIssueAddress.setText(shipCertificateOrInsuranceInfo.getIssueAddress());
         int isValid = shipCertificateOrInsuranceInfo.getIsValid();
         if (isValid == 1) {
             rbYes.setChecked(true);
-            tvEffectiveDate.setVisibility(View.GONE);
-            rgWarnDays.setVisibility(View.GONE);
+            rlEffectiveDate.setVisibility(View.GONE);
+            rlReWarningDays.setVisibility(View.GONE);
+            isEffectiveForever = "1";
         } else {
             rbNo.setChecked(true);
-            tvEffectiveDate.setVisibility(View.VISIBLE);
-            tvEffectiveDate.setHint(shipCertificateOrInsuranceInfo.getValidDate());
-            rgWarnDays.setVisibility(View.VISIBLE);
+            rlEffectiveDate.setVisibility(View.VISIBLE);
+            rlReWarningDays.setVisibility(View.VISIBLE);
+            tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
+            isEffectiveForever = "2";
         }
 
-        tvEffectiveDate.setHint(shipCertificateOrInsuranceInfo.getValidDate());
+        tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
         if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {
             rbIsOftonUse.setChecked(true);
         } else {
@@ -544,8 +547,10 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
                 finish();
                 break;
             case R.id.tv_issue_date:
+                DateUtil.showChooseTimeDialog(this, tvIssueDate);
                 break;
             case R.id.tv_effective_date:
+                DateUtil.showChooseTimeDialog(this, tvEffectiveDate);
                 break;
             case R.id.iv_add_images:
                 showChoosePhotesPop();
@@ -560,12 +565,12 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
     protected void onResume() {
         super.onResume();
         photoAdapter.notifyDataSetChanged();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+       /* GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        rvResultPhoto.setLayoutManager(gridLayoutManager);
-        if (urlLists.size() > 0) {
-           /* certificatePhotoAdapter = new CertificatePhotoAdapter(this, urlLists, crewCertificateDetails.getDomain(), localUrls);
-            rvResultPhoto.setAdapter(certificatePhotoAdapter);*/
+        rvResultPhoto.setLayoutManager(gridLayoutManager);*/
+        if (path.size() > 0) {
+            //certificatePhotoAdapter = new CertificatePhotoAdapter(this, urlLists, crewCertificateDetails.getDomain(), localUrls);
+            rvResultPhoto.setAdapter(certificatePhotoAdapter);
             photoAdapter = new PhotoAdapter(this, path);
             rvResultPhoto.setAdapter(this.photoAdapter);
         }
@@ -578,7 +583,11 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyShipInsuranceActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(ModifyShipInsuranceActivity.this);
+                } else {
+                    Toast.makeText(ModifyShipInsuranceActivity.this, getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:

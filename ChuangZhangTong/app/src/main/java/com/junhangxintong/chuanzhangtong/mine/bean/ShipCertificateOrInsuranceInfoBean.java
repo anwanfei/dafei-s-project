@@ -119,6 +119,15 @@ public class ShipCertificateOrInsuranceInfoBean implements Serializable {
             private int createUserId;
             private String issueOrganization;
             private String domain;
+            private String certifCategory;
+
+            public String getCertifCategory() {
+                return certifCategory;
+            }
+
+            public void setCertifCategory(String certifCategory) {
+                this.certifCategory = certifCategory;
+            }
 
             public int getShipId() {
                 return shipId;

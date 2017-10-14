@@ -2,7 +2,9 @@ package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
@@ -57,10 +60,14 @@ public class MessageRecoedFragment extends BaseFragment {
     ListView lvMessageRecord;
     @BindView(R.id.ll_show_all_messages)
     LinearLayout llShowAllMessages;
+    @BindView(R.id.refresh)
+    XRefreshView refresh;
     private ShipNewsSubFragmentAdapter shipNewsSubFragmentAdapter;
     private Unbinder unbinder;
     private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLists;
+    private List<DynamicRemindListBean.DataBean.ArrayBean> dynamincRemindLoadMoreLists;
     private boolean isGetData = false;
+    private int page = 1;
 
     @Override
     protected View initView() {
@@ -74,6 +81,7 @@ public class MessageRecoedFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        refresh.setPullLoadEnable(true);
         return rootView;
     }
 
@@ -87,8 +95,46 @@ public class MessageRecoedFragment extends BaseFragment {
     protected void initData() {
         super.initData();
         if (StringUtils.isNotEmpty(token)) {
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+
+        refresh.setPinnedTime(1000);
+        refresh.setAutoLoadMore(false);
+        refresh.setMoveForHorizontal(true);
+        refresh.setMoveHeadWhenDisablePullRefresh(true);//当下拉的时候不能上拉
+
+        //设置当非RecyclerView上拉加载完成以后的回弹时间
+        refresh.setScrollBackDuration(500);
+
+        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page += 1;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), true);
+                    }
+                }, 2000);
+            }
+        });
+    }
+
+    private void refreshLoadmoreFail() {
+        refresh.stopRefresh(false);
+        refresh.stopLoadMore(false);
     }
 
     @Override
@@ -96,7 +142,7 @@ public class MessageRecoedFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             if (StringUtils.isNotEmpty(token)) {
-                netGetDynamicRemindList();
+                netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
             }
         }
     }
@@ -107,7 +153,7 @@ public class MessageRecoedFragment extends BaseFragment {
         super.onResume();
         if (!isGetData) {
             isGetData = true;
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         }
     }
 
@@ -124,7 +170,7 @@ public class MessageRecoedFragment extends BaseFragment {
             Log.e("TAG", "报文");
             isGetData = true;
             //这里可以做网络请求或者需要的数据刷新操作
-            netGetDynamicRemindList();
+            netGetDynamicRemindList(Constants.PAGE_SIZE_10, String.valueOf(page), false);
         } else {
             isGetData = false;
         }
@@ -138,19 +184,44 @@ public class MessageRecoedFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    private void netGetDynamicRemindList() {
+    private void netGetDynamicRemindList(String pageSize, String page, final boolean isLoadmore) {
         String userId = CacheUtils.getString(getActivity(), Constants.ID);
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.DYNAMIC_REMIND_LIST)
-                .addParams(Constants.PAGE_SIZE, "100")
-                .addParams(Constants.PAGE, "1")
+                .addParams(Constants.PAGE_SIZE, pageSize)
+                .addParams(Constants.PAGE, page)
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.REMIND_TYPE, "1")
                 .build()
                 .execute(new NetUtils.MyStringCallback() {
                     @Override
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        refresh.stopLoadMore();
+                        refresh.stopRefresh();
+                    }
+
+                    @Override
                     protected void onSuccess(String response, String message) {
                         final DynamicRemindListBean dynamicRemindListBean = new Gson().fromJson(response, DynamicRemindListBean.class);
-                        dynamincRemindLists = dynamicRemindListBean.getData().getArray();
+                        int count = dynamicRemindListBean.getData().getCount();
+
+                        if (isLoadmore) {
+                            dynamincRemindLoadMoreLists = dynamicRemindListBean.getData().getArray();
+                            dynamincRemindLists.addAll(dynamincRemindLoadMoreLists);
+                        } else {
+                            dynamincRemindLists = dynamicRemindListBean.getData().getArray();
+                        }
+
+                        refresh.stopRefresh();
+
+                        if (dynamincRemindLists.size() <= count) {
+                            if (Build.VERSION.SDK_INT >= 11) {
+                                dynamincRemindLists.addAll(dynamincRemindLists);
+                            }
+                            refresh.stopLoadMore();
+                        } else {
+                            refresh.setLoadComplete(true);
+                        }
 
                         DynamicRemindListsAdapter dynamicRemindListsAdapter = new DynamicRemindListsAdapter(getActivity(), dynamincRemindLists);
                         lvMessageRecord.setAdapter(dynamicRemindListsAdapter);
@@ -192,7 +263,7 @@ public class MessageRecoedFragment extends BaseFragment {
                                     case 1:
                                         Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
                                         intent1.putExtra(Constants.FROM_DYNAMIC, Constants.FROM_DYNAMIC);
-                                        intent1.putExtra(Constants.ID,ids);
+                                        intent1.putExtra(Constants.ID, ids);
                                         startActivity(intent1);
                                         break;
                                     case 2:

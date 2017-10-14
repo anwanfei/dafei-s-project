@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xrefreshview="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/lv_message_record"
+    <com.andview.refreshview.XRefreshView
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/bg_ship_details_main"
-        android:divider="@color/gray_ship_details_bg"
-        android:dividerHeight="1dp"
-        android:scrollbars="none" />
+        xrefreshview:isHeightMatchParent="true"
+        xrefreshview:isWidthMatchParent="true">
 
+        <ListView
+            android:id="@+id/lv_message_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/gray_ship_details_bg"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
+    </com.andview.refreshview.XRefreshView>
 
     <LinearLayout
         android:id="@+id/ll_show_all_messages"

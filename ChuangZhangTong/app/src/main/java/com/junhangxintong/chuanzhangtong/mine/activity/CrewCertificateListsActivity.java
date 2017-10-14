@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewCertificateAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateRemindBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
@@ -93,10 +92,9 @@ public class CrewCertificateListsActivity extends BaseActivity {
         ivShare.setBackgroundResource(R.drawable.add_certificate);
         tvSetting.setText(getResources().getString(R.string.add));
         tvShare.setText(getResources().getString(R.string.delete));
-        tvShare.setVisibility(View.VISIBLE);
+        tvShare.setVisibility(View.GONE);
         ivNothing.setImageResource(R.drawable.iv_no_certificate);
         tvNothing.setText(getResources().getString(R.string.add_first_certificate));
-        tvType.setVisibility(View.GONE);
     }
 
     @Override
@@ -114,53 +112,34 @@ public class CrewCertificateListsActivity extends BaseActivity {
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.ID, id)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(CrewCertificateListsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        crewCertificatesLists = new ArrayList<CrewCeretificateRemindBean.DataBean.ArrayBean>();
+                        updataGridview();
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(CrewCertificateListsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                CrewCeretificateRemindBean crewCeretificateBean = new Gson().fromJson(response, CrewCeretificateRemindBean.class);
+                    protected void onSuccess(String response, String message) {
+                        CrewCeretificateRemindBean crewCeretificateBean = new Gson().fromJson(response, CrewCeretificateRemindBean.class);
 
-                                crewCertificatesLists = crewCeretificateBean.getData().getArray();
+                        crewCertificatesLists = crewCeretificateBean.getData().getArray();
 
-                                updataGridview();
-                                crewCertificateAdapter = new CrewCertificateAdapter(CrewCertificateListsActivity.this, crewCertificatesLists);
-                                gvCertificate.setAdapter(crewCertificateAdapter);
+                        updataGridview();
+                        crewCertificateAdapter = new CrewCertificateAdapter(CrewCertificateListsActivity.this, crewCertificatesLists);
+                        gvCertificate.setAdapter(crewCertificateAdapter);
 
-                                gvCertificate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(CrewCertificateListsActivity.this, CrewCertificateDetailsActivity.class);
-                                        int id = crewCertificatesLists.get(i).getId();
-                                        intent.putExtra(Constants.ID, String.valueOf(id));
-                                        intent.putExtra(Constants.CERTIFICATE_TYPE, 1);
-                                        startActivity(intent);
-                                    }
-                                });
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(CrewCertificateListsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(CrewCertificateListsActivity.this, LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                crewCertificatesLists = new ArrayList<CrewCeretificateRemindBean.DataBean.ArrayBean>();
-                                updataGridview();
-                            } else {
-                                Toast.makeText(CrewCertificateListsActivity.this, message, Toast.LENGTH_SHORT).show();
+                        gvCertificate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(CrewCertificateListsActivity.this, CrewCertificateDetailsActivity.class);
+                                int id = crewCertificatesLists.get(i).getId();
+                                intent.putExtra(Constants.ID, String.valueOf(id));
+                                intent.putExtra(Constants.CERTIFICATE_TYPE, 1);
+                                startActivity(intent);
                             }
-                        }
+                        });
                     }
                 });
     }
@@ -169,12 +148,10 @@ public class CrewCertificateListsActivity extends BaseActivity {
         if (crewCertificatesLists.size() > 0) {
             gvCertificate.setVisibility(View.VISIBLE);
             llNoFleet.setVisibility(View.GONE);
-            tvType.setVisibility(View.VISIBLE);
             tvShare.setVisibility(View.VISIBLE);
         } else {
             gvCertificate.setVisibility(View.GONE);
             llNoFleet.setVisibility(View.VISIBLE);
-            tvType.setVisibility(View.GONE);
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
             tvShare.setText(getResources().getString(R.string.delete));

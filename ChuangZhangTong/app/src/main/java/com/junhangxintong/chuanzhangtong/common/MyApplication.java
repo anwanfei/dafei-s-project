@@ -7,6 +7,7 @@ import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.mapbox.mapboxsdk.Mapbox;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -53,8 +54,11 @@ public class MyApplication extends Application {
 
         com.zhy.http.okhttp.OkHttpUtils.initClient(okHttpClient);
 
-        //发生异常时候
+        //发生异常时候友盟统计
 //        CrashHandler.getInstance().init(appContext);
+
+        //mapbox的accessToken
+        Mapbox.getInstance(this, Constants.MAPBOX_ACCESS_TOKEN);
     }
 
     {

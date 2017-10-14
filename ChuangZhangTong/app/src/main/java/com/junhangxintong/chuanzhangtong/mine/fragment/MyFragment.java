@@ -20,6 +20,7 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
+import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateListsActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
@@ -305,6 +306,12 @@ public class MyFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), MyCertificateActivity.class));
                 break;
         }
+    }
+
+    private void gotoCertificateActivity() {
+        Intent intent = new Intent(getActivity(), CrewCertificateListsActivity.class);
+        intent.putExtra(Constants.FROM_MY,true);
+        startActivity(intent);
     }
 
     private void gotoPersonalInfoActivity() {

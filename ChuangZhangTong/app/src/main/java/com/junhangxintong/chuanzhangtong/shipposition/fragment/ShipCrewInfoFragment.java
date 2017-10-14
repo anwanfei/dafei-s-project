@@ -20,7 +20,6 @@ import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
@@ -170,41 +169,22 @@ public class ShipCrewInfoFragment extends BaseFragment {
                 .addParams(Constants.SHIP_ID, shipId)
                 .addParams(Constants.PERSON_NAME, crweName)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onSuccess(String response, String message) {
+                        CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
+                        crewLists = crewServerBean.getData().getArray();
+
+                        updateCrewsList();
+                        crewListsAdapter = new CrewListsAdapter(getActivity(), crewLists);
+                        lvMyCrew.setAdapter(crewListsAdapter);
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
-                                crewLists = crewServerBean.getData().getArray();
-
-                                updateCrewsList();
-                                crewListsAdapter = new CrewListsAdapter(getActivity(), crewLists);
-                                lvMyCrew.setAdapter(crewListsAdapter);
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                crewLists = new ArrayList<CrewServeBean.DataBean.ArrayBean>();
-                                updateCrewsList();
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        crewLists = new ArrayList<CrewServeBean.DataBean.ArrayBean>();
+                        updateCrewsList();
                     }
                 });
     }
@@ -212,9 +192,7 @@ public class ShipCrewInfoFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (StringUtils.isNotEmpty(MyApplication.token)) {
-            netGetCrewsLists("");
-        }
+        netGetCrewsLists("");
     }
 
     private void updateCrewsList() {

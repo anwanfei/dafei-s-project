@@ -245,7 +245,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
 
     private void showChoosePhotesPop() {
 
-        ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(FeedbackActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(FeedbackActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         View inflate = LayoutInflater.from(this).inflate(R.layout.choose_gender_picker_popupwindow_layut, null);
 
         popupWindow = new PopupWindow(inflate, RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -282,7 +282,11 @@ public class FeedbackActivity extends BaseActivity implements View.OnClickListen
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(FeedbackActivity.this);
+                if (path.size() < 3) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(FeedbackActivity.this);
+                } else {
+                    Toast.makeText(FeedbackActivity.this, getResources().getString(R.string.photo_num_inner_three), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:

@@ -207,7 +207,8 @@
         <activity android:name=".shipposition.activity.ModifyNoonReportActivity" />
         <activity android:name=".shipposition.activity.ModifyBerthingReportActivity" />
         <activity android:name=".shipposition.activity.ModifyArrivalReportActivity" />
-        <activity android:name=".shipposition.activity.ModifyLeaveReportActivity"></activity>
+        <activity android:name=".shipposition.activity.ModifyLeaveReportActivity" />
+        <activity android:name=".shipposition.activity.MeasureDistanceActivity"></activity>
     </application>
 
 </manifest>

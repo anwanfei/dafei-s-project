@@ -152,6 +152,8 @@
     <string name="permanent_effective">永久有效</string>
     <string name="re_warning_days">预警天数</string>
     <string name="is_common">是否常用</string>
+    <string name="photo_num_inner_six">您最多能选六张照片</string>
+    <string name="photo_num_inner_three">您最多能选三张照片</string>
     <string name="commoned">常用</string>
     <string name="no_commoned">不常用</string>
     <string name="add_certificate_photo">添加照片</string>

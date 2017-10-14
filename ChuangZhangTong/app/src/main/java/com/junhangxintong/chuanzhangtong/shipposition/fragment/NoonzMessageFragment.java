@@ -1,8 +1,6 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +12,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.DynamicReportListsAdapter;
 import com.junhangxintong.chuanzhangtong.dynamic.bean.DynamicReportBean;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.ReportListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.ShipNoonMessageActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.adapter.ShipMessagesAdapter;
@@ -27,7 +22,6 @@ import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -37,9 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/8/10.
@@ -95,53 +86,26 @@ public class NoonzMessageFragment extends BaseFragment {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.REPORT_TYPE, "1")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(MyApplication.appContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
+                    protected void onSuccess(String response, String message) {
+                        final DynamicReportBean dynamicReportBean = new Gson().fromJson(response, DynamicReportBean.class);
+                        dynamicReportLists = dynamicReportBean.getData().getArray();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                final DynamicReportBean dynamicReportBean = new Gson().fromJson(response, DynamicReportBean.class);
-                                dynamicReportLists = dynamicReportBean.getData().getArray();
+                        DynamicReportListsAdapter dynamicReportListsAdapter = new DynamicReportListsAdapter(getActivity(), dynamicReportLists);
+                        lvMessage.setAdapter(dynamicReportListsAdapter);
 
-                                DynamicReportListsAdapter dynamicReportListsAdapter = new DynamicReportListsAdapter(getActivity(), dynamicReportLists);
-                                lvMessage.setAdapter(dynamicReportListsAdapter);
-
-                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        String id = String.valueOf(dynamicReportLists.get(i).getId());
-                                        Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
-                                        String shipName = dynamicReportLists.get(i).getShipName();
-                                        intent1.putExtra(Constants.ID, id);
-                                        intent1.putExtra(Constants.SHIP_NAME, shipName);
-                                        startActivity(intent1);
-                                    }
-                                });
-
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE);
-                                if (sharedPreferences != null) {
-                                    sharedPreferences.edit().clear().commit();
-                                }
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                String id = String.valueOf(dynamicReportLists.get(i).getId());
+                                Intent intent1 = new Intent(getActivity(), ShipNoonMessageActivity.class);
+                                String shipName = dynamicReportLists.get(i).getShipName();
+                                intent1.putExtra(Constants.ID, id);
+                                intent1.putExtra(Constants.SHIP_NAME, shipName);
+                                startActivity(intent1);
                             }
-                        }
+                        });
                     }
                 });
     }

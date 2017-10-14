@@ -360,6 +360,7 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
         certificateNum = etCertificateNumber.getText().toString();
         issuingAuthory = tvIssuingAuthority.getText().toString();
         ettectiveDate = tvEffectiveDate.getText().toString();
+        certificateType = etCertificateType.getText().toString();
 
         Map<String, File> stringFileHashMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
@@ -397,6 +398,7 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
                 .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.CERTIF_TYPE, "1")
                 .addParams(Constants.NAME, certificateName)
+                .addParams(Constants.CERTIFCATEGORY,certificateType)
                 .addParams(Constants.CERTIFNO, certificateNum)
                 .addParams(Constants.ISSUE_ORGANIZATION, issuingAuthory)
                 .addParams(Constants.ADVANCE_WARN_DAYS, reWarningDays)
@@ -449,7 +451,11 @@ public class AddShipCertificateActivity extends BaseActivity implements View.OnC
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddShipCertificateActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddShipCertificateActivity.this);
+                } else {
+                    Toast.makeText(AddShipCertificateActivity.this,getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:

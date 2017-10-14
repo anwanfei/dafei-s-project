@@ -395,7 +395,11 @@ public class AddCrewCertificateActivity extends BaseActivity implements View.OnC
                 popupWindow.dismiss();
                 break;
             case R.id.tv_man:
-                GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddCrewCertificateActivity.this);
+                if (path.size() < 6) {
+                    GalleryPick.getInstance().setGalleryConfig(gallrtyConfig).openCamera(AddCrewCertificateActivity.this);
+                } else {
+                    Toast.makeText(AddCrewCertificateActivity.this, getResources().getString(R.string.photo_num_inner_six), Toast.LENGTH_SHORT).show();
+                }
                 popupWindow.dismiss();
                 break;
             case R.id.tv_woman:
