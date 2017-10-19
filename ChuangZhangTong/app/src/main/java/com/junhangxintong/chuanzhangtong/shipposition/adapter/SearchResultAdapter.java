@@ -238,16 +238,16 @@ public class SearchResultAdapter extends BaseAdapter {
                                 String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
                                 Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
                                 intent.putExtra(Constants.ID, shipId);
+                                intent.putExtra(Constants.SHIP_ID, shipId);
                                 if (followShipIds.size() > 0) {
                                     if (followShipIds.contains(shipId)) {
                                         intent.putExtra(Constants.FOLLOW_SHIP, true);
                                     }
                                 }
-                                intent.putExtra(Constants.SHIP_ID, shipId);
                                 mContext.startActivity(intent);
                             }
                         });
-                        rlSearchResult.setOnClickListener(new View.OnClickListener() {
+                        /*rlSearchResult.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
@@ -261,7 +261,7 @@ public class SearchResultAdapter extends BaseAdapter {
                                 intent.putExtra(Constants.SHIP_ID, shipId);
                                 mContext.startActivity(intent);
                             }
-                        });
+                        });*/
                     }
                 });
     }

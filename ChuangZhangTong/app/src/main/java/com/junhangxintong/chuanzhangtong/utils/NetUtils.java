@@ -129,7 +129,9 @@ public class NetUtils {
                     MyApplication.appContext.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                     //保存获取权限的sp
                     CacheUtils.putBoolean(MyApplication.appContext, Constants.IS_NEED_CHECK_PERMISSION, false);
-                    MyApplication.appContext.startActivity(new Intent(MyApplication.appContext, LoginRegisterActivity.class));
+                    Intent intent = new Intent(MyApplication.appContext, LoginRegisterActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MyApplication.appContext.startActivity(intent);
                 } else if (code.equals("404")) {
                     onDataEmpty(message);
                 } else {

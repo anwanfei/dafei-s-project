@@ -160,52 +160,33 @@ public class BerthingMessageFragment extends BaseFragment {
                 .addParams(Constants.SHIP_NAME, shipName)
                 .addParams(Constants.TYPE, "2")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        lvMessage.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                lvMessage.setVisibility(View.VISIBLE);
-                                final ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
-                                reportLists = reportListBean.getData().getArray();
+                    protected void onSuccess(String response, String message) {
+                        lvMessage.setVisibility(View.VISIBLE);
+                        final ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
+                        reportLists = reportListBean.getData().getArray();
 
-                                ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
-                                lvMessage.setAdapter(shipMessagesAdapter);
+                        ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
+                        lvMessage.setAdapter(shipMessagesAdapter);
 
-                                lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        Intent intent = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
-                                        String id = String.valueOf(reportLists.get(i).getId());
-                                        intent.putExtra(Constants.ID, id);
-                                        intent.putExtra(Constants.SHIP_NAME, shipName);
-                                        startActivity(intent);
-                                    }
-                                });
-
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                lvMessage.setVisibility(View.GONE);
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        lvMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(getActivity(), ShipBerthingPortMessageActivity.class);
+                                String id = String.valueOf(reportLists.get(i).getId());
+                                intent.putExtra(Constants.ID, id);
+                                intent.putExtra(Constants.SHIP_NAME, shipName);
+                                startActivity(intent);
                             }
-                        }
+                        });
+
                     }
                 });
     }

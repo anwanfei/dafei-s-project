@@ -110,6 +110,15 @@ public class ArrivalReportInfoBean implements Serializable {
             private String freshwaterConsumption;
             private String currShipSpeed;
             private int createUserId;
+            private int timer;
+
+            public int getTimer() {
+                return timer;
+            }
+
+            public void setTimer(int timer) {
+                this.timer = timer;
+            }
 
             public int getShipId() {
                 return shipId;

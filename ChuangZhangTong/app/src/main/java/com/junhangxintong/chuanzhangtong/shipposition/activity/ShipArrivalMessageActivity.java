@@ -176,7 +176,7 @@ public class ShipArrivalMessageActivity extends BaseActivity {
                             tvShipMessageName.setText(arrivalInfoFromDynamic.getShipName());
                             tvShipTime.setText(arrivalInfoFromDynamic.getCreateDate());
                             tvArrivalPort.setText(arrivalInfoFromDynamic.getArrivePort());
-                            tvAnchorPosotion.setText(arrivalInfoFromDynamic.getPortRadsteadBerth());
+                            tvPortStopPosition.setText(arrivalInfoFromDynamic.getPortRadsteadBerth());
                             tvAnchorArrivalTime.setText(arrivalInfoFromDynamic.getArriveAnchorDate());
                             tvAnchorPosotion.setText(arrivalInfoFromDynamic.getAnchorPosition());
                             tvLatitude.setText(arrivalInfoFromDynamic.getLatitude());
@@ -194,7 +194,7 @@ public class ShipArrivalMessageActivity extends BaseActivity {
 
                             int timer = arrivalInfoFromDynamic.getTimer();
 
-                            CountdownTime(isShowCountdownTime, 10000);
+                            CountdownTime(isShowCountdownTime, timer);
                         }
                     });
         } else {
@@ -225,7 +225,7 @@ public class ShipArrivalMessageActivity extends BaseActivity {
 
                                     tvShipTime.setText(arrivalInfoFromNet.getCreateDate());
                                     tvArrivalPort.setText(arrivalInfoFromNet.getArrivePort());
-                                    tvAnchorPosotion.setText(arrivalInfoFromNet.getPortRadsteadBerth());
+                                    tvPortStopPosition.setText(arrivalInfoFromNet.getPortRadsteadBerth());
                                     tvAnchorArrivalTime.setText(arrivalInfoFromNet.getArriveAnchorDate());
                                     tvAnchorPosotion.setText(arrivalInfoFromNet.getAnchorPosition());
                                     tvLatitude.setText(arrivalInfoFromNet.getLatitude());
@@ -240,7 +240,9 @@ public class ShipArrivalMessageActivity extends BaseActivity {
                                     tvFrashwaterConsume.setText(arrivalInfoFromNet.getFreshwaterConsumption());
                                     tvRemark.setText(arrivalInfoFromNet.getRemark());
 
-                                    CountdownTime(isShowCountdownTime, 10000);
+                                    int timer = arrivalInfoFromNet.getTimer();
+
+                                    CountdownTime(isShowCountdownTime, timer);
 
                                 } else if (code.equals("601")) {
                                     //清除了sp存储

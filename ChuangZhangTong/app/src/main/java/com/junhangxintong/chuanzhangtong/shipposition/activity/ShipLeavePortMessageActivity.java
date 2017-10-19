@@ -185,7 +185,7 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
 
                             int timer = leavaReportInfoFromDynamic.getTimer();
 
-                            CountdownTime(isShowCountdownTime, 10000);
+                            CountdownTime(isShowCountdownTime, timer);
                         }
                     });
         } else {
@@ -236,7 +236,7 @@ public class ShipLeavePortMessageActivity extends BaseActivity {
 
                                     int timer = leavaReportInfoFromNet.getTimer();
 
-                                    CountdownTime(isShowCountdownTime, 10000);
+                                    CountdownTime(isShowCountdownTime, timer);
 
                                 } else if (code.equals("601")) {
                                     //清除了sp存储

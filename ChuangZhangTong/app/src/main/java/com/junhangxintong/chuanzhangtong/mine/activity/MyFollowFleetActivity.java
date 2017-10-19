@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,21 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MainActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyFollowFleetAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +31,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class MyFollowFleetActivity extends BaseActivity {
 
@@ -142,49 +134,28 @@ public class MyFollowFleetActivity extends BaseActivity {
                 .addParams(Constants.PAGE_SIZE, "100")
                 .addParams(Constants.SHIP_NAME, shipName)
                 .build()
-                .execute(new StringCallback() {
-
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        followShipLists = new ArrayList<FollowShipListBean.DataBean.ArrayBean>();
+                        updaFollowFLeetList();
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                FollowShipListBean followShipListBean = new Gson().fromJson(response, FollowShipListBean.class);
-                                followShipLists = followShipListBean.getData().getArray();
+                    protected void onSuccess(String response, String message) {
+                        FollowShipListBean followShipListBean = new Gson().fromJson(response, FollowShipListBean.class);
+                        followShipLists = followShipListBean.getData().getArray();
 
-                                followShipIds = new ArrayList<String>();
-                                for (int i = 0; i < followShipLists.size(); i++) {
-                                    followShipIds.add(String.valueOf(followShipLists.get(i).getId()));
-                                }
-                                updaFollowFLeetList();
-
-                                myFollowFleetAdapter = new MyFollowFleetAdapter(MyFollowFleetActivity.this, followShipLists);
-                                lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
-                                myFollowFleetAdapter.notifyDataSetChanged();
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(MyFollowFleetActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            } else if (code.equals("404")) {
-                                followShipLists = new ArrayList<FollowShipListBean.DataBean.ArrayBean>();
-                                updaFollowFLeetList();
-                            } else {
-                                Toast.makeText(MyFollowFleetActivity.this, message, Toast.LENGTH_SHORT).show();
-                            }
+                        followShipIds = new ArrayList<String>();
+                        for (int i = 0; i < followShipLists.size(); i++) {
+                            followShipIds.add(String.valueOf(followShipLists.get(i).getId()));
                         }
+                        updaFollowFLeetList();
+
+                        myFollowFleetAdapter = new MyFollowFleetAdapter(MyFollowFleetActivity.this, followShipLists);
+                        lvMyFolllowFleet.setAdapter(myFollowFleetAdapter);
+                        myFollowFleetAdapter.notifyDataSetChanged();
                     }
                 });
     }
@@ -329,31 +300,10 @@ public class MyFollowFleetActivity extends BaseActivity {
         NetUtils.postWithHeader(MyFollowFleetActivity.this, ConstantsUrls.DELETE_FOLLOW_SHIP)
                 .addParams(Constants.IDS, ids)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
+                    protected void onSuccess(String response, String message) {
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(MyFollowFleetActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(MyFollowFleetActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                MyFollowFleetActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(MyFollowFleetActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                MyFollowFleetActivity.this.startActivity(new Intent(MyFollowFleetActivity.this, LoginRegisterActivity.class));
-                            }
-                            if (code.equals("200")) {
-                            }
-                        }
                     }
                 });
     }

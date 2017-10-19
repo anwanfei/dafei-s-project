@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,13 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.AccoutSettingActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewCertificateListsActivity;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewManagementActivity;
@@ -34,7 +31,6 @@ import com.junhangxintong.chuanzhangtong.utils.CircleImageView;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -44,9 +40,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/7/5.
@@ -131,51 +124,28 @@ public class MyFragment extends BaseFragment {
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.GET_USER_INFO)
                 .addParams(Constants.USER_ID, userId)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onSuccess(String response, String message) {
+                        loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                        String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
+                        String personName = loginResult.getData().getObject().getPersonName();
+                        String roleName = loginResult.getData().getObject().getRoleName();
+                        if (StringUtils.isEmpty(personName)) {
+                            tvUserName.setText(getResources().getString(R.string.name));
                         } else {
-                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String code = netServiceErrortBean.getCode();
-                            if (code.equals("200")) {
-                                loginResult = new Gson().fromJson(response, LoginResultBean.class);
-                                String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
-                                String personName = loginResult.getData().getObject().getPersonName();
-                                String roleName = loginResult.getData().getObject().getRoleName();
-                                if (StringUtils.isEmpty(personName)) {
-                                    tvUserName.setText(getResources().getString(R.string.name));
-                                } else {
-                                    tvUserName.setText(personName);
-                                }
-                                tvIdentity.setText(roleName);
-
-                                if (StringUtils.isNotEmpty(headImgUrl)) {
-                                    Glide.with(getActivity())
-                                            .load(headImgUrl)
-                                            .into(ivPhoto);
-                                } else {
-                                    ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
-                                }
-
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                Toast.makeText(getActivity(), netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                            tvUserName.setText(personName);
                         }
+                        tvIdentity.setText(roleName);
+
+                        if (StringUtils.isNotEmpty(headImgUrl)) {
+                            Glide.with(getActivity())
+                                    .load(headImgUrl)
+                                    .into(ivPhoto);
+                        } else {
+                            ivPhoto.setBackgroundDrawable(getResources().getDrawable(R.drawable.photo));
+                        }
+
                     }
                 });
     }

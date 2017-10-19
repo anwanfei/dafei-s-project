@@ -67,7 +67,7 @@ public class LoginRegisterActivity extends BaseActivity {
 
     private String local_base_url = "http://192.168.0.102:8082";
     private String www_test_base_url = "http://116.62.152.191:8082";
-    private String www_base_url = "http://192.168.0.102:8082";
+    private String www_base_url = "http://116.62.127.147:8082";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -168,7 +168,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RadioButton
             android:id="@+id/rb_test_url"

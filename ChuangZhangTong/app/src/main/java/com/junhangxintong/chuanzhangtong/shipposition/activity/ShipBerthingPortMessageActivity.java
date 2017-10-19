@@ -188,7 +188,7 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
                         }
 
                         int timer = berthingReportInfoFromDynamic.getTimer();
-                        CountdownTime(isShowCountdownTime, 10000);
+                        CountdownTime(isShowCountdownTime, timer);
                     }
                 });
     }
@@ -226,7 +226,7 @@ public class ShipBerthingPortMessageActivity extends BaseActivity {
                             }
                         }
                         int timer = berthingReportInfoFromShip.getTimer();
-                        CountdownTime(isShowCountdownTime, 10000);
+                        CountdownTime(isShowCountdownTime, timer);
                     }
                 });
     }

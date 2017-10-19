@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.mine.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,12 +16,10 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewCertificateAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewCeretificateRemindBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -33,9 +30,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class CrewCertificateListsActivity extends BaseActivity {
 
@@ -263,34 +257,12 @@ public class CrewCertificateListsActivity extends BaseActivity {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.IDS, ids)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(CrewCertificateListsActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(CrewCertificateListsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(CrewCertificateListsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(CrewCertificateListsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(CrewCertificateListsActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            } else if (code.equals("200")) {
-                                crewCertificatesLists.removeAll(choosedLists);
-                                updataGridview();
-                                crewCertificateAdapter.notifyDataSetChanged();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        crewCertificatesLists.removeAll(choosedLists);
+                        updataGridview();
+                        crewCertificateAdapter.notifyDataSetChanged();
                     }
                 });
     }

@@ -8,12 +8,14 @@ public class ConstantsUrls {
 
     public static final String LOCAL_BASE_URL = "http://192.168.0.101:8082";
     public static final String WWW_TEST_BASE_URL = "http://116.62.152.191:8082";
-    public static final String WWW_BASE_URL = "http://192.168.0.101:8082";
+    public static final String WWW_BASE_URL = "http://116.62.127.147:8082";
 
 
     public static String SEA_MAP = "http://116.62.152.191:82/hifleetStyle.json";
-    public static String GOOGLE_MAP = "http://116.62.152.191:82/GoogleChartStyle.json";
-    public static String SATELLITE_MAP = "http://116.62.152.191:82/satelliteStyle.json";
+//    public static String SATELLITE_MAP = "http://116.62.152.191:82/satelliteStyle.json";
+//    public static String GOOGLE_MAP = "http://116.62.152.191:82/GoogleChartStyle.json";
+    public static String GOOGLE_MAP = "mapbox://styles/mapbox/streets-v9";
+    public static String SATELLITE_MAP = "mapbox://styles/mapbox/satellite-streets-v9";
 
     /**
      * 短信验证登录

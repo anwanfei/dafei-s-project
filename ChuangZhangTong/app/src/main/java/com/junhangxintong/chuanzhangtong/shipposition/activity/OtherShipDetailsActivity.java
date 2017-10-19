@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,13 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.MapView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.FollowShipDetailsBean;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -27,16 +22,14 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.mapbox.mapboxsdk.maps.MapView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 import static com.junhangxintong.chuanzhangtong.R.id.tv_follow_ship;
 import static com.junhangxintong.chuanzhangtong.R.id.tv_share_ship;
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class OtherShipDetailsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -47,8 +40,6 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     TextView tvTitle;
     @BindView(R.id.iv_share)
     ImageView ivShare;
-    @BindView(R.id.mapview_ship_details)
-    MapView mapviewShipDetails;
     @BindView(R.id.iv_ship_details_down)
     ImageView ivShipDetailsDown;
     @BindView(R.id.tv_ship_name)
@@ -105,6 +96,8 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     LinearLayout llShipDetailsMain;
     @BindView(R.id.ll_ship_details)
     RelativeLayout llShipDetails;
+    @BindView(R.id.mapbox_mapView)
+    MapView mapboxMapView;
     private boolean isShowShipOthorDetails = true;
     private boolean isShowShareAndFollow = true;
     private PopupWindow popupWindow;
@@ -112,7 +105,6 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     private String shipId = "";
     private String userId;
     private boolean isFollowed = true;
-    private String id;
 
     @Override
     protected void initView() {
@@ -126,95 +118,48 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     protected void initData() {
         userId = CacheUtils.getString(this, Constants.ID);
         Intent intent = getIntent();
-        id = intent.getStringExtra(Constants.ID);
-        isFollow = intent.getBooleanExtra(Constants.FOLLOW_SHIP, false);
+        String idd = intent.getStringExtra(Constants.ID);
         shipId = intent.getStringExtra(Constants.SHIP_ID);
+        isFollow = intent.getBooleanExtra(Constants.FOLLOW_SHIP, false);
 
         if (!isFollow) {
             NetUtils.postWithHeader(this, ConstantsUrls.MY_SHIP_INFO)
-                    .addParams(Constants.ID, id)
+                    .addParams(Constants.ID, idd)
                     .build()
-                    .execute(new StringCallback() {
+                    .execute(new NetUtils.MyStringCallback() {
                         @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                                String message = netServiceErrort.getMessage();
-                                String code = netServiceErrort.getCode();
-                                if (code.equals("200")) {
-                                    MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
-                                    MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
-                                    tvTitle.setText(shipInfo.getShipName());
-                                    tvShipName.setText(shipInfo.getShipName());
-                                    tvChuanji.setText(shipInfo.getNation());
-                                    tvMmsi.setText(shipInfo.getMmsi());
-                                    tvShipHuhao.setText(shipInfo.getCallSign());
-                                    tvShipImo.setText(shipInfo.getImo());
-                                    tvShipType.setText(shipInfo.getType());
-                                    tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
+                        protected void onSuccess(String response, String message) {
+                            MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
+                            MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                            tvTitle.setText(shipInfo.getShipName());
+                            tvShipName.setText(shipInfo.getShipName());
+                            tvChuanji.setText(shipInfo.getNation());
+                            tvMmsi.setText(shipInfo.getMmsi());
+                            tvShipHuhao.setText(shipInfo.getCallSign());
+                            tvShipImo.setText(shipInfo.getImo());
+                            tvShipType.setText(shipInfo.getType());
+                            tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
 //                                    tvUpdateTime.setText(shipInfo.getModifyDate());
-                                    tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
-                                } else if (code.equals("601")) {
-                                    //清除了sp存储
-                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
-                                    finish();
-                                } else {
-//                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                            tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
                         }
                     });
         } else {
             NetUtils.postWithHeader(this, ConstantsUrls.FOLLOW_SHIP_INFO)
-                    .addParams(Constants.ID, id)
+                    .addParams(Constants.ID, idd)
                     .build()
-                    .execute(new StringCallback() {
+                    .execute(new NetUtils.MyStringCallback() {
                         @Override
-                        public void onError(Call call, Exception e, int id) {
-                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onResponse(String response, int id) {
-                            if (response == null || response.equals("") || response.equals("null")) {
-                                Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                            } else {
-                                NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                                String message = netServiceErrort.getMessage();
-                                String code = netServiceErrort.getCode();
-                                if (code.equals("200")) {
-                                    FollowShipDetailsBean followShipDetailsBean = new Gson().fromJson(response, FollowShipDetailsBean.class);
-                                    FollowShipDetailsBean.DataBean.ObjectBean followShipDetails = followShipDetailsBean.getData().getObject();
-                                    tvShipName.setText(followShipDetails.getShipName());
-                                    tvShipImo.setText(followShipDetails.getImo());
-                                    tvShipZize.setText(followShipDetails.getShipSize() / 100 + "/" + followShipDetails.getShipWidth() / 100);
-                                    tvUpdateTime.setText(followShipDetails.getModifyDate());
-                                    tvMmsi.setText(followShipDetails.getMmsi());
-                                    tvShipType.setText(followShipDetails.getType());
-                                    tvChuanji.setText(followShipDetails.getNation());
-                                    tvShipHuhao.setText(followShipDetails.getCallSign());
-
-                                } else if (code.equals("601")) {
-                                    //清除了sp存储
-                                    getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                    //保存获取权限的sp
-                                    CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                    startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
-                                    finish();
-                                } else {
-//                                    Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                        protected void onSuccess(String response, String message) {
+                            FollowShipDetailsBean followShipDetailsBean = new Gson().fromJson(response, FollowShipDetailsBean.class);
+                            FollowShipDetailsBean.DataBean.ObjectBean followShipDetails = followShipDetailsBean.getData().getObject();
+                            tvShipName.setText(followShipDetails.getShipName());
+                            tvShipImo.setText(followShipDetails.getImo());
+                            tvShipZize.setText(followShipDetails.getShipSize() / 100 + "/" + followShipDetails.getShipWidth() / 100);
+                            tvUpdateTime.setText(followShipDetails.getModifyDate());
+                            tvMmsi.setText(followShipDetails.getMmsi());
+                            tvShipType.setText(followShipDetails.getType());
+                            tvChuanji.setText(followShipDetails.getNation());
+                            tvShipHuhao.setText(followShipDetails.getCallSign());
                         }
                     });
         }
@@ -296,33 +241,11 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                 .addParams(Constants.SHIP_ID, shipId)
                 .addParams(Constants.USER_ID, userId)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                OtherShipDetailsActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                OtherShipDetailsActivity.this.startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
-                            }
-                            if (code.equals("200")) {
-                                isFollow = false;
-                                tv_follow_ship.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.follow));
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        isFollow = false;
+                        tv_follow_ship.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.follow));
                     }
                 });
     }
@@ -350,35 +273,13 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                 .addParams(Constants.SHIP_ID, shipId)
                 .addParams(Constants.USER_ID, userId)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(OtherShipDetailsActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(OtherShipDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                OtherShipDetailsActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(OtherShipDetailsActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                OtherShipDetailsActivity.this.startActivity(new Intent(OtherShipDetailsActivity.this, LoginRegisterActivity.class));
-                            }
-                            if (code.equals("200")) {
-                                isFollow = true;
-                                textView.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.cancel_follow));
+                    protected void onSuccess(String response, String message) {
+                        isFollow = true;
+                        textView.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.cancel_follow));
 //                                textView.setBackgroundResource(R.drawable.tv_frame_gray_bg);
-                                textView.setTextColor(OtherShipDetailsActivity.this.getResources().getColor(R.color.gray_identity));
-                            }
-                        }
+                        textView.setTextColor(OtherShipDetailsActivity.this.getResources().getColor(R.color.gray_identity));
                     }
                 });
     }

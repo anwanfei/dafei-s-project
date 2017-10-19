@@ -286,7 +286,10 @@ public class AddCrewActivity extends BaseActivity {
     }
 
     private void addCrew() {
-        startActivity(new Intent(this, CrewInfoInputActivity.class));
+        Intent intent = new Intent(this, CrewInfoInputActivity.class);
+        intent.putExtra(Constants.FROM_SHIP,true);
+        intent.putExtra(Constants.SHIP_ID,shipId);
+        startActivity(intent);
         finish();
     }
 }

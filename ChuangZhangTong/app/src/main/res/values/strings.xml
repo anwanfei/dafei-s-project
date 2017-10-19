@@ -522,6 +522,12 @@
     <string name="modify_berthing_message">修改靠舶报</string>
     <string name="modify_arrival_message">修改抵港报</string>
     <string name="modify_leava_message">修改离港报</string>
+    <string name="choose_first_point">点选起点</string>
+    <string name="clear">清除</string>
+    <string name="choose_cext_measure_point">点选下个测距点</string>
+    <string name="start_point">起点</string>
+    <string name="location_failure">定位失败，请检查权限</string>
+    <string name="request_permisson"><![CDATA[定位功能已被禁用，请到(设置->隐\n私->定位服务)中开启app的定位功\n能！]]></string>
 
 
     <!---->

@@ -113,66 +113,44 @@ public class PersonalInfoActivity extends BaseActivity implements View.OnClickLi
         NetUtils.postWithHeader(PersonalInfoActivity.this, ConstantsUrls.GET_USER_INFO)
                 .addParams(Constants.USER_ID, userId)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
+                    protected void onSuccess(String response, String message) {
+                        loginResult = new Gson().fromJson(response, LoginResultBean.class);
+                        String personName = loginResult.getData().getObject().getPersonName();
+                        mobilePhone = loginResult.getData().getObject().getMobilePhone();
+                        String postName = loginResult.getData().getObject().getPostName();
+                        String sex = loginResult.getData().getObject().getSex();
+                        String contactPersonName = loginResult.getData().getObject().getContactPersonName();
+                        String roleName = loginResult.getData().getObject().getRoleName();
+                        String contactPersonPhone = loginResult.getData().getObject().getContactPersonPhone();
+                        String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
 
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(PersonalInfoActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrortBean = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String code = netServiceErrortBean.getCode();
-                            if (code.equals("200")) {
-                                loginResult = new Gson().fromJson(response, LoginResultBean.class);
-                                String personName = loginResult.getData().getObject().getPersonName();
-                                mobilePhone = loginResult.getData().getObject().getMobilePhone();
-                                String postName = loginResult.getData().getObject().getPostName();
-                                String sex = loginResult.getData().getObject().getSex();
-                                String contactPersonName = loginResult.getData().getObject().getContactPersonName();
-                                String roleName = loginResult.getData().getObject().getRoleName();
-                                String contactPersonPhone = loginResult.getData().getObject().getContactPersonPhone();
-                                String headImgUrl = loginResult.getData().getObject().getHeadImgUrl();
-
-                                tvUserName.setText(personName);
-                                tvContactNumber.setText(mobilePhone);
-                                tvLabel.setText(roleName);
-                                tvDuty.setText(postName);
-                                if (sex.equals("1")) {
-                                    tvGender.setText(getResources().getString(R.string.man));
-                                } else if (sex.equals("2")) {
-                                    tvGender.setText(getResources().getString(R.string.woman));
-                                }
-
-                                tvEmergencyContactor.setText(contactPersonName);
-                                tvEmergencyContactorPhone.setText(contactPersonPhone);
-
-                                //获取拍的照片
-                                String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
-                                File file = new File(path);
-                                if (file.exists()) {
-                                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                                    ivPhoto.setImageBitmap(bitmap);
-                                } else if (StringUtils.isNotEmpty(headImgUrl)) {
-                                    Glide.with(PersonalInfoActivity.this).load(headImgUrl).placeholder(R.drawable.photo).error(R.drawable.photo).into(ivPhoto);
-                                } else {
-                                    ivPhoto.setImageResource(R.drawable.photo);
-                                }
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                PersonalInfoActivity.this.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(PersonalInfoActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                Toast.makeText(PersonalInfoActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(PersonalInfoActivity.this, LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(PersonalInfoActivity.this, netServiceErrortBean.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        tvUserName.setText(personName);
+                        tvContactNumber.setText(mobilePhone);
+                        tvLabel.setText(roleName);
+                        tvDuty.setText(postName);
+                        if (sex.equals("1")) {
+                            tvGender.setText(getResources().getString(R.string.man));
+                        } else if (sex.equals("2")) {
+                            tvGender.setText(getResources().getString(R.string.woman));
                         }
+
+                        tvEmergencyContactor.setText(contactPersonName);
+                        tvEmergencyContactorPhone.setText(contactPersonPhone);
+
+                        //获取拍的照片
+                        String path = Environment.getExternalStorageDirectory() + Constants.PHONE_PATH;
+                        File file = new File(path);
+                        if (file.exists()) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(path);
+                            ivPhoto.setImageBitmap(bitmap);
+                        } else if (StringUtils.isNotEmpty(headImgUrl)) {
+                            Glide.with(PersonalInfoActivity.this).load(headImgUrl).placeholder(R.drawable.photo).error(R.drawable.photo).into(ivPhoto);
+                        } else {
+                            ivPhoto.setImageResource(R.drawable.photo);
+                        }
+
                     }
                 });
     }

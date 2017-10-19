@@ -188,8 +188,8 @@ public class ShipNoonMessageActivity extends BaseActivity {
                         noonReportInfo = dynamicRemindNonnReportBean.getData().getObject();
                         tvShipMessageName.setText(noonReportInfo.getShipName());
                         tvShipTime.setText(noonReportInfo.getCreateDate());
-                        tvLatitude.setText(noonReportInfo.getLatitude());
-                        tvLongtitude.setText(noonReportInfo.getLongitude());
+                        tvLatitude.setText(noonReportInfo.getLongitude());
+                        tvLongtitude.setText(noonReportInfo.getLatitude());
                         tvShipDirection.setText(noonReportInfo.getCourse());
                         tvShipSpeed.setText(noonReportInfo.getCurrShipSpeed());
                         tvTheShipHeavyOil.setText(noonReportInfo.getShipHeavyOil());
@@ -210,7 +210,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
                         tvRemark.setText(noonReportInfo.getRemark());
 
                         int timer = noonReportInfo.getTimer();
-                        CountdownTime(isShowCountdownTime, 10000);
+                        CountdownTime(isShowCountdownTime, timer);
                     }
                 });
     }
@@ -249,7 +249,7 @@ public class ShipNoonMessageActivity extends BaseActivity {
                         tvRemark.setText(noonReportInfo.getRemark());
 
                         int timer = noonReportInfo.getTimer();
-                        CountdownTime(isShowCountdownTime, 10000);
+                        CountdownTime(isShowCountdownTime, timer);
                     }
                 });
     }
@@ -258,7 +258,6 @@ public class ShipNoonMessageActivity extends BaseActivity {
         if (isShowCountdownTime) {
             String roleId = CacheUtils.getString(ShipNoonMessageActivity.this, Constants.ROLEID);
             //倒计时
-
             if (timer / 1000 > 0) {
                 if (roleId.equals(String.valueOf(RoleEnum.SHIPMASTER.getCode()))) {
                     llCountdownTime.setVisibility(View.VISIBLE);

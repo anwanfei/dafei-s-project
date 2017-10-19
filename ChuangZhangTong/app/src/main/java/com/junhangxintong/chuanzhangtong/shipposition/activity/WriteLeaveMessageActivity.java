@@ -1,7 +1,6 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -18,21 +17,15 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.AddLeaveReportBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 public class WriteLeaveMessageActivity extends BaseActivity implements View.OnClickListener {
 
@@ -202,34 +195,11 @@ public class WriteLeaveMessageActivity extends BaseActivity implements View.OnCl
                 .addParams(Constants.TYPE, "4")
                 .addParams(Constants.REPORT_JSON, json)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(WriteLeaveMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(WriteLeaveMessageActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(WriteLeaveMessageActivity.this, message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(WriteLeaveMessageActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(WriteLeaveMessageActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            }
-                            if (code.equals("200")) {
-                                show.dismiss();
-                                finish();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        show.dismiss();
+                        finish();
                     }
                 });
     }

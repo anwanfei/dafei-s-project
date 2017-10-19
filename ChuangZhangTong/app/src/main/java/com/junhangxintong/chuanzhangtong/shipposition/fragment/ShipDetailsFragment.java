@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,39 +13,37 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.MapView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.MyShipInfoBean;
-import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
 import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/8/8.
  */
 
 public class ShipDetailsFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.mapview_ship_details)
-    MapView mapviewShipDetails;
     @BindView(R.id.iv_ship_details_down)
     ImageView ivShipDetailsDown;
     @BindView(R.id.tv_ship_name)
@@ -110,6 +107,8 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
     TextView tvTitle;
     @BindView(R.id.iv_share)
     ImageView ivShare;
+    @BindView(R.id.mapbox_mapView)
+    MapView mapboxMapView;
     private boolean isShowShipOthorDetails = true;
     private PopupWindow popupWindow;
     private boolean isShowPop = true;
@@ -157,46 +156,35 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.MY_SHIP_INFO)
                 .addParams(Constants.ID, id)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
-                                MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
-                                tvShipName.setText(shipInfo.getShipName());
-                                tvTitle.setText(shipInfo.getShipName());
-                                tvChuanji.setText(shipInfo.getNation());
-                                tvMmsi.setText(shipInfo.getMmsi());
-                                tvShipHuhao.setText(shipInfo.getCallSign());
-                                tvShipImo.setText(shipInfo.getImo());
-                                tvShipType.setText(shipInfo.getType());
-                                tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
+                    protected void onSuccess(String response, String message) {
+                        MyShipInfoBean myShipInfoBean = new Gson().fromJson(response, MyShipInfoBean.class);
+                        MyShipInfoBean.DataBean.ObjectBean shipInfo = myShipInfoBean.getData().getObject();
+                        tvShipName.setText(shipInfo.getShipName());
+                        tvTitle.setText(shipInfo.getShipName());
+                        tvChuanji.setText(shipInfo.getNation());
+                        tvMmsi.setText(shipInfo.getMmsi());
+                        tvShipHuhao.setText(shipInfo.getCallSign());
+                        tvShipImo.setText(shipInfo.getImo());
+                        tvShipType.setText(shipInfo.getType());
+                        tvShipZize.setText((shipInfo.getShipSize() / 100) + "/" + (shipInfo.getShipWidth() / 100));
 //                                tvUpdateTime.setText(shipInfo.getModifyDate());
-                                tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                        tvUpdateTime.setText(DateUtil.getCurrentTimeYMDHMS());
                     }
                 });
+
+
+        mapboxMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+                IconFactory instance = IconFactory.getInstance(getActivity());
+                Icon icon = instance.fromResource(R.drawable.ic_my_ship_run);
+                LatLng latLng = new LatLng(40, 116);
+                mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mapboxMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
     }
 
     @Override

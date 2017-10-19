@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.adapter.ShipCertificatesAndInsrancesAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipCertificateInsuranceListsBean;
@@ -127,45 +126,40 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.SHIP_ID, id)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(ShipCertificteListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        shipCertificateInsuranceLists = new ArrayList<ShipCertificateInsuranceListsBean.DataBean.ArrayBean>();
+                        updata();
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(ShipCertificteListActivity.this, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
-                            if (code.equals("200")) {
-                                /*final List<CustomCertificateBean> shipCertificates = new ArrayList<CustomCertificateBean>();
+                    protected void onSuccess(String response, String message) {
+                        /*final List<CustomCertificateBean> shipCertificates = new ArrayList<CustomCertificateBean>();
                                 final List<CustomCertificateBean> shipInsurances = new ArrayList<CustomCertificateBean>();*/
-                                ShipCertificateInsuranceListsBean shipCertificateInsuranceListsBean = new Gson().fromJson(response, ShipCertificateInsuranceListsBean.class);
-                                shipCertificateInsuranceLists = shipCertificateInsuranceListsBean.getData().getArray();
-                                shipCertificatesAndInsrancesAdapter = new ShipCertificatesAndInsrancesAdapter(ShipCertificteListActivity.this, shipCertificateInsuranceLists);
-                                updata();
-                                gvCertificateInsurance.setAdapter(shipCertificatesAndInsrancesAdapter);
-                                gvCertificateInsurance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
-                                        int id = shipCertificateInsuranceLists.get(i).getId();
-                                        if (certifType == 1) {
-                                            Intent intent = new Intent(ShipCertificteListActivity.this, ShipCertificateDetailsActivity.class);
-                                            intent.putExtra(Constants.ID, String.valueOf(id));
-                                            startActivity(intent);
+                        ShipCertificateInsuranceListsBean shipCertificateInsuranceListsBean = new Gson().fromJson(response, ShipCertificateInsuranceListsBean.class);
+                        shipCertificateInsuranceLists = shipCertificateInsuranceListsBean.getData().getArray();
+                        shipCertificatesAndInsrancesAdapter = new ShipCertificatesAndInsrancesAdapter(ShipCertificteListActivity.this, shipCertificateInsuranceLists);
+                        updata();
+                        gvCertificateInsurance.setAdapter(shipCertificatesAndInsrancesAdapter);
+                        gvCertificateInsurance.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                int certifType = shipCertificateInsuranceLists.get(i).getCertifType();
+                                int id = shipCertificateInsuranceLists.get(i).getId();
+                                if (certifType == 1) {
+                                    Intent intent = new Intent(ShipCertificteListActivity.this, ShipCertificateDetailsActivity.class);
+                                    intent.putExtra(Constants.ID, String.valueOf(id));
+                                    startActivity(intent);
 
-                                        } else {
-                                            Intent intent = new Intent(ShipCertificteListActivity.this, InsuranceDetailsActivity.class);
-                                            intent.putExtra(Constants.ID, String.valueOf(id));
-                                            startActivity(intent);
-                                        }
-                                    }
-                                });
+                                } else {
+                                    Intent intent = new Intent(ShipCertificteListActivity.this, InsuranceDetailsActivity.class);
+                                    intent.putExtra(Constants.ID, String.valueOf(id));
+                                    startActivity(intent);
+                                }
+                            }
+                        });
                                 /*CustomCertificateBean customCertificateBean = null;
                                 for (int i = 0; i < shipCertificateInsuranceLists.size(); i++) {
                                     customCertificateBean = new CustomCertificateBean();
@@ -229,22 +223,6 @@ public class ShipCertificteListActivity extends BaseActivity implements View.OnC
                                         startActivity(intent);
                                     }
                                 });*/
-
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(ShipCertificteListActivity.this, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(ShipCertificteListActivity.this, LoginRegisterActivity.class));
-                                finish();
-                            } else if (code.equals("404")) {
-                                shipCertificateInsuranceLists = new ArrayList<ShipCertificateInsuranceListsBean.DataBean.ArrayBean>();
-                                updata();
-                            } else {
-                                Toast.makeText(ShipCertificteListActivity.this, message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
                     }
                 });
     }

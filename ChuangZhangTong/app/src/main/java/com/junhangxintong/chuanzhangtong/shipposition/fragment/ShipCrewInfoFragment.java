@@ -1,6 +1,5 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -21,16 +20,13 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
 import com.junhangxintong.chuanzhangtong.mine.activity.CrewInfoInputActivity;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.AddCrewActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -43,9 +39,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Call;
-
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
 
 /**
  * Created by anwanfei on 2017/8/8.
@@ -262,32 +255,11 @@ public class ShipCrewInfoFragment extends BaseFragment {
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.IDS, ids)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                            String message = sendVerifyCode.getMessage();
-                            String code = sendVerifyCode.getCode();
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else if (code.equals("200")) {
-                                updateCrewsList();
-                                crewListsAdapter.notifyDataSetChanged();
-                            }
-                        }
+                    protected void onSuccess(String response, String message) {
+                        updateCrewsList();
+                        crewListsAdapter.notifyDataSetChanged();
                     }
                 });
     }

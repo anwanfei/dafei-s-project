@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,16 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseActivity;
 import com.junhangxintong.chuanzhangtong.common.MyApplication;
-import com.junhangxintong.chuanzhangtong.mine.adapter.CrewListsAdapter;
+import com.junhangxintong.chuanzhangtong.mine.adapter.CrewManagerListsAdapter;
 import com.junhangxintong.chuanzhangtong.mine.adapter.MyCrewAdapter;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewBean;
 import com.junhangxintong.chuanzhangtong.mine.bean.CrewServeBean;
-import com.junhangxintong.chuanzhangtong.net.HttpUtils;
-import com.junhangxintong.chuanzhangtong.net.ICrewManagementService;
-import com.junhangxintong.chuanzhangtong.net.MyCallback;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
@@ -37,7 +36,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import retrofit2.Response;
 
 public class CrewManagementActivity extends BaseActivity {
 
@@ -81,7 +79,7 @@ public class CrewManagementActivity extends BaseActivity {
     private Map<String, Boolean> map = new HashMap<>();
     private List<CrewServeBean.DataBean.ArrayBean> choosedLists;
     private List<CrewServeBean.DataBean.ArrayBean> crewLists;
-    private CrewListsAdapter crewListsAdapter;
+    private CrewManagerListsAdapter crewListsAdapter;
     private ArrayList<String> choosedCrewIdLists;
     private String userId;
 
@@ -135,7 +133,7 @@ public class CrewManagementActivity extends BaseActivity {
     }
 
     private void netGetCrewsLists(String crewName) {
-       /* NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
+        NetUtils.postWithHeader(this, ConstantsUrls.CREW_LISTS)
                 .addParams(Constants.PAGE, "1")
                 .addParams(Constants.PAGE_SIZE, "50")
                 .addParams(Constants.USER_ID, userId)
@@ -146,10 +144,17 @@ public class CrewManagementActivity extends BaseActivity {
                     protected void onSuccess(String response, String message) {
                         CrewServeBean crewServerBean = new Gson().fromJson(response, CrewServeBean.class);
                         crewLists = crewServerBean.getData().getArray();
-
                         updateCrewsList();
-                        crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
+                        crewListsAdapter = new CrewManagerListsAdapter(CrewManagementActivity.this, crewLists);
                         lvMyCrew.setAdapter(crewListsAdapter);
+                        lvMyCrew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                Intent intent = new Intent(CrewManagementActivity.this, ShipCrewInfoActivity.class);
+                                intent.putExtra(Constants.ID, String.valueOf(crewLists.get(i).getId()));
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                     @Override
@@ -157,8 +162,8 @@ public class CrewManagementActivity extends BaseActivity {
                         showDataEmptyUI();
                     }
                 });
-*/
-        retrofit2.Call<CrewServeBean> call = HttpUtils.getDefault().getService(ICrewManagementService.class).getCrewList("1", "100", userId, crewName);
+
+        /*retrofit2.Call<CrewServeBean> call = HttpUtils.getDefault().getService(ICrewManagementService.class).getCrewList("1", "100", userId, crewName);
         call.enqueue(new MyCallback<CrewServeBean>() {
             @Override
             public void onSuccess(Response<CrewServeBean> response) {
@@ -166,13 +171,21 @@ public class CrewManagementActivity extends BaseActivity {
                 updateCrewsList();
                 crewListsAdapter = new CrewListsAdapter(CrewManagementActivity.this, crewLists);
                 lvMyCrew.setAdapter(crewListsAdapter);
+                lvMyCrew.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(CrewManagementActivity.this, ShipCrewInfoActivity.class);
+                        intent.putExtra(Constants.ID, String.valueOf(crewLists.get(i).getId()));
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
             public void onDataEmpty(String message) {
                 showDataEmptyUI();
             }
-        });
+        });*/
     }
 
     private void updateCrewsList() {

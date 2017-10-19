@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,10 +49,8 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
-import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.dbmanager.DaoManager;
 import com.junhangxintong.chuanzhangtong.dbmanager.ShipDetailsDaoUtil;
-import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MeasureDistanceActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
@@ -66,7 +66,6 @@ import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -80,15 +79,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Call;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
  * Created by anwanfei on 2017/7/5.
  */
-
 public class ShipPositionFragment extends BaseFragment implements View.OnClickListener, SensorEventListener {
     @BindView(R.id.mapview_ship_position)
     MapView mapviewShipPosition;
@@ -162,6 +160,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     private ArrayAdapter historyListAdapter;
     private String userId;
     private List<ShipListBean.DataBean.ArrayBean> shipLists;
+    private Dialog dialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -357,6 +356,32 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         }
     }
 
+    private void showDialogClearBuffer() {
+        View inflate = View.inflate(getActivity(), R.layout.dialog_one_button, null);
+        TextView tv_ok_clear_butter = (TextView) inflate.findViewById(R.id.tv_ok_clear_butter);
+
+        tv_ok_clear_butter.setOnClickListener(this);
+
+        dialog = new Dialog(getActivity(), R.style.style_dialog);
+        dialog.setContentView(inflate);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    private void getAppDetailSettingIntent(Context context) {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9) {
+            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+            intent.setData(Uri.fromParts("package", getPackageName(), null));
+        } else if (Build.VERSION.SDK_INT <= 8) {
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
+            intent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
+        }
+        startActivity(intent);
+    }
+
     private void showHistoryLists() {
         llHistory.setVisibility(View.VISIBLE);
         Collections.reverse(historyLists);
@@ -445,13 +470,34 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                     public void onClick(View view) {
 //                        LatLng latLng = new LatLng(39.9,116.3);
 //                        mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-                        mapboxMap.setMyLocationEnabled(true);
-                        double latitude = mapboxMap.getMyLocation().getLatitude();
-                        double longitude = mapboxMap.getMyLocation().getLongitude();
-                        LatLng latLng = new LatLng(latitude, longitude);
-                        mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                        mapboxMap.setZoom(16);
+                        final String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+                        PackageManager packageManager = getActivity().getPackageManager();
+                        boolean permission = PackageManager.PERMISSION_GRANTED == packageManager.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, "com.junhangxintong.chuanzhangtong");
+                        if (permission) {
+                            mapboxMap.setMyLocationEnabled(true);
+                            double latitude = mapboxMap.getMyLocation().getLatitude();
+                            double longitude = mapboxMap.getMyLocation().getLongitude();
+                            LatLng latLng = new LatLng(latitude, longitude);
+                            mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                            mapboxMap.setZoom(16);
+                        } else {
+                           /* Toast.makeText(getActivity(), getResources().getString(R.string.location_failure), Toast.LENGTH_SHORT).show();
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        for (String per : permissions) {
+                                            int isPermission = ContextCompat.checkSelfPermission(getActivity(), per);
+                                            if (isPermission != PackageManager.PERMISSION_GRANTED) {
+                                                ActivityCompat.requestPermissions(getActivity(), permissions, Constants.REQUEST_CODE0);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            });*/
+                            showDialogClearBuffer();
+                        }
                     }
                 });
             }
@@ -481,12 +527,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             // 关闭定位图层
             baiduMap.setMyLocationEnabled(false);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapboxMapView.onSaveInstanceState(outState);
     }
 
     @Override
@@ -575,7 +615,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     private void gotoMeasureDistanceActivity() {
         Intent intent = new Intent(getActivity(), MeasureDistanceActivity.class);
-        intent.putExtra(Constants.MAP_STYLE,mapStyle);
+        intent.putExtra(Constants.MAP_STYLE, mapStyle);
         startActivity(intent);
     }
 
@@ -661,6 +701,10 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 mapboxMapView.setStyleUrl(ConstantsUrls.SATELLITE_MAP);
                 popupWindow.dismiss();
                 tvShipPositionTu.setBackgroundResource(R.drawable.iv_weixingtu);
+                break;
+            case R.id.tv_ok_clear_butter:
+                getAppDetailSettingIntent(getActivity());
+                dialog.dismiss();
                 break;
         }
     }
@@ -787,39 +831,19 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 .addParams(Constants.USER_ID, userId)
                 .addParams(Constants.SHIP_NAME, shipName)
                 .build()
-                .execute(new StringCallback() {
+                .execute(new NetUtils.MyStringCallback() {
                     @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
+                    protected void onDataEmpty(String message) {
+                        super.onDataEmpty(message);
+                        Toast.makeText(getActivity(), getResources().getString(R.string.no_ship), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onResponse(String response, int id) {
-                        if (response == null || response.equals("") || response.equals("null")) {
-                            Toast.makeText(getActivity(), Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                        } else {
-                            NetServiceCodeBean netServiceErrort = new Gson().fromJson(response, NetServiceCodeBean.class);
-                            String message = netServiceErrort.getMessage();
-                            String code = netServiceErrort.getCode();
+                    protected void onSuccess(String response, String message) {
+                        ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
+                        shipLists = shipListBean.getData().getArray();
 
-                            if (code.equals("200")) {
-                                ShipListBean shipListBean = new Gson().fromJson(response, ShipListBean.class);
-                                shipLists = shipListBean.getData().getArray();
-
-                                showPopMyFleet(shipLists);
-
-                            } else if (code.equals("601")) {
-                                //清除了sp存储
-                                getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                //保存获取权限的sp
-                                CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-                            } else if (code.equals("404")) {
-                                Toast.makeText(getActivity(), getResources().getString(R.string.no_ship), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                        showPopMyFleet(shipLists);
                     }
                 });
     }

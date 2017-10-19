@@ -20,8 +20,9 @@
         mapbox:mapbox_cameraTargetLat="40"
         mapbox:mapbox_cameraTargetLng="116"
         mapbox:mapbox_cameraZoom="5"
-        mapbox:mapbox_myLocation="false"
+        mapbox:mapbox_myLocation="true"
         mapbox:mapbox_styleUrl="http://116.62.152.191:82/hifleetStyle.json"
+        mapbox:mapbox_uiAttribution="false"
         mapbox:mapbox_uiLogo="false"
         mapbox:mapbox_uiRotateGestures="false"
         mapbox:mapbox_uiZoomControls="false" />

@@ -6,7 +6,6 @@
     android:background="@color/gray_bg"
     tools:context="com.junhangxintong.chuanzhangtong.shipposition.activity.WriteNoonMessageActivity">
 
-
     <include
         android:id="@+id/include_title"
         layout="@layout/titlebar" />
