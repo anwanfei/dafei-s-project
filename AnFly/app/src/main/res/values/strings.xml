@@ -39,4 +39,6 @@
     <string name="AndroidUI">AndroidUI</string>
     <string name="SHAP">SHAP</string>
     <string name="photo_animation">图像动画</string>
+    <string name="eventbus_subcribe">EventbusSubcribe</string>
+    <string name="eventbus_publish">EventbusPublish</string>
 </resources>

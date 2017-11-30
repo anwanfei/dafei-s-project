@@ -41,7 +41,10 @@
         <activity android:name=".foundation.activity.DialogActivity" />
         <activity android:name=".foundation.activity.CartViewActivity" />
         <activity android:name=".summary.activity.CountDownTimerActivity" />
-        <activity android:name=".foundation.activity.ShapActivity"></activity>
+        <activity android:name=".foundation.activity.ShapActivity" />
+        <activity android:name=".third.activity.eventbus.EventBusSubscribeActivity" />
+        <activity android:name=".third.activity.eventbus.EventbusPublishActivity" />
+        <activity android:name=".summary.activity.FragmentTestActivity"></activity>
     </application>
 
 </manifest>

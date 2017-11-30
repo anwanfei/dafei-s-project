@@ -13,6 +13,7 @@ import com.anwanfei.anfly.R;
 import com.anwanfei.anfly.common.BaseFragment;
 import com.anwanfei.anfly.summary.activity.BasicTestActivity;
 import com.anwanfei.anfly.summary.activity.CountDownTimerActivity;
+import com.anwanfei.anfly.summary.activity.FragmentTestActivity;
 import com.anwanfei.anfly.summary.activity.GuideActivity;
 import com.anwanfei.anfly.summary.activity.TablayoutActivity;
 import com.anwanfei.anfly.summary.activity.VibratorActivity;
@@ -34,10 +35,11 @@ public class SummaryFragment extends BaseFragment {
     Unbinder unbinder;
     List<String> summaryLists;
 
-    private String[] arrSummaryList = {"引导界面", "tablayout显示消息提醒", "常用基本操作", "震动测试","倒计时实现"/*, "侧滑菜单", "Activity切换过场动画", "启用相机拍照并保存图片",
+    private String[] arrSummaryList = {"引导界面", "tablayout显示消息提醒", "常用基本操作", "震动测试","倒计时实现","Fragment与Activity通信"/*, "侧滑菜单", "Activity切换过场动画", "启用相机拍照并保存图片",
             "打包签名", "代码混淆", "反编译", "渠道打包", "二维码", "机械学习"*/};
 
-    Class[] arrClasses = {GuideActivity.class, TablayoutActivity.class, BasicTestActivity.class, VibratorActivity.class, CountDownTimerActivity.class};
+    Class[] arrClasses = {GuideActivity.class, TablayoutActivity.class, BasicTestActivity.class, VibratorActivity.class, CountDownTimerActivity.class
+    , FragmentTestActivity.class};
 
     @Override
     protected View initView() {

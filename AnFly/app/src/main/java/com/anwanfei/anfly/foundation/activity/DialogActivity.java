@@ -158,7 +158,6 @@ public class DialogActivity extends BaseActivity {
 //        Toast.makeText(DialogActivity.this, year + "/" + monthOfYear + "/" + dayOfMonth, Toast.LENGTH_SHORT).show();
     }
 
-
     /*
     时间对话框
      */
@@ -170,9 +169,7 @@ public class DialogActivity extends BaseActivity {
                 Toast.makeText(DialogActivity.this, "您选择的时间是" + hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
             }
         }, instance.get(Calendar.HOUR_OF_DAY), instance.get(Calendar.MINUTE), false);
-
         dialog.show();
-
     }
 
     /*
