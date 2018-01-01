@@ -26,7 +26,7 @@
         android:id="@+id/tv_share_ship"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/iv_share"
+        android:drawableLeft="@drawable/ic_share"
         android:drawablePadding="10dp"
         android:padding="10dp"
         android:text="@string/share_ship_with_colon"

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +16,6 @@ import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.NetServiceCodeBean;
 import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.FollowShipListBean;
-import com.junhangxintong.chuanzhangtong.mine.bean.SendVerifyCodeBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.OtherShipDetailsActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.bean.ShipDetailsBean;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
@@ -30,8 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
-import static com.junhangxintong.chuanzhangtong.utils.CacheUtils.SHAREPRENFERENCE_NAME;
-
 /**
  * Created by anwanfei on 2017/8/4.
  */
@@ -43,10 +42,14 @@ public class SearchResultAdapter extends BaseAdapter {
     private String userId = "";
     private ArrayList<String> followShipIds = new ArrayList<String>();
     private String shipName;
+    private LinearLayout llSearch;
+    private EditText etSearch;
 
-    public SearchResultAdapter(Context mContext, List<ShipDetailsBean> shipDetailsBeanList) {
+    public SearchResultAdapter(Context mContext, List<ShipDetailsBean> shipDetailsBeanList, LinearLayout llSearch, EditText etSearch) {
         this.mContext = mContext;
         this.shipDetailsBeanList = shipDetailsBeanList;
+        this.llSearch = llSearch;
+        this.etSearch = etSearch;
         userId = CacheUtils.getString(mContext, Constants.ID);
     }
 
@@ -110,35 +113,13 @@ public class SearchResultAdapter extends BaseAdapter {
                                 .addParams(Constants.SHIP_ID, String.valueOf(shipId))
                                 .addParams(Constants.USER_ID, userId)
                                 .build()
-                                .execute(new StringCallback() {
+                                .execute(new NetUtils.MyStringCallback() {
                                     @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        Toast.makeText(mContext, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        if (response == null || response.equals("") || response.equals("null")) {
-                                            Toast.makeText(mContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                                            String message = sendVerifyCode.getMessage();
-                                            String code = sendVerifyCode.getCode();
-                                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                                            if (code.equals("601")) {
-                                                //清除了sp存储
-                                                mContext.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                                //保存获取权限的sp
-                                                CacheUtils.putBoolean(mContext, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                                mContext.startActivity(new Intent(mContext, LoginRegisterActivity.class));
-                                            }
-                                            if (code.equals("200")) {
-                                                isFollowed = false;
-                                                finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.follow));
-                                                finalHolder.tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_blue_bg);
-                                                finalHolder.tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.blue));
-                                            }
-                                        }
+                                    protected void onSuccess(String response, String message) {
+                                        isFollowed = false;
+                                        finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.follow));
+                                        finalHolder.tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_blue_bg);
+                                        finalHolder.tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.blue));
                                     }
                                 });
 
@@ -147,35 +128,13 @@ public class SearchResultAdapter extends BaseAdapter {
                                 .addParams(Constants.SHIP_ID, String.valueOf(shipId))
                                 .addParams(Constants.USER_ID, userId)
                                 .build()
-                                .execute(new StringCallback() {
+                                .execute(new NetUtils.MyStringCallback() {
                                     @Override
-                                    public void onError(Call call, Exception e, int id) {
-                                        Toast.makeText(mContext, Constants.NETWORK_CONNECTION_ERROR, Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onResponse(String response, int id) {
-                                        if (response == null || response.equals("") || response.equals("null")) {
-                                            Toast.makeText(mContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            SendVerifyCodeBean sendVerifyCode = new Gson().fromJson(response, SendVerifyCodeBean.class);
-                                            String message = sendVerifyCode.getMessage();
-                                            String code = sendVerifyCode.getCode();
-                                            Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
-                                            if (code.equals("601")) {
-                                                //清除了sp存储
-                                                mContext.getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
-                                                //保存获取权限的sp
-                                                CacheUtils.putBoolean(mContext, Constants.IS_NEED_CHECK_PERMISSION, false);
-                                                mContext.startActivity(new Intent(mContext, LoginRegisterActivity.class));
-                                            }
-                                            if (code.equals("200")) {
-                                                isFollowed = true;
-                                                finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.cancel_follow));
-                                                finalHolder.tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_gray_bg);
-                                                finalHolder.tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.gray_identity));
-                                            }
-                                        }
+                                    protected void onSuccess(String response, String message) {
+                                        isFollowed = true;
+                                        finalHolder.tvSearchFollow.setText(mContext.getResources().getString(R.string.cancel_follow));
+                                        finalHolder.tvSearchFollow.setBackgroundResource(R.drawable.tv_frame_gray_bg);
+                                        finalHolder.tvSearchFollow.setTextColor(mContext.getResources().getColor(R.color.gray_identity));
                                     }
                                 });
                     }
@@ -195,7 +154,6 @@ public class SearchResultAdapter extends BaseAdapter {
                 .addParams(Constants.SHIP_NAME, shipName)
                 .build()
                 .execute(new StringCallback() {
-
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Toast.makeText(mContext, Constants.NETWORK_RETURN_EMPT, Toast.LENGTH_SHORT).show();
@@ -235,6 +193,10 @@ public class SearchResultAdapter extends BaseAdapter {
                         tvSearchShipDetails.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                etSearch.setText("");
+                                llSearch.setVisibility(View.GONE);
+                                etSearch.clearFocus();
+
                                 String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
                                 Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
                                 intent.putExtra(Constants.ID, shipId);
@@ -247,21 +209,6 @@ public class SearchResultAdapter extends BaseAdapter {
                                 mContext.startActivity(intent);
                             }
                         });
-                        /*rlSearchResult.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String shipId = String.valueOf(shipDetailsBeanList.get(i).getShipId());
-                                Intent intent = new Intent(mContext, OtherShipDetailsActivity.class);
-                                intent.putExtra(Constants.ID, shipId);
-                                if (followShipIds.size() > 0) {
-                                    if (followShipIds.contains(shipId)) {
-                                        intent.putExtra(Constants.FOLLOW_SHIP, true);
-                                    }
-                                }
-                                intent.putExtra(Constants.SHIP_ID, shipId);
-                                mContext.startActivity(intent);
-                            }
-                        });*/
                     }
                 });
     }

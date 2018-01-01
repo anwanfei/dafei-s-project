@@ -173,6 +173,7 @@ public class AddCrewActivity extends BaseActivity {
             lvAdditiveCrew.setVisibility(View.GONE);
             llNoCrew.setVisibility(View.VISIBLE);
             rlAddOk.setVisibility(View.GONE);
+            ivNothing.setImageResource(R.drawable.iv_search_no_result);
             tvSetting.setVisibility(View.VISIBLE);
             tvNothing.setText(getResources().getString(R.string.input_crew_info));
         }

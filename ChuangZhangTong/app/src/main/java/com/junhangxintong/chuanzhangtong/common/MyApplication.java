@@ -3,8 +3,6 @@ package com.junhangxintong.chuanzhangtong.common;
 import android.app.Application;
 import android.content.Context;
 
-import com.baidu.mapapi.CoordType;
-import com.baidu.mapapi.SDKInitializer;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -33,12 +31,6 @@ public class MyApplication extends Application {
         appContext = getApplicationContext();
         token = CacheUtils.getString(appContext, Constants.TOKEN);
         roleID = CacheUtils.getString(appContext, Constants.ROLEID);
-
-        // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
-        SDKInitializer.initialize(this);
-        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
-        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
-        SDKInitializer.setCoordType(CoordType.BD09LL);
 
         //开启debug模式，方便定位错误，具体错误检查方式可以查看http://dev.umeng.com/social/android/quick-integration的报错必看，正式发布，请关闭该模式
         Config.DEBUG = true;

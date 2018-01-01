@@ -130,6 +130,7 @@ public class ShipDynamicFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         refresh.setPullLoadEnable(true);
+
         return rootView;
     }
 

@@ -1,6 +1,7 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -33,6 +35,9 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,6 +114,12 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
     ImageView ivShare;
     @BindView(R.id.mapbox_mapView)
     MapView mapboxMapView;
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.tv_re_sail)
+    TextView tvReSail;
+    @BindView(R.id.ll_hide_trajactory)
+    LinearLayout llHideTrajactory;
     private boolean isShowShipOthorDetails = true;
     private PopupWindow popupWindow;
     private boolean isShowPop = true;
@@ -174,15 +185,10 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                     }
                 });
 
-
         mapboxMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
-                IconFactory instance = IconFactory.getInstance(getActivity());
-                Icon icon = instance.fromResource(R.drawable.ic_my_ship_run);
-                LatLng latLng = new LatLng(40, 116);
-                mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mapboxMap.addMarker(new MarkerOptions().position(latLng));
+               curShipIcon(mapboxMap);
             }
         });
     }
@@ -193,7 +199,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
         unbinder.unbind();
     }
 
-    @OnClick({R.id.iv_ship_details_down, R.id.iv_trajactory, R.id.iv_back, R.id.iv_share})
+    @OnClick({R.id.iv_ship_details_down, R.id.iv_trajactory, R.id.iv_back, R.id.iv_share, R.id.tv_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_ship_details_down:
@@ -208,7 +214,7 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                 }
                 break;
             case R.id.iv_trajactory:
-                Toast.makeText(getActivity(), "正在拼命开发中...", Toast.LENGTH_SHORT).show();
+                showShipTrajactory();
                 break;
             case R.id.iv_back:
                 getActivity().finish();
@@ -222,8 +228,58 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
                     isShowPop = true;
                 }
                 break;
+            case R.id.tv_back:
+                ivTrajactory.setVisibility(View.VISIBLE);
+                llHideTrajactory.setVisibility(View.INVISIBLE);
+                break;
         }
     }
+
+    private void showShipTrajactory() {
+        ivTrajactory.setVisibility(View.INVISIBLE);
+        llHideTrajactory.setVisibility(View.VISIBLE);
+        mapboxMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+
+                List<LatLng> latLngs = new ArrayList<LatLng>();
+                latLngs.add(new LatLng(41, 116));
+                latLngs.add(new LatLng(42 ,117));
+                latLngs.add(new LatLng(43, 120));
+                latLngs.add(new LatLng(44, 150));
+
+                for (int i = 0; i < latLngs.size(); i++) {
+                    mapboxMap.addMarker(new MarkerOptions().position(latLngs.get(i)));
+                }
+                if (latLngs.size() > 1) {
+                    mapboxMap.addPolyline(new PolylineOptions().addAll(latLngs).width(2).color(Color.argb(255, 255, 92, 92)));
+                } else {
+                    Toast.makeText(getActivity(), "船舶没有轨迹", Toast.LENGTH_SHORT).show();
+                }
+
+                tvBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ivTrajactory.setVisibility(View.VISIBLE);
+                        llHideTrajactory.setVisibility(View.INVISIBLE);
+
+                        mapboxMap.getMarkers().clear();
+                        mapboxMap.clear();
+                        curShipIcon(mapboxMap);
+                    }
+                });
+            }
+        });
+    }
+
+    private void curShipIcon(MapboxMap mapboxMap) {
+        IconFactory instance = IconFactory.getInstance(getActivity());
+        Icon icon = instance.fromResource(R.drawable.ic_my_ship_run);
+        LatLng latLng = new LatLng(40, 116);
+        mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mapboxMap.addMarker(new MarkerOptions().position(latLng).icon(icon));
+    }
+
 
     @Override
     public void onDestroy() {
@@ -271,7 +327,6 @@ public class ShipDetailsFragment extends BaseFragment implements View.OnClickLis
 
                 //判断是否打开过pop
                 isShowPop = true;
-                // TODO: 2017/8/13
                 share();
 
                 break;

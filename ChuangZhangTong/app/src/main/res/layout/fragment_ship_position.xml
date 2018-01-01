@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.baidu.mapapi.map.MapView
-        android:id="@+id/mapview_ship_position"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_haitu"
-        android:clickable="true"
-        android:visibility="gone" />
-
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapbox_mapView"
         android:layout_width="match_parent"
@@ -23,12 +15,12 @@
         android:layout_alignParentTop="true"
         mapbox:mapbox_cameraTargetLat="40"
         mapbox:mapbox_cameraTargetLng="116"
-        mapbox:mapbox_cameraZoom="5"
+        mapbox:mapbox_cameraZoom="4"
         mapbox:mapbox_myLocation="true"
         mapbox:mapbox_styleUrl="http://116.62.152.191:82/hifleetStyle.json"
+        mapbox:mapbox_uiAttribution="false"
         mapbox:mapbox_uiLogo="false"
         mapbox:mapbox_uiRotateGestures="false"
-        mapbox:mapbox_uiAttribution="false"
         mapbox:mapbox_uiZoomControls="false" />
 
     <RelativeLayout
@@ -179,7 +171,6 @@
             android:id="@+id/ll_search_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray_bg"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -215,16 +206,24 @@
                     android:text="@string/search_no_result" />
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/lv_search_result"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:divider="@color/gray_bg"
-                android:dividerHeight="10dp"
-                android:scrollbars="none"
-                android:visibility="gone" />
+                android:background="@color/gray_bg">
+
+                <ListView
+                    android:id="@+id/lv_search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:divider="@color/gray_bg"
+                    android:dividerHeight="10dp"
+                    android:scrollbars="none"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

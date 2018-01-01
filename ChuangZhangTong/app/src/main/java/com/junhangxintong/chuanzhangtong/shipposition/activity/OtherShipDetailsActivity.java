@@ -1,6 +1,8 @@
 package com.junhangxintong.chuanzhangtong.shipposition.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,21 @@ import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DateUtil;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.junhangxintong.chuanzhangtong.utils.ShareUtils;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.PolylineOptions;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,6 +114,12 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     RelativeLayout llShipDetails;
     @BindView(R.id.mapbox_mapView)
     MapView mapboxMapView;
+    @BindView(R.id.tv_back)
+    TextView tvBack;
+    @BindView(R.id.tv_re_sail)
+    TextView tvReSail;
+    @BindView(R.id.ll_hide_trajactory)
+    LinearLayout llHideTrajactory;
     private boolean isShowShipOthorDetails = true;
     private boolean isShowShareAndFollow = true;
     private PopupWindow popupWindow;
@@ -105,6 +127,7 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     private String shipId = "";
     private String userId;
     private boolean isFollowed = true;
+    private AlertDialog show;
 
     @Override
     protected void initView() {
@@ -116,6 +139,15 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
 
     @Override
     protected void initData() {
+
+        mapboxMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+                curShipIcon(mapboxMap);
+            }
+        });
+
+
         userId = CacheUtils.getString(this, Constants.ID);
         Intent intent = getIntent();
         String idd = intent.getStringExtra(Constants.ID);
@@ -165,6 +197,14 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    private void curShipIcon(MapboxMap mapboxMap) {
+        IconFactory instance = IconFactory.getInstance(OtherShipDetailsActivity.this);
+        Icon icon = instance.fromResource(R.drawable.ic_my_ship_run);
+        LatLng latLng = new LatLng(40, 116);
+        mapboxMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mapboxMap.addMarker(new MarkerOptions().position(latLng).icon(icon));
+    }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_ship_details;
@@ -173,7 +213,6 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
 
@@ -204,9 +243,50 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.iv_trajactory:
-                Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.developing), Toast.LENGTH_SHORT).show();
+                showShipTrajactory();
+                break;
+            case R.id.tv_back:
+                ivTrajactory.setVisibility(View.VISIBLE);
+                llHideTrajactory.setVisibility(View.INVISIBLE);
                 break;
         }
+    }
+
+    private void showShipTrajactory() {
+        ivTrajactory.setVisibility(View.INVISIBLE);
+        llHideTrajactory.setVisibility(View.VISIBLE);
+        mapboxMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+
+                List<LatLng> latLngs = new ArrayList<LatLng>();
+                latLngs.add(new LatLng(41, 116));
+                latLngs.add(new LatLng(42, 117));
+                latLngs.add(new LatLng(43, 120));
+                latLngs.add(new LatLng(44, 150));
+
+                for (int i = 0; i < latLngs.size(); i++) {
+                    mapboxMap.addMarker(new MarkerOptions().position(latLngs.get(i)));
+                }
+                if (latLngs.size() > 1) {
+                    mapboxMap.addPolyline(new PolylineOptions().addAll(latLngs).width(2).color(Color.argb(255, 255, 92, 92)));
+                } else {
+                    Toast.makeText(OtherShipDetailsActivity.this, "船舶没有轨迹", Toast.LENGTH_SHORT).show();
+                }
+
+                tvBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ivTrajactory.setVisibility(View.VISIBLE);
+                        llHideTrajactory.setVisibility(View.INVISIBLE);
+
+                        mapboxMap.getMarkers().clear();
+                        mapboxMap.clear();
+                        curShipIcon(mapboxMap);
+                    }
+                });
+            }
+        });
     }
 
     private void showShareAndFollowShipPop() {
@@ -219,6 +299,7 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
 
         popupWindow = new PopupWindow(view, DensityUtil.dp2px(this, 120), LinearLayout.LayoutParams.WRAP_CONTENT, false);
         popupWindow.setContentView(view);
+        popupWindow.setOutsideTouchable(true);
         popupWindow.showAsDropDown(ivShare, 0, 0);
 
         tv_follow_ship.setOnClickListener(new View.OnClickListener() {
@@ -227,13 +308,43 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                 popupWindow.dismiss();
                 isShowShareAndFollow = true;
                 if (isFollow) {
-                    netCannelFollowShip(tv_follow_ship);
+                    showDialogCnncelFollowShip(tv_follow_ship);
                 } else {
                     netFollowShip(tv_follow_ship);
                 }
             }
         });
         tv_share_ship.setOnClickListener(this);
+    }
+
+
+    private void showDialogCnncelFollowShip(final TextView tv_follow_ship) {
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_clear_butter, null);
+        TextView tv_cancel_clear_buffer = (TextView) view.findViewById(R.id.tv_cancel_clear_buffer);
+        TextView tv_ok_clear_butter = (TextView) view.findViewById(R.id.tv_ok_clear_butter);
+        TextView tv_dialog_title = (TextView) view.findViewById(R.id.tv_dialog_title);
+        TextView tv_dialog_message = (TextView) view.findViewById(R.id.tv_dialog_message);
+
+        tv_dialog_title.setText(getResources().getString(R.string.conform_cancel_follow_the_ship));
+        tv_dialog_message.setVisibility(View.GONE);
+
+        tv_cancel_clear_buffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show.dismiss();
+            }
+        });
+        tv_ok_clear_butter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                netCannelFollowShip(tv_follow_ship);
+                show.dismiss();
+            }
+        });
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.style_dialog);
+        dialog.setView(view);
+        show = dialog.show();
     }
 
     private void netCannelFollowShip(final TextView tv_follow_ship) {
@@ -245,7 +356,8 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                     @Override
                     protected void onSuccess(String response, String message) {
                         isFollow = false;
-                        tv_follow_ship.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.follow));
+                        tv_follow_ship.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.follow_ship));
+                        Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.cancel_follow), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -254,18 +366,27 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
     public void onClick(View view) {
         switch (view.getId()) {
             case tv_follow_ship:
-
                 // TODO: 2017/8/8
                 break;
 
             case tv_share_ship:
                 popupWindow.dismiss();
                 isShowShareAndFollow = true;
-                Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.developing), Toast.LENGTH_SHORT).show();
-                // TODO: 2017/8/8
+                share();
 
                 break;
         }
+    }
+
+    private void share() {
+        UMImage image = new UMImage(OtherShipDetailsActivity.this, R.drawable.wx108);//资源文件
+
+        UMWeb web = new UMWeb(Constants.SHARE_URL);
+        web.setTitle(getResources().getString(R.string.app_name));//标题
+        web.setThumb(image);  //缩略图
+        web.setDescription(getResources().getString(R.string.app_description));//描述
+
+        ShareUtils.share(OtherShipDetailsActivity.this, web);
     }
 
     private void netFollowShip(final TextView textView) {
@@ -277,9 +398,9 @@ public class OtherShipDetailsActivity extends BaseActivity implements View.OnCli
                     @Override
                     protected void onSuccess(String response, String message) {
                         isFollow = true;
-                        textView.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.cancel_follow));
-//                                textView.setBackgroundResource(R.drawable.tv_frame_gray_bg);
                         textView.setTextColor(OtherShipDetailsActivity.this.getResources().getColor(R.color.gray_identity));
+                        textView.setText(OtherShipDetailsActivity.this.getResources().getString(R.string.cancel_follow));
+                        Toast.makeText(OtherShipDetailsActivity.this, getResources().getString(R.string.follow_sucess), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

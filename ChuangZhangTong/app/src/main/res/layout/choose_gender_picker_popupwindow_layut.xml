@@ -13,7 +13,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_identity" />
+        android:background="@color/gray_bg" />
 
     <TextView
         android:id="@+id/tv_woman"
@@ -24,8 +24,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_identity" />
+        android:layout_height="6dp"
+        android:background="@color/gray_bg" />
 
     <TextView
         android:id="@+id/tv_cancel_choose_gender"

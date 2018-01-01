@@ -173,6 +173,7 @@ public class MyFollowFleetActivity extends BaseActivity {
             tvShare.setVisibility(View.GONE);
             rlChooseAllDelete.setVisibility(View.GONE);
             tvSearchShip.setVisibility(View.GONE);
+            ivNothing.setImageResource(R.drawable.iv_search_no_result);
             tvNothing.setVisibility(View.GONE);
         }
     }

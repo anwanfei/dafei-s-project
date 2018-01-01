@@ -128,7 +128,6 @@ public class CrewCertificateFragment extends BaseFragment {
                 }
             });
         }
-
     }
 
     @Override

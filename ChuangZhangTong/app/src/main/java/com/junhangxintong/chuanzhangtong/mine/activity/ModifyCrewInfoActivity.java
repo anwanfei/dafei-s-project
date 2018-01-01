@@ -172,7 +172,6 @@ public class ModifyCrewInfoActivity extends BaseActivity {
                 .addParams(Constants.POSTNAME, duty)
                 .addParams(Constants.JOB_NO, jobNum)
                 .addParams(Constants.EMAIL, email)
-                // TODO: 2017/9/7 传选择船id
                 .addParams(Constants.SHIP_ID, shipId)
                 .build()
                 .execute(new StringCallback() {

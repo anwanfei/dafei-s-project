@@ -78,7 +78,6 @@ public class AllMessageFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         refresh.setPullLoadEnable(true);
@@ -88,13 +87,6 @@ public class AllMessageFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 根据是否登录判断是否要进入登录界面
-        token = CacheUtils.getString(getActivity(), Constants.TOKEN);
-
-        if (StringUtils.isEmpty(token)) {
-            startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
-            getActivity().finish();
-        }
     }
 
     @Override
@@ -309,7 +301,9 @@ public class AllMessageFragment extends BaseFragment {
                                 getActivity().getSharedPreferences(SHAREPRENFERENCE_NAME, Context.MODE_PRIVATE).edit().clear().commit();
                                 //保存获取权限的sp
                                 CacheUtils.putBoolean(getActivity(), Constants.IS_NEED_CHECK_PERMISSION, false);
-                                startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+                                Intent intent = new Intent(getActivity(), LoginRegisterActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                             }

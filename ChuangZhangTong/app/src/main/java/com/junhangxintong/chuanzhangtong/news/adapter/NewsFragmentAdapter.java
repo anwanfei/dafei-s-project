@@ -16,7 +16,7 @@ import com.junhangxintong.chuanzhangtong.news.fragment.WeatherFragment;
 
 public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
 
-    private String[] mtitles = {"最新消息", "气象快讯", "油市快递", "国际公约", "国内公约"};
+    private String[] mtitles = {"最新消息", "油市快递", "气象快讯", "国际公约", "国内公约"};
 
     public NewsFragmentAdapter(FragmentManager fm) {
         super(fm);
@@ -27,9 +27,9 @@ public class NewsFragmentAdapter extends FragmentStatePagerAdapter {
         if (position == 0) {
             return new NewestNewsFragment();
         } else if (position == 1) {
-            return new WeatherFragment();
-        } else if (position == 2) {
             return new OilPriceFragment();
+        } else if (position == 2) {
+            return new WeatherFragment();
         } else if (position == 3) {
             return new InternalNewsFragment();
         }

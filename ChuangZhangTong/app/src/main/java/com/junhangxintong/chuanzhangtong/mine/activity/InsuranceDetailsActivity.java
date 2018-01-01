@@ -104,8 +104,6 @@ public class InsuranceDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra(Constants.ID);
         netGetShipInsuranceInfo();
-
-
     }
 
     private void netGetShipInsuranceInfo() {
@@ -132,10 +130,12 @@ public class InsuranceDetailsActivity extends BaseActivity {
                         if (isValid == 1) {
                             tvEffectiveDate.setText(getResources().getString(R.string.permanent_effective));
                             rlReWarningDays.setVisibility(View.GONE);
+                            tvIsPermanentEffective.setText(getResources().getString(R.string.yes));
                         } else {
                             tvEffectiveDate.setText(shipCertificateOrInsuranceInfo.getValidDate());
                             tvWarningDays.setText(String.valueOf(shipCertificateOrInsuranceInfo.getAdvanceWarnDay()));
                             rlReWarningDays.setVisibility(View.VISIBLE);
+                            tvIsPermanentEffective.setText(getResources().getString(R.string.no));
                         }
 
                         if (shipCertificateOrInsuranceInfo.getIsUse() == 1) {

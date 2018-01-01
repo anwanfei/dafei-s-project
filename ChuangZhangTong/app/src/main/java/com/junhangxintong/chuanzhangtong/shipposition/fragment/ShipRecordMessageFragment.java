@@ -1,7 +1,9 @@
 package com.junhangxintong.chuanzhangtong.shipposition.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.baidu.mapapi.map.MapView;
+import com.andview.refreshview.XRefreshView;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
@@ -46,8 +48,6 @@ import butterknife.Unbinder;
  */
 
 public class ShipRecordMessageFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.baidu_map)
-    MapView baiduMap;
     @BindView(R.id.tv_show_all_mesages)
     TextView tvShowAllMesages;
     @BindView(R.id.lv_message)
@@ -69,6 +69,8 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     View viewLine;
     @BindView(R.id.tv_show_no_message)
     TextView tvShowNoMessage;
+    @BindView(R.id.refresh)
+    XRefreshView refresh;
     private PopupWindow popupWindow;
     private boolean isShowPop;
     Class[] arrClass = {WriteNoonMessageActivity.class, WriteArrivalMessageActivity.class, WriteBerthingMessageActivity.class, WriteLeaveMessageActivity.class};
@@ -77,11 +79,46 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     private String shipName;
     Class[] arrClasses = {ShipNoonMessageActivity.class, ShipBerthingPortMessageActivity.class, ShipArrivalMessageActivity.class, ShipLeavePortMessageActivity.class};
     private String roleId;
+    private int page = 1;
+    private List<ReportListBean.DataBean.ArrayBean> reportLoadMoreLists;
 
     @Override
     protected View initView() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_ship_recored_message, null);
         return view;
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+
+        refresh.setPinnedTime(1000);
+        refresh.setAutoLoadMore(false);
+        refresh.setMoveForHorizontal(true);
+        refresh.setMoveHeadWhenDisablePullRefresh(true);//当下拉的时候不能上拉
+
+        //设置当非RecyclerView上拉加载完成以后的回弹时间
+        refresh.setScrollBackDuration(300);
+
+        refresh.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener() {
+            @Override
+            public void onRefresh(boolean isPullDown) {
+                super.onRefresh(isPullDown);
+                netGetNewestReport(Constants.PAGE_SIZE_10, String.valueOf(page), false);
+            }
+
+            @Override
+            public void onLoadMore(boolean isSilence) {
+                super.onLoadMore(isSilence);
+                page += 1;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        netGetNewestReport(Constants.PAGE_SIZE_10, String.valueOf(page), true);
+                    }
+                }, 2000);
+            }
+        });
     }
 
     @Override
@@ -93,13 +130,13 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         shipName = intent.getStringExtra(Constants.SHIP_NAME);
         tvTitle.setText(shipName);
 
-        netGetNewestReport();
+        netGetNewestReport(Constants.PAGE_SIZE_10, String.valueOf(page), false);
     }
 
-    private void netGetNewestReport() {
+    private void netGetNewestReport(String pageSize, String page, final boolean isLoadmore) {
         NetUtils.postWithHeader(getActivity(), ConstantsUrls.REPORT_LISTS)
-                .addParams(Constants.PAGE, "1")
-                .addParams(Constants.PAGE_SIZE, "100")
+                .addParams(Constants.PAGE, page)
+                .addParams(Constants.PAGE_SIZE, pageSize)
                 .addParams(Constants.SHIP_ID, id)
                 .addParams(Constants.SHIP_NAME, shipName)
                 .addParams(Constants.TYPE, "")
@@ -110,15 +147,40 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
                         super.onDataEmpty(message);
                         lvMessage.setVisibility(View.GONE);
                         tvShowNoMessage.setVisibility(View.VISIBLE);
+                        tvShowAllMesages.setVisibility(View.GONE);
+
+                        refresh.stopLoadMore();
+                        refresh.stopRefresh();
                     }
 
                     @Override
                     protected void onSuccess(String response, String message) {
                         lvMessage.setVisibility(View.VISIBLE);
                         llShowAllMessages.setVisibility(View.VISIBLE);
-                        ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
-                        reportLists = reportListBean.getData().getArray();
+                        tvShowAllMesages.setVisibility(View.VISIBLE);
 
+                        ReportListBean reportListBean = new Gson().fromJson(response, ReportListBean.class);
+
+                        int count = reportListBean.getData().getCount();
+
+                        if (isLoadmore) {
+                            reportLoadMoreLists = reportListBean.getData().getArray();
+                            reportLists.addAll(reportLoadMoreLists);
+                        } else {
+                            reportLists = reportListBean.getData().getArray();
+                        }
+
+                        refresh.stopRefresh();
+
+                        if (reportLists.size() <= count) {
+                            if (Build.VERSION.SDK_INT >= 11) {
+                                reportLists.addAll(reportLists);
+                            }
+                            refresh.stopLoadMore();
+                        } else {
+                            refresh.setLoadComplete(true);
+                            refresh.stopLoadMore();
+                        }
 
                         ShipReportsAdapter shipMessagesAdapter = new ShipReportsAdapter(getActivity(), reportLists);
                         lvMessage.setAdapter(shipMessagesAdapter);
@@ -154,6 +216,8 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+
+        refresh.setPullLoadEnable(true);
 
         roleId = CacheUtils.getString(getActivity(), Constants.ROLEID);
 
@@ -196,7 +260,7 @@ public class ShipRecordMessageFragment extends BaseFragment implements View.OnCl
     @Override
     public void onResume() {
         super.onResume();
-        netGetNewestReport();
+        netGetNewestReport(Constants.PAGE_SIZE_10, String.valueOf(page), false);
     }
 
     private void gotoAllMesageAcitivity() {

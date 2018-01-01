@@ -14,11 +14,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -36,21 +36,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
 import com.google.gson.Gson;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dbmanager.DaoManager;
 import com.junhangxintong.chuanzhangtong.dbmanager.ShipDetailsDaoUtil;
+import com.junhangxintong.chuanzhangtong.mine.activity.FeedbackActivity;
 import com.junhangxintong.chuanzhangtong.mine.bean.ShipListBean;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MeasureDistanceActivity;
 import com.junhangxintong.chuanzhangtong.shipposition.activity.MyShipDetailsActivity;
@@ -61,6 +52,10 @@ import com.junhangxintong.chuanzhangtong.utils.Constants;
 import com.junhangxintong.chuanzhangtong.utils.ConstantsUrls;
 import com.junhangxintong.chuanzhangtong.utils.DensityUtil;
 import com.junhangxintong.chuanzhangtong.utils.NetUtils;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -88,8 +83,6 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
  * Created by anwanfei on 2017/7/5.
  */
 public class ShipPositionFragment extends BaseFragment implements View.OnClickListener, SensorEventListener {
-    @BindView(R.id.mapview_ship_position)
-    MapView mapviewShipPosition;
     Unbinder unbinder;
     @BindView(R.id.tv_ship_position_tu)
     TextView tvShipPositionTu;
@@ -131,9 +124,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     ImageView ivShipPositionZoomSmall;
 
     private PopupWindow popupWindow;
-    private BaiduMap baiduMap;
-    private LocationClient mLocClient;
-    public MyLocationListenner myListener = new MyLocationListenner();
     String inputContent;
     private int mapStyle;
 
@@ -142,10 +132,8 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     private double mCurrentLat = 0.0;
     private double mCurrentLon = 0.0;
     private float mCurrentAccracy;
-    private MyLocationData locData;
     boolean isFirstLoc = true; // 是否首次定位
     private SensorManager mSensorManager;
-    private MyLocationConfiguration.LocationMode mCurrentMode;
 
     private Double lastX = 0.0;
 
@@ -178,9 +166,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.fragment_ship_position, null);
-
         setMapCustomFile(getActivity(), PATH);
-        mapviewShipPosition.setMapCustomEnable(true);
 
         return view;
     }
@@ -218,14 +204,37 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 e.printStackTrace();
             }
         }
-
-        MapView.setCustomMapStylePath(moduleName + "/" + PATH);
-
     }
 
     @Override
     protected void initData() {
         super.initData();
+        IconFactory instance = IconFactory.getInstance(getActivity());
+        final Icon icon = instance.fromResource(R.drawable.ic_my_ship_run);
+
+        mapboxMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final MapboxMap mapboxMap) {
+// TODO: 2017/10/23
+                List<LatLng> latLngs = new ArrayList<LatLng>();
+                latLngs.add(new LatLng(41, 116));
+                latLngs.add(new LatLng(42, 117));
+                latLngs.add(new LatLng(43, 120));
+                latLngs.add(new LatLng(44, 130));
+
+                for (int i = 0; i < latLngs.size(); i++) {
+                    mapboxMap.addMarker(new MarkerOptions().position(latLngs.get(i)).icon(icon));
+                }
+
+                mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(@NonNull Marker marker) {
+                        startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                        return false;
+                    }
+                });
+            }
+        });
 
         userId = CacheUtils.getString(getActivity(), Constants.ID);
         //数据库初始化
@@ -301,11 +310,11 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             }
         });
 
-        baiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
+        mapboxMapView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onTouch(MotionEvent motionEvent) {
-                llSearch.setVisibility(View.GONE);
-                etSearch.clearFocus();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                initSearchView();
+                return false;
             }
         });
 
@@ -322,10 +331,17 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     }
 
+    private void initSearchView() {
+        etSearch.setText("");
+        llSearch.setVisibility(View.GONE);
+        etSearch.clearFocus();
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (hidden) {
+            etSearch.setText("");
             llSearch.setVisibility(View.GONE);
             etSearch.clearFocus();
         }
@@ -341,7 +357,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         if (shipDetailsLists.size() > 0) {
             llSearchNoResult.setVisibility(View.GONE);
             lvSearchResult.setVisibility(View.VISIBLE);
-            SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists);
+            SearchResultAdapter searchResultAdapter = new SearchResultAdapter(getActivity(), shipDetailsLists, llSearch, etSearch);
             lvSearchResult.setAdapter(searchResultAdapter);
             tvResultSize.setText("搜索到" + shipDetailsLists.size() + "条结果");
 
@@ -355,6 +371,7 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             tvResultSize.setText("搜索到0条结果");
         }
     }
+
 
     private void showDialogClearBuffer() {
         View inflate = View.inflate(getActivity(), R.layout.dialog_one_button, null);
@@ -406,40 +423,9 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
 
-        //不显示控制地图大小按钮
-        //mapviewShipPosition.showZoomControls(false);
-        //不显示比例尺
-        mapviewShipPosition.showScaleControl(false);
 
-        //获得地图实例
-        baiduMap = mapviewShipPosition.getMap();
-
-        //获取传感器管理服务
         mSensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
 
-        baiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
-            @Override
-            public void onMapStatusChangeStart(MapStatus mapStatus) {
-                baiduMap.setMyLocationEnabled(false);
-                Log.e("TAG", "onMapStatusChangeStart================" + mapStatus);
-            }
-
-            @Override
-            public void onMapStatusChange(MapStatus mapStatus) {
-                // 关闭定位图层
-//                baiduMap.setMyLocationEnabled(false);
-                Log.e("TAG", "onMapStatusChange================" + mapStatus);
-            }
-
-            @Override
-            public void onMapStatusChangeFinish(MapStatus mapStatus) {
-                // 关闭定位图层
-//                baiduMap.setMyLocationEnabled(true);
-                Log.e("TAG", "onMapStatusChangeFinish================" + mapStatus);
-            }
-        });
-
-//        DistanceUtil.getDistance()
         mapboxMapView.setStyleUrl(ConstantsUrls.SEA_MAP);
 
         //对mapbox的异步处理
@@ -515,18 +501,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mapviewShipPosition != null) {
-            mapviewShipPosition.onDestroy();
-        }
-
-        if (mLocClient != null) {
-            // 退出时销毁定位
-            mLocClient.stop();
-        }
-        if (baiduMap != null) {
-            // 关闭定位图层
-            baiduMap.setMyLocationEnabled(false);
-        }
     }
 
     @Override
@@ -535,7 +509,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
         mapboxMapView.onResume();
 
-        mapviewShipPosition.onResume();
         //为系统的方向传感器注册监听器
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_UI);
@@ -575,14 +548,17 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onPause() {
         super.onPause();
-        mapboxMapView.onPause();
-        mapviewShipPosition.onPause();
+        if(mapboxMapView!=null) {
+            mapboxMapView.onPause();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapboxMapView.onStop();
+        if (mapboxMapView != null) {
+            mapboxMapView.onStop();
+        }
         //取消注册传感器监听
         mSensorManager.unregisterListener(this);
     }
@@ -590,7 +566,9 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapboxMapView.onLowMemory();
+        if(mapboxMapView!=null) {
+            mapboxMapView.onLowMemory();
+        }
     }
 
     @OnClick({R.id.tv_ship_position_tu, R.id.tv_ship_position_my_chuandui, R.id.tv_ship_position_ceju, R.id.tv_clear_history})
@@ -643,7 +621,6 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
             popupWindow.showAtLocation(root, Gravity.RIGHT, DensityUtil.dp2px(getActivity(), 10), DensityUtil.dp2px(getActivity(), -76));
         }
 
-
         lv_my_fleet_ship_position.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -690,14 +667,12 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
                 break;
             case R.id.ll_land_map:
                 mapStyle = 2;
-//                baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
                 mapboxMapView.setStyleUrl(ConstantsUrls.GOOGLE_MAP);
                 popupWindow.dismiss();
                 tvShipPositionTu.setBackgroundResource(R.drawable.iv_ditu);
                 break;
             case R.id.ll_satellite_map:
                 mapStyle = 3;
-//                baiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
                 mapboxMapView.setStyleUrl(ConstantsUrls.SATELLITE_MAP);
                 popupWindow.dismiss();
                 tvShipPositionTu.setBackgroundResource(R.drawable.iv_weixingtu);
@@ -711,117 +686,20 @@ public class ShipPositionFragment extends BaseFragment implements View.OnClickLi
 
     @OnClick(R.id.iv_ship_position_location)
     public void onViewClicked() {
-        loateCurrentPosition();
-//        mapSettings(39.9,116.3);
     }
 
-    private void loateCurrentPosition() {
-
-        mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;
-        baiduMap.setMyLocationConfiguration(new MyLocationConfiguration(
-                mCurrentMode, true, null));
-        MapStatus.Builder builder = new MapStatus.Builder();
-        builder.overlook(0);
-        baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
-        // 开启定位图层
-        baiduMap.setMyLocationEnabled(true);
-        // 定位初始化
-        mLocClient = new LocationClient(getActivity());
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true); // 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        mLocClient.setLocOption(option);
-        mLocClient.start();
-    }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         double x = sensorEvent.values[SensorManager.DATA_X];
         if (Math.abs(x - lastX) > 1.0) {
             mCurrentDirection = (int) x;
-            locData = new MyLocationData.Builder()
-                    .accuracy(mCurrentAccracy)
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(mCurrentDirection).latitude(mCurrentLat)
-                    .longitude(mCurrentLon).build();
-            baiduMap.setMyLocationData(locData);
         }
         lastX = x;
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
-    }
-
-    private class MyLocationListenner implements BDLocationListener {
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            // map view 销毁后不在处理新接收的位置
-            if (location == null || mapviewShipPosition == null) {
-                return;
-            }
-            mCurrentLat = location.getLatitude();
-            mCurrentLon = location.getLongitude();
-            mCurrentAccracy = location.getRadius();
-            locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(mCurrentDirection).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            baiduMap.setMyLocationData(locData);
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                MapStatus.Builder builder = new MapStatus.Builder();
-                /*builder.target(ll).zoom(18.0f);*/
-                baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            }
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String var1, int var2) {
-        }
-    }
-
-    private void mapSettings(double latitude, double longitude) {
-       /* // 不显示缩放比例尺
-        mapviewShipPosition.showZoomControls(false);
-        mapviewShipPosition.showScaleControl(false);
-        //百度地图 获取地图实例
-        BaiduMap map = mapviewShipPosition.getMap();
-//        mapController(map);
-        // 开启定位图层，一定不要少了这句，否则对在地图的设置、绘制定位点将无效
-        map.setMyLocationEnabled(true);
-        map.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        map.setTrafficEnabled(true);
-        LatLng latLng = new LatLng(latitude, longitude);
-        map.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(15).build()));
-        //构建Marker图标
-        BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.drawable.back);
-        OverlayOptions overlayOptions = new MarkerOptions()
-                .position(latLng)
-                .icon(bitmap)
-                .zIndex(15)
-                .draggable(false);
-        map.addOverlay(overlayOptions);
-
-        //设定中心点坐标
-        //LatLng cenpt = new LatLng(latitude,longitude);
-        //定义地图状态        // 改变地图状态，使地图显示在恰当的缩放大小
-        MapStatus mMapStatus = new MapStatus.Builder()
-                .target(latLng)
-                .zoom(15)
-                .build();
-        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
-        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-        //改变地图状态
-        map.setMapStatus(mMapStatusUpdate);*/
     }
 
     private void netGetShipLists(String shipName) {

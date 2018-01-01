@@ -396,7 +396,6 @@ public class ModifyShipInsuranceActivity extends BaseActivity implements View.On
                 .addParams(Constants.IS_USE, isOftonUse)
                 .addParams(Constants.IS_VALID, isEffectiveForever)
                 .addParams(Constants.VALID_DATE, effectiveDate)
-                // TODO: 2017/9/8 picture是必填项 ，以后修改
                 .files(Constants.PICTRUE, stringFileHashMap)
                 .build()
                 .writeTimeOut(3000)

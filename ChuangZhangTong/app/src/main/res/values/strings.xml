@@ -49,6 +49,7 @@
     <string name="reset_pwd">重置密码</string>
     <string name="no_bind">未绑定</string>
     <string name="no_setting">未设置</string>
+    <string name="warm">提示</string>
     <string name="login_register">登录/注册</string>
     <string name="identity">身份</string>
     <string name="shanghai">上海</string>
@@ -504,6 +505,8 @@
     <string name="input_new_phone">请输入新的手机号</string>
     <string name="mycertificate">我的证书</string>
     <string name="cancel_follow">取消关注</string>
+    <string name="follow_sucess">关注成功</string>
+    <string name="cancel_follow_sucess">取消关注成功</string>
     <string name="my_ship">我的船</string>
     <string name="show_no_message">该船舶尚未有报文信息，请联系船长！</string>
     <string name="search_crew_name">搜索名字 编号 职务</string>
@@ -528,6 +531,9 @@
     <string name="start_point">起点</string>
     <string name="location_failure">定位失败，请检查权限</string>
     <string name="request_permisson"><![CDATA[定位功能已被禁用，请到(设置->隐\n私->定位服务)中开启app的定位功\n能！]]></string>
+    <string name="back">返回</string>
+    <string name="re_sail">上次航行</string>
+    <string name="conform_cancel_follow_the_ship">确定不再关注此船？</string>
 
 
     <!---->

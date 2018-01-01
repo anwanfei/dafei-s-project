@@ -174,6 +174,7 @@ public class MainActivity extends BaseActivity {
                     mExitTime = System.currentTimeMillis();
                 } else {
                     //小于2000ms则认为是用户确实希望退出程序-调用System.exit()方法进行退出
+                    finish();
                     System.exit(0);
                 }
             }

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/include"
@@ -19,19 +19,22 @@
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapbox_mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view_line"
+        android:layout_weight="1"
         mapbox:mapbox_cameraTargetLat="40"
         mapbox:mapbox_cameraTargetLng="116"
-        mapbox:mapbox_cameraZoom="5"
+        mapbox:mapbox_cameraZoom="4"
         mapbox:mapbox_myLocation="false"
         mapbox:mapbox_styleUrl="http://116.62.152.191:82/hifleetStyle.json"
         mapbox:mapbox_uiAttribution="false"
         mapbox:mapbox_uiLogo="false"
         mapbox:mapbox_uiRotateGestures="false"
+        android:layout_marginBottom="-20dp"
         mapbox:mapbox_uiZoomControls="false" />
 
     <include layout="@layout/include_ship_details" />
+
 </LinearLayout>

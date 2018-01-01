@@ -510,7 +510,6 @@ public class ModifyShipCertificateActivity extends BaseActivity implements View.
                 .addParams(Constants.IS_USE, isOftenUse)
                 .addParams(Constants.IS_VALID, isEffective)
                 .addParams(Constants.VALID_DATE, ettectiveDate)
-                // TODO: 2017/9/8 picture是必填项 ，以后修改
                 .files(Constants.PICTRUE, stringFileHashMap)
                 .build()
                 .connTimeOut(3000)

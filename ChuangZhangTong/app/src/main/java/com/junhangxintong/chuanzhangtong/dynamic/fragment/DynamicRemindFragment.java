@@ -1,5 +1,6 @@
 package com.junhangxintong.chuanzhangtong.dynamic.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,12 @@ import android.widget.TextView;
 import com.junhangxintong.chuanzhangtong.R;
 import com.junhangxintong.chuanzhangtong.common.BaseFragment;
 import com.junhangxintong.chuanzhangtong.dynamic.adapter.MessageFragmentAdapter;
-import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
+import com.junhangxintong.chuanzhangtong.mine.activity.LoginRegisterActivity;
 import com.junhangxintong.chuanzhangtong.utils.CacheUtils;
 import com.junhangxintong.chuanzhangtong.utils.Constants;
+import com.junhangxintong.chuanzhangtong.utils.RoleEnum;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +67,13 @@ public class DynamicRemindFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        // 根据是否登录判断是否要进入登录界面
+        String token = CacheUtils.getString(getActivity(), Constants.TOKEN);
+
+        if (StringUtils.isBlank(token)) {
+            startActivity(new Intent(getActivity(), LoginRegisterActivity.class));
+            getActivity().finish();
+        }
         return rootView;
     }
 

@@ -179,6 +179,7 @@ public class AccoutSettingActivity extends BaseActivity implements View.OnClickL
 
         tv_is_login_out.setText(getResources().getString(R.string.is_login_out));
         tv_login_out_ok.setText(getResources().getString(R.string.ok));
+        tv_login_out_ok.setTextColor(getResources().getColor(R.color.light_blue_two));
         tv_login_out_cancel.setText(getResources().getString(R.string.cancel));
 
         tv_login_out_ok.setOnClickListener(this);
